@@ -8,23 +8,22 @@
 #' @param last_col Last column in data set that represents a set
 #' @param nsets Number of sets to look at
 #' @param nintersects Number of intersections to plot
+#' @param matrix_color Color of the intersection points
+#' @param main.bar.color Color of the main bar plot
+#' @param sets.bar.color Color of set size bar plot
 #' @export
-upset_base <- function(data, first_col, last_col, nsets, nintersects){
-  My_data <- data
-  start_col <- first_col
-  end_col <- last_col
-  num_sets <- nsets
-  num_intersections <- nintersects
-  TopFreq <- FindMostFreq(My_data, start_col, end_col, num_sets)
-  Sets_to_remove <- Remove(My_data, start_col, end_col, TopFreq)
-  New_data <- Wanted(My_data, Sets_to_remove)
+upset_base <- function(data, first_col, last_col, nsets = 5, nintersects = 40, matrix_color = "gray23",
+                       main.bar.color = "gray23", sets.bar.color = "dodgerblue"){
+  TopFreq <- FindMostFreq(data, first_col, last_col, nsets)
+  Sets_to_remove <- Remove(data, first_col, last_col, TopFreq)
+  New_data <- Wanted(data, Sets_to_remove)
   Num_of_set <- Number_of_sets(TopFreq)
-  All_Freqs <- Counter(New_data, Num_of_set, start_col, TopFreq, num_intersections)
+  All_Freqs <- Counter(New_data, Num_of_set, first_col, TopFreq, nintersects)
   Matrix_setup <- Create_matrix(All_Freqs)
   labels <- Make_labels(Matrix_setup)
-  Matrix_layout <- Create_layout(Matrix_setup)
-  Set_sizes <- FindSetFreqs(New_data, start_col, Num_of_set)
-  Make_base_plot(All_Freqs, Matrix_layout, Set_sizes, labels)
+  Matrix_layout <- Create_layout(Matrix_setup, matrix_color)
+  Set_sizes <- FindSetFreqs(New_data, first_col, Num_of_set)
+  Make_base_plot(All_Freqs, Matrix_layout, Set_sizes, labels, main.bar.color, sets.bar.color)
 }
 
 FindMostFreq <- function(data, start_col, end_col, n_sets){  
@@ -91,12 +90,12 @@ Make_labels <- function(setup){
   return(names)
 }
 
-Create_layout <- function(setup){
+Create_layout <- function(setup, mat_color){
   Matrix_layout <- expand.grid(y=seq(nrow(setup)), x=seq(ncol(setup)))
   Matrix_layout <- data.frame(Matrix_layout, value = as.vector(setup))
   for(i in 1:nrow(Matrix_layout)){
     if(Matrix_layout$value[i] == as.integer(1)){
-      Matrix_layout$color[i] <- "gray23"
+      Matrix_layout$color[i] <- mat_color
       Matrix_layout$Intersection[i] <- paste(Matrix_layout$x[i], "yes", sep ="")
     }
     else{
@@ -118,9 +117,10 @@ FindSetFreqs <- function(data, start_col, num_sets){
   return(as.data.frame(temp_data))
 }
 
-Make_base_plot <- function(Main_bar_data, Mat_data, Set_size_data, labels){
+Make_base_plot <- function(Main_bar_data, Mat_data, Set_size_data, labels, mbar_color, sbar_color){
   Main_bar_plot <- (ggplot(data = Main_bar_data, aes(x = x, y = freq)) 
-                    + geom_bar(stat = "identity", colour = "gray23", width = 0.4)
+                    + geom_bar(stat = "identity", colour = mbar_color, fill = mbar_color,
+                               width = 0.4)
                     + scale_x_continuous(limits = c(0,(nrow(Main_bar_data)+1 )), expand = c(0,0),
                                          breaks = NULL)
                     + xlab(NULL) + ylab("Intersection Size")
@@ -130,11 +130,11 @@ Make_base_plot <- function(Main_bar_data, Mat_data, Set_size_data, labels){
                             axis.title.y = element_text(vjust = 0.5))
                     + geom_vline(xintercept = 0, size = 1, colour = "gray0")
                     + geom_hline( yintercept = 0, colour = "gray0")
-                    + geom_text(aes(label = freq), size = 3, vjust = -0.4))
+                    + geom_text(aes(label = freq), size = 3, vjust = -0.4, colour = mbar_color))
   
   Matrix_plot <- (ggplot(data=Mat_data, aes(x= x, y= y)) 
                   + geom_point(colour = Mat_data$color, size=4) 
-                  + geom_line(aes(group = Intersection), size = 1, colour = "gray23")
+                  + geom_line(aes(group = Intersection), size = 1, colour = Mat_data$color)
                   + theme(panel.background = element_rect(fill = "white"),
                           plot.margin=unit(c(-0.1,0.2,0.1,0.2), "cm"),
                           axis.text.x = element_blank(),
@@ -153,8 +153,8 @@ Make_base_plot <- function(Main_bar_data, Mat_data, Set_size_data, labels){
   Main_bar_plot$widths <- Matrix_plot$widths
   
   Size_plot <- (ggplot(data = Set_size_data, aes(x =x, y = y))
-                + geom_bar(stat = "identity",colour = "dodgerblue", width = 0.4,
-                           fill = "dodgerblue", position = "identity")
+                + geom_bar(stat = "identity",colour = sbar_color, width = 0.4,
+                           fill = sbar_color, position = "identity")
                 + scale_x_continuous(limits = c(0.5, (nrow(Set_size_data)+0.5)),
                                      breaks = c(0, max(Set_size_data)))
                 + theme(panel.background = element_rect(fill = "white"),
