@@ -9,7 +9,7 @@
 #' @param nsets Number of sets to look at
 #' @param nintersects Number of intersections to plot
 #' @export
-Upset_Base <- function(data, first_col, last_col, nsets, nintersects){
+upset_base <- function(data, first_col, last_col, nsets, nintersects){
   My_data <- data
   start_col <- first_col
   end_col <- last_col
