@@ -8,22 +8,32 @@
 #' @param last_col Last column in data set that represents a set
 #' @param nsets Number of sets to look at
 #' @param nintersects Number of intersections to plot
-#' @param matrix_color Color of the intersection points
+#' @param sets Specific sets to look at (Include as combinations. Ex: c("Name1", "Name2"))
+#' @param matrix.color Color of the intersection points
 #' @param main.bar.color Color of the main bar plot
 #' @param sets.bar.color Color of set size bar plot
+#' @param point.size Size of points in matrix plot
+#' @param line.size Width of lines in matrix plot
+#' @param name.size Size of set names in matrix plot
+#' @param mb.ratio Ratio between matrix plot and main bar plot (Keep in terms of hundreths)
 #' @export
-upset_base <- function(data, first_col, last_col, nsets = 5, nintersects = 40, matrix_color = "gray23",
-                       main.bar.color = "gray23", sets.bar.color = "dodgerblue"){
-  TopFreq <- FindMostFreq(data, first_col, last_col, nsets)
-  Sets_to_remove <- Remove(data, first_col, last_col, TopFreq)
+upset_base <- function(data, first_col, last_col, nsets = 5, nintersects = 40, sets = NULL,
+                       matrix.color = "gray23",main.bar.color = "gray23", sets.bar.color = "dodgerblue",
+                       point.size = 4, line.size = 1, name.size = 10, mb.ratio = c(0.70,0.30)){
+  Set_names <- sets
+  if(is.null(Set_names) == T){
+    Set_names <- FindMostFreq(data, first_col, last_col, nsets)
+  }
+  Sets_to_remove <- Remove(data, first_col, last_col, Set_names)
   New_data <- Wanted(data, Sets_to_remove)
-  Num_of_set <- Number_of_sets(TopFreq)
-  All_Freqs <- Counter(New_data, Num_of_set, first_col, TopFreq, nintersects)
+  Num_of_set <- Number_of_sets(Set_names)
+  All_Freqs <- Counter(New_data, Num_of_set, first_col, Set_names, nintersects)
   Matrix_setup <- Create_matrix(All_Freqs)
   labels <- Make_labels(Matrix_setup)
-  Matrix_layout <- Create_layout(Matrix_setup, matrix_color)
+  Matrix_layout <- Create_layout(Matrix_setup, matrix.color)
   Set_sizes <- FindSetFreqs(New_data, first_col, Num_of_set)
-  Make_base_plot(All_Freqs, Matrix_layout, Set_sizes, labels, main.bar.color, sets.bar.color)
+  Make_base_plot(All_Freqs, Matrix_layout, Set_sizes, labels, main.bar.color, sets.bar.color,
+                 point.size, line.size, name.size, mb.ratio)
 }
 
 FindMostFreq <- function(data, start_col, end_col, n_sets){  
@@ -117,7 +127,8 @@ FindSetFreqs <- function(data, start_col, num_sets){
   return(as.data.frame(temp_data))
 }
 
-Make_base_plot <- function(Main_bar_data, Mat_data, Set_size_data, labels, mbar_color, sbar_color){
+Make_base_plot <- function(Main_bar_data, Mat_data, Set_size_data, labels, mbar_color, sbar_color,
+                           point_size, line_size, name_size, hratios){
   Main_bar_plot <- (ggplot(data = Main_bar_data, aes(x = x, y = freq)) 
                     + geom_bar(stat = "identity", colour = mbar_color, fill = mbar_color,
                                width = 0.4)
@@ -125,21 +136,21 @@ Make_base_plot <- function(Main_bar_data, Mat_data, Set_size_data, labels, mbar_
                                          breaks = NULL)
                     + xlab(NULL) + ylab("Intersection Size")
                     + theme(panel.background = element_rect(fill = "white"),  
-                            plot.margin=unit(c(0.2,0.2,0.2,0.2), "cm"),
+                            plot.margin=unit(c(0.35,0.2,0.2,0.2), "cm"),
                             panel.border = element_blank(),
                             axis.title.y = element_text(vjust = 0.5))
                     + geom_vline(xintercept = 0, size = 1, colour = "gray0")
                     + geom_hline( yintercept = 0, colour = "gray0")
-                    + geom_text(aes(label = freq), size = 3, vjust = -0.4, colour = mbar_color))
+                    + geom_text(aes(label = freq), size = 2.9, vjust = -0.4, colour = mbar_color))
   
   Matrix_plot <- (ggplot(data=Mat_data, aes(x= x, y= y)) 
-                  + geom_point(colour = Mat_data$color, size=4) 
-                  + geom_line(aes(group = Intersection), size = 1, colour = Mat_data$color)
+                  + geom_point(colour = Mat_data$color, size= point_size) 
+                  + geom_line(aes(group = Intersection), size = line_size, colour = Mat_data$color)
                   + theme(panel.background = element_rect(fill = "white"),
                           plot.margin=unit(c(-0.1,0.2,0.1,0.2), "cm"),
                           axis.text.x = element_blank(),
                           axis.ticks.x = element_blank(),
-                          axis.text.y = element_text(colour = "gray0"),
+                          axis.text.y = element_text(colour = "gray0", size = name_size),
                           panel.grid.major = element_blank(), 
                           panel.grid.minor = element_blank())
                   + xlab(NULL) + ylab("   ")
@@ -170,14 +181,16 @@ Make_base_plot <- function(Main_bar_data, Mat_data, Set_size_data, labels, mbar_
                 + coord_flip()
                 + scale_y_reverse())
   
-  
   Size_plot <- ggplot_gtable(ggplot_build(Size_plot))
-  Matrix_plot$heights <- Size_plot$heights 
+  Matrix_plot$heights <- Size_plot$heights
+  size_plot_height <- (((hratios[1])+0.01)*100) 
+  if((hratios[1] > 0.7 || hratios[1] < 0.3) || 
+       (hratios[2] > 0.7 || hratios[2] < 0.3)) warning("Plot might be out of range if ratio > 0.7 or < 0.3")
   grid.newpage()
   pushViewport(viewport(layout = grid.layout(100,100)))
   vplayout <- function(x,y){
     viewport(layout.pos.row = x, layout.pos.col = y)
   }
-  print(arrangeGrob(Main_bar_plot, Matrix_plot, heights = c(0.7, 0.3)), vp = vplayout(1:100, 21:100))
-  print(arrangeGrob(Size_plot), vp = vplayout(71:100, 1:20))
+  print(arrangeGrob(Main_bar_plot, Matrix_plot, heights = hratios), vp = vplayout(1:100, 21:100))
+  print(arrangeGrob(Size_plot), vp = vplayout(size_plot_height:100, 1:20))
 }
