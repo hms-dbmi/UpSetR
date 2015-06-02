@@ -4,17 +4,18 @@
 \alias{upset_base}
 \title{Base plot for UpSetR}
 \usage{
-upset_base(data, first_col, last_col, nsets = 5, nintersects = 40,
+upset_base(data, first.col, last.col, nsets = 5, nintersects = 40,
   sets = NULL, matrix.color = "gray23", main.bar.color = "gray23",
   sets.bar.color = "dodgerblue", point.size = 4, line.size = 1,
-  name.size = 10, mb.ratio = c(0.7, 0.3))
+  name.size = 10, mb.ratio = c(0.7, 0.3), att.x = NULL, att.y = NULL,
+  expression = NULL, att.pos = NULL, att.color = "dodgerblue")
 }
 \arguments{
 \item{data}{Data set}
 
-\item{first_col}{First column in data set that represents a set}
+\item{first.col}{First column in data set that represents a set}
 
-\item{last_col}{Last column in data set that represents a set}
+\item{last.col}{Last column in data set that represents a set}
 
 \item{nsets}{Number of sets to look at}
 
@@ -35,6 +36,16 @@ upset_base(data, first_col, last_col, nsets = 5, nintersects = 40,
 \item{name.size}{Size of set names in matrix plot}
 
 \item{mb.ratio}{Ratio between matrix plot and main bar plot (Keep in terms of hundreths)}
+
+\item{att.x}{Attribute entered as a string. If att.y is NULL a histogram will be produced. Best if data attached}
+
+\item{att.y}{Attribute entered as a string. Produces a scatter plot vs. att.x. Best if data attached}
+
+\item{expression}{Expression to subset attribute data entered as string (Ex: "ColName > 3"). Best if data attached}
+
+\item{att.pos}{Position of attribute plot. If NULL plot will be at bottom. If "top" it will be above other plots}
+
+\item{att.color}{Color of attribute plot bars or points}
 }
 \description{
 Takes intersections from most abundant sets in a data set and produces a matrix

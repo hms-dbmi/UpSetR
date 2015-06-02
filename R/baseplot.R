@@ -4,8 +4,8 @@
 #' layout of the intersections, along with plotting their corresponding sizes and 
 #' the size of each set used.
 #' @param data Data set
-#' @param first_col First column in data set that represents a set
-#' @param last_col Last column in data set that represents a set
+#' @param first.col First column in data set that represents a set
+#' @param last.col Last column in data set that represents a set
 #' @param nsets Number of sets to look at
 #' @param nintersects Number of intersections to plot
 #' @param sets Specific sets to look at (Include as combinations. Ex: c("Name1", "Name2"))
@@ -16,24 +16,31 @@
 #' @param line.size Width of lines in matrix plot
 #' @param name.size Size of set names in matrix plot
 #' @param mb.ratio Ratio between matrix plot and main bar plot (Keep in terms of hundreths)
+#' @param att.x Attribute entered as a string. If att.y is NULL a histogram will be produced. Best if data attached
+#' @param att.y Attribute entered as a string. Produces a scatter plot vs. att.x. Best if data attached
+#' @param expression Expression to subset attribute data entered as string (Ex: "ColName > 3"). Best if data attached
+#' @param att.pos Position of attribute plot. If NULL plot will be at bottom. If "top" it will be above other plots
+#' @param att.color Color of attribute plot bars or points
 #' @export
-upset_base <- function(data, first_col, last_col, nsets = 5, nintersects = 40, sets = NULL,
+upset_base <- function(data, first.col, last.col, nsets = 5, nintersects = 40, sets = NULL,
                        matrix.color = "gray23",main.bar.color = "gray23", sets.bar.color = "dodgerblue",
-                       point.size = 4, line.size = 1, name.size = 10, mb.ratio = c(0.70,0.30)){
+                       point.size = 4, line.size = 1, name.size = 10, mb.ratio = c(0.70,0.30), att.x = NULL, 
+                       att.y = NULL, expression = NULL, att.pos = NULL, att.color = "dodgerblue"){
   Set_names <- sets
   if(is.null(Set_names) == T){
-    Set_names <- FindMostFreq(data, first_col, last_col, nsets)
+    Set_names <- FindMostFreq(data, first.col, last.col, nsets)
   }
-  Sets_to_remove <- Remove(data, first_col, last_col, Set_names)
+  Sets_to_remove <- Remove(data, first.col, last.col, Set_names)
   New_data <- Wanted(data, Sets_to_remove)
   Num_of_set <- Number_of_sets(Set_names)
-  All_Freqs <- Counter(New_data, Num_of_set, first_col, Set_names, nintersects)
+  All_Freqs <- Counter(New_data, Num_of_set, first.col, Set_names, nintersects)
   Matrix_setup <- Create_matrix(All_Freqs)
   labels <- Make_labels(Matrix_setup)
   Matrix_layout <- Create_layout(Matrix_setup, matrix.color)
-  Set_sizes <- FindSetFreqs(New_data, first_col, Num_of_set)
+  Set_sizes <- FindSetFreqs(New_data, first.col, Num_of_set)
   Make_base_plot(All_Freqs, Matrix_layout, Set_sizes, labels, main.bar.color, sets.bar.color,
-                 point.size, line.size, name.size, mb.ratio)
+                 point.size, line.size, name.size, mb.ratio, att.x, att.y, New_data,
+                 expression, att.pos, first.col, att.color)
 }
 
 FindMostFreq <- function(data, start_col, end_col, n_sets){  
@@ -52,6 +59,11 @@ Remove <- function(data, start_col, end_col, sets){
 
 Wanted <- function(data, unwanted_sets){
   temp_data <- (data[ ,!(colnames(data) %in% unwanted_sets), drop = F])
+}
+
+Subset_att <- function(data, exp){
+  subset_data <- data[which(eval(parse(text = exp))), ]
+  return(subset_data)
 }
 
 Number_of_sets <- function(sets){
@@ -128,7 +140,8 @@ FindSetFreqs <- function(data, start_col, num_sets){
 }
 
 Make_base_plot <- function(Main_bar_data, Mat_data, Set_size_data, labels, mbar_color, sbar_color,
-                           point_size, line_size, name_size, hratios){
+                           point_size, line_size, name_size, hratios, att_x, att_y, Set_data, exp,
+                           position, start_col, att_color){
   Main_bar_plot <- (ggplot(data = Main_bar_data, aes(x = x, y = freq)) 
                     + geom_bar(stat = "identity", colour = mbar_color, fill = mbar_color,
                                width = 0.4)
@@ -186,11 +199,99 @@ Make_base_plot <- function(Main_bar_data, Mat_data, Set_size_data, labels, mbar_
   size_plot_height <- (((hratios[1])+0.01)*100) 
   if((hratios[1] > 0.7 || hratios[1] < 0.3) || 
        (hratios[2] > 0.7 || hratios[2] < 0.3)) warning("Plot might be out of range if ratio > 0.7 or < 0.3")
-  grid.newpage()
-  pushViewport(viewport(layout = grid.layout(100,100)))
   vplayout <- function(x,y){
     viewport(layout.pos.row = x, layout.pos.col = y)
   }
-  print(arrangeGrob(Main_bar_plot, Matrix_plot, heights = hratios), vp = vplayout(1:100, 21:100))
-  print(arrangeGrob(Size_plot), vp = vplayout(size_plot_height:100, 1:20))
+  if((is.null(att_x) == T) && (is.null(att_y) == F)){
+    warning("Please place lone attribute in att.x")
+    if(is.null(exp) == F) warning("No attribute selected to subset")
+  }
+  
+  else if((is.null(att_x) == T) && (is.null(att_y) == T)){
+    if(is.null(exp) == F) warning("No attribute selected to subset")
+    grid.newpage()
+    pushViewport(viewport(layout = grid.layout(100,100)))
+    print(arrangeGrob(Main_bar_plot, Matrix_plot, heights = hratios), vp = vplayout(1:100, 21:100))
+    print(arrangeGrob(Size_plot), vp = vplayout(size_plot_height:100, 1:20))
+  }
+  
+  else if((is.null(att_x) == F) && (is.null(att_y) == T)){
+    values <- eval(parse(text = att_x))
+    Set_data <- cbind(Set_data, values) 
+    end_col <- ((start_col + as.integer(length(labels))) - 1)
+    Set_data <- Set_data[which(rowSums(Set_data[ ,start_col:end_col]) != 0), ]
+    if(is.null(exp) == F){
+      attach(Set_data)
+      Set_data <- Subset_att(Set_data, exp)
+      detach(Set_data)
+    }
+    att_plot <- (ggplot(data = Set_data, aes(x = values)) 
+                 + geom_histogram(binwidth = 1, colour = "black", fill = att_color)
+                 + xlab(att_x) + ylab("Frequency")
+                 + theme(panel.background = element_rect(fill = "white"),
+                         panel.grid.minor = element_blank(),
+                         panel.grid.major = element_blank(),
+                         plot.margin=unit(c(-0.1,0.2,0.1,0.2), "cm")))
+    
+    att_plot <- ggplot_gtable(ggplot_build(att_plot))
+    att_plot$widths <-  Matrix_plot$widths
+    if((hratios[1] < 0.4) || 
+         (hratios[2] > 0.6)) warning("Plot might be out of range if mb.ratio[1] < 0.4 or mb.ratio[2] >  0.6")
+    if(is.null(position) == T){
+      size_plot_height <- (((hratios[1])+0.01)*100) 
+      grid.newpage()
+      pushViewport(viewport(layout = grid.layout(130, 100)))
+      print(arrangeGrob(Main_bar_plot, Matrix_plot, heights = hratios), vp = vplayout(1:100, 21:100))
+      print(arrangeGrob(Size_plot), vp = vplayout(size_plot_height:100, 1:20))
+      print(arrangeGrob(att_plot), vp = vplayout(101:130, 21:100))
+    }
+    else{
+      size_plot_height <- ((((hratios[1])+0.01)*100) + 30) 
+      grid.newpage()
+      pushViewport(viewport(layout = grid.layout(130, 100)))
+      print(arrangeGrob(Main_bar_plot, Matrix_plot, heights = hratios), vp = vplayout(31:130, 21:100))
+      print(arrangeGrob(Size_plot), vp = vplayout(size_plot_height:130, 1:20))
+      print(arrangeGrob(att_plot), vp = vplayout(1:30, 21:100))
+    }
+  }
+  else if((is.null(att_x) == F) && (is.null(att_y) == F)){
+    values1 <- eval(parse(text = att_x))
+    values2 <- eval(parse(text = att_y))
+    Set_data <- cbind(Set_data, values1, values2) 
+    end_col <- ((start_col + as.integer(length(labels))) - 1)
+    Set_data <- Set_data[which(rowSums(Set_data[ ,start_col:end_col]) != 0), ]
+    if(is.null(exp) == F){
+      attach(Set_data)
+      Set_data <- Subset_att(Set_data, exp)
+      detach(Set_data)
+    }
+    att_plot <- (ggplot(data = Set_data, aes(x = values1, y = values2)) 
+                 + geom_point(colour = att_color)
+                 + xlab(att_x) + ylab(att_y)
+                 + theme(panel.background = element_rect(fill = "white"),
+                         panel.grid.minor = element_blank(),
+                         panel.grid.major = element_blank(),
+                         plot.margin=unit(c(0.2,0.2,0.1,0.2), "cm")))
+    
+    att_plot <- ggplot_gtable(ggplot_build(att_plot))
+    att_plot$widths <-  Matrix_plot$widths
+    if((hratios[1] < 0.4) || 
+         (hratios[2] > 0.6)) warning("Plot might be out of range if mb.ratio[1] < 0.4 or mb.ratio[2] >  0.6")
+    if(is.null(position) == T){
+      size_plot_height <- (((hratios[1])+0.01)*100) 
+      grid.newpage()
+      pushViewport(viewport(layout = grid.layout(130, 100)))
+      print(arrangeGrob(Main_bar_plot, Matrix_plot, heights = hratios), vp = vplayout(1:100, 21:100))
+      print(arrangeGrob(Size_plot), vp = vplayout(size_plot_height:100, 1:20))
+      print(arrangeGrob(att_plot), vp = vplayout(101:130, 21:100))
+    }
+    else{
+      size_plot_height <- ((((hratios[1])+0.01)*100) + 30) 
+      grid.newpage()
+      pushViewport(viewport(layout = grid.layout(130, 100)))
+      print(arrangeGrob(Main_bar_plot, Matrix_plot, heights = hratios), vp = vplayout(31:130, 21:100))
+      print(arrangeGrob(Size_plot), vp = vplayout(size_plot_height:130, 1:20))
+      print(arrangeGrob(att_plot), vp = vplayout(1:30, 21:100))
+    }
+  }
 }
