@@ -38,8 +38,11 @@ upset_base <- function(data, first.col, last.col, nsets = 5, nintersects = 40, s
   labels <- Make_labels(Matrix_setup)
   Matrix_layout <- Create_layout(Matrix_setup, matrix.color)
   Set_sizes <- FindSetFreqs(New_data, first.col, Num_of_set)
-  Make_base_plot(All_Freqs, Matrix_layout, Set_sizes, labels, main.bar.color, sets.bar.color,
-                 point.size, line.size, name.size, mb.ratio, att.x, att.y, New_data,
+  Main_bar <- Make_main_bar(All_Freqs, main.bar.color)
+  Matrix <- Make_matrix_plot(Matrix_layout, Set_sizes, All_Freqs, point.size, line.size,
+                             name.size, labels)
+  Sizes <- Make_size_plot(Set_sizes, sets.bar.color)
+  Make_base_plot(Main_bar, Matrix, Sizes, labels, mb.ratio, att.x, att.y, New_data,
                  expression, att.pos, first.col, att.color)
 }
 
@@ -139,9 +142,7 @@ FindSetFreqs <- function(data, start_col, num_sets){
   return(as.data.frame(temp_data))
 }
 
-Make_base_plot <- function(Main_bar_data, Mat_data, Set_size_data, labels, mbar_color, sbar_color,
-                           point_size, line_size, name_size, hratios, att_x, att_y, Set_data, exp,
-                           position, start_col, att_color){
+Make_main_bar <- function(Main_bar_data, mbar_color){
   Main_bar_plot <- (ggplot(data = Main_bar_data, aes(x = x, y = freq)) 
                     + geom_bar(stat = "identity", colour = mbar_color, fill = mbar_color,
                                width = 0.4)
@@ -155,7 +156,11 @@ Make_base_plot <- function(Main_bar_data, Mat_data, Set_size_data, labels, mbar_
                     + geom_vline(xintercept = 0, size = 1, colour = "gray0")
                     + geom_hline( yintercept = 0, colour = "gray0")
                     + geom_text(aes(label = freq), size = 2.9, vjust = -0.4, colour = mbar_color))
-  
+  Main_bar_plot <- ggplotGrob(Main_bar_plot)
+  return(Main_bar_plot)
+}
+
+Make_matrix_plot <- function(Mat_data,Set_size_data, Main_bar_data, point_size, line_size, name_size, labels){
   Matrix_plot <- (ggplot(data=Mat_data, aes(x= x, y= y)) 
                   + geom_point(colour = Mat_data$color, size= point_size) 
                   + geom_line(aes(group = Intersection), size = line_size, colour = Mat_data$color)
@@ -172,10 +177,11 @@ Make_base_plot <- function(Main_bar_data, Mat_data, Set_size_data, labels, mbar_
                                        labels = labels)
                   + scale_x_continuous(limits = c(0,(nrow(Main_bar_data)+1 )), expand = c(0,0)))
   
-  Main_bar_plot <- ggplotGrob(Main_bar_plot)
   Matrix_plot <- ggplotGrob(Matrix_plot)
-  Main_bar_plot$widths <- Matrix_plot$widths
-  
+  return(Matrix_plot)
+}
+
+Make_size_plot <- function(Set_size_data, sbar_color){
   Size_plot <- (ggplot(data = Set_size_data, aes(x =x, y = y))
                 + geom_bar(stat = "identity",colour = sbar_color, width = 0.4,
                            fill = sbar_color, position = "identity")
@@ -195,7 +201,14 @@ Make_base_plot <- function(Main_bar_data, Mat_data, Set_size_data, labels, mbar_
                 + scale_y_reverse())
   
   Size_plot <- ggplot_gtable(ggplot_build(Size_plot))
+  return(Size_plot)
+}
+
+Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratios, att_x, att_y,
+                           Set_data, exp, position, start_col, att_color){
+  Main_bar_plot$widths <- Matrix_plot$widths
   Matrix_plot$heights <- Size_plot$heights
+  
   size_plot_height <- (((hratios[1])+0.01)*100) 
   if((hratios[1] > 0.7 || hratios[1] < 0.3) || 
        (hratios[2] > 0.7 || hratios[2] < 0.3)) warning("Plot might be out of range if ratio > 0.7 or < 0.3")
