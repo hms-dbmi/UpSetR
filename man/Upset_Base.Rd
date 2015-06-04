@@ -8,7 +8,9 @@ upset_base(data, first.col, last.col, nsets = 5, nintersects = 40,
   sets = NULL, matrix.color = "gray23", main.bar.color = "gray23",
   sets.bar.color = "dodgerblue", point.size = 4, line.size = 1,
   name.size = 10, mb.ratio = c(0.7, 0.3), att.x = NULL, att.y = NULL,
-  expression = NULL, att.pos = NULL, att.color = "dodgerblue")
+  expression = NULL, att.pos = NULL, att.color = "dodgerblue",
+  elements = NULL, elements.color = "red", intersection = NULL,
+  intersection.color = "purple")
 }
 \arguments{
 \item{data}{Data set}
@@ -46,6 +48,14 @@ upset_base(data, first.col, last.col, nsets = 5, nintersects = 40,
 \item{att.pos}{Position of attribute plot. If NULL plot will be at bottom. If "top" it will be above other plots}
 
 \item{att.color}{Color of attribute plot bars or points}
+
+\item{elements}{Specific elements to plot entered as a list. First element in list is name of attribute (string) followed by specific elements of attribute.}
+
+\item{elements.color}{Color of element data on plot}
+
+\item{intersection}{List of set names that make up specific interaction to plot on attribute plot}
+
+\item{intersection.color}{Color of intersection data on plot}
 }
 \description{
 Takes intersections from most abundant sets in a data set and produces a matrix

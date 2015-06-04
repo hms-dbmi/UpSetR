@@ -21,11 +21,16 @@
 #' @param expression Expression to subset attribute data entered as string (Ex: "ColName > 3"). Best if data attached
 #' @param att.pos Position of attribute plot. If NULL plot will be at bottom. If "top" it will be above other plots
 #' @param att.color Color of attribute plot bars or points
+#' @param elements Specific elements to plot entered as a list. First element in list is name of attribute (string) followed by specific elements of attribute.
+#' @param elements.color Color of element data on plot
+#' @param intersection List of set names that make up specific interaction to plot on attribute plot
+#' @param intersection.color Color of intersection data on plot  
 #' @export
 upset_base <- function(data, first.col, last.col, nsets = 5, nintersects = 40, sets = NULL,
                        matrix.color = "gray23",main.bar.color = "gray23", sets.bar.color = "dodgerblue",
                        point.size = 4, line.size = 1, name.size = 10, mb.ratio = c(0.70,0.30), att.x = NULL, 
-                       att.y = NULL, expression = NULL, att.pos = NULL, att.color = "dodgerblue"){
+                       att.y = NULL, expression = NULL, att.pos = NULL, att.color = "dodgerblue", elements = NULL,
+                       elements.color = "red", intersection = NULL, intersection.color = "purple"){
   Set_names <- sets
   if(is.null(Set_names) == T){
     Set_names <- FindMostFreq(data, first.col, last.col, nsets)
@@ -38,12 +43,21 @@ upset_base <- function(data, first.col, last.col, nsets = 5, nintersects = 40, s
   labels <- Make_labels(Matrix_setup)
   Matrix_layout <- Create_layout(Matrix_setup, matrix.color)
   Set_sizes <- FindSetFreqs(New_data, first.col, Num_of_set)
+  elem <- elements
+  if(is.null(elem) == F){
+    elem <- GetElements(New_data, elements)
+  }
+  Intersects <- intersection
+  if(is.null(Intersects) == F){
+    Intersects <- GetIntersects(New_data, first.col, intersection, Num_of_set)
+  }
   Main_bar <- Make_main_bar(All_Freqs, main.bar.color)
   Matrix <- Make_matrix_plot(Matrix_layout, Set_sizes, All_Freqs, point.size, line.size,
                              name.size, labels)
   Sizes <- Make_size_plot(Set_sizes, sets.bar.color)
   Make_base_plot(Main_bar, Matrix, Sizes, labels, mb.ratio, att.x, att.y, New_data,
-                 expression, att.pos, first.col, att.color)
+                 expression, att.pos, first.col, att.color, elem, elements.color, 
+                 Intersects, intersection.color)
 }
 
 FindMostFreq <- function(data, start_col, end_col, n_sets){  
@@ -142,6 +156,31 @@ FindSetFreqs <- function(data, start_col, num_sets){
   return(as.data.frame(temp_data))
 }
 
+GetElements <- function(data, elements){
+  col_num <- match(elements[1], colnames(data))
+  num_elem <- length(elements)
+  elems <- as.character(elements[2:num_elem])
+  temp_data <- data[data[ ,col_num] %in% elems, ]
+  return(temp_data)
+}
+
+GetIntersects <- function(data, start_col, sets, num_sets){
+  end_col <- as.numeric(((start_col + num_sets) -1))
+  set_cols <- data[ ,start_col:end_col]
+  temp_data <- data[which(rowSums(data[ ,start_col:end_col]) == length(sets)), ]
+  unwanted <- colnames(set_cols[ ,!(colnames(set_cols) %in% sets), drop = F])
+  temp_data <- (temp_data[ ,!(colnames(data) %in% unwanted), drop = F])
+  new_end <- ((start_col + length(sets)) -1 )
+  if(new_end == start_col){
+    temp_data <- temp_data[ which(temp_data[ ,start_col] == 1), ]
+    return(temp_data)
+  }
+  else{
+    temp_data <- temp_data[ which(rowSums(temp_data[ ,start_col:new_end]) == length(sets)) , ]
+    return(temp_data)
+  }
+}
+
 Make_main_bar <- function(Main_bar_data, mbar_color){
   Main_bar_plot <- (ggplot(data = Main_bar_data, aes(x = x, y = freq)) 
                     + geom_bar(stat = "identity", colour = mbar_color, fill = mbar_color,
@@ -205,7 +244,8 @@ Make_size_plot <- function(Set_size_data, sbar_color){
 }
 
 Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratios, att_x, att_y,
-                           Set_data, exp, position, start_col, att_color){
+                           Set_data, exp, position, start_col, att_color, elems, elems_color, intersect,
+                           intersect_color){
   Main_bar_plot$widths <- Matrix_plot$widths
   Matrix_plot$heights <- Size_plot$heights
   
@@ -233,10 +273,27 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
     Set_data <- cbind(Set_data, values) 
     end_col <- ((start_col + as.integer(length(labels))) - 1)
     Set_data <- Set_data[which(rowSums(Set_data[ ,start_col:end_col]) != 0), ]
+    if(is.null(elems) == F){
+      col1 <- match(att_x, colnames(elems))
+      val1 <- elems[ , col1]
+      elems <- cbind(elems, val1)
+      elems <- elems[which(rowSums(elems[ ,start_col:end_col]) != 0), ]
+    }
+    if(is.null(intersect) == F){
+      c1 <- match(att_x, colnames(intersect))
+      v1 <- intersect[ , c1]
+      intersect <- cbind(intersect, v1)
+    }
     if(is.null(exp) == F){
       attach(Set_data)
       Set_data <- Subset_att(Set_data, exp)
       detach(Set_data)
+      attach(elems)
+      elems <- Subset_att(elems, exp)
+      detach(elems)
+      attach(intersect)
+      intersect <- Subset_att(intersect, exp)
+      detach(intersect)
     }
     att_plot <- (ggplot(data = Set_data, aes(x = values)) 
                  + geom_histogram(binwidth = 1, colour = "black", fill = att_color)
@@ -245,6 +302,14 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
                          panel.grid.minor = element_blank(),
                          panel.grid.major = element_blank(),
                          plot.margin=unit(c(-0.1,0.2,0.1,0.2), "cm")))
+    if(is.null(elems) == F){
+      att_plot <- att_plot + geom_histogram(data = elems, aes(x = val1), 
+                                            binwidth = 1, colour = "black", fill = elems_color)
+    }
+    if(is.null(intersect) == F){
+      att_plot <- att_plot + geom_histogram(data = intersect, aes(x = v1), binwidth = 1,
+                                            colour = "black", fill = intersect_color)
+    }
     
     att_plot <- ggplot_gtable(ggplot_build(att_plot))
     att_plot$widths <-  Matrix_plot$widths
@@ -273,11 +338,33 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
     Set_data <- cbind(Set_data, values1, values2) 
     end_col <- ((start_col + as.integer(length(labels))) - 1)
     Set_data <- Set_data[which(rowSums(Set_data[ ,start_col:end_col]) != 0), ]
+    if(is.null(elems) == F){
+      col1 <- match(att_x, colnames(elems))
+      col2 <- match(att_y, colnames(elems))
+      val1 <- elems[ , col1]
+      val2 <- elems[ , col2]
+      elems <- cbind(elems, val1, val2)
+      elems <- elems[which(rowSums(elems[ ,start_col:end_col]) != 0), ]
+    }
+    if(is.null(intersect) == F){
+      c1 <- match(att_x, colnames(intersect))
+      c2 <- match(att_y, colnames(intersect))
+      v1 <- intersect[ , c1]
+      v2 <- intersect[ , c2]
+      intersect <- cbind(intersect, v1, v2)
+    }
     if(is.null(exp) == F){
       attach(Set_data)
       Set_data <- Subset_att(Set_data, exp)
       detach(Set_data)
+      attach(elems)
+      elems <- Subset_att(elems, exp)
+      detach(elems)
+      attach(intersect)
+      intersect <- Subset_att(intersect, exp)
+      detach(intersect)
     }
+    
     att_plot <- (ggplot(data = Set_data, aes(x = values1, y = values2)) 
                  + geom_point(colour = att_color)
                  + xlab(att_x) + ylab(att_y)
@@ -285,6 +372,12 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
                          panel.grid.minor = element_blank(),
                          panel.grid.major = element_blank(),
                          plot.margin=unit(c(0.2,0.2,0.1,0.2), "cm")))
+    if(is.null(elems) == F){
+      att_plot <- att_plot + geom_point(data = elems, aes(x = val1, y = val2), colour = elems_color)
+    }
+    if(is.null(intersect) == F){
+      att_plot <- att_plot + geom_point(data = intersect, aes(x = v1, y = v2), colour = intersect_color)
+    }
     
     att_plot <- ggplot_gtable(ggplot_build(att_plot))
     att_plot$widths <-  Matrix_plot$widths
