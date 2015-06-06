@@ -38,20 +38,25 @@ upset_base <- function(data, first.col, last.col, nsets = 5, nintersects = 40, s
   Sets_to_remove <- Remove(data, first.col, last.col, Set_names)
   New_data <- Wanted(data, Sets_to_remove)
   Num_of_set <- Number_of_sets(Set_names)
-  All_Freqs <- Counter(New_data, Num_of_set, first.col, Set_names, nintersects)
+  All_Freqs <- Counter(New_data, Num_of_set, first.col, Set_names, nintersects, main.bar.color)
   Matrix_setup <- Create_matrix(All_Freqs)
   labels <- Make_labels(Matrix_setup)
-  Matrix_layout <- Create_layout(Matrix_setup, matrix.color)
+  Intersects <- intersection
+  if(is.null(Intersects) == F){
+    Intersects <- GetIntersects(New_data, first.col, intersection, Num_of_set)
+    Matrix_col <- OverlayEdit(New_data, All_Freqs, first.col, Num_of_set, intersection, expression)
+    Matrix_col <- as.integer(Matrix_col$x)
+  }
+  else{
+    Matrix_col <- NULL
+  }
+  Matrix_layout <- Create_layout(Matrix_setup, matrix.color, Matrix_col, intersection.color)
   Set_sizes <- FindSetFreqs(New_data, first.col, Num_of_set)
   elem <- elements
   if(is.null(elem) == F){
     elem <- GetElements(New_data, elements)
   }
-  Intersects <- intersection
-  if(is.null(Intersects) == F){
-    Intersects <- GetIntersects(New_data, first.col, intersection, Num_of_set)
-  }
-  Main_bar <- Make_main_bar(All_Freqs, main.bar.color)
+  Main_bar <- Make_main_bar(All_Freqs, New_data, first.col, Num_of_set, intersection, expression, intersection.color)
   Matrix <- Make_matrix_plot(Matrix_layout, Set_sizes, All_Freqs, point.size, line.size,
                              name.size, labels)
   Sizes <- Make_size_plot(Set_sizes, sets.bar.color)
@@ -88,7 +93,7 @@ Number_of_sets <- function(sets){
   return(temp)
 }
 
-Counter <- function(data, num_sets, start_col, name_of_sets, nintersections){
+Counter <- function(data, num_sets, start_col, name_of_sets, nintersections, mbar_color){
   temp_data <- list()
   Freqs <- data.frame()
   end_col <- as.numeric(((start_col + num_sets) -1))
@@ -100,14 +105,39 @@ Counter <- function(data, num_sets, start_col, name_of_sets, nintersections){
   Freqs <- Freqs[order(Freqs$freq, decreasing = T), ]
   for( i in 1:nrow(Freqs)){
     Freqs$x[i] <- i
+    Freqs$color <- mbar_color
   }
   Freqs <- Freqs[1:nintersections, ]
   Freqs <- na.omit(Freqs)
   return(Freqs)
 }
 
+OverlayEdit <- function(data1, data2, start_col, num_sets, intersects, exp){
+  end_col <- as.numeric(((start_col + num_sets) -1))
+  set_cols <- data1[ ,start_col:end_col]
+  temp_data <- data1[which(rowSums(data1[ ,start_col:end_col]) == length(intersects)), ]
+  unwanted <- colnames(set_cols[ ,!(colnames(set_cols) %in% intersects), drop = F])
+  temp_data <- (temp_data[ ,!(colnames(data1) %in% unwanted), drop = F])
+  new_end <- ((start_col + length(intersects)) -1)
+  temp_data <- temp_data[which(rowSums(temp_data[ ,start_col:new_end]) == length(intersects)), ]
+  if(is.null(exp) == F){
+    attach(temp_data)
+    temp_data <- Subset_att(temp_data, exp)
+    detach(temp_data)
+  }
+  temp_data <- na.omit(temp_data)
+  other_data <- data2[which(rowSums(data2[ ,1:num_sets]) == length(intersects)), ]
+  other_data <- (other_data[ ,!(colnames(data2) %in% unwanted), drop = F])
+  other_data <- other_data[which(rowSums(other_data[ ,1:length(intersects)]) == length(intersects)), ]
+  row_num <- as.integer(other_data$x)
+  overlay_row <- data2[row_num, ]
+  new_freq <- nrow(temp_data)
+  overlay_row$freq <- new_freq
+  return(overlay_row)
+}
+
 Create_matrix <- function(data){
-  Matrix_setup <- as.matrix(t(data[ , 1:(length(data) -2)]))
+  Matrix_setup <- as.matrix(t(data[ , 1:(length(data) -3)]))
   names <- rownames(Matrix_setup)
   max <- max(nchar(names))
   if( max < 7)
@@ -129,11 +159,11 @@ Make_labels <- function(setup){
   return(names)
 }
 
-Create_layout <- function(setup, mat_color){
+Create_layout <- function(setup, mat_color, mat_col, inter_color){
   Matrix_layout <- expand.grid(y=seq(nrow(setup)), x=seq(ncol(setup)))
   Matrix_layout <- data.frame(Matrix_layout, value = as.vector(setup))
   for(i in 1:nrow(Matrix_layout)){
-    if(Matrix_layout$value[i] == as.integer(1)){
+    if(Matrix_layout$value[i] > as.integer(0)){
       Matrix_layout$color[i] <- mat_color
       Matrix_layout$Intersection[i] <- paste(Matrix_layout$x[i], "yes", sep ="")
     }
@@ -141,6 +171,13 @@ Create_layout <- function(setup, mat_color){
       Matrix_layout$color[i] <- "gray92"
       Matrix_layout$Intersection[i] <- paste(i, "No", sep = "")
     } 
+  }
+  if(is.null(mat_col) == F){
+    for(i in 1:nrow(Matrix_layout)){
+      if((Matrix_layout$x[i] == mat_col) && (Matrix_layout$value[i] == 1)){
+        Matrix_layout$color[i] <- inter_color
+      }
+    }
   }
   return(Matrix_layout)
 }
@@ -181,10 +218,13 @@ GetIntersects <- function(data, start_col, sets, num_sets){
   }
 }
 
-Make_main_bar <- function(Main_bar_data, mbar_color){
+Make_main_bar <- function(Main_bar_data, full_data, start_col, num_sets, intersect, exp, inter_color){
+  if(is.null(intersect) == F){
+    inter_data <- OverlayEdit(full_data, Main_bar_data, start_col, num_sets, intersect, exp)
+  }
   Main_bar_plot <- (ggplot(data = Main_bar_data, aes(x = x, y = freq)) 
-                    + geom_bar(stat = "identity", colour = mbar_color, fill = mbar_color,
-                               width = 0.4)
+                    + geom_bar(stat = "identity", colour = Main_bar_data$color, 
+                               fill = Main_bar_data$color, width = 0.7)
                     + scale_x_continuous(limits = c(0,(nrow(Main_bar_data)+1 )), expand = c(0,0),
                                          breaks = NULL)
                     + xlab(NULL) + ylab("Intersection Size")
@@ -194,7 +234,13 @@ Make_main_bar <- function(Main_bar_data, mbar_color){
                             axis.title.y = element_text(vjust = 0.5))
                     + geom_vline(xintercept = 0, size = 1, colour = "gray0")
                     + geom_hline( yintercept = 0, colour = "gray0")
-                    + geom_text(aes(label = freq), size = 2.9, vjust = -0.4, colour = mbar_color))
+                    + geom_text(aes(label = freq), size = 2.9, vjust = -0.4, colour = Main_bar_data$color))
+  if(is.null(intersect) == F){
+    Main_bar_plot <- (Main_bar_plot + geom_bar(data = inter_data, aes(x=x, y = freq), stat = "identity",
+                                               colour = inter_color, fill = inter_color, width = 0.4) 
+                      + geom_text(data = inter_data, aes(label = freq), size = 3.2, 
+                                  vjust = -0.4, colour = inter_color))
+  }
   Main_bar_plot <- ggplotGrob(Main_bar_plot)
   return(Main_bar_plot)
 }
