@@ -11,7 +11,8 @@ upset_base(data, first.col, last.col, nsets = 5, nintersects = 40,
   expression = NULL, att.pos = NULL, att.color = "dodgerblue",
   elements = NULL, elements.color = "red", intersection = NULL,
   intersection.color = "purple", order.matrix = c("degree", "freq"),
-  show.numbers = "yes", aggregate.by = "degree", cutoff = NULL)
+  show.numbers = "yes", aggregate.by = "degree", cutoff = NULL,
+  queries = NULL)
 }
 \arguments{
 \item{data}{Data set}
@@ -65,6 +66,8 @@ upset_base(data, first.col, last.col, nsets = 5, nintersects = 40,
 \item{aggregate.by}{How the data should be aggregated ("degree" or "sets")}
 
 \item{cutoff}{The number of intersections from each set (to cut off at) when aggregating by sets}
+
+\item{queries}{Unified querie of intersections and elements}
 }
 \description{
 Takes intersections from most abundant sets in a data set and produces a matrix
