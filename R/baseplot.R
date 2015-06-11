@@ -1,3 +1,8 @@
+require(ggplot2);
+require(gridExtra);
+require(plyr);
+
+
 #' Base plot for UpSetR
 #' 
 #' Takes intersections from most abundant sets in a data set and produces a matrix
