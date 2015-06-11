@@ -23,8 +23,6 @@
 #' @param att.color Color of attribute plot bars or points
 #' @param elements Specific elements to plot entered as a list. First element in list is name of attribute (string) followed by specific elements of attribute.
 #' @param elements.color Color of element data on plot
-#' @param intersection List of set names that make up specific interaction to plot on attribute plot
-#' @param intersection.color Color of intersection data on plot  
 #' @param order.matrix What the intersections in the matrix should be ordered by
 #' @param show.numbers Show numbers of intersection sizes above bars 
 #' @param aggregate.by How the data should be aggregated ("degree" or "sets")
@@ -35,9 +33,8 @@ upset_base <- function(data, first.col, last.col, nsets = 5, nintersects = 40, s
                        matrix.color = "gray23",main.bar.color = "gray23", sets.bar.color = "dodgerblue",
                        point.size = 4, line.size = 1, name.size = 10, mb.ratio = c(0.70,0.30), att.x = NULL, 
                        att.y = NULL, expression = NULL, att.pos = NULL, att.color = "dodgerblue", elements = NULL,
-                       elements.color = "red", intersection = NULL, intersection.color = "purple", 
-                       order.matrix = c("degree", "freq"), show.numbers = "yes", aggregate.by = "degree", cutoff = NULL,
-                       queries = NULL){
+                       elements.color = "red", order.matrix = c("degree", "freq"), show.numbers = "yes", 
+                       aggregate.by = "degree", cutoff = NULL, queries = NULL){
   require(ggplot2);
   require(gridExtra);
   require(plyr);
@@ -53,15 +50,13 @@ upset_base <- function(data, first.col, last.col, nsets = 5, nintersects = 40, s
                        rev(order.matrix), aggregate.by, cutoff)
   Matrix_setup <- Create_matrix(All_Freqs)
   labels <- Make_labels(Matrix_setup)
-  Intersects <- intersection
   if(is.null(queries) == F){
-    Intersects <- GetIntersects(New_data, first.col, intersection, Num_of_set)
     Matrix_col <-  QuerieData(queries, New_data, first.col, Num_of_set, All_Freqs, expression)
   }
   else{
     Matrix_col <- NULL
   }
-  Matrix_layout <- Create_layout(Matrix_setup, matrix.color, Matrix_col, intersection.color)
+  Matrix_layout <- Create_layout(Matrix_setup, matrix.color, Matrix_col)
   Set_sizes <- FindSetFreqs(New_data, first.col, Num_of_set)
   elem <- elements
   if(is.null(elem) == F){
@@ -238,7 +233,7 @@ Make_labels <- function(setup){
   return(names)
 }
 
-Create_layout <- function(setup, mat_color, mat_col, inter_color){
+Create_layout <- function(setup, mat_color, mat_col){
   Matrix_layout <- expand.grid(y=seq(nrow(setup)), x=seq(ncol(setup)))
   Matrix_layout <- data.frame(Matrix_layout, value = as.vector(setup))
   for(i in 1:nrow(Matrix_layout)){
@@ -410,19 +405,33 @@ QuerieAtt <- function(data, first_col, q, num_sets, att_x, att_y, exp){
     inter_color <- index_q[length(index_q)]
     index_q <- index_q[1:(length(index_q) - 1)]
     intersect <- GetIntersects(data, first_col, index_q, num_sets)
-    c1 <- match(att_x, colnames(intersect))
-    c2 <- match(att_y, colnames(intersect))
-    v1 <- intersect[ , c1]
-    v2 <- intersect[ , c2]
-    intersect <- cbind(intersect, v1, v2)
-    if(is.null(exp) == F){
-      intersect <- Subset_att(intersect, exp)
+    if(is.null(att_y) == T){
+      c1 <- match(att_x, colnames(intersect))
+      v1 <- intersect[ , c1]
+      intersect <- cbind(intersect, v1)
+      if(is.null(exp) == F){
+        intersect <- Subset_att(intersect, exp)
+      }
+      intersect$color <- inter_color
+      attx_col <- match("v1", colnames(intersect))
+      color_col <- match("color", colnames(intersect))
+      intersect <- intersect[ , c(attx_col, color_col)]
     }
-    intersect$color <- inter_color
-    attx_col <- match("v1", colnames(intersect))
-    atty_col <- match("v2", colnames(intersect))
-    color_col <- match("color", colnames(intersect))
-    intersect <- intersect[ , c(attx_col, atty_col, color_col)]
+    else if(is.null(att_y) == F){
+      c1 <- match(att_x, colnames(intersect))
+      c2 <- match(att_y, colnames(intersect))
+      v1 <- intersect[ , c1]
+      v2 <- intersect[ , c2]
+      intersect <- cbind(intersect, v1, v2)
+      if(is.null(exp) == F){
+        intersect <- Subset_att(intersect, exp)
+      }
+      intersect$color <- inter_color
+      attx_col <- match("v1", colnames(intersect))
+      atty_col <- match("v2", colnames(intersect))
+      color_col <- match("color", colnames(intersect))
+      intersect <- intersect[ , c(attx_col, atty_col, color_col)]
+    }
     rows <- rbind(rows, intersect)
   }
   return(rows)
@@ -470,13 +479,8 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
         elems <- Subset_att(elems, exp)
       }
     }
-    if(is.null(intersect) == F){
-      c1 <- match(att_x, colnames(intersect))
-      v1 <- intersect[ , c1]
-      intersect <- cbind(intersect, v1)
-      if(is.null(exp) == F){
-        intersect <- Subset_att(intersect, exp)
-      }
+    if(is.null(q) == F){
+      intersect <- q_att
     }
     
     att_plot <- (ggplot(data = Set_data, aes(x = values)) 
@@ -490,9 +494,9 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
       att_plot <- att_plot + geom_histogram(data = elems, aes(x = val1), 
                                             binwidth = 1, colour = "black", fill = elems_color)
     }
-    if(is.null(intersect) == F){
+    if(is.null(q) == F){
       att_plot <- att_plot + geom_histogram(data = intersect, aes(x = v1), binwidth = 1,
-                                            colour = "black", fill = intersect_color)
+                                            colour = "black", fill = intersect$color)
     }
     
     att_plot <- ggplot_gtable(ggplot_build(att_plot))

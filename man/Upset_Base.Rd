@@ -9,9 +9,8 @@ upset_base(data, first.col, last.col, nsets = 5, nintersects = 40,
   sets.bar.color = "dodgerblue", point.size = 4, line.size = 1,
   name.size = 10, mb.ratio = c(0.7, 0.3), att.x = NULL, att.y = NULL,
   expression = NULL, att.pos = NULL, att.color = "dodgerblue",
-  elements = NULL, elements.color = "red", intersection = NULL,
-  intersection.color = "purple", order.matrix = c("degree", "freq"),
-  show.numbers = "yes", aggregate.by = "degree", cutoff = NULL,
+  elements = NULL, elements.color = "red", order.matrix = c("degree",
+  "freq"), show.numbers = "yes", aggregate.by = "degree", cutoff = NULL,
   queries = NULL)
 }
 \arguments{
@@ -54,10 +53,6 @@ upset_base(data, first.col, last.col, nsets = 5, nintersects = 40,
 \item{elements}{Specific elements to plot entered as a list. First element in list is name of attribute (string) followed by specific elements of attribute.}
 
 \item{elements.color}{Color of element data on plot}
-
-\item{intersection}{List of set names that make up specific interaction to plot on attribute plot}
-
-\item{intersection.color}{Color of intersection data on plot}
 
 \item{order.matrix}{What the intersections in the matrix should be ordered by}
 
