@@ -95,9 +95,10 @@ Wanted <- function(data, unwanted_sets){
   temp_data <- (data[ ,!(colnames(data) %in% unwanted_sets), drop = F])
 }
 
-Subset_att <- function(My_data, exp){
-  My_data <- My_data[which(eval(parse(text = exp))), ]
-  return(My_data)
+Subset_att <- function(data, exp){
+  express <- paste("data$", exp, sep = "")
+  data <- data[which(eval(parse(text = express))), ]
+  return(data)
 }
 
 Number_of_sets <- function(sets){
