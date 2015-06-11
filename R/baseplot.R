@@ -98,6 +98,7 @@ Wanted <- function(data, unwanted_sets){
 
 Subset_att <- function(data, exp){
   subset_data <- data[which(eval(parse(text = exp))), ]
+  View(subset_data)
   return(subset_data)
 }
 
@@ -183,16 +184,24 @@ OverlayEdit <- function(data1, data2, start_col, num_sets, intersects, exp, inte
   unwanted <- colnames(set_cols[ ,!(colnames(set_cols) %in% intersects), drop = F])
   temp_data <- (temp_data[ ,!(colnames(data1) %in% unwanted), drop = F])
   new_end <- ((start_col + length(intersects)) -1)
-  temp_data <- temp_data[which(rowSums(temp_data[ ,start_col:new_end]) == length(intersects)), ]
+  if(new_end == start_col){
+    temp_data <- temp_data[ which(temp_data[ ,start_col] == 1), ]
+  }
+  else{
+    temp_data <- temp_data[which(rowSums(temp_data[ ,start_col:new_end]) == length(intersects)), ]
+  }
   if(is.null(exp) == F){
-    attach(temp_data)
     temp_data <- Subset_att(temp_data, exp)
-    detach(temp_data)
   }
   temp_data <- na.omit(temp_data)
   other_data <- data2[which(rowSums(data2[ ,1:num_sets]) == length(intersects)), ]
   other_data <- (other_data[ ,!(colnames(data2) %in% unwanted), drop = F])
-  other_data <- other_data[which(rowSums(other_data[ ,1:length(intersects)]) == length(intersects)), ]
+  if(new_end == start_col){
+    other_data <- other_data[ which(other_data[ ,start_col] == 1), ]
+  }
+  else{
+    other_data <- other_data[which(rowSums(other_data[ ,1:length(intersects)]) == length(intersects)), ]
+  }
   row_num <- as.integer(other_data$x)
   overlay_row <- data2[row_num, ]
   new_freq <- nrow(temp_data)
@@ -390,28 +399,27 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
     colnames(Set_data)[col_to_switch] <- "values"
     end_col <- ((start_col + as.integer(length(labels))) - 1)
     Set_data <- Set_data[which(rowSums(Set_data[ ,start_col:end_col]) != 0), ]
+    if(is.null(exp) == F){
+      Set_data <- Subset_att(Set_data, exp)
+    }
     if(is.null(elems) == F){
       col1 <- match(att_x, colnames(elems))
       val1 <- elems[ , col1]
       elems <- cbind(elems, val1)
       elems <- elems[which(rowSums(elems[ ,start_col:end_col]) != 0), ]
+      if(is.null(exp) == F){
+        elems <- Subset_att(elems, exp)
+      }
     }
     if(is.null(intersect) == F){
       c1 <- match(att_x, colnames(intersect))
       v1 <- intersect[ , c1]
       intersect <- cbind(intersect, v1)
+      if(is.null(exp) == F){
+        intersect <- Subset_att(intersect, exp)
+      }
     }
-    if(is.null(exp) == F){
-      attach(Set_data)
-      Set_data <- Subset_att(Set_data, exp)
-      detach(Set_data)
-      attach(elems)
-      elems <- Subset_att(elems, exp)
-      detach(elems)
-      attach(intersect)
-      intersect <- Subset_att(intersect, exp)
-      detach(intersect)
-    }
+    
     att_plot <- (ggplot(data = Set_data, aes(x = values)) 
                  + geom_histogram(binwidth = 1, colour = "black", fill = att_color)
                  + xlab(att_x) + ylab("Frequency")
@@ -456,6 +464,9 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
     colnames(Set_data)[col_switch2] <- "values2"
     end_col <- ((start_col + as.integer(length(labels))) - 1)
     Set_data <- Set_data[which(rowSums(Set_data[ ,start_col:end_col]) != 0), ]
+    if(is.null(exp) == F){
+      Set_data <- Subset_att(Set_data, exp)
+    }
     if(is.null(elems) == F){
       col1 <- match(att_x, colnames(elems))
       col2 <- match(att_y, colnames(elems))
@@ -463,6 +474,9 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
       val2 <- elems[ , col2]
       elems <- cbind(elems, val1, val2)
       elems <- elems[which(rowSums(elems[ ,start_col:end_col]) != 0), ]
+      if(is.null(exp) == F){
+        elems <- Subset_att(elems, exp)
+      }
     }
     if(is.null(intersect) == F){
       c1 <- match(att_x, colnames(intersect))
@@ -470,17 +484,10 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
       v1 <- intersect[ , c1]
       v2 <- intersect[ , c2]
       intersect <- cbind(intersect, v1, v2)
-    }
-    if(is.null(exp) == F){
-      attach(Set_data)
-      Set_data <- Subset_att(Set_data, exp)
-      detach(Set_data)
-      attach(elems)
-      elems <- Subset_att(elems, exp)
-      detach(elems)
-      attach(intersect)
-      intersect <- Subset_att(intersect, exp)
-      detach(intersect)
+      View(intersect)
+      if(is.null(exp) == F){
+        intersect <- Subset_att(intersect, exp)
+      }
     }
     
     att_plot <- (ggplot(data = Set_data, aes(x = values1, y = values2)) 
