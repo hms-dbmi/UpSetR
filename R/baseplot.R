@@ -1,8 +1,3 @@
-require(ggplot2);
-require(gridExtra);
-require(plyr);
-
-
 #' Base plot for UpSetR
 #' 
 #' Takes intersections from most abundant sets in a data set and produces a matrix
@@ -41,6 +36,10 @@ upset_base <- function(data, first.col, last.col, nsets = 5, nintersects = 40, s
                        att.y = NULL, expression = NULL, att.pos = NULL, att.color = "dodgerblue", elements = NULL,
                        elements.color = "red", intersection = NULL, intersection.color = "purple", 
                        order.matrix = c("degree", "freq"), show.numbers = "yes", aggregate.by = "degree", cutoff = NULL){
+  require(ggplot2);
+  require(gridExtra);
+  require(plyr);
+  
   Set_names <- sets
   if(is.null(Set_names) == T){
     Set_names <- FindMostFreq(data, first.col, last.col, nsets)
