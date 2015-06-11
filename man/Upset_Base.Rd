@@ -10,7 +10,8 @@ upset_base(data, first.col, last.col, nsets = 5, nintersects = 40,
   name.size = 10, mb.ratio = c(0.7, 0.3), att.x = NULL, att.y = NULL,
   expression = NULL, att.pos = NULL, att.color = "dodgerblue",
   elements = NULL, elements.color = "red", intersection = NULL,
-  intersection.color = "purple")
+  intersection.color = "purple", order.matrix = c("degree", "freq"),
+  show.numbers = "yes", aggregate.by = "degree", cutoff = NULL)
 }
 \arguments{
 \item{data}{Data set}
@@ -56,6 +57,14 @@ upset_base(data, first.col, last.col, nsets = 5, nintersects = 40,
 \item{intersection}{List of set names that make up specific interaction to plot on attribute plot}
 
 \item{intersection.color}{Color of intersection data on plot}
+
+\item{order.matrix}{What the intersections in the matrix should be ordered by}
+
+\item{show.numbers}{Show numbers of intersection sizes above bars}
+
+\item{aggregate.by}{How the data should be aggregated ("degree" or "sets")}
+
+\item{cutoff}{The number of intersections from each set (to cut off at) when aggregating by sets}
 }
 \description{
 Takes intersections from most abundant sets in a data set and produces a matrix
