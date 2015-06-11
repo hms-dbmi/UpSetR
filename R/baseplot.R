@@ -52,6 +52,7 @@ upset_base <- function(data, first.col, last.col, nsets = 5, nintersects = 40, s
   labels <- Make_labels(Matrix_setup)
   if(is.null(queries) == F){
     Matrix_col <-  QuerieData(queries, New_data, first.col, Num_of_set, All_Freqs, expression)
+    View(Matrix_col)
   }
   else{
     Matrix_col <- NULL
@@ -67,7 +68,7 @@ upset_base <- function(data, first.col, last.col, nsets = 5, nintersects = 40, s
     Bar_Q <- QuerieBar(queries, New_data, first.col, Num_of_set, All_Freqs, expression)
   }
   
-  Querie_att_data <- QuerieAtt(New_data, first.col, queries, Num_of_set, att.x, att.y, expression)
+  Querie_att_data <- QuerieAtt(New_data, first.col, queries, Num_of_set, att.x, att.y, expression, Set_names)
   
   Main_bar <- Make_main_bar(All_Freqs, Bar_Q, show.numbers)
   Matrix <- Make_matrix_plot(Matrix_layout, Set_sizes, All_Freqs, point.size, line.size,
@@ -197,7 +198,8 @@ OverlayEdit <- function(data1, data2, start_col, num_sets, intersects, exp, inte
   other_data <- data2[which(rowSums(data2[ ,1:num_sets]) == length(intersects)), ]
   other_data <- (other_data[ ,!(colnames(data2) %in% unwanted), drop = F])
   if(new_end == start_col){
-    other_data <- other_data[ which(other_data[ ,start_col] == 1), ]
+    
+    other_data <- other_data[ which(other_data[ ,1] == 1), ]
   }
   else{
     other_data <- other_data[which(rowSums(other_data[ ,1:length(intersects)]) == length(intersects)), ]
@@ -299,7 +301,9 @@ GetIntersects <- function(data, start_col, sets, num_sets){
 Make_main_bar <- function(Main_bar_data, Q, show_num){
   if(is.null(Q) == F){
     inter_data <- Q
+    inter_data <- inter_data[order(inter_data$x), ]
   }
+  View(inter_data)
   Main_bar_plot <- (ggplot(data = Main_bar_data, aes(x = x, y = freq)) 
                     + geom_bar(stat = "identity", colour = Main_bar_data$color, width = 0.6, 
                                fill = Main_bar_data$color)
@@ -315,9 +319,10 @@ Make_main_bar <- function(Main_bar_data, Q, show_num){
   if((show_num == "yes") || (show_num == "Yes")){
     Main_bar_plot <- (Main_bar_plot + geom_text(aes(label = freq), size = 3.0, vjust = -0.4, colour = Main_bar_data$color))
   }
-  if(is.null(intersect) == F){
-    Main_bar_plot <- (Main_bar_plot + geom_bar(data = inter_data, aes(x=x, y = freq), stat = "identity",
-                                               colour = inter_data$color, fill = inter_data$color, width = 0.4))
+  if(is.null(inter_data) == F){
+    Main_bar_plot <- Main_bar_plot + geom_bar(data = inter_data,
+                                              aes(x=x, y = freq), colour = inter_data$color, fill = inter_data$color,
+                                              stat = "identity", width = 0.4)
     if((show_num == "yes") || (show_num == "Yes")){
       Main_bar_plot <- (Main_bar_plot + geom_text(data = inter_data, aes(label = freq), size = 3.0, 
                                                   vjust = -0.4, colour = inter_data$color))
@@ -386,6 +391,7 @@ QuerieData <- function(q, data1, first_col, num_sets, data2, exp){
   return(rows)
 }
 
+
 QuerieBar  <- function(q, data1, first_col, num_sets, data2, exp){
   rows <- data.frame()
   for(i in 1:length(q)){
@@ -398,39 +404,45 @@ QuerieBar  <- function(q, data1, first_col, num_sets, data2, exp){
   return(rows)
 }
 
-QuerieAtt <- function(data, first_col, q, num_sets, att_x, att_y, exp){
+QuerieAtt <- function(data, first_col, q, num_sets, att_x, att_y, exp, names){
   rows <- data.frame()
   for(i in 1:length(q)){
     index_q <- unlist(q[i])
     inter_color <- index_q[length(index_q)]
     index_q <- index_q[1:(length(index_q) - 1)]
-    intersect <- GetIntersects(data, first_col, index_q, num_sets)
-    if(is.null(att_y) == T){
-      c1 <- match(att_x, colnames(intersect))
-      v1 <- intersect[ , c1]
-      intersect <- cbind(intersect, v1)
-      if(is.null(exp) == F){
-        intersect <- Subset_att(intersect, exp)
-      }
-      intersect$color <- inter_color
-      attx_col <- match("v1", colnames(intersect))
-      color_col <- match("color", colnames(intersect))
-      intersect <- intersect[ , c(attx_col, color_col)]
+    check <- match(index_q[1], names)
+    if(is.null(check) == T){
+      intersect <- NULL
     }
-    else if(is.null(att_y) == F){
-      c1 <- match(att_x, colnames(intersect))
-      c2 <- match(att_y, colnames(intersect))
-      v1 <- intersect[ , c1]
-      v2 <- intersect[ , c2]
-      intersect <- cbind(intersect, v1, v2)
-      if(is.null(exp) == F){
-        intersect <- Subset_att(intersect, exp)
+    else{
+      intersect <- GetIntersects(data, first_col, index_q, num_sets)
+      if(is.null(att_y) == T){
+        c1 <- match(att_x, colnames(intersect))
+        v1 <- intersect[ , c1]
+        intersect <- cbind(intersect, v1)
+        if(is.null(exp) == F){
+          intersect <- Subset_att(intersect, exp)
+        }
+        intersect$color <- inter_color
+        attx_col <- match("v1", colnames(intersect))
+        color_col <- match("color", colnames(intersect))
+        intersect <- intersect[ , c(attx_col, color_col)]
       }
-      intersect$color <- inter_color
-      attx_col <- match("v1", colnames(intersect))
-      atty_col <- match("v2", colnames(intersect))
-      color_col <- match("color", colnames(intersect))
-      intersect <- intersect[ , c(attx_col, atty_col, color_col)]
+      else if(is.null(att_y) == F){
+        c1 <- match(att_x, colnames(intersect))
+        c2 <- match(att_y, colnames(intersect))
+        v1 <- intersect[ , c1]
+        v2 <- intersect[ , c2]
+        intersect <- cbind(intersect, v1, v2)
+        if(is.null(exp) == F){
+          intersect <- Subset_att(intersect, exp)
+        }
+        intersect$color <- inter_color
+        attx_col <- match("v1", colnames(intersect))
+        atty_col <- match("v2", colnames(intersect))
+        color_col <- match("color", colnames(intersect))
+        intersect <- intersect[ , c(attx_col, atty_col, color_col)]
+      }
     }
     rows <- rbind(rows, intersect)
   }
