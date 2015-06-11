@@ -56,7 +56,6 @@ upset_base <- function(data, first.col, last.col, nsets = 5, nintersects = 40, s
     Intersects <- GetIntersects(New_data, first.col, intersection, Num_of_set)
     Matrix_col <- OverlayEdit(New_data, All_Freqs, first.col, Num_of_set, intersection, expression, 
                               intersection.color)
-    View(Matrix_col)
     Matrix_col <- as.integer(Matrix_col$x)
   }
   else{
@@ -97,8 +96,8 @@ Wanted <- function(data, unwanted_sets){
 }
 
 Subset_att <- function(data, exp){
-  subset_data <- data[which(eval(parse(text = exp))), ]
-  View(subset_data)
+  My_data <- data
+  subset_data <- My_data[which(eval(parse(text = exp))), ]
   return(subset_data)
 }
 
@@ -288,7 +287,6 @@ GetIntersects <- function(data, start_col, sets, num_sets){
   }
   else{
     temp_data <- temp_data[ which(rowSums(temp_data[ ,start_col:new_end]) == length(sets)) , ]
-    View(temp_data)
     return(temp_data)
   }
 }
@@ -460,13 +458,13 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
   else if((is.null(att_x) == F) && (is.null(att_y) == F)){
     col_switch1 <- match(att_x, colnames(Set_data))
     col_switch2 <- match(att_y, colnames(Set_data))
-    colnames(Set_data)[col_switch1] <- "values1"
-    colnames(Set_data)[col_switch2] <- "values2"
     end_col <- ((start_col + as.integer(length(labels))) - 1)
     Set_data <- Set_data[which(rowSums(Set_data[ ,start_col:end_col]) != 0), ]
     if(is.null(exp) == F){
       Set_data <- Subset_att(Set_data, exp)
     }
+    colnames(Set_data)[col_switch1] <- "values1"
+    colnames(Set_data)[col_switch2] <- "values2"
     if(is.null(elems) == F){
       col1 <- match(att_x, colnames(elems))
       col2 <- match(att_y, colnames(elems))
@@ -484,7 +482,6 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
       v1 <- intersect[ , c1]
       v2 <- intersect[ , c2]
       intersect <- cbind(intersect, v1, v2)
-      View(intersect)
       if(is.null(exp) == F){
         intersect <- Subset_att(intersect, exp)
       }
