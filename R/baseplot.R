@@ -32,9 +32,9 @@
 upset_base <- function(data, first.col, last.col, nsets = 5, nintersects = 40, sets = NULL,
                        matrix.color = "gray23",main.bar.color = "gray23", sets.bar.color = "dodgerblue",
                        point.size = 4, line.size = 1, name.size = 10, mb.ratio = c(0.70,0.30), att.x = NULL, 
-                       att.y = NULL, expression = NULL, att.pos = NULL, att.color = "dodgerblue", elements = NULL,
-                       elements.color = "red", order.matrix = c("degree", "freq"), show.numbers = "yes", 
-                       aggregate.by = "degree", cutoff = NULL, queries = NULL){
+                       att.y = NULL, expression = NULL, att.pos = NULL, att.color = "dodgerblue",
+                       order.matrix = c("degree", "freq"), show.numbers = "yes", aggregate.by = "degree",
+                       cutoff = NULL, queries = NULL){
   require(ggplot2);
   require(gridExtra);
   require(plyr);
@@ -51,32 +51,29 @@ upset_base <- function(data, first.col, last.col, nsets = 5, nintersects = 40, s
   Matrix_setup <- Create_matrix(All_Freqs)
   labels <- Make_labels(Matrix_setup)
   if(is.null(queries) == F){
-    Matrix_col <-  QuerieData(queries, New_data, first.col, Num_of_set, All_Freqs, expression)
-    View(Matrix_col)
+    Matrix_col <-  QuerieInterData(queries, New_data, first.col, Num_of_set, All_Freqs, expression, Set_names)
   }
   else{
     Matrix_col <- NULL
   }
   Matrix_layout <- Create_layout(Matrix_setup, matrix.color, Matrix_col)
   Set_sizes <- FindSetFreqs(New_data, first.col, Num_of_set)
-  elem <- elements
-  if(is.null(elem) == F){
-    elem <- GetElements(New_data, elements)
-  }
   Bar_Q <- NULL
   if(is.null(queries) == F){
-    Bar_Q <- QuerieBar(queries, New_data, first.col, Num_of_set, All_Freqs, expression)
+    Bar_Q <- QuerieInterBar(queries, New_data, first.col, Num_of_set, All_Freqs, expression, Set_names)
   }
-  
-  Querie_att_data <- QuerieAtt(New_data, first.col, queries, Num_of_set, att.x, att.y, expression, Set_names)
-  
+  QInter_att_data <- NULL
+  QElem_att_data <- NULL
+  if(is.null(queries) == F){
+    QInter_att_data <- QuerieInterAtt(New_data, first.col, queries, Num_of_set, att.x, att.y, expression, Set_names)
+    QElem_att_data <- QuerieElemAtt(New_data, queries, first.col, expression, Set_names, att.x, att.y)
+  }
   Main_bar <- Make_main_bar(All_Freqs, Bar_Q, show.numbers)
   Matrix <- Make_matrix_plot(Matrix_layout, Set_sizes, All_Freqs, point.size, line.size,
                              name.size, labels)
   Sizes <- Make_size_plot(Set_sizes, sets.bar.color)
   Make_base_plot(Main_bar, Matrix, Sizes, labels, mb.ratio, att.x, att.y, New_data,
-                 expression, att.pos, first.col, att.color, elem, elements.color, 
-                 Querie_att_data, queries)
+                 expression, att.pos, first.col, att.color, QElem_att_data, QInter_att_data, queries)
 }
 
 FindMostFreq <- function(data, start_col, end_col, n_sets){  
@@ -98,8 +95,10 @@ Wanted <- function(data, unwanted_sets){
 }
 
 Subset_att <- function(data, exp){
+  attach(data)
   express <- paste("data$", exp, sep = "")
   data <- data[which(eval(parse(text = express))), ]
+  detach(data)
   return(data)
 }
 
@@ -172,7 +171,9 @@ Get_aggregates <- function(data, num_sets, order_mat, cut){
       }
       temp_data <- temp_data[order(temp_data[ , i], decreasing = logic), ]
     }
-    temp_data <- temp_data[1:cut, ]
+    if(is.null(cut) == F){
+      temp_data <- temp_data[1:cut, ]
+    }
     set_agg <- rbind(set_agg, temp_data)
   }
   return(set_agg)
@@ -301,9 +302,16 @@ GetIntersects <- function(data, start_col, sets, num_sets){
 Make_main_bar <- function(Main_bar_data, Q, show_num){
   if(is.null(Q) == F){
     inter_data <- Q
-    inter_data <- inter_data[order(inter_data$x), ]
+    if(nrow(inter_data) != 0){
+      inter_data <- inter_data[order(inter_data$x), ]
+    }
+    else{
+      inter_data <- NULL
+    }
   }
-  View(inter_data)
+  else{
+    inter_data <- NULL
+  }
   Main_bar_plot <- (ggplot(data = Main_bar_data, aes(x = x, y = freq)) 
                     + geom_bar(stat = "identity", colour = Main_bar_data$color, width = 0.6, 
                                fill = Main_bar_data$color)
@@ -376,42 +384,63 @@ Make_size_plot <- function(Set_size_data, sbar_color){
   return(Size_plot)
 }
 
-QuerieData <- function(q, data1, first_col, num_sets, data2, exp){
+QuerieInterData <- function(q, data1, first_col, num_sets, data2, exp, names){
   rows <- data.frame()
   for(i in 1:length(q)){
     index_q <- unlist(q[i])
     inter_color <- index_q[length(index_q)]
     index_q <- index_q[1:(length(index_q) - 1)]
-    inter_data <- OverlayEdit(data1, data2, first_col, num_sets, index_q, exp, inter_color)
+    test <- as.character(index_q[1])
+    check <- match(test, names)
+    if(is.na(check) == T){
+      inter_data <- NULL
+    }
+    else{
+      inter_data <- OverlayEdit(data1, data2, first_col, num_sets, index_q, exp, inter_color)
+    }
     rows <- rbind(rows, inter_data)
   }
-  rows <- cbind(rows$x, rows$color)
-  rows <- as.data.frame(rows)
-  colnames(rows) <- c("x", "color")
+  
+  if(nrow(rows) != 0){
+    rows <- cbind(rows$x, rows$color)
+    rows <- as.data.frame(rows)
+    colnames(rows) <- c("x", "color")
+  }
+  else{
+    rows <- NULL
+  }
   return(rows)
 }
 
 
-QuerieBar  <- function(q, data1, first_col, num_sets, data2, exp){
+QuerieInterBar  <- function(q, data1, first_col, num_sets, data2, exp, names){
   rows <- data.frame()
   for(i in 1:length(q)){
     index_q <- unlist(q[i])
     inter_color <- index_q[length(index_q)]
     index_q <- index_q[1:(length(index_q) - 1)]
-    inter_data <- OverlayEdit(data1, data2, first_col, num_sets, index_q, exp, inter_color)
+    test <- as.character(index_q[1])
+    check <- match(test, names)
+    if(is.na(check) == T){
+      inter_data <- NULL
+    }
+    else{
+      inter_data <- OverlayEdit(data1, data2, first_col, num_sets, index_q, exp, inter_color)
+    }
     rows <- rbind(rows, inter_data)
   }
   return(rows)
 }
 
-QuerieAtt <- function(data, first_col, q, num_sets, att_x, att_y, exp, names){
+QuerieInterAtt <- function(data, first_col, q, num_sets, att_x, att_y, exp, names){
   rows <- data.frame()
   for(i in 1:length(q)){
     index_q <- unlist(q[i])
     inter_color <- index_q[length(index_q)]
     index_q <- index_q[1:(length(index_q) - 1)]
-    check <- match(index_q[1], names)
-    if(is.null(check) == T){
+    test <- as.character(index_q[1])
+    check <- match(test, names)
+    if(is.na(check) == T){
       intersect <- NULL
     }
     else{
@@ -420,13 +449,17 @@ QuerieAtt <- function(data, first_col, q, num_sets, att_x, att_y, exp, names){
         c1 <- match(att_x, colnames(intersect))
         v1 <- intersect[ , c1]
         intersect <- cbind(intersect, v1)
+        View(intersect)
         if(is.null(exp) == F){
           intersect <- Subset_att(intersect, exp)
         }
-        intersect$color <- inter_color
-        attx_col <- match("v1", colnames(intersect))
-        color_col <- match("color", colnames(intersect))
-        intersect <- intersect[ , c(attx_col, color_col)]
+        if(nrow(intersect) != 0){
+          intersect$color <- inter_color
+          attx_col <- match("v1", colnames(intersect))
+          color_col <- match("color", colnames(intersect))
+          colnames(intersect)[color_col] <- "IColor"
+          intersect <- intersect[ , c(attx_col, color_col)]
+        }
       }
       else if(is.null(att_y) == F){
         c1 <- match(att_x, colnames(intersect))
@@ -449,9 +482,64 @@ QuerieAtt <- function(data, first_col, q, num_sets, att_x, att_y, exp, names){
   return(rows)
 }
 
+QuerieElemAtt <- function(data, q, start_col, exp, names, att_x, att_y){
+  rows <- data.frame()
+  for(i in 1:length(q)){
+    index_q <- unlist(q[i])
+    elem_color <- index_q[length(index_q)]
+    index_q <- index_q[1:(length(index_q) - 1)]
+    test <- as.character(index_q[1])
+    check <- match(test, names)
+    if(is.na(check) == T){
+      if(is.null(att_y) == F){
+        elems <- GetElements(data, index_q)
+        end_col <- ((start_col + as.integer(length(names))) - 1)
+        col1 <- match(att_x, colnames(elems))
+        col2 <- match(att_y, colnames(elems))
+        val1 <- elems[ , col1]
+        val2 <- elems[ , col2]
+        elems <- cbind(elems, val1, val2)
+        elems <- elems[which(rowSums(elems[ ,start_col:end_col]) != 0), ]
+        if(is.null(exp) == F){
+          elems <- Subset_att(elems, exp)
+        }
+        if(nrow(elems) != 0){
+          elems$color <- elem_color
+        }
+        else{
+          elems <- NULL
+        }
+      }
+      else if(is.null(att_y) == T){
+        elems <- GetElements(data, index_q)
+        end_col <- ((start_col + as.integer(length(names))) - 1)
+        col1 <- match(att_x, colnames(elems))
+        val1 <- elems[ , col1]
+        elems <- cbind(elems, val1)
+        elems <- elems[which(rowSums(elems[ ,start_col:end_col]) != 0), ]
+        View(elems)
+        if(is.null(exp) == F){
+          elems <- Subset_att(elems, exp)
+        }
+        if(nrow(elems) != 0){
+          elems$color <- elem_color
+        }
+        else{
+          elems <- NULL
+        }
+      }
+    }
+    else{
+      elems <- NULL
+    }
+    rows <- rbind(rows, elems)
+  }
+  return(rows)
+}
+
 Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratios, att_x, att_y,
-                           Set_data, exp, position, start_col, att_color, elems, elems_color, q_att, 
-                           q){
+                           Set_data, exp, position, start_col, att_color, elems_att, q_att, q){
+  
   Main_bar_plot$widths <- Matrix_plot$widths
   Matrix_plot$heights <- Size_plot$heights
   
@@ -476,25 +564,38 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
   
   else if((is.null(att_x) == F) && (is.null(att_y) == T)){
     col_to_switch <- match(att_x, colnames(Set_data))
-    colnames(Set_data)[col_to_switch] <- "values"
     end_col <- ((start_col + as.integer(length(labels))) - 1)
     Set_data <- Set_data[which(rowSums(Set_data[ ,start_col:end_col]) != 0), ]
     if(is.null(exp) == F){
       Set_data <- Subset_att(Set_data, exp)
     }
-    if(is.null(elems) == F){
-      col1 <- match(att_x, colnames(elems))
-      val1 <- elems[ , col1]
-      elems <- cbind(elems, val1)
-      elems <- elems[which(rowSums(elems[ ,start_col:end_col]) != 0), ]
-      if(is.null(exp) == F){
-        elems <- Subset_att(elems, exp)
+    colnames(Set_data)[col_to_switch] <- "values"
+    if(is.null(q) == F){
+      elems <- elems_att
+      if(nrow(elems) != 0){
+        elems <- elems[order(elems$val1), ]
+        EColors <- unique(elems$color)
       }
+      else{
+        elems <- NULL
+      }
+    }
+    else{
+      elems <- NULL
     }
     if(is.null(q) == F){
       intersect <- q_att
+      if(nrow(intersect) != 0){
+        intersect <- intersect[order(intersect$v1), ]
+        IColors <- unique(intersect$IColor)
+      }
+      else{
+        intersect <- NULL
+      }
     }
-    
+    else{
+      intersect <- NULL
+    }
     att_plot <- (ggplot(data = Set_data, aes(x = values)) 
                  + geom_histogram(binwidth = 1, colour = "black", fill = att_color)
                  + xlab(att_x) + ylab("Frequency")
@@ -503,12 +604,20 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
                          panel.grid.major = element_blank(),
                          plot.margin=unit(c(-0.1,0.2,0.1,0.2), "cm")))
     if(is.null(elems) == F){
-      att_plot <- att_plot + geom_histogram(data = elems, aes(x = val1), 
-                                            binwidth = 1, colour = "black", fill = elems_color)
+      for(i in 1:length(EColors)){
+        Color <- EColors[i]
+        elems_data <- elems[which(elems$color == Color), ]
+        att_plot <- att_plot + geom_histogram(data = elems, aes(x = val1), 
+                                              binwidth = 1, colour = "black", fill = Color)
+      }
     }
-    if(is.null(q) == F){
-      att_plot <- att_plot + geom_histogram(data = intersect, aes(x = v1), binwidth = 1,
-                                            colour = "black", fill = intersect$color)
+    if(is.null(intersect) == F){
+      for(i in 1:length(IColors)){
+        Color <- IColors[i]
+        intersect_data <- intersect[which(intersect$IColor == Color ), ]
+        att_plot <- att_plot + geom_histogram(data = intersect_data, aes(x = v1), binwidth = 1,
+                                              colour = "black", fill = Color)
+      }
     }
     
     att_plot <- ggplot_gtable(ggplot_build(att_plot))
@@ -542,21 +651,27 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
     }
     colnames(Set_data)[col_switch1] <- "values1"
     colnames(Set_data)[col_switch2] <- "values2"
-    if(is.null(elems) == F){
-      col1 <- match(att_x, colnames(elems))
-      col2 <- match(att_y, colnames(elems))
-      val1 <- elems[ , col1]
-      val2 <- elems[ , col2]
-      elems <- cbind(elems, val1, val2)
-      elems <- elems[which(rowSums(elems[ ,start_col:end_col]) != 0), ]
-      if(is.null(exp) == F){
-        elems <- Subset_att(elems, exp)
-      }
+    if(is.null(q) == F){
+      elems <- elems_att
+      if(nrow(elems) == 0){
+        elems <- NULL
+      } 
+    }
+    else{
+      elems <- NULL
     }
     if(is.null(q) == F){
       intersect <- q_att
+      if(nrow(intersect) != 0){
+        intersect <- intersect[order(intersect$v1, intersect$v2), ]
+      }
+      else{
+        intersect <- NULL
+      }
     }
-    
+    else{
+      intersect <- NULL
+    }
     att_plot <- (ggplot(data = Set_data, aes(x = values1, y = values2)) 
                  + geom_point(colour = att_color)
                  + xlab(att_x) + ylab(att_y)
@@ -565,10 +680,10 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
                          panel.grid.major = element_blank(),
                          plot.margin=unit(c(0.2,0.2,0.1,0.2), "cm")))
     if(is.null(elems) == F){
-      att_plot <- att_plot + geom_point(data = elems, aes(x = val1, y = val2), colour = elems_color)
+      att_plot <- att_plot + geom_point(data = elems, aes(x = val1, y = val2), colour = elems$color)
     }
-    if(is.null(q) == F){
-      att_plot <- (att_plot + geom_point(data = intersect, aes(x = v1, y = v2), colour = intersect$color))
+    if(is.null(intersect) == F){
+      att_plot <- (att_plot + geom_point(data = intersect, aes(x = v1, y = v2), color = intersect$color))
     }
     
     att_plot <- ggplot_gtable(ggplot_build(att_plot))

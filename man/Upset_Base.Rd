@@ -9,9 +9,8 @@ upset_base(data, first.col, last.col, nsets = 5, nintersects = 40,
   sets.bar.color = "dodgerblue", point.size = 4, line.size = 1,
   name.size = 10, mb.ratio = c(0.7, 0.3), att.x = NULL, att.y = NULL,
   expression = NULL, att.pos = NULL, att.color = "dodgerblue",
-  elements = NULL, elements.color = "red", order.matrix = c("degree",
-  "freq"), show.numbers = "yes", aggregate.by = "degree", cutoff = NULL,
-  queries = NULL)
+  order.matrix = c("degree", "freq"), show.numbers = "yes",
+  aggregate.by = "degree", cutoff = NULL, queries = NULL)
 }
 \arguments{
 \item{data}{Data set}
@@ -50,10 +49,6 @@ upset_base(data, first.col, last.col, nsets = 5, nintersects = 40,
 
 \item{att.color}{Color of attribute plot bars or points}
 
-\item{elements}{Specific elements to plot entered as a list. First element in list is name of attribute (string) followed by specific elements of attribute.}
-
-\item{elements.color}{Color of element data on plot}
-
 \item{order.matrix}{What the intersections in the matrix should be ordered by}
 
 \item{show.numbers}{Show numbers of intersection sizes above bars}
@@ -63,6 +58,10 @@ upset_base(data, first.col, last.col, nsets = 5, nintersects = 40,
 \item{cutoff}{The number of intersections from each set (to cut off at) when aggregating by sets}
 
 \item{queries}{Unified querie of intersections and elements}
+
+\item{elements}{Specific elements to plot entered as a list. First element in list is name of attribute (string) followed by specific elements of attribute.}
+
+\item{elements.color}{Color of element data on plot}
 }
 \description{
 Takes intersections from most abundant sets in a data set and produces a matrix
