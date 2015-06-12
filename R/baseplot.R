@@ -51,6 +51,11 @@ upset_base <- function(data, first.col, last.col, nsets = 5, nintersects = 40, s
                        rev(order.matrix), aggregate.by, cutoff)
   Matrix_setup <- Create_matrix(All_Freqs)
   labels <- Make_labels(Matrix_setup)
+  
+  
+  IntersectionBoxPlot(All_Freqs)
+  
+  
   if(is.null(queries) == F){
     Matrix_col <-  QuerieInterData(queries, New_data, first.col, Num_of_set, All_Freqs, expression, Set_names)
   }
@@ -395,6 +400,10 @@ Make_size_plot <- function(Set_size_data, sbar_color){
   return(Size_plot)
 }
 
+IntersectionBoxPlot <- function(data){
+  View(data)
+}
+
 QuerieInterData <- function(q, data1, first_col, num_sets, data2, exp, names){
   rows <- data.frame()
   for(i in 1:length(q)){
@@ -608,12 +617,12 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
     }
     att_plot <- (ggplot(data = Set_data, aes(x = values)) 
                  + geom_histogram(binwidth = 1, colour = "black", fill = att_color)
-                 + xlab(att_x) + ylab("Frequency") + title(Q_Title)
+                 + xlab(att_x) + ylab("Frequency") + labs(title = Q_Title)
                  + theme(panel.background = element_rect(fill = "white"),
                          plot.title = element_text(vjust = 1.5),
                          panel.grid.minor = element_blank(),
                          panel.grid.major = element_blank(),
-                         plot.margin=unit(c(1,0.2,0.1,0.2), "cm")))
+                         plot.margin=unit(c(-0.7,0.2,0.1,0.2), "cm")))
     if(is.null(elems) == F){
       for(i in 1:length(EColors)){
         Color <- EColors[i]
@@ -685,7 +694,7 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
     }
     att_plot <- (ggplot(data = Set_data, aes(x = values1, y = values2)) 
                  + geom_point(colour = att_color)
-                 + xlab(att_x) + ylab(att_y) + ggtitle(Q_Title)
+                 + xlab(att_x) + ylab(att_y) + labs(title = Q_Title)
                  + theme(panel.background = element_rect(fill = "white"),
                          plot.title = element_text(vjust = 1.3),
                          panel.grid.minor = element_blank(),
