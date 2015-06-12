@@ -68,7 +68,7 @@ upset_base <- function(data, first.col, last.col, nsets = 5, nintersects = 40, s
     QInter_att_data <- QuerieInterAtt(New_data, first.col, queries, Num_of_set, att.x, att.y, expression, Set_names)
     QElem_att_data <- QuerieElemAtt(New_data, queries, first.col, expression, Set_names, att.x, att.y)
   }
-  Main_bar <- Make_main_bar(All_Freqs, Bar_Q, show.numbers)
+  Main_bar <- Make_main_bar(All_Freqs, Bar_Q, show.numbers, att.x, mb.ratio)
   Matrix <- Make_matrix_plot(Matrix_layout, Set_sizes, All_Freqs, point.size, line.size,
                              name.size, labels)
   Sizes <- Make_size_plot(Set_sizes, sets.bar.color)
@@ -299,7 +299,7 @@ GetIntersects <- function(data, start_col, sets, num_sets){
   }
 }
 
-Make_main_bar <- function(Main_bar_data, Q, show_num){
+Make_main_bar <- function(Main_bar_data, Q, show_num, att_x, ratios){
   if(is.null(Q) == F){
     inter_data <- Q
     if(nrow(inter_data) != 0){
@@ -312,15 +312,24 @@ Make_main_bar <- function(Main_bar_data, Q, show_num){
   else{
     inter_data <- NULL
   }
+  if(is.null(att_x) == T){
+    b <- 0.71
+  }
+  else{
+    inc <- (ratios[2] - 0.3)
+    b <- (0.6 - (0.00733 * (inc *100)))
+  }
   Main_bar_plot <- (ggplot(data = Main_bar_data, aes(x = x, y = freq)) 
                     + geom_bar(stat = "identity", colour = Main_bar_data$color, width = 0.6, 
                                fill = Main_bar_data$color)
                     + scale_x_continuous(limits = c(0,(nrow(Main_bar_data)+1 )), expand = c(0,0),
                                          breaks = NULL)
                     + xlab(NULL) + ylab("Intersection Size")
-                    + theme(panel.background = element_rect(fill = "white"),  
-                            plot.margin=unit(c(0.35,0.2,0.2,0.2), "cm"),
-                            panel.border = element_blank(),
+                    + theme(panel.background = element_rect(fill = "white"),
+                            plot.margin=unit(c(0.35,0.2,-b,0.2), "cm"), panel.border = element_blank(),
+                            axis.title.y = element_text(vjust = 0.5))
+                    + theme(panel.background = element_rect(fill = "white"),
+                            plot.margin=unit(c(0.35,0.2,-b,0.2), "cm"), panel.border = element_blank(),
                             axis.title.y = element_text(vjust = 0.5))
                     + geom_vline(xintercept = 0, size = 1, colour = "gray0")
                     + geom_hline( yintercept = 0, colour = "gray0"))
@@ -368,7 +377,7 @@ Make_size_plot <- function(Set_size_data, sbar_color){
                 + scale_x_continuous(limits = c(0.5, (nrow(Set_size_data)+0.5)),
                                      breaks = c(0, max(Set_size_data)))
                 + theme(panel.background = element_rect(fill = "white"),
-                        plot.margin=unit(c(0,0.2,0.1,0.2), "cm"),
+                        plot.margin=unit(c(0,-0.6,0.1,0.2), "cm"),
                         axis.title.x = element_text(size = 10, face = "bold"),
                         axis.line = element_line(colour = "gray0"),
                         axis.line.y = element_line(colour = "white"),
@@ -449,7 +458,6 @@ QuerieInterAtt <- function(data, first_col, q, num_sets, att_x, att_y, exp, name
         c1 <- match(att_x, colnames(intersect))
         v1 <- intersect[ , c1]
         intersect <- cbind(intersect, v1)
-        View(intersect)
         if(is.null(exp) == F){
           intersect <- Subset_att(intersect, exp)
         }
@@ -517,7 +525,6 @@ QuerieElemAtt <- function(data, q, start_col, exp, names, att_x, att_y){
         val1 <- elems[ , col1]
         elems <- cbind(elems, val1)
         elems <- elems[which(rowSums(elems[ ,start_col:end_col]) != 0), ]
-        View(elems)
         if(is.null(exp) == F){
           elems <- Subset_att(elems, exp)
         }
