@@ -28,13 +28,14 @@
 #' @param aggregate.by How the data should be aggregated ("degree" or "sets")
 #' @param cutoff The number of intersections from each set (to cut off at) when aggregating by sets
 #' @param queries Unified querie of intersections and elements
+#' @param query.title.plot Title of query plot
 #' @export
 upset_base <- function(data, first.col, last.col, nsets = 5, nintersects = 40, sets = NULL,
                        matrix.color = "gray23",main.bar.color = "gray23", sets.bar.color = "dodgerblue",
                        point.size = 4, line.size = 1, name.size = 10, mb.ratio = c(0.70,0.30), att.x = NULL, 
                        att.y = NULL, expression = NULL, att.pos = NULL, att.color = "dodgerblue",
                        order.matrix = c("degree", "freq"), show.numbers = "yes", aggregate.by = "degree",
-                       cutoff = NULL, queries = NULL){
+                       cutoff = NULL, queries = NULL, query.plot.title = "My Query Plot Title"){
   require(ggplot2);
   require(gridExtra);
   require(plyr);
@@ -73,7 +74,8 @@ upset_base <- function(data, first.col, last.col, nsets = 5, nintersects = 40, s
                              name.size, labels)
   Sizes <- Make_size_plot(Set_sizes, sets.bar.color)
   Make_base_plot(Main_bar, Matrix, Sizes, labels, mb.ratio, att.x, att.y, New_data,
-                 expression, att.pos, first.col, att.color, QElem_att_data, QInter_att_data, queries)
+                 expression, att.pos, first.col, att.color, QElem_att_data, QInter_att_data, queries,
+                 query.plot.title)
 }
 
 FindMostFreq <- function(data, start_col, end_col, n_sets){  
@@ -545,7 +547,8 @@ QuerieElemAtt <- function(data, q, start_col, exp, names, att_x, att_y){
 }
 
 Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratios, att_x, att_y,
-                           Set_data, exp, position, start_col, att_color, elems_att, q_att, q){
+                           Set_data, exp, position, start_col, att_color, elems_att, q_att, q,
+                           Q_Title){
   
   Main_bar_plot$widths <- Matrix_plot$widths
   Matrix_plot$heights <- Size_plot$heights
@@ -605,11 +608,12 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
     }
     att_plot <- (ggplot(data = Set_data, aes(x = values)) 
                  + geom_histogram(binwidth = 1, colour = "black", fill = att_color)
-                 + xlab(att_x) + ylab("Frequency")
+                 + xlab(att_x) + ylab("Frequency") + title(Q_Title)
                  + theme(panel.background = element_rect(fill = "white"),
+                         plot.title = element_text(vjust = 1.5),
                          panel.grid.minor = element_blank(),
                          panel.grid.major = element_blank(),
-                         plot.margin=unit(c(-0.1,0.2,0.1,0.2), "cm")))
+                         plot.margin=unit(c(1,0.2,0.1,0.2), "cm")))
     if(is.null(elems) == F){
       for(i in 1:length(EColors)){
         Color <- EColors[i]
@@ -681,11 +685,12 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
     }
     att_plot <- (ggplot(data = Set_data, aes(x = values1, y = values2)) 
                  + geom_point(colour = att_color)
-                 + xlab(att_x) + ylab(att_y)
+                 + xlab(att_x) + ylab(att_y) + ggtitle(Q_Title)
                  + theme(panel.background = element_rect(fill = "white"),
+                         plot.title = element_text(vjust = 1.3),
                          panel.grid.minor = element_blank(),
                          panel.grid.major = element_blank(),
-                         plot.margin=unit(c(0.2,0.2,0.1,0.2), "cm")))
+                         plot.margin=unit(c(-0.7,0.2,0.1,0.2), "cm")))
     if(is.null(elems) == F){
       att_plot <- att_plot + geom_point(data = elems, aes(x = val1, y = val2), colour = elems$color)
     }

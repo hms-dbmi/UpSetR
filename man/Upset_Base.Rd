@@ -10,7 +10,8 @@ upset_base(data, first.col, last.col, nsets = 5, nintersects = 40,
   name.size = 10, mb.ratio = c(0.7, 0.3), att.x = NULL, att.y = NULL,
   expression = NULL, att.pos = NULL, att.color = "dodgerblue",
   order.matrix = c("degree", "freq"), show.numbers = "yes",
-  aggregate.by = "degree", cutoff = NULL, queries = NULL)
+  aggregate.by = "degree", cutoff = NULL, queries = NULL,
+  query.plot.title = "My Query Plot Title")
 }
 \arguments{
 \item{data}{Data set}
@@ -62,6 +63,8 @@ upset_base(data, first.col, last.col, nsets = 5, nintersects = 40,
 \item{elements}{Specific elements to plot entered as a list. First element in list is name of attribute (string) followed by specific elements of attribute.}
 
 \item{elements.color}{Color of element data on plot}
+
+\item{query.title.plot}{Title of query plot}
 }
 \description{
 Takes intersections from most abundant sets in a data set and produces a matrix
