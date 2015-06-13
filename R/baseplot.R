@@ -53,7 +53,7 @@ upset_base <- function(data, first.col, last.col, nsets = 5, nintersects = 40, s
   labels <- Make_labels(Matrix_setup)
   
   
-  IntersectionBoxPlot(All_Freqs)
+  # IntersectionBoxPlot(All_Freqs, Matrix_setup)
   
   
   if(is.null(queries) == F){
@@ -324,7 +324,7 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, att_x, ratios){
   }
   else{
     inc <- (ratios[2] - 0.3)
-    b <- (0.6 - (0.00733 * (inc *100)))
+    b <- (0.59 - (0.00735 * (inc *100)))
   }
   Main_bar_plot <- (ggplot(data = Main_bar_data, aes(x = x, y = freq)) 
                     + geom_bar(stat = "identity", colour = Main_bar_data$color, width = 0.6, 
@@ -334,12 +334,7 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, att_x, ratios){
                     + xlab(NULL) + ylab("Intersection Size")
                     + theme(panel.background = element_rect(fill = "white"),
                             plot.margin=unit(c(0.35,0.2,-b,0.2), "cm"), panel.border = element_blank(),
-                            axis.title.y = element_text(vjust = 0.5))
-                    + theme(panel.background = element_rect(fill = "white"),
-                            plot.margin=unit(c(0.35,0.2,-b,0.2), "cm"), panel.border = element_blank(),
-                            axis.title.y = element_text(vjust = 0.5))
-                    + geom_vline(xintercept = 0, size = 1, colour = "gray0")
-                    + geom_hline( yintercept = 0, colour = "gray0"))
+                            axis.title.y = element_text(vjust = 0.5)))
   if((show_num == "yes") || (show_num == "Yes")){
     Main_bar_plot <- (Main_bar_plot + geom_text(aes(label = freq), size = 3.0, vjust = -0.4, colour = Main_bar_data$color))
   }
@@ -352,6 +347,9 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, att_x, ratios){
                                                   vjust = -0.4, colour = inter_data$color))
     }
   }
+  Main_bar_plot <- (Main_bar_plot 
+                    + geom_vline(xintercept = 0, size = 1, colour = "gray0")
+                    + geom_hline( yintercept = 0, colour = "gray0"))
   Main_bar_plot <- ggplotGrob(Main_bar_plot)
   return(Main_bar_plot)
 }
@@ -400,8 +398,9 @@ Make_size_plot <- function(Set_size_data, sbar_color){
   return(Size_plot)
 }
 
-IntersectionBoxPlot <- function(data){
+IntersectionBoxPlot <- function(data1, data2){
   View(data)
+  View(data2)
 }
 
 QuerieInterData <- function(q, data1, first_col, num_sets, data2, exp, names){
@@ -416,6 +415,12 @@ QuerieInterData <- function(q, data1, first_col, num_sets, data2, exp, names){
       inter_data <- NULL
     }
     else{
+      for( i in 1:length(index_q)){
+        double_check <- match(index_q[i], names)
+        if(is.na(double_check) == T){
+          warning("Intersection or set may not be present in data set. Please refer to matrix.")
+        }
+      }
       inter_data <- OverlayEdit(data1, data2, first_col, num_sets, index_q, exp, inter_color)
     }
     rows <- rbind(rows, inter_data)
@@ -627,7 +632,7 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
       for(i in 1:length(EColors)){
         Color <- EColors[i]
         elems_data <- elems[which(elems$color == Color), ]
-        att_plot <- att_plot + geom_histogram(data = elems, aes(x = val1), 
+        att_plot <- att_plot + geom_histogram(data = elems_data, aes(x = val1), 
                                               binwidth = 1, colour = "black", fill = Color)
       }
     }
