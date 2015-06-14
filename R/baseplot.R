@@ -52,7 +52,6 @@ upset_base <- function(data, first.col, last.col, nsets = 5, nintersects = 40, s
   Matrix_setup <- Create_matrix(All_Freqs)
   labels <- Make_labels(Matrix_setup)
   
-  
   # IntersectionBoxPlot(All_Freqs, Matrix_setup)
   
   
@@ -74,9 +73,10 @@ upset_base <- function(data, first.col, last.col, nsets = 5, nintersects = 40, s
     QInter_att_data <- QuerieInterAtt(New_data, first.col, queries, Num_of_set, att.x, att.y, expression, Set_names)
     QElem_att_data <- QuerieElemAtt(New_data, queries, first.col, expression, Set_names, att.x, att.y)
   }
+  ShadingData <- MakeShading(Matrix_layout)
   Main_bar <- Make_main_bar(All_Freqs, Bar_Q, show.numbers, att.x, mb.ratio)
   Matrix <- Make_matrix_plot(Matrix_layout, Set_sizes, All_Freqs, point.size, line.size,
-                             name.size, labels)
+                             name.size, labels, ShadingData)
   Sizes <- Make_size_plot(Set_sizes, sets.bar.color)
   Make_base_plot(Main_bar, Matrix, Sizes, labels, mb.ratio, att.x, att.y, New_data,
                  expression, att.pos, first.col, att.color, QElem_att_data, QInter_att_data, queries,
@@ -354,10 +354,22 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, att_x, ratios){
   return(Main_bar_plot)
 }
 
-Make_matrix_plot <- function(Mat_data,Set_size_data, Main_bar_data, point_size, line_size, name_size, labels){
-  Matrix_plot <- (ggplot(data=Mat_data, aes(x= x, y= y)) 
-                  + geom_point(colour = Mat_data$color, size= point_size) 
-                  + geom_line(aes(group = Intersection), size = line_size, colour = Mat_data$color)
+MakeShading <- function(Mat_data){
+  y <- unique(Mat_data$y)
+  y <- (y[which(y %% 2 != 0)])
+  data <- data.frame(cbind(y))
+  data$min <- 0.5
+  data$max <- (max(Mat_data$x) + 0.5)
+  for( i in 1:length(y)){
+    data$y_min[i] <- ((y[i]) - 0.5)
+    data$y_max[i] <- ((y[i]) + 0.5)
+  }
+  return(data)
+}
+
+Make_matrix_plot <- function(Mat_data,Set_size_data, Main_bar_data, point_size, line_size, name_size, labels,
+                             shading_data){
+  Matrix_plot <- (ggplot() 
                   + theme(panel.background = element_rect(fill = "white"),
                           plot.margin=unit(c(-0.1,0.2,0.1,0.2), "cm"),
                           axis.text.x = element_blank(),
@@ -369,8 +381,12 @@ Make_matrix_plot <- function(Mat_data,Set_size_data, Main_bar_data, point_size, 
                   + scale_y_continuous(breaks = c(1:nrow(Set_size_data)),
                                        limits = c(0.5,(nrow(Set_size_data) +0.5)),
                                        labels = labels)
-                  + scale_x_continuous(limits = c(0,(nrow(Main_bar_data)+1 )), expand = c(0,0)))
-  
+                  + scale_x_continuous(limits = c(0,(nrow(Main_bar_data)+1 )), expand = c(0,0))
+                  + geom_point(data=Mat_data, aes(x= x, y= y), colour = Mat_data$color, size= point_size) 
+                  + geom_line(data = Mat_data, aes(group = Intersection, x=x, y=y), 
+                              size = line_size, colour = Mat_data$color)
+                  + geom_rect(data = shading_data, aes(xmin = min, xmax = max, ymin = y_min, ymax = y_max ),
+                              fill = "skyblue", alpha = 0.25))
   Matrix_plot <- ggplotGrob(Matrix_plot)
   return(Matrix_plot)
 }
