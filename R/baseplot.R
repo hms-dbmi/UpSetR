@@ -77,10 +77,10 @@ upset_base <- function(data, first.col, last.col, nsets = 5, nintersects = 40, s
     QElem_att_data <- QuerieElemAtt(New_data, queries, first.col, expression, Set_names, att.x, att.y)
   }
   ShadingData <- MakeShading(Matrix_layout)
-  Main_bar <- Make_main_bar(All_Freqs, Bar_Q, show.numbers, att.x, mb.ratio)
+  Main_bar <- Make_main_bar(All_Freqs, Bar_Q, show.numbers, mb.ratio)
   Matrix <- Make_matrix_plot(Matrix_layout, Set_sizes, All_Freqs, point.size, line.size,
                              name.size, labels, ShadingData, shade.color, shade.alpha)
-  Sizes <- Make_size_plot(Set_sizes, sets.bar.color)
+  Sizes <- Make_size_plot(Set_sizes, sets.bar.color, mb.ratio)
   Make_base_plot(Main_bar, Matrix, Sizes, labels, mb.ratio, att.x, att.y, New_data,
                  expression, att.pos, first.col, att.color, QElem_att_data, QInter_att_data, queries,
                  query.plot.title)
@@ -309,7 +309,7 @@ GetIntersects <- function(data, start_col, sets, num_sets){
   }
 }
 
-Make_main_bar <- function(Main_bar_data, Q, show_num, att_x, ratios){
+Make_main_bar <- function(Main_bar_data, Q, show_num, ratios){
   if(is.null(Q) == F){
     inter_data <- Q
     if(nrow(inter_data) != 0){
@@ -322,13 +322,16 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, att_x, ratios){
   else{
     inter_data <- NULL
   }
-  if(is.null(att_x) == T){
-    b <- 0.71
+  if(ratios[2] < 0.46){
+    m <- 0.4
+  }
+  else if((ratios[2] > 0.45) & (ratios[2] < 0.66)){
+    m <- 0.35
   }
   else{
-    inc <- (ratios[2] - 0.3)
-    b <- (0.59 - (0.00735 * (inc *100)))
+    m <- 0.3
   }
+  print(m)
   Main_bar_plot <- (ggplot(data = Main_bar_data, aes(x = x, y = freq)) 
                     + geom_bar(stat = "identity", colour = Main_bar_data$color, width = 0.6, 
                                fill = Main_bar_data$color)
@@ -336,7 +339,7 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, att_x, ratios){
                                          breaks = NULL)
                     + xlab(NULL) + ylab("Intersection Size")
                     + theme(panel.background = element_rect(fill = "white"),
-                            plot.margin=unit(c(0.35,0.2,-b,0.2), "cm"), panel.border = element_blank(),
+                            plot.margin = unit(c(0.5,0.5,-m,0.5), "lines"), panel.border = element_blank(),
                             axis.title.y = element_text(vjust = 0.5)))
   if((show_num == "yes") || (show_num == "Yes")){
     Main_bar_plot <- (Main_bar_plot + geom_text(aes(label = freq), size = 3.0, vjust = -0.4, colour = Main_bar_data$color))
@@ -374,7 +377,7 @@ Make_matrix_plot <- function(Mat_data,Set_size_data, Main_bar_data, point_size, 
                              shading_data, shade_color, shade_alpha){
   Matrix_plot <- (ggplot() 
                   + theme(panel.background = element_rect(fill = "white"),
-                          plot.margin=unit(c(-0.1,0.2,0.1,0.2), "cm"),
+                          plot.margin=unit(c(-0.55,0.5,0.5,0.5), "lines"),
                           axis.text.x = element_blank(),
                           axis.ticks.x = element_blank(),
                           axis.text.y = element_text(colour = "gray0", size = name_size),
@@ -394,14 +397,23 @@ Make_matrix_plot <- function(Mat_data,Set_size_data, Main_bar_data, point_size, 
   return(Matrix_plot)
 }
 
-Make_size_plot <- function(Set_size_data, sbar_color){
+Make_size_plot <- function(Set_size_data, sbar_color, ratios){
+  if(ratios[2] < 0.46){
+    m <- 0.4
+  }
+  else if((ratios[2] > 0.45) & (ratios[2] < 0.66)){
+    m <- 0.35
+  }
+  else{
+    m <- 0.3
+  }
   Size_plot <- (ggplot(data = Set_size_data, aes(x =x, y = y))
                 + geom_bar(stat = "identity",colour = sbar_color, width = 0.4,
                            fill = sbar_color, position = "identity")
                 + scale_x_continuous(limits = c(0.5, (nrow(Set_size_data)+0.5)),
                                      breaks = c(0, max(Set_size_data)))
                 + theme(panel.background = element_rect(fill = "white"),
-                        plot.margin=unit(c(0,-0.6,0.1,0.2), "cm"),
+                        plot.margin=unit(c(-m,-1.3,0.5,0.5), "lines"),
                         axis.title.x = element_text(size = 10, face = "bold"),
                         axis.line = element_line(colour = "gray0"),
                         axis.line.y = element_line(colour = "white"),
@@ -584,7 +596,7 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
                            Q_Title){
   
   Main_bar_plot$widths <- Matrix_plot$widths
-  Matrix_plot$heights <- Size_plot$heights
+  Matrix_plot$heights <- Size_plot$heights 
   
   size_plot_height <- (((hratios[1])+0.01)*100) 
   if((hratios[1] > 0.7 || hratios[1] < 0.3) || 
