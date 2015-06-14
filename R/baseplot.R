@@ -29,13 +29,16 @@
 #' @param cutoff The number of intersections from each set (to cut off at) when aggregating by sets
 #' @param queries Unified querie of intersections and elements
 #' @param query.title.plot Title of query plot
+#' @param shade.color Color of row shading in matrix
+#' @param shade.alpha Transparency of shading in matrix
 #' @export
 upset_base <- function(data, first.col, last.col, nsets = 5, nintersects = 40, sets = NULL,
                        matrix.color = "gray23",main.bar.color = "gray23", sets.bar.color = "dodgerblue",
                        point.size = 4, line.size = 1, name.size = 10, mb.ratio = c(0.70,0.30), att.x = NULL, 
                        att.y = NULL, expression = NULL, att.pos = NULL, att.color = "dodgerblue",
                        order.matrix = c("degree", "freq"), show.numbers = "yes", aggregate.by = "degree",
-                       cutoff = NULL, queries = NULL, query.plot.title = "My Query Plot Title"){
+                       cutoff = NULL, queries = NULL, query.plot.title = "My Query Plot Title", 
+                       shade.color = "skyblue", shade.alpha = 0.25){
   require(ggplot2);
   require(gridExtra);
   require(plyr);
@@ -76,7 +79,7 @@ upset_base <- function(data, first.col, last.col, nsets = 5, nintersects = 40, s
   ShadingData <- MakeShading(Matrix_layout)
   Main_bar <- Make_main_bar(All_Freqs, Bar_Q, show.numbers, att.x, mb.ratio)
   Matrix <- Make_matrix_plot(Matrix_layout, Set_sizes, All_Freqs, point.size, line.size,
-                             name.size, labels, ShadingData)
+                             name.size, labels, ShadingData, shade.color, shade.alpha)
   Sizes <- Make_size_plot(Set_sizes, sets.bar.color)
   Make_base_plot(Main_bar, Matrix, Sizes, labels, mb.ratio, att.x, att.y, New_data,
                  expression, att.pos, first.col, att.color, QElem_att_data, QInter_att_data, queries,
@@ -368,7 +371,7 @@ MakeShading <- function(Mat_data){
 }
 
 Make_matrix_plot <- function(Mat_data,Set_size_data, Main_bar_data, point_size, line_size, name_size, labels,
-                             shading_data){
+                             shading_data, shade_color, shade_alpha){
   Matrix_plot <- (ggplot() 
                   + theme(panel.background = element_rect(fill = "white"),
                           plot.margin=unit(c(-0.1,0.2,0.1,0.2), "cm"),
@@ -386,7 +389,7 @@ Make_matrix_plot <- function(Mat_data,Set_size_data, Main_bar_data, point_size, 
                   + geom_line(data = Mat_data, aes(group = Intersection, x=x, y=y), 
                               size = line_size, colour = Mat_data$color)
                   + geom_rect(data = shading_data, aes(xmin = min, xmax = max, ymin = y_min, ymax = y_max ),
-                              fill = "skyblue", alpha = 0.25))
+                              fill = shade_color, alpha = shade_alpha))
   Matrix_plot <- ggplotGrob(Matrix_plot)
   return(Matrix_plot)
 }

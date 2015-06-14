@@ -11,7 +11,8 @@ upset_base(data, first.col, last.col, nsets = 5, nintersects = 40,
   expression = NULL, att.pos = NULL, att.color = "dodgerblue",
   order.matrix = c("degree", "freq"), show.numbers = "yes",
   aggregate.by = "degree", cutoff = NULL, queries = NULL,
-  query.plot.title = "My Query Plot Title")
+  query.plot.title = "My Query Plot Title", shade.color = "skyblue",
+  shade.alpha = 0.25)
 }
 \arguments{
 \item{data}{Data set}
@@ -59,6 +60,10 @@ upset_base(data, first.col, last.col, nsets = 5, nintersects = 40,
 \item{cutoff}{The number of intersections from each set (to cut off at) when aggregating by sets}
 
 \item{queries}{Unified querie of intersections and elements}
+
+\item{shade.color}{Color of row shading in matrix}
+
+\item{shade.alpha}{Transparency of shading in matrix}
 
 \item{elements}{Specific elements to plot entered as a list. First element in list is name of attribute (string) followed by specific elements of attribute.}
 
