@@ -331,7 +331,6 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, ratios){
   else{
     m <- 0.3
   }
-  print(m)
   Main_bar_plot <- (ggplot(data = Main_bar_data, aes(x = x, y = freq)) 
                     + geom_bar(stat = "identity", colour = Main_bar_data$color, width = 0.6, 
                                fill = Main_bar_data$color)
@@ -354,8 +353,8 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, ratios){
     }
   }
   Main_bar_plot <- (Main_bar_plot 
-                    + geom_vline(xintercept = 0, size = 1, colour = "gray0")
-                    + geom_hline( yintercept = 0, colour = "gray0"))
+                    + geom_segment(aes(x =0, y =0, xend = 0, yend = Inf), size = 0.1)
+                    + geom_segment(aes(x=0, y = 0, xend = Inf, yend = 0), size = 0.1))
   Main_bar_plot <- ggplotGrob(Main_bar_plot)
   return(Main_bar_plot)
 }
