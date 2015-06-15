@@ -31,14 +31,15 @@
 #' @param query.title.plot Title of query plot
 #' @param shade.color Color of row shading in matrix
 #' @param shade.alpha Transparency of shading in matrix
+#' @param color.pal Color palette for attribute plots 
 #' @export
 upset_base <- function(data, first.col, last.col, nsets = 5, nintersects = 40, sets = NULL,
                        matrix.color = "gray23",main.bar.color = "gray23", sets.bar.color = "dodgerblue",
                        point.size = 4, line.size = 1, name.size = 10, mb.ratio = c(0.70,0.30), att.x = NULL, 
-                       att.y = NULL, expression = NULL, att.pos = NULL, att.color = "dodgerblue",
+                       att.y = NULL, expression = NULL, att.pos = NULL, att.color = main.bar.color,
                        order.matrix = c("degree", "freq"), show.numbers = "yes", aggregate.by = "degree",
                        cutoff = NULL, queries = NULL, query.plot.title = "My Query Plot Title", 
-                       shade.color = "skyblue", shade.alpha = 0.25){
+                       shade.color = "skyblue", shade.alpha = 0.25, color.pal = 1){
   require(ggplot2);
   require(gridExtra);
   require(plyr);
@@ -56,10 +57,18 @@ upset_base <- function(data, first.col, last.col, nsets = 5, nintersects = 40, s
   labels <- Make_labels(Matrix_setup)
   
   # IntersectionBoxPlot(All_Freqs, Matrix_setup)
-  
+  if(color.pal == 1){
+    palette <- c("steelblue", "darkorange", "green4", "firebrick3", "darkorchid", "coral4", "hotpink",
+                 "ivory4", "gold3", "turquoise2")
+  }
+  else{
+    palette <- c("greenyellow", "darkorange", "skyblue1", "springgreen4", "yellow", "dodgerblue4", "tomato2",
+                 "hotpink3")
+  }
   
   if(is.null(queries) == F){
-    Matrix_col <-  QuerieInterData(queries, New_data, first.col, Num_of_set, All_Freqs, expression, Set_names)
+    Matrix_col <-  QuerieInterData(queries, New_data, first.col, Num_of_set, All_Freqs, 
+                                   expression, Set_names, palette)
   }
   else{
     Matrix_col <- NULL
@@ -68,13 +77,15 @@ upset_base <- function(data, first.col, last.col, nsets = 5, nintersects = 40, s
   Set_sizes <- FindSetFreqs(New_data, first.col, Num_of_set)
   Bar_Q <- NULL
   if(is.null(queries) == F){
-    Bar_Q <- QuerieInterBar(queries, New_data, first.col, Num_of_set, All_Freqs, expression, Set_names)
+    Bar_Q <- QuerieInterBar(queries, New_data, first.col, Num_of_set, All_Freqs, expression, Set_names, palette)
   }
   QInter_att_data <- NULL
   QElem_att_data <- NULL
-  if(is.null(queries) == F){
-    QInter_att_data <- QuerieInterAtt(New_data, first.col, queries, Num_of_set, att.x, att.y, expression, Set_names)
-    QElem_att_data <- QuerieElemAtt(New_data, queries, first.col, expression, Set_names, att.x, att.y)
+  if((is.null(queries) == F) & (is.null(att.x) == F)){
+    QInter_att_data <- QuerieInterAtt(New_data, first.col, queries, Num_of_set, att.x, att.y, 
+                                      expression, Set_names, palette)
+    QElem_att_data <- QuerieElemAtt(New_data, queries, first.col, expression, Set_names, att.x, att.y,
+                                    palette)
   }
   ShadingData <- MakeShading(Matrix_layout)
   Main_bar <- Make_main_bar(All_Freqs, Bar_Q, show.numbers, mb.ratio)
@@ -372,6 +383,7 @@ Make_matrix_plot <- function(Mat_data,Set_size_data, Main_bar_data, point_size, 
                           plot.margin=unit(c(-0.2,0.5,0.5,0.5), "lines"),
                           axis.text.x = element_blank(),
                           axis.ticks.x = element_blank(),
+                          axis.ticks.y = element_blank(),
                           axis.text.y = element_text(colour = "gray0", size = name_size),
                           panel.grid.major = element_blank(), 
                           panel.grid.minor = element_blank())
@@ -426,162 +438,6 @@ IntersectionBoxPlot <- function(data1, data2){
   View(data2)
 }
 
-QuerieInterData <- function(q, data1, first_col, num_sets, data2, exp, names){
-  rows <- data.frame()
-  for(i in 1:length(q)){
-    index_q <- unlist(q[i])
-    inter_color <- index_q[length(index_q)]
-    index_q <- index_q[1:(length(index_q) - 1)]
-    test <- as.character(index_q[1])
-    check <- match(test, names)
-    if(is.na(check) == T){
-      inter_data <- NULL
-    }
-    else{
-      for( i in 1:length(index_q)){
-        double_check <- match(index_q[i], names)
-        if(is.na(double_check) == T){
-          warning("Intersection or set may not be present in data set. Please refer to matrix.")
-        }
-      }
-      inter_data <- OverlayEdit(data1, data2, first_col, num_sets, index_q, exp, inter_color)
-    }
-    rows <- rbind(rows, inter_data)
-  }
-  
-  if(nrow(rows) != 0){
-    rows <- cbind(rows$x, rows$color)
-    rows <- as.data.frame(rows)
-    colnames(rows) <- c("x", "color")
-  }
-  else{
-    rows <- NULL
-  }
-  return(rows)
-}
-
-
-QuerieInterBar  <- function(q, data1, first_col, num_sets, data2, exp, names){
-  rows <- data.frame()
-  for(i in 1:length(q)){
-    index_q <- unlist(q[i])
-    inter_color <- index_q[length(index_q)]
-    index_q <- index_q[1:(length(index_q) - 1)]
-    test <- as.character(index_q[1])
-    check <- match(test, names)
-    if(is.na(check) == T){
-      inter_data <- NULL
-    }
-    else{
-      inter_data <- OverlayEdit(data1, data2, first_col, num_sets, index_q, exp, inter_color)
-    }
-    rows <- rbind(rows, inter_data)
-  }
-  return(rows)
-}
-
-QuerieInterAtt <- function(data, first_col, q, num_sets, att_x, att_y, exp, names){
-  rows <- data.frame()
-  for(i in 1:length(q)){
-    index_q <- unlist(q[i])
-    inter_color <- index_q[length(index_q)]
-    index_q <- index_q[1:(length(index_q) - 1)]
-    test <- as.character(index_q[1])
-    check <- match(test, names)
-    if(is.na(check) == T){
-      intersect <- NULL
-    }
-    else{
-      intersect <- GetIntersects(data, first_col, index_q, num_sets)
-      if(is.null(att_y) == T){
-        c1 <- match(att_x, colnames(intersect))
-        v1 <- intersect[ , c1]
-        intersect <- cbind(intersect, v1)
-        if(is.null(exp) == F){
-          intersect <- Subset_att(intersect, exp)
-        }
-        if(nrow(intersect) != 0){
-          intersect$color <- inter_color
-          attx_col <- match("v1", colnames(intersect))
-          color_col <- match("color", colnames(intersect))
-          colnames(intersect)[color_col] <- "IColor"
-          intersect <- intersect[ , c(attx_col, color_col)]
-        }
-      }
-      else if(is.null(att_y) == F){
-        c1 <- match(att_x, colnames(intersect))
-        c2 <- match(att_y, colnames(intersect))
-        v1 <- intersect[ , c1]
-        v2 <- intersect[ , c2]
-        intersect <- cbind(intersect, v1, v2)
-        if(is.null(exp) == F){
-          intersect <- Subset_att(intersect, exp)
-        }
-        intersect$color <- inter_color
-        attx_col <- match("v1", colnames(intersect))
-        atty_col <- match("v2", colnames(intersect))
-        color_col <- match("color", colnames(intersect))
-        intersect <- intersect[ , c(attx_col, atty_col, color_col)]
-      }
-    }
-    rows <- rbind(rows, intersect)
-  }
-  return(rows)
-}
-
-QuerieElemAtt <- function(data, q, start_col, exp, names, att_x, att_y){
-  rows <- data.frame()
-  for(i in 1:length(q)){
-    index_q <- unlist(q[i])
-    elem_color <- index_q[length(index_q)]
-    index_q <- index_q[1:(length(index_q) - 1)]
-    test <- as.character(index_q[1])
-    check <- match(test, names)
-    if(is.na(check) == T){
-      if(is.null(att_y) == F){
-        elems <- GetElements(data, index_q)
-        end_col <- ((start_col + as.integer(length(names))) - 1)
-        col1 <- match(att_x, colnames(elems))
-        col2 <- match(att_y, colnames(elems))
-        val1 <- elems[ , col1]
-        val2 <- elems[ , col2]
-        elems <- cbind(elems, val1, val2)
-        elems <- elems[which(rowSums(elems[ ,start_col:end_col]) != 0), ]
-        if(is.null(exp) == F){
-          elems <- Subset_att(elems, exp)
-        }
-        if(nrow(elems) != 0){
-          elems$color <- elem_color
-        }
-        else{
-          elems <- NULL
-        }
-      }
-      else if(is.null(att_y) == T){
-        elems <- GetElements(data, index_q)
-        end_col <- ((start_col + as.integer(length(names))) - 1)
-        col1 <- match(att_x, colnames(elems))
-        val1 <- elems[ , col1]
-        elems <- cbind(elems, val1)
-        elems <- elems[which(rowSums(elems[ ,start_col:end_col]) != 0), ]
-        if(is.null(exp) == F){
-          elems <- Subset_att(elems, exp)
-        }
-        if(nrow(elems) != 0){
-          elems$color <- elem_color
-        }
-        else{
-          elems <- NULL
-        }
-      }
-    }
-    else{
-      elems <- NULL
-    }
-    rows <- rbind(rows, elems)
-  }
-  return(rows)
-}
 
 Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratios, att_x, att_y,
                            Set_data, exp, position, start_col, att_color, elems_att, q_att, q,
@@ -648,6 +504,7 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
                  + xlab(att_x) + ylab("Frequency") + labs(title = Q_Title)
                  + theme(panel.background = element_rect(fill = "white"),
                          plot.title = element_text(vjust = 1.5),
+                         panel.border = element_blank(),
                          panel.grid.minor = element_blank(),
                          panel.grid.major = element_blank(),
                          plot.margin=unit(c(-0.7,0.2,0.1,0.2), "cm")))
