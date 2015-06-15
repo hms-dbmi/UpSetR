@@ -58,12 +58,12 @@ upset_base <- function(data, first.col, last.col, nsets = 5, nintersects = 40, s
   
   # IntersectionBoxPlot(All_Freqs, Matrix_setup)
   if(color.pal == 1){
-    palette <- c("steelblue", "darkorange", "green4", "firebrick3", "darkorchid", "coral4", "hotpink",
-                 "ivory4", "gold3", "turquoise2")
+    palette <- c("#1F77B4", "#FF7F0E", "#2CA02C", "#D62728", "#9467BD", "#8C564B", "#E377C2",
+                 "#7F7F7F", "#BCBD22", "#17BECF")
   }
   else{
-    palette <- c("greenyellow", "darkorange", "skyblue1", "springgreen4", "yellow", "dodgerblue4", "tomato2",
-                 "hotpink3")
+    palette <- c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00",
+                 "#CC79A7")
   }
   
   if(is.null(queries) == F){
