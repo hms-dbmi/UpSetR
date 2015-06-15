@@ -47,7 +47,6 @@ QuerieInterBar  <- function(q, data1, first_col, num_sets, data2, exp, names, pa
     }
     rows <- rbind(rows, inter_data)
   }
-  View(rows)
   return(rows)
 }
 
