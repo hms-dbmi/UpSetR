@@ -322,23 +322,16 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, ratios){
   else{
     inter_data <- NULL
   }
-  if(ratios[2] < 0.46){
-    m <- 0.4
-  }
-  else if((ratios[2] > 0.45) & (ratios[2] < 0.66)){
-    m <- 0.35
-  }
-  else{
-    m <- 0.3
-  }
   Main_bar_plot <- (ggplot(data = Main_bar_data, aes(x = x, y = freq)) 
                     + geom_bar(stat = "identity", colour = Main_bar_data$color, width = 0.6, 
                                fill = Main_bar_data$color)
                     + scale_x_continuous(limits = c(0,(nrow(Main_bar_data)+1 )), expand = c(0,0),
                                          breaks = NULL)
+                    + scale_y_continuous(limits = c(0, max(Main_bar_data$freq)), 
+                                         expand = c(c(0,40), c(0,0)))
                     + xlab(NULL) + ylab("Intersection Size")
                     + theme(panel.background = element_rect(fill = "white"),
-                            plot.margin = unit(c(0.5,0.5,-m,0.5), "lines"), panel.border = element_blank(),
+                            plot.margin = unit(c(0.5,0.5,-0.2,0.5), "lines"), panel.border = element_blank(),
                             axis.title.y = element_text(vjust = 0.5)))
   if((show_num == "yes") || (show_num == "Yes")){
     Main_bar_plot <- (Main_bar_plot + geom_text(aes(label = freq), size = 3.0, vjust = -0.4, colour = Main_bar_data$color))
@@ -353,8 +346,8 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, ratios){
     }
   }
   Main_bar_plot <- (Main_bar_plot 
-                    + geom_segment(aes(x =0, y =0, xend = 0, yend = Inf), size = 0.1)
-                    + geom_segment(aes(x=0, y = 0, xend = Inf, yend = 0), size = 0.1))
+                    + geom_vline(xintercept = 0, color = "gray0")
+                    + geom_hline(yintercept = 0, color = "gray0"))
   Main_bar_plot <- ggplotGrob(Main_bar_plot)
   return(Main_bar_plot)
 }
@@ -376,7 +369,7 @@ Make_matrix_plot <- function(Mat_data,Set_size_data, Main_bar_data, point_size, 
                              shading_data, shade_color, shade_alpha){
   Matrix_plot <- (ggplot() 
                   + theme(panel.background = element_rect(fill = "white"),
-                          plot.margin=unit(c(-0.55,0.5,0.5,0.5), "lines"),
+                          plot.margin=unit(c(-0.2,0.5,0.5,0.5), "lines"),
                           axis.text.x = element_blank(),
                           axis.ticks.x = element_blank(),
                           axis.text.y = element_text(colour = "gray0", size = name_size),
