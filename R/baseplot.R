@@ -4,8 +4,6 @@
 #' layout of the intersections, along with plotting their corresponding sizes and 
 #' the size of each set used.
 #' @param data Data set
-#' @param first.col First column in data set that represents a set
-#' @param last.col Last column in data set that represents a set
 #' @param nsets Number of sets to look at
 #' @param nintersects Number of intersections to plot
 #' @param sets Specific sets to look at (Include as combinations. Ex: c("Name1", "Name2"))
@@ -33,16 +31,20 @@
 #' @param shade.alpha Transparency of shading in matrix
 #' @param color.pal Color palette for attribute plots 
 #' @export
-upset_base <- function(data, first.col, last.col, nsets = 5, nintersects = 40, sets = NULL,
-                       matrix.color = "gray23",main.bar.color = "gray23", sets.bar.color = "dodgerblue",
-                       point.size = 4, line.size = 1, name.size = 10, mb.ratio = c(0.70,0.30), att.x = NULL, 
-                       att.y = NULL, expression = NULL, att.pos = NULL, att.color = main.bar.color,
-                       order.matrix = c("degree", "freq"), show.numbers = "yes", aggregate.by = "degree",
-                       cutoff = NULL, queries = NULL, query.plot.title = "My Query Plot Title", 
-                       shade.color = "skyblue", shade.alpha = 0.25, color.pal = 1){
+upset_base <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.color = "gray23",
+                       main.bar.color = "gray23", sets.bar.color = "dodgerblue",point.size = 4, line.size = 1, 
+                       name.size = 10, mb.ratio = c(0.70,0.30), att.x = NULL, att.y = NULL, expression = NULL, 
+                       att.pos = NULL, att.color = main.bar.color, order.matrix = c("degree", "freq"), 
+                       show.numbers = "yes", aggregate.by = "degree",cutoff = NULL, queries = NULL, 
+                       query.plot.title = "My Query Plot Title", shade.color = "skyblue", shade.alpha = 0.25, 
+                       color.pal = 1){
   require(ggplot2);
   require(gridExtra);
   require(plyr);
+  
+  startend <-FindStartEnd(data) 
+  first.col <- startend[1]
+  last.col <- startend[2]
   Set_names <- sets
   if(is.null(Set_names) == T){
     Set_names <- FindMostFreq(data, first.col, last.col, nsets)
@@ -318,4 +320,47 @@ GetIntersects <- function(data, start_col, sets, num_sets){
     temp_data <- temp_data[ which(rowSums(temp_data[ ,start_col:new_end]) == length(sets)) , ]
     return(temp_data)
   }
+}
+
+FindStartEnd <- function(data){
+  startend <- c()
+  for(i in 1:ncol(data)){
+    column <- data[ ,i]
+    if((is.integer(column[1]) == F) && (is.double(column[1]) == F)){
+      next
+    }
+    else{
+      column <- as.integer(levels(as.factor(column)))
+        if((column[1] == 0) && (column[2] == 1))
+        {
+          startend[1] <- i
+          break
+        }
+        else{
+          next
+        }
+      }
+    }
+  for(i in ncol(data):1){
+    column <- data[ ,i]
+    if((is.integer(column[1]) == F) && (is.double(column[1]) == F)){
+      next
+    }
+    column <- data[ ,i]
+    if((is.integer(column[1]) == F) && (is.double(column[1]) == F)){
+      next
+    }
+    else{
+      column <- as.integer(levels(as.factor(column)))
+      if((column[1] == 0) && (column[2] == 1))
+      {
+        startend[2] <- i
+        break
+      }
+      else{
+        next
+      }
+    }
+  }
+  return(startend)
 }

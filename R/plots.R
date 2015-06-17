@@ -12,7 +12,6 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, ratios){
     inter_data <- NULL
   }
   ten_perc <- ((max(Main_bar_data$freq)) * 0.1)
-  print(ten_perc)
   Main_bar_plot <- (ggplot(data = Main_bar_data, aes(x = x, y = freq)) 
                     + geom_bar(stat = "identity", colour = Main_bar_data$color, width = 0.6, 
                                fill = Main_bar_data$color)

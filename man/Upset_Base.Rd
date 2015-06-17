@@ -4,8 +4,8 @@
 \alias{upset_base}
 \title{Base plot for UpSetR}
 \usage{
-upset_base(data, first.col, last.col, nsets = 5, nintersects = 40,
-  sets = NULL, matrix.color = "gray23", main.bar.color = "gray23",
+upset_base(data, nsets = 5, nintersects = 40, sets = NULL,
+  matrix.color = "gray23", main.bar.color = "gray23",
   sets.bar.color = "dodgerblue", point.size = 4, line.size = 1,
   name.size = 10, mb.ratio = c(0.7, 0.3), att.x = NULL, att.y = NULL,
   expression = NULL, att.pos = NULL, att.color = main.bar.color,
@@ -16,10 +16,6 @@ upset_base(data, first.col, last.col, nsets = 5, nintersects = 40,
 }
 \arguments{
 \item{data}{Data set}
-
-\item{first.col}{First column in data set that represents a set}
-
-\item{last.col}{Last column in data set that represents a set}
 
 \item{nsets}{Number of sets to look at}
 
