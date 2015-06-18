@@ -12,7 +12,7 @@ upset_base(data, nsets = 5, nintersects = 40, sets = NULL,
   order.matrix = c("degree", "freq"), show.numbers = "yes",
   aggregate.by = "degree", cutoff = NULL, queries = NULL,
   query.plot.title = "My Query Plot Title", shade.color = "skyblue",
-  shade.alpha = 0.25, color.pal = 1)
+  shade.alpha = 0.25, color.pal = 1, ...)
 }
 \arguments{
 \item{data}{Data set}

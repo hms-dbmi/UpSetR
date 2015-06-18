@@ -37,7 +37,7 @@ upset_base <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.co
                        att.pos = NULL, att.color = main.bar.color, order.matrix = c("degree", "freq"), 
                        show.numbers = "yes", aggregate.by = "degree",cutoff = NULL, queries = NULL, 
                        query.plot.title = "My Query Plot Title", shade.color = "skyblue", shade.alpha = 0.25, 
-                       color.pal = 1){
+                       color.pal = 1, ...){
   require(ggplot2);
   require(gridExtra);
   require(plyr);
@@ -52,6 +52,8 @@ upset_base <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.co
   
   Sets_to_remove <- Remove(data, first.col, last.col, Set_names)
   New_data <- Wanted(data, Sets_to_remove)
+  CustomData <- CustomFunctions(data, Sets_to_remove, ...)
+  View(CustomData[1])
   Num_of_set <- Number_of_sets(Set_names)
   All_Freqs <- Counter(New_data, Num_of_set, first.col, Set_names, nintersects, main.bar.color,
                        rev(order.matrix), aggregate.by, cutoff)
@@ -76,7 +78,7 @@ upset_base <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.co
     Matrix_col <- NULL
   }
   Matrix_layout <- Create_layout(Matrix_setup, matrix.color, Matrix_col)
-  Set_sizes <- FindSetFreqs(New_data, first.col, Num_of_set)
+  Set_sizes <- FindSetFreqs(New_data, first.col, Num_of_set, Set_names)
   Bar_Q <- NULL
   if(is.null(queries) == F){
     Bar_Q <- QuerieInterBar(queries, New_data, first.col, Num_of_set, All_Freqs, expression, Set_names, palette)
@@ -286,11 +288,11 @@ Create_layout <- function(setup, mat_color, mat_col){
   return(Matrix_layout)
 }
 
-FindSetFreqs <- function(data, start_col, num_sets){
+FindSetFreqs <- function(data, start_col, num_sets, set_names){
   end_col <- as.numeric(((start_col + num_sets) -1))
   temp_data <- data[ ,start_col:end_col]
+  temp_data <- temp_data[set_names]
   temp_data <- as.data.frame(colSums(temp_data))
-  temp_data <- temp_data[order(temp_data, decreasing = T), ]
   x <- seq(1:num_sets)
   temp_data <- cbind(temp_data, x)
   colnames(temp_data) <- c("y", "x")

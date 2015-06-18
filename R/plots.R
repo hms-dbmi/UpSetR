@@ -46,8 +46,8 @@ MakeShading <- function(Mat_data){
   y <- unique(Mat_data$y)
   y <- (y[which(y %% 2 != 0)])
   data <- data.frame(cbind(y))
-  data$min <- 0.5
-  data$max <- (max(Mat_data$x) + 0.5)
+  data$min <- 0
+  data$max <- (max(Mat_data$x) + 1)
   for( i in 1:length(y)){
     data$y_min[i] <- ((y[i]) - 0.5)
     data$y_max[i] <- ((y[i]) + 0.5)
@@ -63,13 +63,14 @@ Make_matrix_plot <- function(Mat_data,Set_size_data, Main_bar_data, point_size, 
                           axis.text.x = element_blank(),
                           axis.ticks.x = element_blank(),
                           axis.ticks.y = element_blank(),
-                          axis.text.y = element_text(colour = "gray0", size = name_size),
+                          axis.text.y = element_text(colour = "gray0", 
+                                                     size = name_size, hjust = 0.4),
                           panel.grid.major = element_blank(), 
                           panel.grid.minor = element_blank())
                   + xlab(NULL) + ylab("   ")
                   + scale_y_continuous(breaks = c(1:nrow(Set_size_data)),
                                        limits = c(0.5,(nrow(Set_size_data) +0.5)),
-                                       labels = labels)
+                                       labels = labels, expand = c(0,0))
                   + scale_x_continuous(limits = c(0,(nrow(Main_bar_data)+1 )), expand = c(0,0))
                   + geom_rect(data = shading_data, aes(xmin = min, xmax = max, ymin = y_min, ymax = y_max ),
                               fill = shade_color, alpha = shade_alpha)
@@ -94,7 +95,8 @@ Make_size_plot <- function(Set_size_data, sbar_color, ratios){
                 + geom_bar(stat = "identity",colour = sbar_color, width = 0.4,
                            fill = sbar_color, position = "identity")
                 + scale_x_continuous(limits = c(0.5, (nrow(Set_size_data)+0.5)),
-                                     breaks = c(0, max(Set_size_data)))
+                                     breaks = c(0, max(Set_size_data)),
+                                     expand = c(0,0))
                 + theme(panel.background = element_rect(fill = "white"),
                         plot.margin=unit(c(-m,-1.3,0.5,0.5), "lines"),
                         axis.title.x = element_text(size = 10, face = "bold"),

@@ -150,3 +150,19 @@ QuerieElemAtt <- function(data, q, start_col, exp, names, att_x, att_y, palette)
   }
   return(rows)
 }
+
+CustomFunctions <- function(data, remove,...){
+  FUNS <- list(...)
+  if(length(FUNS) == 0){
+    return(NULL)
+  }
+  else{
+  num_of_fun <- length(FUNS)
+  data_sets <- list()
+  for( i in 1:num_of_fun){
+    data_sets[[i]] <- FUNS[[i]](data)
+    data_sets[[i]] <- Wanted(data_sets[[i]], remove)
+  }
+  }
+  return(data_sets)
+}
