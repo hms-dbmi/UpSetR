@@ -12,7 +12,7 @@ upset_base(data, nsets = 5, nintersects = 40, sets = NULL,
   order.matrix = c("degree", "freq"), show.numbers = "yes",
   aggregate.by = "degree", cutoff = NULL, queries = NULL,
   query.plot.title = "My Query Plot Title", shade.color = "skyblue",
-  shade.alpha = 0.25, color.pal = 1, ...)
+  shade.alpha = 0.25, color.pal = 1, custom.plot = NULL)
 }
 \arguments{
 \item{data}{Data set}
@@ -62,6 +62,8 @@ upset_base(data, nsets = 5, nintersects = 40, sets = NULL,
 \item{shade.alpha}{Transparency of shading in matrix}
 
 \item{color.pal}{Color palette for attribute plots}
+
+\item{custom.plot}{Add own custom ggplot grob to be displayed below the UpSet plot}
 
 \item{elements}{Specific elements to plot entered as a list. First element in list is name of attribute (string) followed by specific elements of attribute.}
 

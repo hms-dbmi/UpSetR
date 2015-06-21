@@ -30,6 +30,7 @@
 #' @param shade.color Color of row shading in matrix
 #' @param shade.alpha Transparency of shading in matrix
 #' @param color.pal Color palette for attribute plots 
+#' @param custom.plot Add own custom ggplot grob to be displayed below the UpSet plot
 #' @export
 upset_base <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.color = "gray23",
                        main.bar.color = "gray23", sets.bar.color = "dodgerblue",point.size = 4, line.size = 1, 
@@ -37,7 +38,7 @@ upset_base <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.co
                        att.pos = NULL, att.color = main.bar.color, order.matrix = c("degree", "freq"), 
                        show.numbers = "yes", aggregate.by = "degree",cutoff = NULL, queries = NULL, 
                        query.plot.title = "My Query Plot Title", shade.color = "skyblue", shade.alpha = 0.25, 
-                       color.pal = 1, ...){
+                       color.pal = 1, custom.plot = NULL){
   require(ggplot2);
   require(gridExtra);
   require(plyr);
@@ -52,15 +53,13 @@ upset_base <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.co
   
   Sets_to_remove <- Remove(data, first.col, last.col, Set_names)
   New_data <- Wanted(data, Sets_to_remove)
-  CustomData <- CustomFunctions(data, Sets_to_remove, ...)
-  View(CustomData[1])
   Num_of_set <- Number_of_sets(Set_names)
   All_Freqs <- Counter(New_data, Num_of_set, first.col, Set_names, nintersects, main.bar.color,
-                       rev(order.matrix), aggregate.by, cutoff)
+                       rev(order.matrix), aggregate.by, cutoff, expression)
   Matrix_setup <- Create_matrix(All_Freqs)
   labels <- Make_labels(Matrix_setup)
   
-  # IntersectionBoxPlot(All_Freqs, Matrix_setup)
+  #IntersectionBoxPlot(All_Freqs)
   if(color.pal == 1){
     palette <- c("#1F77B4", "#FF7F0E", "#2CA02C", "#D62728", "#9467BD", "#8C564B", "#E377C2",
                  "#7F7F7F", "#BCBD22", "#17BECF")
@@ -70,8 +69,32 @@ upset_base <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.co
                  "#CC79A7")
   }
   
+  customAttDat <- NULL
+  customQBar <- NULL
+  Intersection <- NULL
+  Element <- NULL
+#   if(is.null(queries) == F){
+#   guide <- as.data.frame(GuideGenerator(queries, palette))
+# }
+# else{
+#   guide <- NULL
+# }
+#   guide_plot <- Make_guide_plot(guide)
   if(is.null(queries) == F){
-    Matrix_col <-  QuerieInterData(queries, New_data, first.col, Num_of_set, All_Freqs, 
+    custom.queries <- SeperateQueries(queries, 2, palette)
+    customDat <- customQueries(New_data, custom.queries, Set_names)
+    if(is.null(att.x) == F){
+      customAttDat <- data.frame()
+      for(i in 1:length(customDat)){
+        customAttDat <- rbind(customAttDat, customDat[[i]])
+      }
+    }
+    customQBar <- customQueriesBar(customDat, Set_names, All_Freqs, custom.queries)
+  }
+  
+  if(is.null(queries) == F){
+    Intersection <- SeperateQueries(queries, 1, palette)
+    Matrix_col <-  QuerieInterData(Intersection, New_data, first.col, Num_of_set, All_Freqs, 
                                    expression, Set_names, palette)
   }
   else{
@@ -81,24 +104,25 @@ upset_base <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.co
   Set_sizes <- FindSetFreqs(New_data, first.col, Num_of_set, Set_names)
   Bar_Q <- NULL
   if(is.null(queries) == F){
-    Bar_Q <- QuerieInterBar(queries, New_data, first.col, Num_of_set, All_Freqs, expression, Set_names, palette)
+    Bar_Q <- QuerieInterBar(Intersection, New_data, first.col, Num_of_set, All_Freqs, expression, Set_names, palette)
   }
   QInter_att_data <- NULL
   QElem_att_data <- NULL
   if((is.null(queries) == F) & (is.null(att.x) == F)){
-    QInter_att_data <- QuerieInterAtt(New_data, first.col, queries, Num_of_set, att.x, att.y, 
+    QInter_att_data <- QuerieInterAtt(New_data, first.col, Intersection, Num_of_set, att.x, att.y, 
                                       expression, Set_names, palette)
-    QElem_att_data <- QuerieElemAtt(New_data, queries, first.col, expression, Set_names, att.x, att.y,
+    Element <- SeperateQueries(queries, 1, palette)
+    QElem_att_data <- QuerieElemAtt(New_data, Element, first.col, expression, Set_names, att.x, att.y,
                                     palette)
   }
   ShadingData <- MakeShading(Matrix_layout)
-  Main_bar <- Make_main_bar(All_Freqs, Bar_Q, show.numbers, mb.ratio)
+  Main_bar <- Make_main_bar(All_Freqs, Bar_Q, show.numbers, mb.ratio, customQBar)
   Matrix <- Make_matrix_plot(Matrix_layout, Set_sizes, All_Freqs, point.size, line.size,
                              name.size, labels, ShadingData, shade.color, shade.alpha)
   Sizes <- Make_size_plot(Set_sizes, sets.bar.color, mb.ratio)
   Make_base_plot(Main_bar, Matrix, Sizes, labels, mb.ratio, att.x, att.y, New_data,
-                 expression, att.pos, first.col, att.color, QElem_att_data, QInter_att_data, queries,
-                 query.plot.title)
+                 expression, att.pos, first.col, att.color, QElem_att_data, QInter_att_data,
+                 query.plot.title, customAttDat, custom.plot)
 }
 
 FindMostFreq <- function(data, start_col, end_col, n_sets){  
@@ -133,10 +157,13 @@ Number_of_sets <- function(sets){
 }
 
 Counter <- function(data, num_sets, start_col, name_of_sets, nintersections, mbar_color, order_mat,
-                    aggregate, cut){
+                    aggregate, cut, exp){
   temp_data <- list()
   Freqs <- data.frame()
   end_col <- as.numeric(((start_col + num_sets) -1))
+  if(is.null(exp) == F){
+    data <- Subset_att(data, exp)
+  }
   for( i in 1:num_sets){
     temp_data[i] <- match(name_of_sets[i], colnames(data))
   }

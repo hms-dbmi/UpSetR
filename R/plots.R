@@ -1,4 +1,4 @@
-Make_main_bar <- function(Main_bar_data, Q, show_num, ratios){
+Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ){
   if(is.null(Q) == F){
     inter_data <- Q
     if(nrow(inter_data) != 0){
@@ -26,18 +26,46 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, ratios){
   if((show_num == "yes") || (show_num == "Yes")){
     Main_bar_plot <- (Main_bar_plot + geom_text(aes(label = freq), size = 3.0, vjust = -0.4, colour = Main_bar_data$color))
   }
+  bInterDat <- NULL
+  pInterDat <- NULL
+  bCustomDat <- NULL
+  pCustomDat <- NULL
   if(is.null(inter_data) == F){
-    Main_bar_plot <- Main_bar_plot + geom_bar(data = inter_data,
-                                              aes(x=x, y = freq), colour = inter_data$color, fill = inter_data$color,
-                                              stat = "identity", width = 0.4)
-    if((show_num == "yes") || (show_num == "Yes")){
-      Main_bar_plot <- (Main_bar_plot + geom_text(data = inter_data, aes(label = freq), size = 3.0, 
-                                                  vjust = -0.4, colour = inter_data$color))
-    }
+    bInterDat <- inter_data[which(inter_data$act == T), ]
+    bInterDat <- bInterDat[order(bInterDat$x), ]
+    pInterDat <- inter_data[which(inter_data$act == F), ]
   }
+  if(length(customQ) != 0){
+    pCustomDat <- customQ[which(customQ$act == F), ]
+    bCustomDat <- customQ[which(customQ$act == T), ]
+    bCustomDat <- bCustomDat[order(bCustomDat$x), ]
+  }
+    if(length(bInterDat) != 0){
+    Main_bar_plot <- Main_bar_plot + geom_bar(data = bInterDat,
+                                              aes(x=x, y = freq), colour = bInterDat$color,
+                                              fill = bInterDat$color, colour ="black",
+                                              stat = "identity", position = "identity", width = 0.6)
+    }
+  if(length(bCustomDat) != 0){
+    
+    Main_bar_plot <- (Main_bar_plot + geom_bar(data = bCustomDat, aes(x=x, y = freq2),
+                                               fill = bCustomDat$color2, colour = "black",
+                                               stat = "identity", position ="identity", width = 0.6))
+  }
+  if(length(pCustomDat) != 0){
+  Main_bar_plot <- (Main_bar_plot + geom_point(data = pCustomDat, aes(x=x, y = freq2), colour = pCustomDat$color2,
+                                               size = 2, shape = 17, position = position_jitter(w = 0.2, h = 0.2)))
+  }
+  if(length(pInterDat) != 0){
+    Main_bar_plot <- (Main_bar_plot + geom_point(data = pInterDat, aes(x=x, y = freq),
+                                                 position = position_jitter(w = 0.2, h = 0.2),
+                                                 colour = pInterDat$color, size = 2, shape = 17))
+  }
+  
   Main_bar_plot <- (Main_bar_plot 
                     + geom_vline(xintercept = 0, color = "gray0")
                     + geom_hline(yintercept = 0, color = "gray0"))
+  
   Main_bar_plot <- ggplotGrob(Main_bar_plot)
   return(Main_bar_plot)
 }
@@ -77,7 +105,7 @@ Make_matrix_plot <- function(Mat_data,Set_size_data, Main_bar_data, point_size, 
                   + geom_point(data=Mat_data, aes(x= x, y= y), colour = Mat_data$color, size= point_size)
                   + geom_line(data = Mat_data, aes(group = Intersection, x=x, y=y), 
                               size = line_size, colour = Mat_data$color))
-  Matrix_plot <- ggplotGrob(Matrix_plot)
+  Matrix_plot <- ggplot_gtable(ggplot_build(Matrix_plot))
   return(Matrix_plot)
 }
 
@@ -114,15 +142,14 @@ Make_size_plot <- function(Set_size_data, sbar_color, ratios){
   return(Size_plot)
 }
 
-IntersectionBoxPlot <- function(data1, data2){
-  View(data)
-  View(data2)
-}
+#IntersectionBoxPlot <- function(data1, data2){
+#  
+#}
 
 
 Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratios, att_x, att_y,
-                           Set_data, exp, position, start_col, att_color, elems_att, q_att, q,
-                           Q_Title){
+                           Set_data, exp, position, start_col, att_color, elems_att, q_att,
+                           Q_Title, customQ, custom_plot){
   
   Main_bar_plot$widths <- Matrix_plot$widths
   Matrix_plot$heights <- Size_plot$heights 
@@ -133,13 +160,12 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
   vplayout <- function(x,y){
     viewport(layout.pos.row = x, layout.pos.col = y)
   }
+  if(is.null(custom_plot) == T){
   if((is.null(att_x) == T) && (is.null(att_y) == F)){
     warning("Please place lone attribute in att.x")
-    if(is.null(exp) == F) warning("No attribute selected to subset")
   }
   
   else if((is.null(att_x) == T) && (is.null(att_y) == T)){
-    if(is.null(exp) == F) warning("No attribute selected to subset")
     grid.newpage()
     pushViewport(viewport(layout = grid.layout(100,100)))
     print(arrangeGrob(Main_bar_plot, Matrix_plot, heights = hratios), vp = vplayout(1:100, 21:100))
@@ -154,7 +180,7 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
       Set_data <- Subset_att(Set_data, exp)
     }
     colnames(Set_data)[col_to_switch] <- "values"
-    if(is.null(q) == F){
+    if(is.null(elems_att) == F){
       elems <- elems_att
       if(nrow(elems) != 0){
         elems <- elems[order(elems$val1), ]
@@ -167,7 +193,7 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
     else{
       elems <- NULL
     }
-    if(is.null(q) == F){
+    if(is.null(q_att) == F){
       intersect <- q_att
       if(nrow(intersect) != 0){
         intersect <- intersect[order(intersect$v1), ]
@@ -194,7 +220,7 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
         Color <- EColors[i]
         elems_data <- elems[which(elems$color == Color), ]
         att_plot <- att_plot + geom_histogram(data = elems_data, aes(x = val1), 
-                                              binwidth = 1, colour = "black", fill = Color)
+                                              binwidth = 1, colour = "black", fill = Color, alpha =0.5)
       }
     }
     if(is.null(intersect) == F){
@@ -202,7 +228,19 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
         Color <- IColors[i]
         intersect_data <- intersect[which(intersect$IColor == Color ), ]
         att_plot <- att_plot + geom_histogram(data = intersect_data, aes(x = v1), binwidth = 1,
-                                              colour = "black", fill = Color)
+                                              colour = "black", fill = Color, alpha =0.5)
+      }
+    }
+    if(length(customQ) != 0){
+      col <- match(att_x, colnames(customQ))
+      colnames(customQ)[col] <- "cval1"
+      customQ <- customQ[order(customQ$cval1), ]
+      CColor <- unique(customQ$color2)
+      for( i in 1:length(CColor)){
+        Color <- CColor[i]
+        customQData <- customQ[which(customQ$color2 == Color), ]
+        att_plot <- (att_plot + geom_histogram(data = customQData, aes(x=cval1),
+        colour = "black", fill = Color, alpha = 0.5, binwidth = 1))
       }
     }
     
@@ -237,16 +275,17 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
     }
     colnames(Set_data)[col_switch1] <- "values1"
     colnames(Set_data)[col_switch2] <- "values2"
-    if(is.null(q) == F){
+    if(is.null(elems_att) == F){
       elems <- elems_att
-      if(nrow(elems) == 0){
+      if(nrow(elems) != 0){
+        elems <- elems[order(elems$val1, elems$val2), ]
+        EColors <- unique(elems$color)
+      }
+      else{
         elems <- NULL
-      } 
+      }
     }
-    else{
-      elems <- NULL
-    }
-    if(is.null(q) == F){
+    if(is.null(q_att) == F){
       intersect <- q_att
       if(nrow(intersect) != 0){
         intersect <- intersect[order(intersect$v1, intersect$v2), ]
@@ -272,6 +311,13 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
     if(is.null(intersect) == F){
       att_plot <- (att_plot + geom_point(data = intersect, aes(x = v1, y = v2), color = intersect$color))
     }
+    if(length(customQ) != 0){
+      col1 <- match(att_x, colnames(customQ))
+      col2 <- match(att_y, colnames(customQ))
+      colnames(customQ)[col1] <- "cval1"
+      colnames(customQ)[col2] <- "cval2"
+        att_plot <- att_plot + geom_point(data = customQ, aes(x=cval1, y = cval2), color = customQ$color2)
+      }
     
     att_plot <- ggplot_gtable(ggplot_build(att_plot))
     att_plot$widths <-  Matrix_plot$widths
@@ -293,5 +339,13 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
       print(arrangeGrob(Size_plot), vp = vplayout(size_plot_height:130, 1:20))
       print(arrangeGrob(att_plot), vp = vplayout(1:30, 21:100))
     }
+  }
+  }
+  else if(is.null(custom_plot) == F){
+    grid.newpage()
+    pushViewport(viewport(layout = grid.layout(130,100)))
+    print(arrangeGrob(Main_bar_plot, Matrix_plot, heights = hratios), vp = vplayout(1:100, 21:100))
+    print(arrangeGrob(Size_plot), vp = vplayout(size_plot_height:100, 1:20))
+    print(arrangeGrob(custom_plot), vp = vplayout(101:130, 21:100))
   }
 }

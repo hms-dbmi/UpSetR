@@ -1,8 +1,11 @@
-QuerieInterData <- function(q, data1, first_col, num_sets, data2, exp, names, palette){
+QuerieInterData <- function(query, data1, first_col, num_sets, data2, exp, names, palette){
   rows <- data.frame()
-  for(i in 1:length(q)){
-    index_q <- unlist(q[i])
-    inter_color <- palette[i]
+  if(length(query) == 0){
+    return(NULL)
+  }
+  for(i in 1:length(query)){
+    index_q <- unlist(query[[i]]$params)
+    inter_color <- query[[i]]$color
     test <- as.character(index_q[1])
     check <- match(test, names)
     if(is.na(check) == T){
@@ -34,9 +37,13 @@ QuerieInterData <- function(q, data1, first_col, num_sets, data2, exp, names, pa
 
 QuerieInterBar  <- function(q, data1, first_col, num_sets, data2, exp, names, palette){
   rows <- data.frame()
+  act <- c()
+  if(length(q) == 0){
+    return(NULL)
+  }
   for(i in 1:length(q)){
-    index_q <- unlist(q[i])
-    inter_color <- palette[i]
+    index_q <- unlist(q[[i]]$params)
+    inter_color <- q[[i]]$color
     test <- as.character(index_q[1])
     check <- match(test, names)
     if(is.na(check) == T){
@@ -45,15 +52,25 @@ QuerieInterBar  <- function(q, data1, first_col, num_sets, data2, exp, names, pa
     else{
       inter_data <- OverlayEdit(data1, data2, first_col, num_sets, index_q, exp, inter_color)
     }
+    if((isTRUE(q[[i]]$active) == T) && (is.null(inter_data) == F)){
+      act[i] <- T
+    }
+    else if((isTRUE(q[[i]]$active) == F) && (is.null(inter_data) == F)){
+      act[i] <- F
+    }
     rows <- rbind(rows, inter_data)
   }
+  rows <- cbind(rows, act)
   return(rows)
 }
 
 QuerieInterAtt <- function(data, first_col, q, num_sets, att_x, att_y, exp, names, palette){
   rows <- data.frame()
+  if(length(q) == 0){
+    return(NULL)
+  }
   for(i in 1:length(q)){
-    index_q <- unlist(q[i])
+    index_q <- unlist(q[[i]]$params)
     inter_color <- palette[i]
     test <- as.character(index_q[1])
     check <- match(test, names)
@@ -100,12 +117,15 @@ QuerieInterAtt <- function(data, first_col, q, num_sets, att_x, att_y, exp, name
 
 QuerieElemAtt <- function(data, q, start_col, exp, names, att_x, att_y, palette){
   rows <- data.frame()
+  if(length(q) == 0){
+    return(NULL)
+  }
   for(i in 1:length(q)){
-    index_q <- unlist(q[i])
+    index_q <- unlist(q[[i]]$params)
     elem_color <- palette[i]
     test <- as.character(index_q[1])
     check <- match(test, names)
-    if(is.na(check) == T){
+    if(length(check) != 0){
       if(is.null(att_y) == F){
         elems <- GetElements(data, index_q)
         end_col <- ((start_col + as.integer(length(names))) - 1)
@@ -151,18 +171,121 @@ QuerieElemAtt <- function(data, q, start_col, exp, names, att_x, att_y, palette)
   return(rows)
 }
 
-CustomFunctions <- function(data, remove,...){
-  FUNS <- list(...)
-  if(length(FUNS) == 0){
+customQueries <- function(data, custom, names){
+  data_sets <- list()
+  dataAndrow <- list(data, 1)
+  if(length(custom) == 0){
     return(NULL)
   }
-  else{
-  num_of_fun <- length(FUNS)
-  data_sets <- list()
-  for( i in 1:num_of_fun){
-    data_sets[[i]] <- FUNS[[i]](data)
-    data_sets[[i]] <- Wanted(data_sets[[i]], remove)
-  }
+  for(i in 1:length(custom)){
+    x <- c(dataAndrow, custom[[i]]$query, (custom[[i]]$params))
+    x <- do.call(apply, x)
+    x <- data[which(x), ]
+    data_sets[[i]] <- x
+    first <- min(match(names, colnames(data_sets[[i]])))
+    last <- max(match(names, colnames(data_sets[[i]])))
+    data_sets[[i]] <- data_sets[[i]][!(rowSums(data_sets[[i]][ ,first:last]) == 0), ]
+    data_sets[[i]]$color2 <- custom[[i]]$color
   }
   return(data_sets)
 }
+
+customQueriesBar <- function(cust_data, sets,bar_data,custom){
+  setup <- list()
+  final_data <- list()
+  num <- (length(sets) + 1)
+  if(length(cust_data) == 0){
+    return(NULL)
+  }
+  for(i in 1:length(cust_data)){
+    cust_data[[i]] <- count(cust_data[[i]][sets]) 
+    colnames(cust_data[[i]])[num] <- "freq2"
+    cust_data[[i]] <- cust_data[[i]][!(rowSums(cust_data[[i]][ ,1:length(sets)]) == 0), ]
+    setup[[i]] <- merge(cust_data[[i]], bar_data, by = sets)
+    color2 <- rep(custom[[i]]$color, times = nrow(setup[[i]]))
+    if(isTRUE(custom[[i]]$active) == T){
+      act <- rep(T, nrow(setup[[i]]))
+    }
+    else{
+      act <- rep(F, nrow(setup[[i]]))
+    }
+    setup[[i]] <- cbind(setup[[i]], color2, act)
+  }
+  for(i in 1:length(setup)){
+    final_data <- rbind(final_data, setup[[i]])
+  }
+  return(final_data)
+}
+
+SeperateQueries <- function(queries, choice, palette){
+  seperated <- list()
+  for(i in 1:length(queries)){
+    if(is.null(queries[[i]]$color) == T){
+      queries[[i]]$color <- palette[1]
+      palette <- palette[-1]
+    }
+    else if(is.null(queries[[i]]$color) == F){
+      next
+    }
+  }
+  if(choice == 1){
+    for(i in 1:length(queries)){
+      if(is.function(queries[[i]]$query) == F){
+        seperated <- c(seperated, list(queries[[i]]))
+      }
+      else{
+        next
+      }
+    }
+  }
+  else if(choice == 2){
+    for(i in 1:length(queries)){
+      if(is.function(queries[[i]]$query) == T){
+        seperated <- c(seperated, list(queries[[i]]))
+      }
+      else{
+        next
+      }
+    }
+  }
+  return(seperated)
+}
+
+# GuideGenerator <- function(queries, palette){
+#   numbers <- c()
+#   colors <- c()
+#   if(length(queries) == 0){
+#     return(NULL)
+#   }
+#   for(i in 1:length(queries)){
+#     if(is.null(queries[[i]]$color) == T){
+#       queries[[i]]$color <- palette[1]
+#       palette <- palette[-1]
+#     }
+#     else if(is.null(queries[[i]]$color) == F){
+#       queries[[i]]$color <- queries[[i]]$color
+#     }
+#     colors[i] <- queries[[i]]$color
+#     numbers[i] <- i
+#   }
+# x <- 1
+# y <- 1:length(queries)
+# guide <- cbind(numbers, colors, x, y)
+# return(guide)
+# }
+# 
+# Make_guide_plot <- function(guide){
+#   colors <- as.character(guide$colors)
+# guide_plot <- (ggplot(data = guide, aes(x=x, y=y))
+#                + geom_point(colour = colors, shape =15, size = 4)
+#                + scale_x_discrete(0.75, 1.25, expand = c(0,0))
+#                +theme_bw()
+#                +theme(plot.margin = unit(c(4,5,2,10), "cm"), panel.border = element_blank(),
+#                       panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+#                       axis.title.y = element_blank(), axis.title.x = element_blank(),
+#                       axis.ticks.y = element_blank(), axis.text.y = element_text(hjust = 0.9)))
+# return(guide_plot)
+# }
+# 
+
+
