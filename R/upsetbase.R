@@ -73,18 +73,12 @@ upset_base <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.co
   customQBar <- NULL
   Intersection <- NULL
   Element <- NULL
-  guide <- NULL
-  if(is.null(queries) == F){
-  guide <- as.data.frame(GuideGenerator(queries, palette))
-}
-guide_plot <- NULL
-if(is.null(guide) == F){
-  guide_plot <- Make_guide_plot(guide)
-  guide_plot <- ggplotGrob(guide_plot)
-}
+  legend <- NULL
   if(is.null(queries) == F){
     custom.queries <- SeperateQueries(queries, 2, palette)
     customDat <- customQueries(New_data, custom.queries, Set_names)
+    legend <- GuideGenerator(queries, palette)
+    legend <- Make_legend(legend)
     if(is.null(att.x) == F){
       customAttDat <- data.frame()
       for(i in 1:length(customDat)){
@@ -124,7 +118,7 @@ if(is.null(guide) == F){
   Sizes <- Make_size_plot(Set_sizes, sets.bar.color, mb.ratio)
   Make_base_plot(Main_bar, Matrix, Sizes, labels, mb.ratio, att.x, att.y, New_data,
                  expression, att.pos, first.col, att.color, QElem_att_data, QInter_att_data,
-                 query.plot.title, customAttDat, custom.plot, guide_plot)
+                 query.plot.title, customAttDat, custom.plot, legend)
 }
 
 FindMostFreq <- function(data, start_col, end_col, n_sets){  
