@@ -25,7 +25,8 @@
 #' @param show.numbers Show numbers of intersection sizes above bars 
 #' @param aggregate.by How the data should be aggregated ("degree" or "sets")
 #' @param cutoff The number of intersections from each set (to cut off at) when aggregating by sets
-#' @param queries Unified querie of intersections and elements
+#' @param queries Unified querie of intersections, elements, and custom row functions
+#' @param query.legend Position query legend on top or bottom of UpSet plot
 #' @param query.title.plot Title of query plot
 #' @param shade.color Color of row shading in matrix
 #' @param shade.alpha Transparency of shading in matrix
@@ -36,7 +37,7 @@ upset_base <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.co
                        main.bar.color = "gray23", sets.bar.color = "dodgerblue",point.size = 4, line.size = 1, 
                        name.size = 10, mb.ratio = c(0.70,0.30), att.x = NULL, att.y = NULL, expression = NULL, 
                        att.pos = NULL, att.color = main.bar.color, order.matrix = c("degree", "freq"), 
-                       show.numbers = "yes", aggregate.by = "degree",cutoff = NULL, queries = NULL, 
+                       show.numbers = "yes", aggregate.by = "degree",cutoff = NULL, queries = NULL, query.legend = "none", 
                        query.plot.title = "My Query Plot Title", shade.color = "skyblue", shade.alpha = 0.25, 
                        color.pal = 1, custom.plot = NULL){
   require(ggplot2);
@@ -118,7 +119,7 @@ upset_base <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.co
   Sizes <- Make_size_plot(Set_sizes, sets.bar.color, mb.ratio)
   Make_base_plot(Main_bar, Matrix, Sizes, labels, mb.ratio, att.x, att.y, New_data,
                  expression, att.pos, first.col, att.color, QElem_att_data, QInter_att_data,
-                 query.plot.title, customAttDat, custom.plot, legend)
+                 query.plot.title, customAttDat, custom.plot, legend, query.legend)
 }
 
 FindMostFreq <- function(data, start_col, end_col, n_sets){  

@@ -2,31 +2,45 @@ vplayout <- function(x,y){
   viewport(layout.pos.row = x, layout.pos.col = y)
 }
 
-NoAttBasePlot <- function(legend, size_plot_height, Main_bar_plot, Matrix_plot, hratios, Size_plot){
+NoAttBasePlot <- function(legend, size_plot_height, Main_bar_plot, Matrix_plot, hratios,
+                          Size_plot, query_legend){
   top <- 1
   bottom <- 100
-  if(is.null(legend) == F){
+  if((is.null(legend) == F) && (query_legend != tolower("none"))){
+    if(query_legend == tolower("top")){
     top <- 3
     bottom <- 102
+    legend_top <- 1
+    legend_bottom <- 3
     size_plot_height <-(size_plot_height + 2)
+    }
+    else if(query_legend == tolower("bottom")){
+      legend_top <- 101
+      legend_bottom <- 103
+    }
   }
   grid.newpage()
-  if(is.null(legend) == F){
+  if((is.null(legend) == F) && (query_legend != tolower("none"))){
+    if(query_legend == tolower("top")){
     pushViewport(viewport(layout = grid.layout(102,100)))
+    }
+    else if(query_legend == tolower("bottom")){
+      pushViewport(viewport(layout = grid.layout(103, 100)))
+    }
   }
-  else if(is.null(legend) == T){
+  else if((is.null(legend) == T)|| (query_legend == tolower("none"))){
     pushViewport(viewport(layout = grid.layout(100,100)))
   }
   print(arrangeGrob(Main_bar_plot, Matrix_plot, heights = hratios), vp = vplayout(top:bottom, 21:100))
   print(arrangeGrob(Size_plot), vp = vplayout(size_plot_height:bottom, 1:20))
-  if(is.null(legend) == F){
-    print(arrangeGrob(legend), vp = vplayout(1:3, 21:100))
+  if((is.null(legend) == F) && (query_legend != tolower("none"))){
+    print(arrangeGrob(legend), vp = vplayout(legend_top:legend_bottom, 21:100))
   }
 }
 
 HistoAttPlot <- function(att_x, att_y, Set_data, start_col, labels, exp, elems_att, q_att, att_color,
                          Q_Title, customQ, hratios, position, size_plot_height, legend,
-                         Main_bar_plot, Matrix_plot, Size_plot){
+                         Main_bar_plot, Matrix_plot, Size_plot, query_legend){
   col_to_switch <- match(att_x, colnames(Set_data))
   end_col <- ((start_col + as.integer(length(labels))) - 1)
   Set_data <- Set_data[which(rowSums(Set_data[ ,start_col:end_col]) != 0), ]
@@ -102,43 +116,91 @@ HistoAttPlot <- function(att_x, att_y, Set_data, start_col, labels, exp, elems_a
   att_plot$widths <-  Matrix_plot$widths
   if((hratios[1] < 0.4) || 
        (hratios[2] > 0.6)) warning("Plot might be out of range if mb.ratio[1] < 0.4 or mb.ratio[2] >  0.6")
-  if(is.null(position) == T){
+  if((is.null(position) == T) || (position == tolower("bottom"))){
+    bar_top <- 1
+    matrix_bottom <- 100
+    att_top <- 101
+    att_bottom <- 130
     size_plot_height <- (((hratios[1])+0.01)*100) 
+    if((is.null(legend) == F) && (query_legend != tolower("none"))){
+      if(query_legend == tolower("bottom")){
+        legend_top <- 131
+        legend_bottom <- 134
+      }
+      else if(query_legend == tolower("top")){
+        bar_top <- 3
+      matrix_bottom <- 102
+      att_top <- 103
+      att_bottom <- 132
+      size_plot_height <- (size_plot_height + 2)
+      legend_top <- 1
+      legend_bottom <- 3
+      }
+      }
     grid.newpage()
-    if(is.null(legend) == F){
+    if((is.null(legend) == F) && (query_legend != tolower("none"))){
+      if(query_legend == tolower("bottom")){
       pushViewport(viewport(layout = grid.layout(134, 100)))
+      }
+      else if(query_legend == tolower("top")){
+        pushViewport(viewport(layout = grid.layout(132, 100)))
+      }
     }
-    else if(is.null(legend) == T){
+    else if((is.null(legend) == T) || (query_legend == tolower("none"))){
       pushViewport(viewport(layout = grid.layout(130, 100)))
     }
-    print(arrangeGrob(Main_bar_plot, Matrix_plot, heights = hratios), vp = vplayout(1:100, 21:100))
-    print(arrangeGrob(Size_plot), vp = vplayout(size_plot_height:100, 1:20))
-    print(arrangeGrob(att_plot), vp = vplayout(101:130, 21:100))
-    if(is.null(legend) == F){
-      print(arrangeGrob(legend), vp = vplayout(131:134, 21:100))
+    print(arrangeGrob(Main_bar_plot, Matrix_plot, heights = hratios), vp = vplayout(bar_top:matrix_bottom, 21:100))
+    print(arrangeGrob(Size_plot), vp = vplayout(size_plot_height:matrix_bottom, 1:20))
+    print(arrangeGrob(att_plot), vp = vplayout(att_top:att_bottom, 21:100))
+    if((is.null(legend) == F) && (query_legend != tolower("none"))){
+      print(arrangeGrob(legend), vp = vplayout(legend_top:legend_bottom, 21:100))
     }
   }
-  else{
+  else if(position == tolower("top")){
+    bar_top <- 41
+    matrix_bottom <- 140
+    att_top <- 11
+    att_bottom <- 40
     size_plot_height <- ((((hratios[1])+0.01)*100) + 40) 
-    grid.newpage()
-    if(is.null(legend) == F){
-      pushViewport(viewport(layout = grid.layout(145, 100)))
+    if((is.null(legend)) == F && (query_legend != tolower("none"))){
+      if(query_legend == tolower("bottom")){
+        legend_top <- 141
+        legend_bottom <- 145
+      }
+      else if(query_legend == tolower("top")){
+        bar_top <- 46
+        matrix_bottom <- 145
+        att_top <- 16
+        att_bottom <- 45
+        size_plot_height <- (size_plot_height + 5)
+        legend_top <- 1
+        legend_bottom <- 5
+      }
     }
-    else if(is.null(legend) == T){
+    grid.newpage()
+    if((is.null(legend) == F) && (query_legend != tolower("none"))){
+      if(query_legend == tolower("bottom")){
+      pushViewport(viewport(layout = grid.layout(145, 100)))
+      }
+      else if(query_legend == tolower("top")){
+        pushViewport(viewport(layout = grid.layout(150, 100)))
+      }
+    }
+    else if(is.null(legend) == T || (query_legend == tolower("none"))){
       pushViewport(viewport(layout = grid.layout(140, 100)))
     }
-    print(arrangeGrob(Main_bar_plot, Matrix_plot, heights = hratios), vp = vplayout(41:140, 21:100))
-    print(arrangeGrob(Size_plot), vp = vplayout(size_plot_height:140, 1:20))
-    print(arrangeGrob(att_plot), vp = vplayout(11:40, 21:100))
-    if(is.null(legend) == F){
-      print(arrangeGrob(legend), vp = vplayout(141:145, 21:100))
+    print(arrangeGrob(Main_bar_plot, Matrix_plot, heights = hratios), vp = vplayout(bar_top:matrix_bottom, 21:100))
+    print(arrangeGrob(Size_plot), vp = vplayout(size_plot_height:matrix_bottom, 1:20))
+    print(arrangeGrob(att_plot), vp = vplayout(att_top:att_bottom, 21:100))
+    if((is.null(legend) == F) && (query_legend != tolower("none"))){
+      print(arrangeGrob(legend), vp = vplayout(legend_top:legend_bottom, 21:100))
     }
   }
 }
 
 ScatterAttPlot <- function(att_x, att_y, Set_data, start_col, labels, exp, elems_att, q_att, att_color,
                            Q_Title, customQ, hratios, position, size_plot_height, legend,
-                           Main_bar_plot, Matrix_plot, Size_plot){
+                           Main_bar_plot, Matrix_plot, Size_plot, query_legend){
   col_switch1 <- match(att_x, colnames(Set_data))
   col_switch2 <- match(att_y, colnames(Set_data))
   end_col <- ((start_col + as.integer(length(labels))) - 1)
@@ -157,6 +219,9 @@ ScatterAttPlot <- function(att_x, att_y, Set_data, start_col, labels, exp, elems
     else{
       elems <- NULL
     }
+  }
+  else{
+    elems <- NULL
   }
   if(is.null(q_att) == F){
     intersect <- q_att
@@ -196,47 +261,95 @@ ScatterAttPlot <- function(att_x, att_y, Set_data, start_col, labels, exp, elems
   att_plot$widths <-  Matrix_plot$widths
   if((hratios[1] < 0.4) || 
        (hratios[2] > 0.6)) warning("Plot might be out of range if mb.ratio[1] < 0.4 or mb.ratio[2] >  0.6")
-  if(is.null(position) == T){
+  if((is.null(position) == T) || (position == tolower("bottom"))){
+    bar_top <- 1
+    matrix_bottom <- 100
+    att_top <- 101
+    att_bottom <- 130
     size_plot_height <- (((hratios[1])+0.01)*100) 
-    grid.newpage()
-    if(is.null(legend) == F){
-      pushViewport(viewport(layout = grid.layout(134, 100)))
+    if((is.null(legend) == F) && (query_legend != tolower("none"))){
+      if(query_legend == tolower("bottom")){
+        legend_top <- 131
+        legend_bottom <- 134
+      }
+      else if(query_legend == tolower("top")){
+        bar_top <- 3
+        matrix_bottom <- 102
+        att_top <- 103
+        att_bottom <- 132
+        size_plot_height <- (size_plot_height + 2)
+        legend_top <- 1
+        legend_bottom <- 3
+      }
     }
-    else if(is.null(legend) == T){
+    grid.newpage()
+    if((is.null(legend) == F) && (query_legend != tolower("none"))){
+      if(query_legend == tolower("bottom")){
+      pushViewport(viewport(layout = grid.layout(134, 100)))
+      }
+      else if(query_legend == tolower("top")){
+        pushViewport(viewport(layout = grid.layout(132, 100)))
+      }
+    }
+    else if((is.null(legend) == T) || (query_legend == tolower("none"))){
       pushViewport(viewport(layout = grid.layout(130, 100)))
     }
-    print(arrangeGrob(Main_bar_plot, Matrix_plot, heights = hratios), vp = vplayout(1:100, 21:100))
-    print(arrangeGrob(Size_plot), vp = vplayout(size_plot_height:100, 1:20))
-    print(arrangeGrob(att_plot), vp = vplayout(101:130, 21:100))
-    if(is.null(legend) == F){
-      print(arrangeGrob(legend), vp = vplayout(131:134, 21:100))
+    print(arrangeGrob(Main_bar_plot, Matrix_plot, heights = hratios), vp = vplayout(bar_top:matrix_bottom, 21:100))
+    print(arrangeGrob(Size_plot), vp = vplayout(size_plot_height:matrix_bottom, 1:20))
+    print(arrangeGrob(att_plot), vp = vplayout(att_top:att_bottom, 21:100))
+    if((is.null(legend) == F) && (query_legend != tolower("none"))){
+      print(arrangeGrob(legend), vp = vplayout(legend_top:legend_bottom, 21:100))
     }
   }
-  else{
+  else if(position == tolower("top")){
+    bar_top <- 41
+    matrix_bottom <- 140
+    att_top <- 11
+    att_bottom <- 40
     size_plot_height <- ((((hratios[1])+0.01)*100) + 40) 
-    grid.newpage()
-    if(is.null(legend) == F){
-      pushViewport(viewport(layout = grid.layout(145, 100)))
+    if((is.null(legend)) == F && (query_legend != tolower("none"))){
+      if(query_legend == tolower("bottom")){
+        legend_top <- 141
+        legend_bottom <- 145
+      }
+      else if(query_legend == tolower("top")){
+        bar_top <- 46
+        matrix_bottom <- 145
+        att_top <- 16
+        att_bottom <- 45
+        size_plot_height <- (size_plot_height + 5)
+        legend_top <- 1
+        legend_bottom <- 5
+      }
     }
-    else if(is.null(legend) == T){
+    grid.newpage()
+    if((is.null(legend) == F) && (query_legend != tolower("none"))){
+      if(query_legend == tolower("bottom")){
+        pushViewport(viewport(layout = grid.layout(145, 100)))
+      }
+      else if(query_legend == tolower("top")){
+        pushViewport(viewport(layout = grid.layout(150, 100)))
+      }
+    }
+    else if(is.null(legend) == T || (query_legend == tolower("none"))){
       pushViewport(viewport(layout = grid.layout(140, 100)))
     }
-    print(arrangeGrob(Main_bar_plot, Matrix_plot, heights = hratios), vp = vplayout(41:140, 21:100))
-    print(arrangeGrob(Size_plot), vp = vplayout(size_plot_height:140, 1:20))
-    print(arrangeGrob(att_plot), vp = vplayout(11:40, 21:100))
-    if(is.null(legend) == F){
-      print(arrangeGrob(legend), vp = vplayout(141:145, 21:100))
+    print(arrangeGrob(Main_bar_plot, Matrix_plot, heights = hratios), vp = vplayout(bar_top:matrix_bottom, 21:100))
+    print(arrangeGrob(Size_plot), vp = vplayout(size_plot_height:matrix_bottom, 1:20))
+    print(arrangeGrob(att_plot), vp = vplayout(att_top:att_bottom, 21:100))
+    if((is.null(legend) == F) && (query_legend != tolower("none"))){
+      print(arrangeGrob(legend), vp = vplayout(legend_top:legend_bottom, 21:100))
     }
   }
 }
 
 CustomBasePlot <- function(custom_plot, position, size_plot_height, Main_bar_plot, Matrix_plot, 
-                           Size_plot, hratios){
+                           Size_plot, hratios, query_legend){
   bar_top <- 1
   matrix_bottom <- 100
   att_top <- 101
   att_bottom <- 130
-  if(is.null(position) == F){
+  if((is.null(position) == F) && (position != tolower("bottom"))){
     size_plot_height <- (size_plot_height + 30)
     bar_top <- 31
     matrix_bottom <- 130

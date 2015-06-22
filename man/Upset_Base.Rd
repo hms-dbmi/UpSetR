@@ -11,8 +11,9 @@ upset_base(data, nsets = 5, nintersects = 40, sets = NULL,
   expression = NULL, att.pos = NULL, att.color = main.bar.color,
   order.matrix = c("degree", "freq"), show.numbers = "yes",
   aggregate.by = "degree", cutoff = NULL, queries = NULL,
-  query.plot.title = "My Query Plot Title", shade.color = "skyblue",
-  shade.alpha = 0.25, color.pal = 1, custom.plot = NULL)
+  query.legend = "none", query.plot.title = "My Query Plot Title",
+  shade.color = "skyblue", shade.alpha = 0.25, color.pal = 1,
+  custom.plot = NULL)
 }
 \arguments{
 \item{data}{Data set}
@@ -55,7 +56,9 @@ upset_base(data, nsets = 5, nintersects = 40, sets = NULL,
 
 \item{cutoff}{The number of intersections from each set (to cut off at) when aggregating by sets}
 
-\item{queries}{Unified querie of intersections and elements}
+\item{queries}{Unified querie of intersections, elements, and custom row functions}
+
+\item{query.legend}{Position query legend on top or bottom of UpSet plot}
 
 \item{shade.color}{Color of row shading in matrix}
 

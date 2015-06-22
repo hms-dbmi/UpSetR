@@ -144,7 +144,7 @@ Make_size_plot <- function(Set_size_data, sbar_color, ratios){
 
 Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratios, att_x, att_y,
                            Set_data, exp, position, start_col, att_color, elems_att, q_att,
-                           Q_Title, customQ, custom_plot, legend){
+                           Q_Title, customQ, custom_plot, legend, query_legend){
   
   Main_bar_plot$widths <- Matrix_plot$widths
   Matrix_plot$heights <- Size_plot$heights 
@@ -161,24 +161,24 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
     }
     
     else if((is.null(att_x) == T) && (is.null(att_y) == T)){
-      NoAttBasePlot(legend, size_plot_height, Main_bar_plot, Matrix_plot, hratios, Size_plot)
+      NoAttBasePlot(legend, size_plot_height, Main_bar_plot, Matrix_plot, hratios, Size_plot, query_legend)
     }
     
     else if((is.null(att_x) == F) && (is.null(att_y) == T)){
       HistoAttPlot(att_x, att_y, Set_data, start_col, labels, exp, elems_att, q_att, att_color,
                    Q_Title, customQ, hratios, position, size_plot_height, legend,
-                   Main_bar_plot, Matrix_plot, Size_plot)
+                   Main_bar_plot, Matrix_plot, Size_plot, query_legend)
     }
     
     else if((is.null(att_x) == F) && (is.null(att_y) == F)){
       ScatterAttPlot(att_x, att_y, Set_data, start_col, labels, exp, elems_att, q_att, att_color,
                      Q_Title, customQ, hratios, position, size_plot_height, legend,
-                     Main_bar_plot, Matrix_plot, Size_plot)
+                     Main_bar_plot, Matrix_plot, Size_plot, query_legend)
     }
   }
   else if(is.null(custom_plot) == F){
     CustomBasePlot(custom_plot, position, size_plot_height, Main_bar_plot, Matrix_plot, 
-                   Size_plot, hratios)
+                   Size_plot, hratios, query_legend)
   }
 }
 #IntersectionBoxPlot <- function(data1, data2){
