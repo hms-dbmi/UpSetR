@@ -251,41 +251,35 @@ SeperateQueries <- function(queries, choice, palette){
   return(seperated)
 }
 
-# GuideGenerator <- function(queries, palette){
-#   numbers <- c()
-#   colors <- c()
-#   if(length(queries) == 0){
-#     return(NULL)
-#   }
-#   for(i in 1:length(queries)){
-#     if(is.null(queries[[i]]$color) == T){
-#       queries[[i]]$color <- palette[1]
-#       palette <- palette[-1]
-#     }
-#     else if(is.null(queries[[i]]$color) == F){
-#       queries[[i]]$color <- queries[[i]]$color
-#     }
-#     colors[i] <- queries[[i]]$color
-#     numbers[i] <- i
-#   }
-# x <- 1
-# y <- 1:length(queries)
-# guide <- cbind(numbers, colors, x, y)
-# return(guide)
-# }
-# 
-# Make_guide_plot <- function(guide){
-#   colors <- as.character(guide$colors)
-# guide_plot <- (ggplot(data = guide, aes(x=x, y=y))
-#                + geom_point(colour = colors, shape =15, size = 4)
-#                + scale_x_discrete(0.75, 1.25, expand = c(0,0))
-#                +theme_bw()
-#                +theme(plot.margin = unit(c(4,5,2,10), "cm"), panel.border = element_blank(),
-#                       panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-#                       axis.title.y = element_blank(), axis.title.x = element_blank(),
-#                       axis.ticks.y = element_blank(), axis.text.y = element_text(hjust = 0.9)))
-# return(guide_plot)
-# }
-# 
+GuideGenerator <- function(queries, palette){
+  numbers <- c()
+  colors <- c()
+  if(length(queries) == 0){
+    return(NULL)
+  }
+  for(i in 1:length(queries)){
+    if(is.null(queries[[i]]$color) == T){
+      queries[[i]]$color <- palette[1]
+      palette <- palette[-1]
+    }
+    else if(is.null(queries[[i]]$color) == F){
+      queries[[i]]$color <- queries[[i]]$color
+    }
+    colors[i] <- queries[[i]]$color
+    numbers[i] <- paste("Query", as.character(i), sep = "")
+  }
+guide <- cbind(numbers, colors)
+return(as.data.frame(guide))
+}
+
+Make_legend <- function(legend){
+  colors <- as.character(legend$colors)
+  labels <- as.character(legend$numbers)
+  
+  leg <- legendGrob(labels =labels, pch=22,
+                     gp=gpar(col = colors, fill = colors, fontsize = 8),
+                     ncol = length(labels), hgap = unit(0, "lines"))
+  return(leg)
+}
 
 
