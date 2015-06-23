@@ -1,4 +1,4 @@
-#' Base plot for UpSetR
+#' Base Plot for UpSetR
 #' 
 #' @description Visualization of set intersections using novel UpSet matrix design.
 #' @param data Data set
@@ -14,9 +14,9 @@
 #' @param mb.ratio Ratio between matrix plot and main bar plot (Keep in terms of hundreths)
 #' @param att.x Attribute entered as a string. If att.y is NULL a histogram will be produced
 #' @param att.y Attribute entered as a string. Produces a scatter plot vs. att.x
-#' @param expression Expression to subset attribute data entered as string (Ex: "ColName > 3")
+#' @param expression Expression to subset attributes of intersection or element query data. Enter as string (Ex: "ColName > 3")
 #' @param att.pos Position of attribute plot. If NULL or "bottom" the plot will be at below UpSet plot. If "top" it will be above UpSert plot
-#' @param att.color Color of attribute histogram bins or scatterplot points for unqueried data. 
+#' @param att.color Color of attribute histogram bins or scatterplot points for unqueried data represented by main bars. Default set to color of main bars.
 #' @param order.matrix How the intersections in the matrix should be ordered by. Options include frequency (entered as "freq"), degree, or both in any order.
 #' @param show.numbers Show numbers of intersection sizes above bars 
 #' @param aggregate.by How the data should be aggregated ("degree" or "sets")
@@ -88,7 +88,7 @@ upset_base <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.co
   New_data <- Wanted(data, Sets_to_remove)
   Num_of_set <- Number_of_sets(Set_names)
   All_Freqs <- Counter(New_data, Num_of_set, first.col, Set_names, nintersects, main.bar.color,
-                       rev(order.matrix), aggregate.by, cutoff, expression)
+                       rev(order.matrix), aggregate.by, cutoff)
   Matrix_setup <- Create_matrix(All_Freqs)
   labels <- Make_labels(Matrix_setup)
   
@@ -186,13 +186,10 @@ Number_of_sets <- function(sets){
 }
 
 Counter <- function(data, num_sets, start_col, name_of_sets, nintersections, mbar_color, order_mat,
-                    aggregate, cut, exp){
+                    aggregate, cut){
   temp_data <- list()
   Freqs <- data.frame()
   end_col <- as.numeric(((start_col + num_sets) -1))
-  if(is.null(exp) == F){
-    data <- Subset_att(data, exp)
-  }
   for( i in 1:num_sets){
     temp_data[i] <- match(name_of_sets[i], colnames(data))
   }

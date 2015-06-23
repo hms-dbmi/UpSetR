@@ -44,9 +44,9 @@ HistoAttPlot <- function(att_x, att_y, Set_data, start_col, labels, exp, elems_a
   col_to_switch <- match(att_x, colnames(Set_data))
   end_col <- ((start_col + as.integer(length(labels))) - 1)
   Set_data <- Set_data[which(rowSums(Set_data[ ,start_col:end_col]) != 0), ]
-  if(is.null(exp) == F){
-    Set_data <- Subset_att(Set_data, exp)
-  }
+  #if(is.null(exp) == F){
+  #  Set_data <- Subset_att(Set_data, exp)
+  #}
   colnames(Set_data)[col_to_switch] <- "values"
   if(is.null(elems_att) == F){
     elems <- elems_att
@@ -206,9 +206,9 @@ ScatterAttPlot <- function(att_x, att_y, Set_data, start_col, labels, exp, elems
   col_switch2 <- match(att_y, colnames(Set_data))
   end_col <- ((start_col + as.integer(length(labels))) - 1)
   Set_data <- Set_data[which(rowSums(Set_data[ ,start_col:end_col]) != 0), ]
-  if(is.null(exp) == F){
-    Set_data <- Subset_att(Set_data, exp)
-  }
+#  if(is.null(exp) == F){
+#    Set_data <- Subset_att(Set_data, exp)
+#  }
   colnames(Set_data)[col_switch1] <- "values1"
   colnames(Set_data)[col_switch2] <- "values2"
   if(is.null(elems_att) == F){
