@@ -30,7 +30,8 @@
 #' @param query.title.plot Title of query plot
 #' @param shade.color Color of row shading in matrix
 #' @param shade.alpha Transparency of shading in matrix
-#' @param color.pal Color palette for attribute plots 
+#' @param color.pal Color palette for attribute plots
+#' @param boxplot.summary Boxplots representing the distribution of a selected attribute for each intersection. Change param from NULL to "on" for this option. 
 #' @param custom.plot Add own custom ggplot grob to be displayed below the UpSet plot
 #' @details Visualization of set data in the layout described by Lex and Gehlenborg in \url{<http://www.nature.com/nmeth/journal/v11/n8/full/nmeth.3033.html>}. 
 #' UpSet also allows for visualization of queries on intersections and elements, along with custom queries queries implemented using 
@@ -71,7 +72,7 @@ upset_base <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.co
                        att.pos = NULL, att.color = main.bar.color, order.matrix = c("degree", "freq"), 
                        show.numbers = "yes", aggregate.by = "degree",cutoff = NULL, queries = NULL, query.legend = "none", 
                        query.plot.title = "My Query Plot Title", shade.color = "skyblue", shade.alpha = 0.25, 
-                       color.pal = 1, custom.plot = NULL){
+                       color.pal = 1, boxplot.summary = NULL, custom.plot = NULL){
   require(ggplot2);
   require(gridExtra);
   require(plyr);
@@ -92,7 +93,18 @@ upset_base <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.co
   Matrix_setup <- Create_matrix(All_Freqs)
   labels <- Make_labels(Matrix_setup)
   
-  #IntersectionBoxPlot(All_Freqs)
+  BoxPlots <- NULL
+  if(is.null(boxplot.summary) == F){
+  BoxData <- IntersectionBoxPlot(All_Freqs, New_data, first.col, Set_names)
+  if(is.null(att.x) == F & is.null(att.y) == T){ warning("Please use att.y for boxplot summary.")
+                           BoxPlots <- NULL}
+  if(is.null(att.y) == T & is.null(att.x) == T){warning("Please select att.y for the boxplot summary.")
+                          BoxPlots <- NULL}
+  else{
+  BoxPlots <- BoxPlotsPlot(BoxData, att.y)
+  }
+  }
+  
   if(color.pal == 1){
     palette <- c("#1F77B4", "#FF7F0E", "#2CA02C", "#D62728", "#9467BD", "#8C564B", "#E377C2",
                  "#7F7F7F", "#BCBD22", "#17BECF")
@@ -151,7 +163,7 @@ upset_base <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.co
   Sizes <- Make_size_plot(Set_sizes, sets.bar.color, mb.ratio)
   Make_base_plot(Main_bar, Matrix, Sizes, labels, mb.ratio, att.x, att.y, New_data,
                  expression, att.pos, first.col, att.color, QElem_att_data, QInter_att_data,
-                 query.plot.title, customAttDat, custom.plot, legend, query.legend)
+                 query.plot.title, customAttDat, custom.plot, legend, query.legend, BoxPlots)
 }
 
 FindMostFreq <- function(data, start_col, end_col, n_sets){  

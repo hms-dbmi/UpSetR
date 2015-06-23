@@ -345,7 +345,7 @@ ScatterAttPlot <- function(att_x, att_y, Set_data, start_col, labels, exp, elems
   }
 }
 
-CustomBasePlot <- function(custom_plot, position, size_plot_height, Main_bar_plot, Matrix_plot, 
+BaseBoxAndCustomPlot <- function(custom_plot, position, size_plot_height, Main_bar_plot, Matrix_plot, 
                            Size_plot, hratios, query_legend){
   bar_top <- 1
   matrix_bottom <- 100

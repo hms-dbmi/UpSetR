@@ -13,7 +13,7 @@ upset_base(data, nsets = 5, nintersects = 40, sets = NULL,
   aggregate.by = "degree", cutoff = NULL, queries = NULL,
   query.legend = "none", query.plot.title = "My Query Plot Title",
   shade.color = "skyblue", shade.alpha = 0.25, color.pal = 1,
-  custom.plot = NULL)
+  boxplot.summary = NULL, custom.plot = NULL)
 }
 \arguments{
 \item{data}{Data set}
@@ -69,6 +69,8 @@ See examples section on how to do this.}
 \item{shade.alpha}{Transparency of shading in matrix}
 
 \item{color.pal}{Color palette for attribute plots}
+
+\item{boxplot.summary}{Boxplots representing the distribution of a selected attribute for each intersection. Change param from NULL to "on" for this option.}
 
 \item{custom.plot}{Add own custom ggplot grob to be displayed below the UpSet plot}
 

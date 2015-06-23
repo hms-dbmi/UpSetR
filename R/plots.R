@@ -144,12 +144,15 @@ Make_size_plot <- function(Set_size_data, sbar_color, ratios){
 
 Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratios, att_x, att_y,
                            Set_data, exp, position, start_col, att_color, elems_att, q_att,
-                           Q_Title, customQ, custom_plot, legend, query_legend){
+                           Q_Title, customQ, custom_plot, legend, query_legend, boxplot){
   
   Main_bar_plot$widths <- Matrix_plot$widths
   Matrix_plot$heights <- Size_plot$heights 
   if(is.null(legend)==F){
     legend$widths <- Matrix_plot$widths
+  }
+  if(is.null(boxplot) == F){
+    boxplot$widths <- Matrix_plot$widths
   }
   if(is.null(custom_plot) == F){
     custom_plot$widths <- Matrix_plot$widths
@@ -158,7 +161,7 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
   size_plot_height <- (((hratios[1])+0.01)*100) 
   if((hratios[1] > 0.7 || hratios[1] < 0.3) || 
        (hratios[2] > 0.7 || hratios[2] < 0.3)) warning("Plot might be out of range if ratio > 0.7 or < 0.3")
-  if(is.null(custom_plot) == T){
+  if(is.null(custom_plot) == T && is.null(boxplot) == T){
     if((is.null(att_x) == T) && (is.null(att_y) == F)){
       warning("Please place lone attribute in att.x")
     }
@@ -179,11 +182,63 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
                      Main_bar_plot, Matrix_plot, Size_plot, query_legend)
     }
   }
-  else if(is.null(custom_plot) == F){
-    CustomBasePlot(custom_plot, position, size_plot_height, Main_bar_plot, Matrix_plot, 
+  
+  else if(is.null(custom_plot) == F && is.null(boxplot) == T){
+    BaseBoxAndCustomPlot(custom_plot, position, size_plot_height, Main_bar_plot, Matrix_plot, 
                    Size_plot, hratios, query_legend)
   }
+  else if(is.null(boxplot)==F && is.null(custom_plot) == T){
+    BaseBoxAndCustomPlot(boxplot, position, size_plot_height, Main_bar_plot, Matrix_plot, Size_plot,
+                hratios, query_legend)
+  }
 }
-#IntersectionBoxPlot <- function(data1, data2){
-#  
-#}
+
+IntersectionBoxPlot <- function(data1, data2, start_col, names){
+  end_col <- ((start_col + length(names)) - 1)
+  data2 <- data2[which(rowSums(data2[ ,start_col:end_col]) != 0), ]
+  data2$tag <- 1:nrow(data2)
+  sets <- list()
+  intersections <- list()
+  box_plot_data <- data.frame()
+  for(i in 1:nrow(data1)){
+   sets[[i]] <- colnames(data1)[which(data1[i, 1:length(names)] == 0)]
+  }
+  for(i in 1:length(sets)){
+     intersections[[i]] <- data2[(rowSums(data2[ ,start_col:end_col]) == (length(names) - length(as.character(sets[[i]])))), ]
+     intersections[[i]] <- Wanted(intersections[[i]], as.character(sets[[i]]))
+     end <- ((start_col + (length(names) - length(as.character(sets[[i]]))))-1)
+     if(start_col == end){
+       intersections[[i]] <- intersections[[i]][(intersections[[i]][ ,start_col]) == 1, ]
+       intersections[[i]] <- intersections[[i]]$tag
+     }
+     else{
+       num <- length(names) - length(as.character(sets[[i]]))
+       intersections[[i]] <- intersections[[i]][(rowSums(intersections[[i]][ ,start_col:end]) == num), ]
+       intersections[[i]] <- intersections[[i]]$tag
+     }
+     intersections[[i]] <- data2[data2$tag %in% as.numeric(intersections[[i]]), ]
+     intersections[[i]]$x <- i
+   }
+  for(i in 1:length(intersections)){
+   box_plot_data <- rbind(box_plot_data, intersections[[i]])
+  }
+  return(box_plot_data)
+}
+
+BoxPlotsPlot <- function(bdat, att){
+  yaxis <- as.character(att)
+  col <- match(att, colnames(bdat))
+  colnames(bdat)[col] <- "attribute"
+  upper_xlim <- as.numeric((max(bdat$x) + 1))
+boxplots <- ggplotGrob(ggplot() 
+                       + theme_bw() +ylab(yaxis)
+                       #+ scale_y_continuous(expand = c(0,0))
+                       #+ xlim(0,28)
+                       + theme(plot.margin = unit(c(-0.7,0,0,0), "cm"), 
+                               axis.title.y = element_text(vjust = -0.8),
+                               axis.ticks.x = element_blank(),
+                               axis.text.x = element_blank(),
+                               axis.title.x = element_blank())
+                       + geom_boxplot(data = bdat, aes(x=factor(x), y=attribute)))
+return(boxplots)
+}
