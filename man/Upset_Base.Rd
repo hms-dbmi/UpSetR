@@ -2,7 +2,7 @@
 % Please edit documentation in R/upsetbase.R
 \name{upset_base}
 \alias{upset_base}
-\title{Base plot for UpSetR}
+\title{Base Plot for UpSetR}
 \usage{
 upset_base(data, nsets = 5, nintersects = 40, sets = NULL,
   matrix.color = "gray23", main.bar.color = "gray23",
@@ -42,11 +42,11 @@ upset_base(data, nsets = 5, nintersects = 40, sets = NULL,
 
 \item{att.y}{Attribute entered as a string. Produces a scatter plot vs. att.x}
 
-\item{expression}{Expression to subset attribute data entered as string (Ex: "ColName > 3")}
+\item{expression}{Expression to subset attributes of intersection or element query data. Enter as string (Ex: "ColName > 3")}
 
 \item{att.pos}{Position of attribute plot. If NULL or "bottom" the plot will be at below UpSet plot. If "top" it will be above UpSert plot}
 
-\item{att.color}{Color of attribute histogram bins or scatterplot points for unqueried data.}
+\item{att.color}{Color of attribute histogram bins or scatterplot points for unqueried data represented by main bars. Default set to color of main bars.}
 
 \item{order.matrix}{How the intersections in the matrix should be ordered by. Options include frequency (entered as "freq"), degree, or both in any order.}
 
@@ -75,7 +75,7 @@ See examples section on how to do this.}
 \item{query.title.plot}{Title of query plot}
 }
 \description{
-Visualization of set intersections using the novel UpSet matrix design.
+Visualization of set intersections using novel UpSet matrix design.
 }
 \details{
 Visualization of set data in the layout described by Lex and Gehlenborg in \url{<http://www.nature.com/nmeth/journal/v11/n8/full/nmeth.3033.html>}.
