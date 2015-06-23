@@ -38,17 +38,17 @@ upset_base(data, nsets = 5, nintersects = 40, sets = NULL,
 
 \item{mb.ratio}{Ratio between matrix plot and main bar plot (Keep in terms of hundreths)}
 
-\item{att.x}{Attribute entered as a string. If att.y is NULL a histogram will be produced. Best if data attached}
+\item{att.x}{Attribute entered as a string. If att.y is NULL a histogram will be produced}
 
-\item{att.y}{Attribute entered as a string. Produces a scatter plot vs. att.x. Best if data attached}
+\item{att.y}{Attribute entered as a string. Produces a scatter plot vs. att.x}
 
-\item{expression}{Expression to subset attribute data entered as string (Ex: "ColName > 3"). Best if data attached}
+\item{expression}{Expression to subset attribute data entered as string (Ex: "ColName > 3")}
 
-\item{att.pos}{Position of attribute plot. If NULL plot will be at bottom. If "top" it will be above other plots}
+\item{att.pos}{Position of attribute plot. If NULL or "bottom" the plot will be at below UpSet plot. If "top" it will be above UpSert plot}
 
-\item{att.color}{Color of attribute plot bars or points}
+\item{att.color}{Color of attribute histogram bins or scatterplot points for unqueried data.}
 
-\item{order.matrix}{What the intersections in the matrix should be ordered by}
+\item{order.matrix}{How the intersections in the matrix should be ordered by. Options include frequency (entered as "freq"), degree, or both in any order.}
 
 \item{show.numbers}{Show numbers of intersection sizes above bars}
 
@@ -56,7 +56,11 @@ upset_base(data, nsets = 5, nintersects = 40, sets = NULL,
 
 \item{cutoff}{The number of intersections from each set (to cut off at) when aggregating by sets}
 
-\item{queries}{Unified querie of intersections, elements, and custom row functions}
+\item{queries}{Unified querie of intersections, elements, and custom row functions. Entered as a list that contains a list of
+queries. query is the type of query being conducted. params are the parameters of the query (if any). color is the color of the points on the
+plot that will represent the query. If no color is selected one will be provided automatically. active takes TRUE or FALSE, and if
+TRUE, it will overlay the bars present  with the results from the query. If FALSE a tick mark will indicate the intersection size.
+See examples section on how to do this.}
 
 \item{query.legend}{Position query legend on top or bottom of UpSet plot}
 
@@ -68,15 +72,52 @@ upset_base(data, nsets = 5, nintersects = 40, sets = NULL,
 
 \item{custom.plot}{Add own custom ggplot grob to be displayed below the UpSet plot}
 
-\item{elements}{Specific elements to plot entered as a list. First element in list is name of attribute (string) followed by specific elements of attribute.}
-
-\item{elements.color}{Color of element data on plot}
-
 \item{query.title.plot}{Title of query plot}
 }
 \description{
-Takes intersections from most abundant sets in a data set and produces a matrix
-layout of the intersections, along with plotting their corresponding sizes and
-the size of each set used.
+Visualization of set intersections using the novel UpSet matrix design.
+}
+\details{
+Visualization of set data in the layout described by Lex and Gehlenborg in \url{<http://www.nature.com/nmeth/journal/v11/n8/full/nmeth.3033.html>}.
+UpSet also allows for visualization of queries on intersections and elements, along with custom queries queries implemented using
+Hadley Wickhams apply function. To further analyze the data contained in the intersections, the user may select additional attribute plots
+to be displayed alongside the UpSet plot. The user also has the the ability to pass their own plots into the function to further analyze data
+data that has already been generated. Most aspects of the UpSet plot are customizable, allowing the user to select the plot that looks best to them.
+Depending on how the featuers are selected UpSet can display between 25-65 sets, and between 40-100 intersections.
+}
+\note{
+Data set must be formatted as described on the orginal UpSet github page: \url{<https://github.com/VCG/upset/wiki>}.
+}
+\examples{
+#Link to correctly formatted movies data set provided in see also section.
+movies <- read.csv( system.file("extdata", "movies.csv", package = "UpSetR"), header=T, sep=";" )
+
+between <- function(row, min, max){
+newData <- (row["ReleaseDate"] < max) & (row["ReleaseDate"] > min)
+}
+
+customplot <- ggplotGrob(ggplot(data = movies, aes(x=ReleaseDate, y = AvgRating))
+                         + geom_point()
+                          + theme(plot.margin = unit(c(-0.5, 0,0,0), "cm"),
+                                  axis.title.y = element_text(vjust = -0.8)))
+
+upset_base(movies, nsets = 7, nintersects = 30, mb.ratio = c(0.5, 0.5),
+           att.x = "ReleaseDate", att.y = "AvgRating", expression = "ReleaseDate > 1970 & AvgRating < 4.2",
+           order.matrix = c("freq", "degree"))
+
+upset_base(movies, sets = c("Drama", "Comedy", "Action", "Thriller", "Western", "Documentary"),
+          att.x = "ReleaseDate", att.y = "AvgRating", queries = list(list(query = "Intersection",
+          params = list("Drama", "Action")), list(query = between, params = list(1970, 1980), color = "red",
+          active = TRUE)))
+
+upset_base(movies, custom.plot = customplot)
+}
+\references{
+Lex and Gehlenborg (2014). Points of view: Sets and intersections. Nature Methods 11, 779 (2014). \url{http://www.nature.com/nmeth/journal/v11/n8/full/nmeth.3033.html}
+
+Original UpSet Website: \url{http://vcg.github.io/upset/about/}
+}
+\seealso{
+Movies data from example can be found here: \url{https://github.com/hms-dbmi/UpSetR}
 }
 

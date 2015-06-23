@@ -151,6 +151,9 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
   if(is.null(legend)==F){
     legend$widths <- Matrix_plot$widths
   }
+  if(is.null(custom_plot) == F){
+    custom_plot$widths <- Matrix_plot$widths
+  }
   
   size_plot_height <- (((hratios[1])+0.01)*100) 
   if((hratios[1] > 0.7 || hratios[1] < 0.3) || 

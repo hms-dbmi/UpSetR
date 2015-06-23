@@ -1,10 +1,12 @@
 Package: UpSetR
 Title: Visualization of Intersecting Sets
 Version: 1.0
-Author: Jake Conway
-Maintainer: Jake Conway <jake_conway@student.uml.edu>
-Description: Creates a matrix visualization of intersecting sets, along with
-  plots of the corresponding intersection sizes and the sizes sets used.
+Date: 2015-06-25
+Author: Nils Gehlenborg
+Maintainer: Nils Gehlenborg <nils@hms.harvard.edu>
+Description: Creates visualizations of intersecting sets using a novel matrix design,
+             along with visualizations of several common set, element and attribute
+             related tasks
 Depends: R (>= 3.1.1)
 Imports: ggplot2,
   gridExtra,

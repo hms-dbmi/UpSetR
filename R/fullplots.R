@@ -82,6 +82,7 @@ HistoAttPlot <- function(att_x, att_y, Set_data, start_col, labels, exp, elems_a
                        panel.border = element_blank(),
                        panel.grid.minor = element_blank(),
                        panel.grid.major = element_blank(),
+                       axis.title.y = element_text(vjust = -0.8),
                        plot.margin=unit(c(-0.7,0.2,0.1,0.2), "cm")))
   if(is.null(elems) == F){
     for(i in 1:length(EColors)){
@@ -242,6 +243,7 @@ ScatterAttPlot <- function(att_x, att_y, Set_data, start_col, labels, exp, elems
                        plot.title = element_text(vjust = 1.3),
                        panel.grid.minor = element_blank(),
                        panel.grid.major = element_blank(),
+                       axis.title.y = element_text(vjust = -0.8),
                        plot.margin=unit(c(-0.7,0.2,0.1,0.2), "cm")))
   if(is.null(elems) == F){
     att_plot <- att_plot + geom_point(data = elems, aes(x = val1, y = val2), colour = elems$color)
