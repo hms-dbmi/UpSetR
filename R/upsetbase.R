@@ -1,6 +1,6 @@
 #' Base plot for UpSetR
 #' 
-#' @description Visualization of set intersections using the novel UpSet matrix design.
+#' @description Visualization of set intersections using novel UpSet matrix design.
 #' @param data Data set
 #' @param nsets Number of sets to look at
 #' @param nintersects Number of intersections to plot
