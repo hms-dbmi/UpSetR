@@ -230,10 +230,10 @@ BoxPlotsPlot <- function(bdat, att){
   col <- match(att, colnames(bdat))
   colnames(bdat)[col] <- "attribute"
   upper_xlim <- as.numeric((max(bdat$x) + 1))
+  plot_lims <- as.numeric(0:upper_xlim)
 boxplots <- ggplotGrob(ggplot() 
                        + theme_bw() +ylab(yaxis)
-                       #+ scale_y_continuous(expand = c(0,0))
-                       #+ xlim(0,28)
+                       + scale_x_discrete(limits = plot_lims, expand = c(0,0))
                        + theme(plot.margin = unit(c(-0.7,0,0,0), "cm"), 
                                axis.title.y = element_text(vjust = -0.8),
                                axis.ticks.x = element_blank(),
