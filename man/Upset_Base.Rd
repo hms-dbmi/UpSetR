@@ -72,7 +72,10 @@ See examples section on how to do this.}
 
 \item{boxplot.summary}{Boxplots representing the distribution of a selected attribute for each intersection. Change param from NULL to "on" for this option.}
 
-\item{custom.plot}{Add own custom ggplot grob to be displayed below the UpSet plot}
+\item{custom.plot}{Create custom ggplot using intersection data represented in the main bar plot. Prior to adding custom plots, the UpSet plot is set up in a 100 by 100 grid.
+The custom.plot parameter takes a list that contains the number of rows that should be allocated for the custom plot, and a list of plots with specified positions.
+nrows is the number of rows the custom plots should take up. There is already 100 allocated for the custom plot. plots takes a list that contains the function that returns
+the custom ggplot, the number of rows the the custom ggplot should span, and the number of columns the ggplot should span. See examples for how to add custom ggplots.}
 
 \item{query.title.plot}{Title of query plot}
 }
@@ -92,16 +95,22 @@ Data set must be formatted as described on the orginal UpSet github page: \url{<
 }
 \examples{
 #Link to correctly formatted movies data set provided in see also section.
-movies <- read.csv( system.file("extdata", "movies.csv", package = "UpSetR"), header=T, sep=";" )
+movies <- read.csv( system.file("extdata", "movies.csv", package = "UpSetR"), header=TRUE, sep=";" )
 
 between <- function(row, min, max){
 newData <- (row["ReleaseDate"] < max) & (row["ReleaseDate"] > min)
 }
 
-customplot <- ggplotGrob(ggplot(data = movies, aes(x=ReleaseDate, y = AvgRating))
-                         + geom_point()
-                          + theme(plot.margin = unit(c(-0.5, 0,0,0), "cm"),
-                                  axis.title.y = element_text(vjust = -0.8)))
+plot1 <- function(mydata){
+myplot <- (ggplot(data = mydata, aes(x= ReleaseDate, y = AvgRating))
+           + geom_point())
+}
+plot2 <- function(mydata){
+ myplot <- (ggplot(data = mydata, aes(x = AvgRating, y = ReleaseDate))
+            + geom_point() + theme_bw() + theme(plot.margin = unit(c(-0.5,0,0,0), "cm")))
+}
+customplot <- list(nrows = 40, plots = list(list(plot = plot2, rows = (101:130), cols = (21:50)),
+                                            list(plot = plot1, rows = (101:130), cols = (60:80))))
 
 upset_base(movies, nsets = 7, nintersects = 30, mb.ratio = c(0.5, 0.5),
            att.x = "ReleaseDate", att.y = "AvgRating", expression = "ReleaseDate > 1970 & AvgRating < 4.2",
