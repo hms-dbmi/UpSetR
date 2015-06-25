@@ -345,7 +345,7 @@ ScatterAttPlot <- function(att_x, att_y, Set_data, start_col, labels, exp, elems
   }
 }
 
-BaseBoxAndCustomPlot <- function(custom_plot, position, size_plot_height, Main_bar_plot, Matrix_plot, 
+BaseBoxPlot <- function(custom_plot, position, size_plot_height, Main_bar_plot, Matrix_plot, 
                            Size_plot, hratios, query_legend){
   bar_top <- 1
   matrix_bottom <- 100
@@ -365,3 +365,25 @@ BaseBoxAndCustomPlot <- function(custom_plot, position, size_plot_height, Main_b
   print(arrangeGrob(custom_plot), vp = vplayout(att_top:att_bottom, 21:100))
 }
 
+GenerateCustomPlots <- function(custom_plot, Set_data){
+  CustomPlot <- list()
+  for(i in 1:length(custom_plot$plots)){
+    CustomPlot[[i]] <- custom_plot$plots[[i]]$plot(Set_data)
+  }
+  return(CustomPlot)
+}
+
+BaseCustomPlot <- function(plots, custom_plot, position, size_plot_height, Main_bar_plot, Matrix_plot, 
+                           Size_plot, hratios, query_legend){
+  bar_top <- 1
+  matrix_bottom <- 100
+  custom_top <- 101
+  custom_bottom <- (custom_plot$nrows + 100)
+  grid.newpage()
+  pushViewport(viewport(layout = grid.layout(custom_bottom,100)))
+  print(arrangeGrob(Main_bar_plot, Matrix_plot, heights = hratios), vp = vplayout(bar_top:matrix_bottom, 21:100))
+  print(arrangeGrob(Size_plot), vp = vplayout(size_plot_height:matrix_bottom, 1:20))
+  for(i in 1:length(custom_plot$plots)){
+    print(plots[[i]], vp = vplayout(custom_plot$plots[[i]]$rows, custom_plot$plots[[i]]$cols))
+  }
+}

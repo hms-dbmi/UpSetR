@@ -146,6 +146,8 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
                            Set_data, exp, position, start_col, att_color, elems_att, q_att,
                            Q_Title, customQ, custom_plot, legend, query_legend, boxplot){
   
+  end_col <- ((start_col + as.integer(length(labels))) - 1)
+  Set_data <- Set_data[which(rowSums(Set_data[ ,start_col:end_col]) != 0), ]
   Main_bar_plot$widths <- Matrix_plot$widths
   Matrix_plot$heights <- Size_plot$heights 
   if(is.null(legend)==F){
@@ -153,9 +155,6 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
   }
   if(is.null(boxplot) == F){
     boxplot$widths <- Matrix_plot$widths
-  }
-  if(is.null(custom_plot) == F){
-    custom_plot$widths <- Matrix_plot$widths
   }
   
   size_plot_height <- (((hratios[1])+0.01)*100) 
@@ -184,11 +183,12 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
   }
   
   else if(is.null(custom_plot) == F && is.null(boxplot) == T){
-    BaseBoxAndCustomPlot(custom_plot, position, size_plot_height, Main_bar_plot, Matrix_plot, 
-                   Size_plot, hratios, query_legend)
+   plots <- GenerateCustomPlots(custom_plot, Set_data)
+   BaseCustomPlot(plots, custom_plot, position, size_plot_height, Main_bar_plot, Matrix_plot, Size_plot,
+                  hratios, query_legend)
   }
   else if(is.null(boxplot)==F && is.null(custom_plot) == T){
-    BaseBoxAndCustomPlot(boxplot, position, size_plot_height, Main_bar_plot, Matrix_plot, Size_plot,
+    BaseBoxPlot(boxplot, position, size_plot_height, Main_bar_plot, Matrix_plot, Size_plot,
                 hratios, query_legend)
   }
 }

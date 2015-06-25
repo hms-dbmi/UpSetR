@@ -32,7 +32,10 @@
 #' @param shade.alpha Transparency of shading in matrix
 #' @param color.pal Color palette for attribute plots
 #' @param boxplot.summary Boxplots representing the distribution of a selected attribute for each intersection. Change param from NULL to "on" for this option. 
-#' @param custom.plot Add own custom ggplot grob to be displayed below the UpSet plot
+#' @param custom.plot Create custom ggplot using intersection data represented in the main bar plot. Prior to adding custom plots, the UpSet plot is set up in a 100 by 100 grid.
+#'        The custom.plot parameter takes a list that contains the number of rows that should be allocated for the custom plot, and a list of plots with specified positions.
+#'        nrows is the number of rows the custom plots should take up. There is already 100 allocated for the custom plot. plots takes a list that contains the function that returns
+#'        the custom ggplot, the number of rows the the custom ggplot should span, and the number of columns the ggplot should span. See examples for how to add custom ggplots. 
 #' @details Visualization of set data in the layout described by Lex and Gehlenborg in \url{<http://www.nature.com/nmeth/journal/v11/n8/full/nmeth.3033.html>}. 
 #' UpSet also allows for visualization of queries on intersections and elements, along with custom queries queries implemented using 
 #' Hadley Wickhams apply function. To further analyze the data contained in the intersections, the user may select additional attribute plots
@@ -44,27 +47,34 @@
 #' @references Original UpSet Website: \url{http://vcg.github.io/upset/about/}
 #' @seealso Movies data from example can be found here: \url{https://github.com/hms-dbmi/UpSetR}
 #' @examples #Link to correctly formatted movies data set provided in see also section.
-#' movies <- read.csv( system.file("extdata", "movies.csv", package = "UpSetR"), header=T, sep=";" )
+#' movies <- read.csv( system.file("extdata", "movies.csv", package = "UpSetR"), header=TRUE, sep=";" )
 #'  
 #' between <- function(row, min, max){
 #' newData <- (row["ReleaseDate"] < max) & (row["ReleaseDate"] > min)
 #' }
 #' 
-#' customplot <- ggplotGrob(ggplot(data = movies, aes(x=ReleaseDate, y = AvgRating))
-#'                          + geom_point()
-#'                           + theme(plot.margin = unit(c(-0.5, 0,0,0), "cm"),
-#'                                   axis.title.y = element_text(vjust = -0.8)))
+#' plot1 <- function(mydata){
+#' myplot <- (ggplot(data = mydata, aes(x= ReleaseDate, y = AvgRating))
+#'            + geom_point())
+#' }
+#' plot2 <- function(mydata){
+#'  myplot <- (ggplot(data = mydata, aes(x = AvgRating, y = ReleaseDate))
+#'             + geom_point() + theme_bw() + theme(plot.margin = unit(c(-0.5,0,0,0), "cm")))
+#' }
+#' customplot <- list(nrows = 40, plots = list(list(plot = plot2, rows = (101:130), cols = (21:50)),
+#'                                             list(plot = plot1, rows = (101:130), cols = (60:80))))
 #' 
 #' upset_base(movies, nsets = 7, nintersects = 30, mb.ratio = c(0.5, 0.5), 
 #'            att.x = "ReleaseDate", att.y = "AvgRating", expression = "ReleaseDate > 1970 & AvgRating < 4.2",
 #'            order.matrix = c("freq", "degree"))
 #'
-#'upset_base(movies, sets = c("Drama", "Comedy", "Action", "Thriller", "Western", "Documentary"),
+#' upset_base(movies, sets = c("Drama", "Comedy", "Action", "Thriller", "Western", "Documentary"),
 #'           att.x = "ReleaseDate", att.y = "AvgRating", queries = list(list(query = "Intersection",
 #'           params = list("Drama", "Action")), list(query = between, params = list(1970, 1980), color = "red",
 #'           active = TRUE)))
 #'
 #' upset_base(movies, custom.plot = customplot)
+#' 
 #' @export
 upset_base <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.color = "gray23",
                        main.bar.color = "gray23", sets.bar.color = "dodgerblue",point.size = 4, line.size = 1, 
@@ -84,7 +94,6 @@ upset_base <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.co
   if(is.null(Set_names) == T){
     Set_names <- FindMostFreq(data, first.col, last.col, nsets)
   }
-  
   Sets_to_remove <- Remove(data, first.col, last.col, Set_names)
   New_data <- Wanted(data, Sets_to_remove)
   Num_of_set <- Number_of_sets(Set_names)
@@ -392,35 +401,20 @@ GetIntersects <- function(data, start_col, sets, num_sets){
 FindStartEnd <- function(data){
   startend <- c()
   for(i in 1:ncol(data)){
-    column <- data[ ,i]
-    if((is.integer(column[1]) == F) && (is.double(column[1]) == F)){
-      next
-    }
-    else{
-      column <- as.integer(levels(as.factor(column)))
-        if((column[1] == 0) && (column[2] == 1))
-        {
-          startend[1] <- i
-          break
-        }
-        else{
-          next
-        }
+    column <- data[, i]
+      column <- (levels(factor(column)))
+      if((column[1] == "0") && (column[2] == "1" && (length(column) == 2))){
+        startend[1] <- i
+        break
+      }
+      else{
+        next
       }
     }
   for(i in ncol(data):1){
     column <- data[ ,i]
-    if((is.integer(column[1]) == F) && (is.double(column[1]) == F)){
-      next
-    }
-    column <- data[ ,i]
-    if((is.integer(column[1]) == F) && (is.double(column[1]) == F)){
-      next
-    }
-    else{
-      column <- as.integer(levels(as.factor(column)))
-      if((column[1] == 0) && (column[2] == 1))
-      {
+    column <- (levels(factor(column)))
+      if((column[1] == "0") && (column[2] == "1") && (length(column) == 2)){
         startend[2] <- i
         break
       }
@@ -428,6 +422,5 @@ FindStartEnd <- function(data){
         next
       }
     }
-  }
   return(startend)
 }
