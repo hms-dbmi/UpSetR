@@ -38,9 +38,10 @@ NoAttBasePlot <- function(legend, size_plot_height, Main_bar_plot, Matrix_plot, 
   }
 }
 
-HistoAttPlot <- function(att_x, att_y, Set_data, start_col, labels, exp, elems_att, q_att, att_color,
-                         Q_Title, customQ, hratios, position, size_plot_height, legend,
+HistoAttPlot <- function(att_x, att_y, Set_data, start_col, labels, exp, att_color, QueryData,
+                         Q_Title, hratios, position, size_plot_height, legend,
                          Main_bar_plot, Matrix_plot, Size_plot, query_legend){
+  
   col_to_switch <- match(att_x, colnames(Set_data))
   end_col <- ((start_col + as.integer(length(labels))) - 1)
   Set_data <- Set_data[which(rowSums(Set_data[ ,start_col:end_col]) != 0), ]
@@ -48,32 +49,7 @@ HistoAttPlot <- function(att_x, att_y, Set_data, start_col, labels, exp, elems_a
   #  Set_data <- Subset_att(Set_data, exp)
   #}
   colnames(Set_data)[col_to_switch] <- "values"
-  if(is.null(elems_att) == F){
-    elems <- elems_att
-    if(nrow(elems) != 0){
-      elems <- elems[order(elems$val1), ]
-      EColors <- unique(elems$color)
-    }
-    else{
-      elems <- NULL
-    }
-  }
-  else{
-    elems <- NULL
-  }
-  if(is.null(q_att) == F){
-    intersect <- q_att
-    if(nrow(intersect) != 0){
-      intersect <- intersect[order(intersect$v1), ]
-      IColors <- unique(intersect$IColor)
-    }
-    else{
-      intersect <- NULL
-    }
-  }
-  else{
-    intersect <- NULL
-  }
+    
   att_plot <- (ggplot(data = Set_data, aes(x = values)) 
                + geom_histogram(binwidth = 1, colour = "black", fill = att_color)
                + xlab(att_x) + ylab("Frequency") + labs(title = Q_Title)
@@ -84,32 +60,14 @@ HistoAttPlot <- function(att_x, att_y, Set_data, start_col, labels, exp, elems_a
                        panel.grid.major = element_blank(),
                        axis.title.y = element_text(vjust = -0.8),
                        plot.margin=unit(c(-0.7,0.2,0.1,0.2), "cm")))
-  if(is.null(elems) == F){
-    for(i in 1:length(EColors)){
-      Color <- EColors[i]
-      elems_data <- elems[which(elems$color == Color), ]
-      att_plot <- att_plot + geom_histogram(data = elems_data, aes(x = val1), 
-                                            binwidth = 1, colour = "black", fill = Color, alpha =0.5)
-    }
-  }
-  if(is.null(intersect) == F){
-    for(i in 1:length(IColors)){
-      Color <- IColors[i]
-      intersect_data <- intersect[which(intersect$IColor == Color ), ]
-      att_plot <- att_plot + geom_histogram(data = intersect_data, aes(x = v1), binwidth = 1,
-                                            colour = "black", fill = Color, alpha =0.5)
-    }
-  }
-  if(length(customQ) != 0){
-    col <- match(att_x, colnames(customQ))
-    colnames(customQ)[col] <- "cval1"
-    customQ <- customQ[order(customQ$cval1), ]
-    CColor <- unique(customQ$color2)
-    for( i in 1:length(CColor)){
-      Color <- CColor[i]
-      customQData <- customQ[which(customQ$color2 == Color), ]
-      att_plot <- (att_plot + geom_histogram(data = customQData, aes(x=cval1),
-                                             colour = "black", fill = Color, alpha = 0.5, binwidth = 1))
+  
+  if(is.null(QueryData) == F){
+    QColors <- unique(QueryData$color)
+    for(i in 1:length(QColors)){
+      Color <- QColors[i]
+      QData <- QueryData[which(QueryData$color == Color), ]
+      att_plot <- att_plot + geom_histogram(data = QData, aes(x=val1), binwidth = 1,
+                                            colour = "black", fill = Color, alpha = 0.5)
     }
   }
   
@@ -199,8 +157,8 @@ HistoAttPlot <- function(att_x, att_y, Set_data, start_col, labels, exp, elems_a
   }
 }
 
-ScatterAttPlot <- function(att_x, att_y, Set_data, start_col, labels, exp, elems_att, q_att, att_color,
-                           Q_Title, customQ, hratios, position, size_plot_height, legend,
+ScatterAttPlot <- function(att_x, att_y, Set_data, start_col, labels, exp, att_color, QueryData,
+                           Q_Title, hratios, position, size_plot_height, legend,
                            Main_bar_plot, Matrix_plot, Size_plot, query_legend){
   col_switch1 <- match(att_x, colnames(Set_data))
   col_switch2 <- match(att_y, colnames(Set_data))
@@ -211,31 +169,7 @@ ScatterAttPlot <- function(att_x, att_y, Set_data, start_col, labels, exp, elems
 #  }
   colnames(Set_data)[col_switch1] <- "values1"
   colnames(Set_data)[col_switch2] <- "values2"
-  if(is.null(elems_att) == F){
-    elems <- elems_att
-    if(nrow(elems) != 0){
-      elems <- elems[order(elems$val1, elems$val2), ]
-      EColors <- unique(elems$color)
-    }
-    else{
-      elems <- NULL
-    }
-  }
-  else{
-    elems <- NULL
-  }
-  if(is.null(q_att) == F){
-    intersect <- q_att
-    if(nrow(intersect) != 0){
-      intersect <- intersect[order(intersect$v1, intersect$v2), ]
-    }
-    else{
-      intersect <- NULL
-    }
-  }
-  else{
-    intersect <- NULL
-  }
+
   att_plot <- (ggplot(data = Set_data, aes(x = values1, y = values2)) 
                + geom_point(colour = att_color)
                + xlab(att_x) + ylab(att_y) + labs(title = Q_Title)
@@ -245,19 +179,10 @@ ScatterAttPlot <- function(att_x, att_y, Set_data, start_col, labels, exp, elems
                        panel.grid.major = element_blank(),
                        axis.title.y = element_text(vjust = -0.8),
                        plot.margin=unit(c(-0.7,0.2,0.1,0.2), "cm")))
-  if(is.null(elems) == F){
-    att_plot <- att_plot + geom_point(data = elems, aes(x = val1, y = val2), colour = elems$color)
-  }
-  if(is.null(intersect) == F){
-    att_plot <- (att_plot + geom_point(data = intersect, aes(x = v1, y = v2), color = intersect$color))
-  }
-  if(length(customQ) != 0){
-    col1 <- match(att_x, colnames(customQ))
-    col2 <- match(att_y, colnames(customQ))
-    colnames(customQ)[col1] <- "cval1"
-    colnames(customQ)[col2] <- "cval2"
-    att_plot <- att_plot + geom_point(data = customQ, aes(x=cval1, y = cval2), color = customQ$color2)
-  }
+
+if(is.null(QueryData) == F){
+  att_plot <- att_plot + geom_point(data = QueryData, aes(x=val1, y = val2), colour = QueryData$color)
+}
   
   att_plot <- ggplot_gtable(ggplot_build(att_plot))
   att_plot$widths <-  Matrix_plot$widths
@@ -345,36 +270,84 @@ ScatterAttPlot <- function(att_x, att_y, Set_data, start_col, labels, exp, elems
   }
 }
 
-BaseBoxPlot <- function(custom_plot, position, size_plot_height, Main_bar_plot, Matrix_plot, 
-                           Size_plot, hratios, query_legend){
+BaseBoxPlot <- function(box_plot, position, size_plot_height, Main_bar_plot, Matrix_plot, 
+                           Size_plot, hratios){
+  if(length(box_plot) > 2){
+    warning("UpSet can only show 2 box plots at a time")
+  }
+  if(is.null(position) == T || position == tolower("bottom")){
   bar_top <- 1
   matrix_bottom <- 100
   att_top <- 101
   att_bottom <- 130
+  if(length(box_plot) == 2){
+    att_top <- 105
+    att_bottom <- 120
+    gridrow <- 145
+  }
+  }
   if((is.null(position) == F) && (position != tolower("bottom"))){
-    size_plot_height <- (size_plot_height + 30)
-    bar_top <- 31
-    matrix_bottom <- 130
-    att_top <- 1
-    att_bottom <- 30
+    if(length(box_plot)==1){
+    size_plot_height <- (size_plot_height + 35)
+    bar_top <- 36
+    matrix_bottom <- 135
+    att_top <- 10
+    att_bottom <- 35
+    }
+    else if(length(box_plot) == 2){
+      size_plot_height <- (size_plot_height + 50)
+      bar_top <- 51
+      matrix_bottom <- 150
+      att_top <- 15 
+      att_bottom <- 30
+      gridrow <- 150
+    }
   }
   grid.newpage()
-  pushViewport(viewport(layout = grid.layout(130,100)))
+  if(length(box_plot) == 1){
+  pushViewport(viewport(layout = grid.layout(135,100)))
+  }
+  else if(length(box_plot) == 2){
+    pushViewport(viewport(layout = grid.layout(gridrow,100)))
+  }
   print(arrangeGrob(Main_bar_plot, Matrix_plot, heights = hratios), vp = vplayout(bar_top:matrix_bottom, 21:100))
   print(arrangeGrob(Size_plot), vp = vplayout(size_plot_height:matrix_bottom, 1:20))
-  print(arrangeGrob(custom_plot), vp = vplayout(att_top:att_bottom, 21:100))
+  print(arrangeGrob(box_plot[[1]]), vp = vplayout(att_top:att_bottom, 21:100))
+  if(length(box_plot) == 2){
+  print(arrangeGrob(box_plot[[2]]), vp = vplayout((att_bottom + 10):(att_bottom + 25), 21:100))
+  }
 }
 
-GenerateCustomPlots <- function(custom_plot, Set_data){
+GenerateCustomPlots <- function(custom_plot, Set_data, QueryData, att_color, attx, atty){
   CustomPlot <- list()
-  for(i in 1:length(custom_plot$plots)){
-    CustomPlot[[i]] <- custom_plot$plots[[i]]$plot(Set_data)
+  Set_data$color <- att_color
+  if(length(QueryData) != 0){
+  SetAndQueryData <- Set_data[c(attx, atty, "color")]
+  colnames(QueryData) <- c(attx, atty, "color")
+  SetAndQueryData <- rbind(SetAndQueryData, QueryData)
+  SetAndQueryData <- SetAndQueryData[order(SetAndQueryData[1]), ]
+  }
+  for(i in seq_along(custom_plot$plots)){
+#      x_att <- custom_plot$plots[[i]]$x
+#      y_att <- custom_plot$plots[[i]]$y
+    if(isTRUE(custom_plot$plots[[i]]$queries) == T){ 
+      if(length(QueryData) == 0){
+        warning("To overlay with query data please specify att.x and att.y where applicable.")
+        CustomPlot[[i]] <- custom_plot$plots[[i]]$plot(Set_data, custom_plot$plots[[i]]$x, custom_plot$plots[[i]]$y)
+      }
+      else if(length(QueryData) != 0){
+     CustomPlot[[i]] <- custom_plot$plots[[i]]$plot(SetAndQueryData, custom_plot$plots[[i]]$x, custom_plot$plots[[i]]$y)
+      }
+    }
+    else {
+      CustomPlot[[i]] <- custom_plot$plots[[i]]$plot(Set_data, custom_plot$plots[[i]]$x, custom_plot$plots[[i]]$y)
+    }
   }
   return(CustomPlot)
 }
 
-BaseCustomPlot <- function(plots, custom_plot, position, size_plot_height, Main_bar_plot, Matrix_plot, 
-                           Size_plot, hratios, query_legend){
+BaseCustomPlot <- function(custom_plot, plots, position, size_plot_height, Main_bar_plot, Matrix_plot, 
+                           Size_plot, hratios){
   bar_top <- 1
   matrix_bottom <- 100
   custom_top <- 101
@@ -383,7 +356,10 @@ BaseCustomPlot <- function(plots, custom_plot, position, size_plot_height, Main_
   pushViewport(viewport(layout = grid.layout(custom_bottom,100)))
   print(arrangeGrob(Main_bar_plot, Matrix_plot, heights = hratios), vp = vplayout(bar_top:matrix_bottom, 21:100))
   print(arrangeGrob(Size_plot), vp = vplayout(size_plot_height:matrix_bottom, 1:20))
-  for(i in 1:length(custom_plot$plots)){
-    print(plots[[i]], vp = vplayout(custom_plot$plots[[i]]$rows, custom_plot$plots[[i]]$cols))
-  }
+    print(do.call(arrangeGrob, c(plots, ncol = custom_plot$ncols)),
+                  vp = vplayout(custom_top:custom_bottom, 1:100), newpage = F)
+#   print(custom_plot$plot, vp = vplayout(custom_plot$rows, custom_plot$cols), newpage = F)
 }
+# printCustom <- function(custom_plot){
+#   print(custom_plot$plot, vp = vplayout(custom_plot$rows, custom_plot$cols), newpage = F)
+# }

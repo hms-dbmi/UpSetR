@@ -143,8 +143,8 @@ Make_size_plot <- function(Set_size_data, sbar_color, ratios){
 }
 
 Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratios, att_x, att_y,
-                           Set_data, exp, position, start_col, att_color, elems_att, q_att,
-                           Q_Title, customQ, custom_plot, legend, query_legend, boxplot){
+                           Set_data, exp, position, start_col, att_color, QueryData,
+                           Q_Title, custom_plot, legend, query_legend, boxplot){
   
   end_col <- ((start_col + as.integer(length(labels))) - 1)
   Set_data <- Set_data[which(rowSums(Set_data[ ,start_col:end_col]) != 0), ]
@@ -154,7 +154,9 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
     legend$widths <- Matrix_plot$widths
   }
   if(is.null(boxplot) == F){
-    boxplot$widths <- Matrix_plot$widths
+    for(i in seq_along(boxplot)){
+    boxplot[[i]]$widths <- Matrix_plot$widths
+    }
   }
   
   size_plot_height <- (((hratios[1])+0.01)*100) 
@@ -162,7 +164,7 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
        (hratios[2] > 0.7 || hratios[2] < 0.3)) warning("Plot might be out of range if ratio > 0.7 or < 0.3")
   if(is.null(custom_plot) == T && is.null(boxplot) == T){
     if((is.null(att_x) == T) && (is.null(att_y) == F)){
-      warning("Please place lone attribute in att.x")
+      warning("Please place lone attribute in att.x if you wish to plot a histogram")
     }
     
     else if((is.null(att_x) == T) && (is.null(att_y) == T)){
@@ -170,26 +172,29 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
     }
     
     else if((is.null(att_x) == F) && (is.null(att_y) == T)){
-      HistoAttPlot(att_x, att_y, Set_data, start_col, labels, exp, elems_att, q_att, att_color,
-                   Q_Title, customQ, hratios, position, size_plot_height, legend,
+      HistoAttPlot(att_x, att_y, Set_data, start_col, labels, exp, att_color, QueryData,
+                   Q_Title, hratios, position, size_plot_height, legend,
                    Main_bar_plot, Matrix_plot, Size_plot, query_legend)
     }
     
     else if((is.null(att_x) == F) && (is.null(att_y) == F)){
-      ScatterAttPlot(att_x, att_y, Set_data, start_col, labels, exp, elems_att, q_att, att_color,
-                     Q_Title, customQ, hratios, position, size_plot_height, legend,
+      ScatterAttPlot(att_x, att_y, Set_data, start_col, labels, exp, att_color, QueryData,
+                     Q_Title, hratios, position, size_plot_height, legend,
                      Main_bar_plot, Matrix_plot, Size_plot, query_legend)
     }
   }
   
   else if(is.null(custom_plot) == F && is.null(boxplot) == T){
-   plots <- GenerateCustomPlots(custom_plot, Set_data)
-   BaseCustomPlot(plots, custom_plot, position, size_plot_height, Main_bar_plot, Matrix_plot, Size_plot,
-                  hratios, query_legend)
+   plots <- GenerateCustomPlots(custom_plot, Set_data, QueryData, att_color, att_x, att_y)
+#      for(i in seq_along(plots)){
+#        custom_plot$plots[[i]]$plot <- plots[[i]]
+#      }
+         BaseCustomPlot(custom_plot, plots, position, size_plot_height, Main_bar_plot, Matrix_plot, Size_plot,
+                        hratios)
   }
   else if(is.null(boxplot)==F && is.null(custom_plot) == T){
     BaseBoxPlot(boxplot, position, size_plot_height, Main_bar_plot, Matrix_plot, Size_plot,
-                hratios, query_legend)
+                hratios)
   }
 }
 
@@ -225,7 +230,7 @@ IntersectionBoxPlot <- function(data1, data2, start_col, names){
   return(box_plot_data)
 }
 
-BoxPlotsPlot <- function(bdat, att){
+BoxPlotsPlot <- function(bdat, att, att_color){
   yaxis <- as.character(att)
   col <- match(att, colnames(bdat))
   colnames(bdat)[col] <- "attribute"
@@ -238,7 +243,11 @@ boxplots <- ggplotGrob(ggplot()
                                axis.title.y = element_text(vjust = -0.8),
                                axis.ticks.x = element_blank(),
                                axis.text.x = element_blank(),
+                               panel.border = element_blank(),
+                               panel.grid.minor = element_blank(),
+                               panel.grid.major = element_blank(),
                                axis.title.x = element_blank())
-                       + geom_boxplot(data = bdat, aes(x=factor(x), y=attribute)))
+                       + geom_boxplot(data = bdat, aes(x=factor(x), y=attribute),
+                                      fill = att_color, colour = "gray80"))
 return(boxplots)
 }

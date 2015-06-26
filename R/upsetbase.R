@@ -34,8 +34,8 @@
 #' @param boxplot.summary Boxplots representing the distribution of a selected attribute for each intersection. Change param from NULL to "on" for this option. 
 #' @param custom.plot Create custom ggplot using intersection data represented in the main bar plot. Prior to adding custom plots, the UpSet plot is set up in a 100 by 100 grid.
 #'        The custom.plot parameter takes a list that contains the number of rows that should be allocated for the custom plot, and a list of plots with specified positions.
-#'        nrows is the number of rows the custom plots should take up. There is already 100 allocated for the custom plot. plots takes a list that contains the function that returns
-#'        the custom ggplot, the number of rows the the custom ggplot should span, and the number of columns the ggplot should span. See examples for how to add custom ggplots. 
+#'        nrows is the number of rows the custom plots should take up. There is already 100 allocated for the custom plot. plots takes a list that contains a function that returns
+#'        a custom ggplots and the x and y aesthetics for the function. ncols is the number of columns that your ggplots should take up. See examples for how to add custom ggplots. 
 #' @details Visualization of set data in the layout described by Lex and Gehlenborg in \url{<http://www.nature.com/nmeth/journal/v11/n8/full/nmeth.3033.html>}. 
 #' UpSet also allows for visualization of queries on intersections and elements, along with custom queries queries implemented using 
 #' Hadley Wickhams apply function. To further analyze the data contained in the intersections, the user may select additional attribute plots
@@ -53,30 +53,39 @@
 #' newData <- (row["ReleaseDate"] < max) & (row["ReleaseDate"] > min)
 #' }
 #' 
-#' plot1 <- function(mydata){
-#' myplot <- (ggplot(data = mydata, aes(x= ReleaseDate, y = AvgRating))
-#'            + geom_point())
+#' plot1 <- function(mydata, x, y){
+#' myplot <- (ggplot(data = mydata, aes_string(x= x, y = y), alpha = 0.5)
+#'           + geom_point(colour = mydata$color)
+#'           + theme(plot.margin = unit(c(-0.5,0,0,0), "cm")))
 #' }
-#' plot2 <- function(mydata){
-#'  myplot <- (ggplot(data = mydata, aes(x = AvgRating, y = ReleaseDate))
-#'             + geom_point() + theme_bw() + theme(plot.margin = unit(c(-0.5,0,0,0), "cm")))
-#' }
-#' customplot <- list(nrows = 40, plots = list(list(plot = plot2, rows = (101:130), cols = (21:50)),
-#'                                             list(plot = plot1, rows = (101:130), cols = (60:80))))
 #' 
-#' upset_base(movies, nsets = 7, nintersects = 30, mb.ratio = c(0.5, 0.5), 
+#' plot2 <- function(mydata, x, y){
+#' myplot <- (ggplot(data = mydata, aes_string(x=x, y=y), alpha = 0.5)
+#'            + geom_point(colour = mydata$color)
+#'            + theme_bw() + theme(plot.margin = unit(c(-0.5,0,0,0), "cm")))
+#'}
+#' 
+#' customplot <- list(nrows = 50, 
+#'plots = list(list(plot = plot1, x= "ReleaseDate", y ="AvgRating",  queries = FALSE),
+#'             list(plot = plot1, x= "ReleaseDate", y ="AvgRating", queries = TRUE),
+#'             list(plot = plot2, x = "ReleaseDate", y = "AvgRating", queries = FALSE),
+#'             list(plot = plot2, x = "ReleaseDate", y = "AvgRating", queries = TRUE)), ncols = 2)
+#'             
+#' upset(movies, nsets = 7, nintersects = 30, mb.ratio = c(0.5, 0.5), 
 #'            att.x = "ReleaseDate", att.y = "AvgRating", expression = "ReleaseDate > 1970 & AvgRating < 4.2",
 #'            order.matrix = c("freq", "degree"))
 #'
-#' upset_base(movies, sets = c("Drama", "Comedy", "Action", "Thriller", "Western", "Documentary"),
+#' upset(movies, sets = c("Drama", "Comedy", "Action", "Thriller", "Western", "Documentary"),
 #'           att.x = "ReleaseDate", att.y = "AvgRating", queries = list(list(query = "Intersection",
 #'           params = list("Drama", "Action")), list(query = between, params = list(1970, 1980), color = "red",
 #'           active = TRUE)))
 #'
-#' upset_base(movies, custom.plot = customplot)
+#' upset(movies, custom.plot = customplot, queries = list(list(query = between, params = list(1920, 1940)), 
+#' list(query = "Intersection", params = list("Drama"), color= "red")),
+#' att.x = "ReleaseDate", att.y = "AvgRating", main.bar.color = "yellow")
 #' 
 #' @export
-upset_base <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.color = "gray23",
+upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.color = "gray23",
                        main.bar.color = "gray23", sets.bar.color = "dodgerblue",point.size = 4, line.size = 1, 
                        name.size = 10, mb.ratio = c(0.70,0.30), att.x = NULL, att.y = NULL, expression = NULL, 
                        att.pos = NULL, att.color = main.bar.color, order.matrix = c("degree", "freq"), 
@@ -90,8 +99,18 @@ upset_base <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.co
   startend <-FindStartEnd(data) 
   first.col <- startend[1]
   last.col <- startend[2]
+
+  if(color.pal == 1){
+    palette <- c("#1F77B4", "#FF7F0E", "#2CA02C", "#D62728", "#9467BD", "#8C564B", "#E377C2",
+                 "#7F7F7F", "#BCBD22", "#17BECF")
+  }
+  else{
+    palette <- c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00",
+                 "#CC79A7")
+  }
+  
   Set_names <- sets
-  if(is.null(Set_names) == T){
+  if(is.null(Set_names) == T || length(Set_names) == 0 ){
     Set_names <- FindMostFreq(data, first.col, last.col, nsets)
   }
   Sets_to_remove <- Remove(data, first.col, last.col, Set_names)
@@ -103,24 +122,18 @@ upset_base <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.co
   labels <- Make_labels(Matrix_setup)
   
   BoxPlots <- NULL
-  if(is.null(boxplot.summary) == F){
+  if(is.null(boxplot.summary) == F && boxplot.summary != tolower("off")){
   BoxData <- IntersectionBoxPlot(All_Freqs, New_data, first.col, Set_names)
   if(is.null(att.x) == F & is.null(att.y) == T){ warning("Please use att.y for boxplot summary.")
                            BoxPlots <- NULL}
   if(is.null(att.y) == T & is.null(att.x) == T){warning("Please select att.y for the boxplot summary.")
                           BoxPlots <- NULL}
   else{
-  BoxPlots <- BoxPlotsPlot(BoxData, att.y)
+    BoxPlots <- list()
+    for(i in seq_along(att.y)){
+  BoxPlots[[i]] <- BoxPlotsPlot(BoxData, att.y[i], att.color)
+    }
   }
-  }
-  
-  if(color.pal == 1){
-    palette <- c("#1F77B4", "#FF7F0E", "#2CA02C", "#D62728", "#9467BD", "#8C564B", "#E377C2",
-                 "#7F7F7F", "#BCBD22", "#17BECF")
-  }
-  else{
-    palette <- c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00",
-                 "#CC79A7")
   }
   
   customAttDat <- NULL
@@ -133,15 +146,11 @@ upset_base <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.co
     customDat <- customQueries(New_data, custom.queries, Set_names)
     legend <- GuideGenerator(queries, palette)
     legend <- Make_legend(legend)
-    if(is.null(att.x) == F){
-      customAttDat <- data.frame()
-      for(i in 1:length(customDat)){
-        customAttDat <- rbind(customAttDat, customDat[[i]])
-      }
+    if(is.null(att.x) == F && is.null(customDat) == F){
+        customAttDat <- CustomAttData(customDat, att.x, att.y)
     }
     customQBar <- customQueriesBar(customDat, Set_names, All_Freqs, custom.queries)
   }
-  
   if(is.null(queries) == F){
     Intersection <- SeperateQueries(queries, 1, palette)
     Matrix_col <-  QuerieInterData(Intersection, New_data, first.col, Num_of_set, All_Freqs, 
@@ -165,14 +174,15 @@ upset_base <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.co
     QElem_att_data <- QuerieElemAtt(New_data, Element, first.col, expression, Set_names, att.x, att.y,
                                     palette)
   }
+  AllQueryData <- combineQueriesData(QInter_att_data, QElem_att_data, customAttDat, att.x, att.y)
   ShadingData <- MakeShading(Matrix_layout)
   Main_bar <- Make_main_bar(All_Freqs, Bar_Q, show.numbers, mb.ratio, customQBar)
   Matrix <- Make_matrix_plot(Matrix_layout, Set_sizes, All_Freqs, point.size, line.size,
                              name.size, labels, ShadingData, shade.color, shade.alpha)
   Sizes <- Make_size_plot(Set_sizes, sets.bar.color, mb.ratio)
   Make_base_plot(Main_bar, Matrix, Sizes, labels, mb.ratio, att.x, att.y, New_data,
-                 expression, att.pos, first.col, att.color, QElem_att_data, QInter_att_data,
-                 query.plot.title, customAttDat, custom.plot, legend, query.legend, BoxPlots)
+                 expression, att.pos, first.col, att.color, AllQueryData,
+                 query.plot.title, custom.plot, legend, query.legend, BoxPlots)
 }
 
 FindMostFreq <- function(data, start_col, end_col, n_sets){  

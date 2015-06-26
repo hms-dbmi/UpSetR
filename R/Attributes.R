@@ -71,7 +71,7 @@ QuerieInterAtt <- function(data, first_col, q, num_sets, att_x, att_y, exp, name
   }
   for(i in 1:length(q)){
     index_q <- unlist(q[[i]]$params)
-    inter_color <- palette[i]
+    inter_color <- unlist(q[[i]]$color)
     test <- as.character(index_q[1])
     check <- match(test, names)
     if(is.na(check) == T){
@@ -81,33 +81,28 @@ QuerieInterAtt <- function(data, first_col, q, num_sets, att_x, att_y, exp, name
       intersect <- GetIntersects(data, first_col, index_q, num_sets)
       if(is.null(att_y) == T){
         c1 <- match(att_x, colnames(intersect))
-        v1 <- intersect[ , c1]
-        intersect <- cbind(intersect, v1)
+        colnames(intersect)[c1] <- "val1"
         if(is.null(exp) == F){
           intersect <- Subset_att(intersect, exp)
         }
         if(nrow(intersect) != 0){
           intersect$color <- inter_color
-          attx_col <- match("v1", colnames(intersect))
-          color_col <- match("color", colnames(intersect))
-          colnames(intersect)[color_col] <- "IColor"
-          intersect <- intersect[ , c(attx_col, color_col)]
+          intersect <- intersect[ , c("val1", "color")]
+          intersect <- as.data.frame(intersect[order(intersect$val1), ])
         }
       }
       else if(is.null(att_y) == F){
         c1 <- match(att_x, colnames(intersect))
         c2 <- match(att_y, colnames(intersect))
-        v1 <- intersect[ , c1]
-        v2 <- intersect[ , c2]
-        intersect <- cbind(intersect, v1, v2)
+        colnames(intersect)[c1] <- "val1"
+        colnames(intersect)[c2] <- "val2"
         if(is.null(exp) == F){
           intersect <- Subset_att(intersect, exp)
         }
         intersect$color <- inter_color
-        attx_col <- match("v1", colnames(intersect))
-        atty_col <- match("v2", colnames(intersect))
-        color_col <- match("color", colnames(intersect))
-        intersect <- intersect[ , c(attx_col, atty_col, color_col)]
+        intersect <- intersect[ , c("val1", "val2", "color")]
+        intersect <- as.data.frame(intersect[order(intersect$val1, intersect$val2), ])
+        
       }
     }
     rows <- rbind(rows, intersect)
@@ -122,7 +117,7 @@ QuerieElemAtt <- function(data, q, start_col, exp, names, att_x, att_y, palette)
   }
   for(i in 1:length(q)){
     index_q <- unlist(q[[i]]$params)
-    elem_color <- palette[i]
+    elem_color <- unlist(q[[i]]$color)
     test <- as.character(index_q[1])
     check <- match(test, names)
     if(length(check) != 0){
@@ -131,9 +126,8 @@ QuerieElemAtt <- function(data, q, start_col, exp, names, att_x, att_y, palette)
         end_col <- ((start_col + as.integer(length(names))) - 1)
         col1 <- match(att_x, colnames(elems))
         col2 <- match(att_y, colnames(elems))
-        val1 <- elems[ , col1]
-        val2 <- elems[ , col2]
-        elems <- cbind(elems, val1, val2)
+        colnames(elems)[col1] <- "val1"
+        colnames(elems)[col2] <- "val2"
         elems <- elems[which(rowSums(elems[ ,start_col:end_col]) != 0), ]
         if(is.null(exp) == F){
           elems <- Subset_att(elems, exp)
@@ -149,8 +143,7 @@ QuerieElemAtt <- function(data, q, start_col, exp, names, att_x, att_y, palette)
         elems <- GetElements(data, index_q)
         end_col <- ((start_col + as.integer(length(names))) - 1)
         col1 <- match(att_x, colnames(elems))
-        val1 <- elems[ , col1]
-        elems <- cbind(elems, val1)
+        colnames(elems)[col1] <- "val1"
         elems <- elems[which(rowSums(elems[ ,start_col:end_col]) != 0), ]
         if(is.null(exp) == F){
           elems <- Subset_att(elems, exp)
@@ -168,7 +161,20 @@ QuerieElemAtt <- function(data, q, start_col, exp, names, att_x, att_y, palette)
     }
     rows <- rbind(rows, elems)
   }
-  return(rows)
+  rows <- as.data.frame(rows)
+  if(length(rows) == 0){
+    return(NULL)
+  }
+   else if(is.null(att_y) == F && length(rows) != 0){
+     rows <- rows[c("val1","val2","color")]
+     rows <- rows[order(rows$val1, rows$val2), ]
+     return(rows)
+   }
+  else if(is.null(att_y) == T && length(rows) != 0){
+    rows <- rows[c("val1", "color")]
+    rows <- rows[order(rows$val1), ]
+    return(rows)
+  }
 }
 
 customQueries <- function(data, custom, names){
@@ -185,7 +191,7 @@ customQueries <- function(data, custom, names){
     first <- min(match(names, colnames(data_sets[[i]])))
     last <- max(match(names, colnames(data_sets[[i]])))
     data_sets[[i]] <- data_sets[[i]][!(rowSums(data_sets[[i]][ ,first:last]) == 0), ]
-    data_sets[[i]]$color2 <- custom[[i]]$color
+    data_sets[[i]]$color <- custom[[i]]$color
   }
   return(data_sets)
 }
@@ -282,4 +288,42 @@ Make_legend <- function(legend){
   return(leg)
 }
 
+CustomAttData <- function(custom_data, att_x, att_y){
+  if(is.null(att_y) == F && is.null(att_x) == T){
+    warning("Please insert lone attribute to att.x paramter")
+  }
+  customAttDat <- data.frame()
+  for(i in 1:length(custom_data)){
+    customAttDat <- rbind(customAttDat, custom_data[[i]])
+  }
+  if(is.null(att_x) == F && is.null(att_y) == T){
+    col1 <- match(att_x, colnames(customAttDat))
+    colnames(customAttDat)[col1] <- "val1"
+    customAttDat <- customAttDat[c("val1", "color")]
+    customAttDat <- customAttDat[order(customAttDat$val1), ]
+  }
+  if(is.null(att_y) == F && is.null(att_y) == F){
+    col1 <- match(att_x, colnames(customAttDat))
+    col2 <- match(att_y, colnames(customAttDat))
+    colnames(customAttDat)[col1] <- "val1"
+    colnames(customAttDat)[col2] <- "val2"
+    customAttDat <- customAttDat[c("val1", "val2", "color")]
+    customAttDat <- customAttDat[order(customAttDat$val1, customAttDat$val2), ]
+  }
+  return(customAttDat)
+}
 
+combineQueriesData <- function(Intersection, Elements, Custom, att_x, att_y){
+  all_data <- data.frame()
+  all_data <- rbind(Intersection, Elements, Custom)
+  if(length(all_data) == 0){
+    return(NULL)
+  }
+  if(is.null(att_x) == F && is.null(att_y) == T){
+    all_data <- all_data[order(all_data$val1), ]
+  }
+  else if(is.null(att_x) == F && is.null(att_y) == F){
+    all_data <- all_data[order(all_data$val1, all_data$val2), ]
+  }
+  return(all_data)
+}
