@@ -48,42 +48,43 @@
 #' @seealso Movies data from example can be found here: \url{https://github.com/hms-dbmi/UpSetR}
 #' @examples #Link to correctly formatted movies data set provided in see also section.
 #' movies <- read.csv( system.file("extdata", "movies.csv", package = "UpSetR"), header=TRUE, sep=";" )
-#'  
+#'
 #' between <- function(row, min, max){
-#' newData <- (row["ReleaseDate"] < max) & (row["ReleaseDate"] > min)
+#'   newData <- (row["ReleaseDate"] < max) & (row["ReleaseDate"] > min)
 #' }
-#' 
-#' plot1 <- function(mydata, x, y){
-#' myplot <- (ggplot(data = mydata, aes_string(x= x, y = y), alpha = 0.5)
-#'           + geom_point(colour = mydata$color)
-#'           + theme(plot.margin = unit(c(-0.5,0,0,0), "cm")))
+#'
+#' plot1 <- function(mydata, x, color){
+#'   myplot <- (ggplot(mydata, aes_string(x= x, fill = "color"))
+#'             + geom_histogram() + scale_fill_identity()
+#'             + theme(plot.margin = unit(c(0,0,0,0), "cm")))
 #' }
-#' 
+#'
 #' plot2 <- function(mydata, x, y){
-#' myplot <- (ggplot(data = mydata, aes_string(x=x, y=y), alpha = 0.5)
-#'            + geom_point(colour = mydata$color)
-#'            + theme_bw() + theme(plot.margin = unit(c(-0.5,0,0,0), "cm")))
-#'}
-#' 
-#' customplot <- list(nrows = 50, 
-#'plots = list(list(plot = plot1, x= "ReleaseDate", y ="AvgRating",  queries = FALSE),
-#'             list(plot = plot1, x= "ReleaseDate", y ="AvgRating", queries = TRUE),
-#'             list(plot = plot2, x = "ReleaseDate", y = "AvgRating", queries = FALSE),
-#'             list(plot = plot2, x = "ReleaseDate", y = "AvgRating", queries = TRUE)), ncols = 2)
-#'             
-#' upset(movies, nsets = 7, nintersects = 30, mb.ratio = c(0.5, 0.5), 
-#'            att.x = "ReleaseDate", att.y = "AvgRating", expression = "ReleaseDate > 1970 & AvgRating < 4.2",
-#'            order.matrix = c("freq", "degree"))
+#'   myplot <- (ggplot(data = mydata, aes_string(x=x, y=y, colour = "color"), alpha = 0.5)
+#'             + geom_point() + scale_color_identity()
+#'             + theme_bw() + theme(plot.margin = unit(c(0,0,0,0), "cm")))
+#' }
+#'
+#' customplot <- list(nrows = 55,
+#'                   plots = list(list(plot = plot1, x= "ReleaseDate",  queries = FALSE),
+#'                                list(plot = plot1, x= "ReleaseDate", queries = TRUE),
+#'                                list(plot = plot2, x = "ReleaseDate", y = "AvgRating", queries = FALSE),
+#'                                list(plot = plot2, x = "ReleaseDate", y = "AvgRating", queries = TRUE)),
+#'                    ncols = 3)
+#'
+#' upset(movies, nsets = 7, nintersects = 30, mb.ratio = c(0.5, 0.5),
+#'      att.x = "ReleaseDate", att.y = "AvgRating", expression = "ReleaseDate > 1970 & AvgRating < 4.2",
+#'      order.matrix = c("freq", "degree"))
 #'
 #' upset(movies, sets = c("Drama", "Comedy", "Action", "Thriller", "Western", "Documentary"),
-#'           att.x = "ReleaseDate", att.y = "AvgRating", queries = list(list(query = "Intersection",
-#'           params = list("Drama", "Action")), list(query = between, params = list(1970, 1980), color = "red",
-#'           active = TRUE)))
+#'      att.x = "ReleaseDate", att.y = "AvgRating",
+#'       queries = list(list(query = "Intersection",params = list("Drama", "Action")),
+#'                 list(query = between, params = list(1970, 1980), color = "red", active = TRUE)))
 #'
-#' upset(movies, custom.plot = customplot, queries = list(list(query = between, params = list(1920, 1940)), 
-#' list(query = "Intersection", params = list("Drama"), color= "red")),
-#' att.x = "ReleaseDate", att.y = "AvgRating", main.bar.color = "yellow")
-#' 
+#' upset(movies, custom.plot = customplot, 
+#'      queries = list(list(query = between, params = list(1920, 1940)),
+#'                     list(query = "Intersection", params = list("Drama"), color= "red")),
+#'      att.x = "ReleaseDate", att.y = "AvgRating", main.bar.color = "yellow")
 #' @export
 upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.color = "gray23",
                        main.bar.color = "gray23", sets.bar.color = "dodgerblue",point.size = 4, line.size = 1, 
