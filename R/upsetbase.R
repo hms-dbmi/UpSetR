@@ -39,15 +39,13 @@
 #' @details Visualization of set data in the layout described by Lex and Gehlenborg in \url{<http://www.nature.com/nmeth/journal/v11/n8/full/nmeth.3033.html>}. 
 #' UpSet also allows for visualization of queries on intersections and elements, along with custom queries queries implemented using 
 #' Hadley Wickhams apply function. To further analyze the data contained in the intersections, the user may select additional attribute plots
-#' to be displayed alongside the UpSet plot. The user also has the the ability to pass their own plots into the function to further analyze data
-#' data that has already been generated. Most aspects of the UpSet plot are customizable, allowing the user to select the plot that looks best to them.
-#' Depending on how the featuers are selected UpSet can display between 25-65 sets, and between 40-100 intersections. 
+#' to be displayed alongside the UpSet plot. The user also has the the ability to pass their own plots into the function to further analyze
+#' data belonging to queries of interest. Most aspects of the UpSet plot are customizable, allowing the user to select the plot that best suits their style.
+#' Depending on how the featuers are selected, UpSet can display between 25-65 sets and between 40-100 intersections. 
 #' @note Data set must be formatted as described on the orginal UpSet github page: \url{<https://github.com/VCG/upset/wiki>}.
 #' @references Lex and Gehlenborg (2014). Points of view: Sets and intersections. Nature Methods 11, 779 (2014). \url{http://www.nature.com/nmeth/journal/v11/n8/full/nmeth.3033.html}
 #' @references Original UpSet Website: \url{http://vcg.github.io/upset/about/}
-#' @seealso Movies data from example can be found here: \url{https://github.com/hms-dbmi/UpSetR}
-#' @examples #Link to correctly formatted movies data set provided in see also section.
-#' movies <- read.csv( system.file("extdata", "movies.csv", package = "UpSetR"), header=TRUE, sep=";" )
+#' @examples movies <- read.csv( system.file("extdata", "movies.csv", package = "UpSetR"), header=TRUE, sep=";" )
 #'
 #' between <- function(row, min, max){
 #'   newData <- (row["ReleaseDate"] < max) & (row["ReleaseDate"] > min)
