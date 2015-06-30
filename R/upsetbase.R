@@ -43,8 +43,10 @@
 #' data belonging to queries of interest. Most aspects of the UpSet plot are customizable, allowing the user to select the plot that best suits their style.
 #' Depending on how the featuers are selected, UpSet can display between 25-65 sets and between 40-100 intersections. 
 #' @note Data set must be formatted as described on the orginal UpSet github page: \url{<https://github.com/VCG/upset/wiki>}.
+#' @references Lex et al. (2014). UpSet: Visualization of Intersecting Sets
+#' IEEE Transactions on Visualization and Computer Graphics (Proceedings of InfoVis ’14), vol 20, pp. 1983-1992, (2014). \url{http://people.seas.harvard.edu/~alex/papers/2014_infovis_upset.pdf}
 #' @references Lex and Gehlenborg (2014). Points of view: Sets and intersections. Nature Methods 11, 779 (2014). \url{http://www.nature.com/nmeth/journal/v11/n8/full/nmeth.3033.html}
-#' @references Original UpSet Website: \url{http://vcg.github.io/upset/about/}
+#' @seealso Original UpSet Website: \url{http://vcg.github.io/upset/about/}
 #' @examples movies <- read.csv( system.file("extdata", "movies.csv", package = "UpSetR"), header=TRUE, sep=";" )
 #'
 #' between <- function(row, min, max){

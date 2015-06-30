@@ -134,8 +134,12 @@ upset(movies, custom.plot = customplot,
      att.x = "ReleaseDate", att.y = "AvgRating", main.bar.color = "yellow")
 }
 \references{
-Lex and Gehlenborg (2014). Points of view: Sets and intersections. Nature Methods 11, 779 (2014). \url{http://www.nature.com/nmeth/journal/v11/n8/full/nmeth.3033.html}
+Lex et al. (2014). UpSet: Visualization of Intersecting Sets
+IEEE Transactions on Visualization and Computer Graphics (Proceedings of InfoVis ’14), vol 20, pp. 1983-1992, (2014). \url{http://people.seas.harvard.edu/~alex/papers/2014_infovis_upset.pdf}
 
+Lex and Gehlenborg (2014). Points of view: Sets and intersections. Nature Methods 11, 779 (2014). \url{http://www.nature.com/nmeth/journal/v11/n8/full/nmeth.3033.html}
+}
+\seealso{
 Original UpSet Website: \url{http://vcg.github.io/upset/about/}
 }
 
