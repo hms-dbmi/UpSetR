@@ -122,18 +122,12 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.color =
     att.y <- unique(custom.plot$plots[[i]]$y)
   }
   BoxPlots <- NULL
-  if(is.null(boxplot.summary) == F && boxplot.summary != tolower("off")){
+  if(is.null(boxplot.summary) == F){
   BoxData <- IntersectionBoxPlot(All_Freqs, New_data, first.col, Set_names)
-  if(is.null(att.x) == F & is.null(att.y) == T){ warning("Please use att.y for boxplot summary.")
-                           BoxPlots <- NULL}
-  if(is.null(att.y) == T & is.null(att.x) == T){warning("Please select att.y for the boxplot summary.")
-                          BoxPlots <- NULL}
-  else{
     BoxPlots <- list()
-    for(i in seq_along(att.y)){
-  BoxPlots[[i]] <- BoxPlotsPlot(BoxData, att.y[i], att.color)
+    for(i in seq_along(boxplot.summary)){
+  BoxPlots[[i]] <- BoxPlotsPlot(BoxData, boxplot.summary[i], att.color)
     }
-  }
   }
   
   customAttDat <- NULL

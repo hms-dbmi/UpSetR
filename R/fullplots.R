@@ -159,7 +159,7 @@ if(is.null(QueryData) == F){
 BaseBoxPlot <- function(box_plot, position, size_plot_height, Main_bar_plot, Matrix_plot, 
                            Size_plot, hratios){
   if(length(box_plot) > 2){
-    warning("UpSet can only show 2 box plots at a time")
+    return(warning("UpSet can only show 2 box plots at a time"))
   }
   if(is.null(position) == T || position == tolower("bottom")){
   bar_top <- 1
