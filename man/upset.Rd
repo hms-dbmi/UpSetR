@@ -7,13 +7,12 @@
 upset(data, nsets = 5, nintersects = 40, sets = NULL,
   matrix.color = "gray23", main.bar.color = "gray23",
   sets.bar.color = "gray23", point.size = 4, line.size = 1,
-  name.size = 10, mb.ratio = c(0.7, 0.3), att.x = NULL, att.y = NULL,
-  expression = NULL, att.pos = NULL, att.color = main.bar.color,
-  order.matrix = c("degree", "freq"), show.numbers = "yes",
-  aggregate.by = "degree", cutoff = NULL, queries = NULL,
-  query.legend = "none", query.plot.title = "My Query Plot Title",
-  shade.color = "gray88", shade.alpha = 0.25, color.pal = 1,
-  boxplot.summary = NULL, custom.plot = NULL)
+  name.size = 10, mb.ratio = c(0.7, 0.3), expression = NULL,
+  att.pos = NULL, att.color = main.bar.color, order.matrix = c("degree",
+  "freq"), show.numbers = "yes", aggregate.by = "degree", cutoff = NULL,
+  queries = NULL, query.legend = "none", shade.color = "gray88",
+  shade.alpha = 0.25, color.pal = 1, boxplot.summary = NULL,
+  custom.plot = NULL)
 }
 \arguments{
 \item{data}{Data set}
@@ -37,10 +36,6 @@ upset(data, nsets = 5, nintersects = 40, sets = NULL,
 \item{name.size}{Size of set names in matrix plot}
 
 \item{mb.ratio}{Ratio between matrix plot and main bar plot (Keep in terms of hundreths)}
-
-\item{att.x}{Attribute entered as a string. If att.y is NULL a histogram will be produced}
-
-\item{att.y}{Attribute entered as a string. Produces a scatter plot vs. att.x}
 
 \item{expression}{Expression to subset attributes of intersection or element query data. Enter as string (Ex: "ColName > 3")}
 
@@ -76,8 +71,6 @@ See examples section on how to do this.}
 The custom.plot parameter takes a list that contains the number of rows that should be allocated for the custom plot, and a list of plots with specified positions.
 nrows is the number of rows the custom plots should take up. There is already 100 allocated for the custom plot. plots takes a list that contains a function that returns
 a custom ggplots and the x and y aesthetics for the function. ncols is the number of columns that your ggplots should take up. See examples for how to add custom ggplots.}
-
-\item{query.title.plot}{Title of query plot}
 }
 \description{
 Visualization of set intersections using novel UpSet matrix design.
@@ -100,7 +93,7 @@ between <- function(row, min, max){
   newData <- (row["ReleaseDate"] < max) & (row["ReleaseDate"] > min)
 }
 
-plot1 <- function(mydata, x, color){
+plot1 <- function(mydata, x){
   myplot <- (ggplot(mydata, aes_string(x= x, fill = "color"))
             + geom_histogram() + scale_fill_identity()
             + theme(plot.margin = unit(c(0,0,0,0), "cm")))
@@ -119,19 +112,16 @@ customplot <- list(nrows = 55,
                                list(plot = plot2, x = "ReleaseDate", y = "AvgRating", queries = TRUE)),
                    ncols = 3)
 
-upset(movies, nsets = 7, nintersects = 30, mb.ratio = c(0.5, 0.5),
-     att.x = "ReleaseDate", att.y = "AvgRating", expression = "ReleaseDate > 1970 & AvgRating < 4.2",
-     order.matrix = c("freq", "degree"))
+upset(movies, nsets = 7, nintersects = 30, mb.ratio = c(0.5, 0.5), order.matrix = c("freq", "degree"))
 
 upset(movies, sets = c("Drama", "Comedy", "Action", "Thriller", "Western", "Documentary"),
-     att.x = "ReleaseDate", att.y = "AvgRating",
       queries = list(list(query = "Intersection",params = list("Drama", "Action")),
                 list(query = between, params = list(1970, 1980), color = "red", active = TRUE)))
 
 upset(movies, custom.plot = customplot,
      queries = list(list(query = between, params = list(1920, 1940)),
                     list(query = "Intersection", params = list("Drama"), color= "red")),
-     att.x = "ReleaseDate", att.y = "AvgRating", main.bar.color = "yellow")
+      main.bar.color = "yellow")
 }
 \references{
 Lex et al. (2014). UpSet: Visualization of Intersecting Sets

@@ -1,3 +1,4 @@
+#Generates data needed to represent selected intersections on matrix
 QuerieInterData <- function(query, data1, first_col, num_sets, data2, exp, names, palette){
   rows <- data.frame()
   if(length(query) == 0){
@@ -34,7 +35,7 @@ QuerieInterData <- function(query, data1, first_col, num_sets, data2, exp, names
   return(rows)
 }
 
-
+#Generates intersection bar data to overlay main bars 
 QuerieInterBar  <- function(q, data1, first_col, num_sets, data2, exp, names, palette){
   rows <- data.frame()
   act <- c()
@@ -64,6 +65,7 @@ QuerieInterBar  <- function(q, data1, first_col, num_sets, data2, exp, names, pa
   return(rows)
 }
 
+#Generate attribute data for intersection queries 
 QuerieInterAtt <- function(data, first_col, q, num_sets, att_x, att_y, exp, names, palette){
   rows <- data.frame()
   if(length(q) == 0){
@@ -110,6 +112,7 @@ QuerieInterAtt <- function(data, first_col, q, num_sets, att_x, att_y, exp, name
   return(rows)
 }
 
+#Generate attribute data from element queries 
 QuerieElemAtt <- function(data, q, start_col, exp, names, att_x, att_y, palette){
   rows <- data.frame()
   if(length(q) == 0){
@@ -177,6 +180,7 @@ QuerieElemAtt <- function(data, q, start_col, exp, names, att_x, att_y, palette)
   }
 }
 
+#Apply custom functions passed into queries and generate list of data sets from these functions
 customQueries <- function(data, custom, names){
   data_sets <- list()
   dataAndrow <- list(data, 1)
@@ -196,6 +200,7 @@ customQueries <- function(data, custom, names){
   return(data_sets)
 }
 
+#Generate list of data sets to overlay main bars
 customQueriesBar <- function(cust_data, sets,bar_data,custom){
   setup <- list()
   final_data <- list()
@@ -223,6 +228,8 @@ customQueriesBar <- function(cust_data, sets,bar_data,custom){
   return(final_data)
 }
 
+#Seperate the queries between and paramters by built in(intersection and element), and custom functions
+#Apply colors if not specified
 SeperateQueries <- function(queries, choice, palette){
   seperated <- list()
   for(i in 1:length(queries)){
@@ -257,6 +264,7 @@ SeperateQueries <- function(queries, choice, palette){
   return(seperated)
 }
 
+#Create legend data for queries
 GuideGenerator <- function(queries, palette){
   numbers <- c()
   colors <- c()
@@ -278,6 +286,7 @@ guide <- cbind(numbers, colors)
 return(as.data.frame(guide))
 }
 
+#Make plot of that legend using legend data 
 Make_legend <- function(legend){
   colors <- as.character(legend$colors)
   labels <- as.character(legend$numbers)
@@ -288,6 +297,7 @@ Make_legend <- function(legend){
   return(leg)
 }
 
+#Generate attribute data for queries of custom functions
 CustomAttData <- function(custom_data, att_x, att_y){
   if(is.null(att_y) == F && is.null(att_x) == T){
     warning("Please insert lone attribute to att.x paramter")
@@ -313,6 +323,7 @@ CustomAttData <- function(custom_data, att_x, att_y){
   return(customAttDat)
 }
 
+#Combine all attribute data generated from queries 
 combineQueriesData <- function(Intersection, Elements, Custom, att_x, att_y){
   all_data <- data.frame()
   all_data <- rbind(Intersection, Elements, Custom)

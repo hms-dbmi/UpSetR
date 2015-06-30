@@ -1,3 +1,4 @@
+#Generate main bar plot
 Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ){
   if(is.null(Q) == F){
     inter_data <- Q
@@ -70,6 +71,7 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ){
   return(Main_bar_plot)
 }
 
+#Create data set to shade matrix 
 MakeShading <- function(Mat_data){
   y <- unique(Mat_data$y)
   y <- (y[which(y %% 2 != 0)])
@@ -83,6 +85,7 @@ MakeShading <- function(Mat_data){
   return(data)
 }
 
+#Generate matrix plot
 Make_matrix_plot <- function(Mat_data,Set_size_data, Main_bar_data, point_size, line_size, name_size, labels,
                              shading_data, shade_color, shade_alpha){
   Matrix_plot <- (ggplot() 
@@ -109,6 +112,7 @@ Make_matrix_plot <- function(Mat_data,Set_size_data, Main_bar_data, point_size, 
   return(Matrix_plot)
 }
 
+#Generate set size plot
 Make_size_plot <- function(Set_size_data, sbar_color, ratios){
   if(ratios[2] < 0.46){
     m <- 0.4
@@ -142,6 +146,7 @@ Make_size_plot <- function(Set_size_data, sbar_color, ratios){
   return(Size_plot)
 }
 
+#Assemble plots to make UpSet plot
 Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratios, att_x, att_y,
                            Set_data, exp, position, start_col, att_color, QueryData,
                            Q_Title, custom_plot, legend, query_legend, boxplot){
@@ -198,6 +203,7 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
   }
 }
 
+#Create data for boxplots of all intersections
 IntersectionBoxPlot <- function(data1, data2, start_col, names){
   end_col <- ((start_col + length(names)) - 1)
   data2 <- data2[which(rowSums(data2[ ,start_col:end_col]) != 0), ]
@@ -230,6 +236,7 @@ IntersectionBoxPlot <- function(data1, data2, start_col, names){
   return(box_plot_data)
 }
 
+#Generate boxplot summary plots
 BoxPlotsPlot <- function(bdat, att, att_color){
   yaxis <- as.character(att)
   col <- match(att, colnames(bdat))

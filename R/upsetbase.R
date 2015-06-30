@@ -12,8 +12,6 @@
 #' @param line.size Width of lines in matrix plot
 #' @param name.size Size of set names in matrix plot
 #' @param mb.ratio Ratio between matrix plot and main bar plot (Keep in terms of hundreths)
-#' @param att.x Attribute entered as a string. If att.y is NULL a histogram will be produced
-#' @param att.y Attribute entered as a string. Produces a scatter plot vs. att.x
 #' @param expression Expression to subset attributes of intersection or element query data. Enter as string (Ex: "ColName > 3")
 #' @param att.pos Position of attribute plot. If NULL or "bottom" the plot will be at below UpSet plot. If "top" it will be above UpSert plot
 #' @param att.color Color of attribute histogram bins or scatterplot points for unqueried data represented by main bars. Default set to color of main bars.
@@ -27,7 +25,6 @@
 #'        TRUE, it will overlay the bars present  with the results from the query. If FALSE a tick mark will indicate the intersection size.
 #'        See examples section on how to do this.
 #' @param query.legend Position query legend on top or bottom of UpSet plot
-#' @param query.title.plot Title of query plot
 #' @param shade.color Color of row shading in matrix
 #' @param shade.alpha Transparency of shading in matrix
 #' @param color.pal Color palette for attribute plots
@@ -53,7 +50,7 @@
 #'   newData <- (row["ReleaseDate"] < max) & (row["ReleaseDate"] > min)
 #' }
 #'
-#' plot1 <- function(mydata, x, color){
+#' plot1 <- function(mydata, x){
 #'   myplot <- (ggplot(mydata, aes_string(x= x, fill = "color"))
 #'             + geom_histogram() + scale_fill_identity()
 #'             + theme(plot.margin = unit(c(0,0,0,0), "cm")))
@@ -72,26 +69,23 @@
 #'                                list(plot = plot2, x = "ReleaseDate", y = "AvgRating", queries = TRUE)),
 #'                    ncols = 3)
 #'
-#' upset(movies, nsets = 7, nintersects = 30, mb.ratio = c(0.5, 0.5),
-#'      att.x = "ReleaseDate", att.y = "AvgRating", expression = "ReleaseDate > 1970 & AvgRating < 4.2",
-#'      order.matrix = c("freq", "degree"))
+#' upset(movies, nsets = 7, nintersects = 30, mb.ratio = c(0.5, 0.5), order.matrix = c("freq", "degree"))
 #'
 #' upset(movies, sets = c("Drama", "Comedy", "Action", "Thriller", "Western", "Documentary"),
-#'      att.x = "ReleaseDate", att.y = "AvgRating",
 #'       queries = list(list(query = "Intersection",params = list("Drama", "Action")),
 #'                 list(query = between, params = list(1970, 1980), color = "red", active = TRUE)))
 #'
 #' upset(movies, custom.plot = customplot, 
 #'      queries = list(list(query = between, params = list(1920, 1940)),
 #'                     list(query = "Intersection", params = list("Drama"), color= "red")),
-#'      att.x = "ReleaseDate", att.y = "AvgRating", main.bar.color = "yellow")
+#'       main.bar.color = "yellow")
 #' @export
 upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.color = "gray23",
                        main.bar.color = "gray23", sets.bar.color = "gray23",point.size = 4, line.size = 1, 
-                       name.size = 10, mb.ratio = c(0.70,0.30), att.x = NULL, att.y = NULL, expression = NULL, 
+                       name.size = 10, mb.ratio = c(0.70,0.30), expression = NULL, 
                        att.pos = NULL, att.color = main.bar.color, order.matrix = c("degree", "freq"), 
                        show.numbers = "yes", aggregate.by = "degree",cutoff = NULL, queries = NULL, query.legend = "none", 
-                       query.plot.title = "My Query Plot Title", shade.color = "gray88", shade.alpha = 0.25, 
+                       shade.color = "gray88", shade.alpha = 0.25, 
                        color.pal = 1, boxplot.summary = NULL, custom.plot = NULL){
   require(ggplot2);
   require(gridExtra);
@@ -121,7 +115,12 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.color =
                        rev(order.matrix), aggregate.by, cutoff)
   Matrix_setup <- Create_matrix(All_Freqs)
   labels <- Make_labels(Matrix_setup)
-  
+  att.x <- NULL; att.y <- NULL;
+  if(is.null(custom.plot) == F){
+    for(i in seq_along(custom.plot$plots))
+    att.x <- unique(custom.plot$plots[[i]]$x)
+    att.y <- unique(custom.plot$plots[[i]]$y)
+  }
   BoxPlots <- NULL
   if(is.null(boxplot.summary) == F && boxplot.summary != tolower("off")){
   BoxData <- IntersectionBoxPlot(All_Freqs, New_data, first.col, Set_names)
@@ -186,6 +185,7 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.color =
                  query.plot.title, custom.plot, legend, query.legend, BoxPlots)
 }
 
+#Finds the n largest sets if the user hasn't specified any sets
 FindMostFreq <- function(data, start_col, end_col, n_sets){  
   temp_data <- data[ ,start_col:end_col]
   temp_data <- colSums(temp_data)
@@ -195,15 +195,18 @@ FindMostFreq <- function(data, start_col, end_col, n_sets){
   return(temp_data)
 }
 
+#Finds the names of the sets that aren't being used
 Remove <- function(data, start_col, end_col, sets){
   temp_data <- as.data.frame(data[ , start_col:end_col])
   Unwanted_sets <- colnames(temp_data[ ,!(colnames(temp_data) %in% sets), drop = F])
 }
 
+#Removes unwanted sets from data
 Wanted <- function(data, unwanted_sets){
   temp_data <- (data[ ,!(colnames(data) %in% unwanted_sets), drop = F])
 }
 
+#Subsets intersection and element queries using expression parameter
 Subset_att <- function(data, exp){
   attach(data)
   express <- paste("data$", exp, sep = "")
@@ -212,11 +215,13 @@ Subset_att <- function(data, exp){
   return(data)
 }
 
+#Number of sets being looked at
 Number_of_sets <- function(sets){
   temp <- length(sets)
   return(temp)
 }
 
+#Counts the frequency of each intersection being looked at and sets up data for main bar plot
 Counter <- function(data, num_sets, start_col, name_of_sets, nintersections, mbar_color, order_mat,
                     aggregate, cut){
   temp_data <- list()
@@ -260,6 +265,7 @@ Counter <- function(data, num_sets, start_col, name_of_sets, nintersections, mba
   return(Freqs)
 }
 
+#Creates data set if data is aggregated by sets
 Get_aggregates <- function(data, num_sets, order_mat, cut){
   temp_data <- list()
   set_agg <- list()
@@ -289,6 +295,7 @@ Get_aggregates <- function(data, num_sets, order_mat, cut){
   return(set_agg)
 }
 
+#Creates data set to overlay main bar plot and matrix plot with intersection queries
 OverlayEdit <- function(data1, data2, start_col, num_sets, intersects, exp, inter_color){
   end_col <- as.numeric(((start_col + num_sets) -1))
   set_cols <- data1[ ,start_col:end_col]
@@ -323,6 +330,7 @@ OverlayEdit <- function(data1, data2, start_col, num_sets, intersects, exp, inte
   return(overlay_row)
 }
 
+#Sets up data for matrix layout and adjusts names of sets if they are too small
 Create_matrix <- function(data){
   Matrix_setup <- as.matrix(t(data[ , 1:(length(data) -3)]))
   names <- rownames(Matrix_setup)
@@ -341,11 +349,14 @@ Create_matrix <- function(data){
   return(Matrix_setup)
 }
 
+#Take adjusted (if they needed to be) names of sets for matrix y-axis tick labels 
 Make_labels <- function(setup){
   names <- rownames(setup)
   return(names)
 }
 
+# Takes matrix setup data and turns it into grid format (binary)
+# 1's represent dark circles, 0's light, and if x-value has multiple 1's they are connected.
 Create_layout <- function(setup, mat_color, mat_col){
   Matrix_layout <- expand.grid(y=seq(nrow(setup)), x=seq(ncol(setup)))
   Matrix_layout <- data.frame(Matrix_layout, value = as.vector(setup))
@@ -373,6 +384,7 @@ Create_layout <- function(setup, mat_color, mat_col){
   return(Matrix_layout)
 }
 
+#Find frequency of each set for set size bar plot
 FindSetFreqs <- function(data, start_col, num_sets, set_names){
   end_col <- as.numeric(((start_col + num_sets) -1))
   temp_data <- data[ ,start_col:end_col]
@@ -384,6 +396,7 @@ FindSetFreqs <- function(data, start_col, num_sets, set_names){
   return(as.data.frame(temp_data))
 }
 
+#Creates data set for element query to be plotted in attribute plots
 GetElements <- function(data, elements){
   col_num <- match(elements[1], colnames(data))
   num_elem <- length(elements)
@@ -392,6 +405,7 @@ GetElements <- function(data, elements){
   return(temp_data)
 }
 
+#Creates data set for intersection queries to be plotted in attribute plots
 GetIntersects <- function(data, start_col, sets, num_sets){
   end_col <- as.numeric(((start_col + num_sets) -1))
   set_cols <- data[ ,start_col:end_col]
@@ -409,6 +423,7 @@ GetIntersects <- function(data, start_col, sets, num_sets){
   }
 }
 
+#Finds the columns that represent the sets 
 FindStartEnd <- function(data){
   startend <- c()
   for(i in 1:ncol(data)){
