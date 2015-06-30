@@ -89,7 +89,7 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.color =
                        name.size = 10, mb.ratio = c(0.70,0.30), att.x = NULL, att.y = NULL, expression = NULL, 
                        att.pos = NULL, att.color = main.bar.color, order.matrix = c("degree", "freq"), 
                        show.numbers = "yes", aggregate.by = "degree",cutoff = NULL, queries = NULL, query.legend = "none", 
-                       query.plot.title = "My Query Plot Title", shade.color = "skyblue", shade.alpha = 0.25, 
+                       query.plot.title = "My Query Plot Title", shade.color = "gray88", shade.alpha = 0.25, 
                        color.pal = 1, boxplot.summary = NULL, custom.plot = NULL){
   require(ggplot2);
   require(gridExtra);
@@ -353,7 +353,7 @@ Create_layout <- function(setup, mat_color, mat_col){
       Matrix_layout$Intersection[i] <- paste(Matrix_layout$x[i], "yes", sep ="")
     }
     else{
-      Matrix_layout$color[i] <- "gray92"
+      Matrix_layout$color[i] <- "gray83"
       Matrix_layout$Intersection[i] <- paste(i, "No", sep = "")
     } 
   }

@@ -12,7 +12,7 @@ upset(data, nsets = 5, nintersects = 40, sets = NULL,
   order.matrix = c("degree", "freq"), show.numbers = "yes",
   aggregate.by = "degree", cutoff = NULL, queries = NULL,
   query.legend = "none", query.plot.title = "My Query Plot Title",
-  shade.color = "skyblue", shade.alpha = 0.25, color.pal = 1,
+  shade.color = "gray88", shade.alpha = 0.25, color.pal = 1,
   boxplot.summary = NULL, custom.plot = NULL)
 }
 \arguments{
