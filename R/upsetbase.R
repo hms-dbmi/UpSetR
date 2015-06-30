@@ -85,7 +85,7 @@
 #'      att.x = "ReleaseDate", att.y = "AvgRating", main.bar.color = "yellow")
 #' @export
 upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.color = "gray23",
-                       main.bar.color = "gray23", sets.bar.color = "dodgerblue",point.size = 4, line.size = 1, 
+                       main.bar.color = "gray23", sets.bar.color = "gray23",point.size = 4, line.size = 1, 
                        name.size = 10, mb.ratio = c(0.70,0.30), att.x = NULL, att.y = NULL, expression = NULL, 
                        att.pos = NULL, att.color = main.bar.color, order.matrix = c("degree", "freq"), 
                        show.numbers = "yes", aggregate.by = "degree",cutoff = NULL, queries = NULL, query.legend = "none", 
