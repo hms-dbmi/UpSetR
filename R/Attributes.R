@@ -338,13 +338,3 @@ combineQueriesData <- function(Intersection, Elements, Custom, att_x, att_y){
   }
   return(all_data)
 }
-
-intersection <- function(func, query, ...){
-  data <- func(query,...)
-  return(data)
-}
-
-element <- function(func, query, ...){
-  data <- func(query, ...)
-  return(data)
-}

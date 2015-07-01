@@ -46,6 +46,7 @@
 #' IEEE Transactions on Visualization and Computer Graphics (Proceedings of InfoVis ’14), vol 20, pp. 1983-1992, (2014). \url{http://people.seas.harvard.edu/~alex/papers/2014_infovis_upset.pdf}
 #' @references Lex and Gehlenborg (2014). Points of view: Sets and intersections. Nature Methods 11, 779 (2014). \url{http://www.nature.com/nmeth/journal/v11/n8/full/nmeth.3033.html}
 #' @seealso Original UpSet Website: \url{http://vcg.github.io/upset/about/}
+#' @seealso UpSetR github for additional examples: \url{https://github.com/hms-dbmi/UpSetR}
 #' @examples movies <- read.csv( system.file("extdata", "movies.csv", package = "UpSetR"), header=TRUE, sep=";" )
 #'
 #' between <- function(row, min, max){
@@ -64,7 +65,7 @@
 #'             + theme_bw() + theme(plot.margin = unit(c(0,0,0,0), "cm")))
 #' }
 #'
-#' customplot <- list(nrows = 55,
+#' customplot <- list(gridrows = 55,
 #'                   plots = list(list(plot = plot1, x= "ReleaseDate",  queries = FALSE),
 #'                                list(plot = plot1, x= "ReleaseDate", queries = TRUE),
 #'                                list(plot = plot2, x = "ReleaseDate", y = "AvgRating", queries = FALSE),

@@ -110,7 +110,7 @@ plot2 <- function(mydata, x, y){
             + theme_bw() + theme(plot.margin = unit(c(0,0,0,0), "cm")))
 }
 
-customplot <- list(nrows = 55,
+customplot <- list(gridrows = 55,
                   plots = list(list(plot = plot1, x= "ReleaseDate",  queries = FALSE),
                                list(plot = plot1, x= "ReleaseDate", queries = TRUE),
                                list(plot = plot2, x = "ReleaseDate", y = "AvgRating", queries = FALSE),
@@ -137,5 +137,7 @@ Lex and Gehlenborg (2014). Points of view: Sets and intersections. Nature Method
 }
 \seealso{
 Original UpSet Website: \url{http://vcg.github.io/upset/about/}
+
+UpSetR github for additional examples: \url{https://github.com/hms-dbmi/UpSetR}
 }
 
