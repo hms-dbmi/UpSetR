@@ -14,7 +14,7 @@ The sample data set is a movie data set created by the [GroupLens Lab](http://gr
 ## Example
 A view of the UpSet plot with additional plots based on elements in the intersections.
 
-[Image](https://cloud.githubusercontent.com/assets/12614369/8464958/2af1008c-2014-11e5-93d8-8d8442ec5631.png)
+![Image](https://cloud.githubusercontent.com/assets/12614369/8464958/2af1008c-2014-11e5-93d8-8d8442ec5631.png)
 
 ## Download
 Download the latest version of UpSetR from github with
