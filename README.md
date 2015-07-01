@@ -17,7 +17,11 @@ A view of the UpSet plot with additional plots based on elements in the intersec
 ![Image](https://cloud.githubusercontent.com/assets/12614369/8464958/2af1008c-2014-11e5-93d8-8d8442ec5631.png)
 
 ```R
-upset(movies, custom.plot = list(gridrows = 60, plots = list(list(plot = scatter_plot, x = "ReleaseDate", y = "AvgRating"), list(plot = scatter_plot, x = "ReleaseDate", y = "Watches"), list(plot = scatter_plot, x = "Watches" , y = "AvgRating"), list(plot = histogram, x = "ReleaseDate")), ncols = 2))
+upset(movies, custom.plot = list(gridrows = 60, plots = list(list(plot = scatter_plot, x = "ReleaseDate", y = "AvgRating"),
+
+list(plot = scatter_plot, x = "ReleaseDate", y = "Watches"), list(plot = scatter_plot, x = "Watches" , y = "AvgRating"),
+
+list(plot = histogram, x = "ReleaseDate")), ncols = 2))
 ```
 
 ## Download
