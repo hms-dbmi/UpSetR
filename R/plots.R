@@ -134,13 +134,14 @@ Make_size_plot <- function(Set_size_data, sbar_color, ratios){
                         plot.margin=unit(c(-m,-1.3,0.5,0.5), "lines"),
                         axis.title.x = element_text(size = 10, face = "bold"),
                         axis.line = element_line(colour = "gray0"),
-                        axis.line.y = element_line(colour = "white"),
+                        axis.line.y = element_blank(),
+                         axis.line.x = element_line(colour = "gray0", size = 0.3),
                         axis.text.y = element_blank(),
                         axis.ticks.y = element_blank(),
                         panel.grid.minor = element_blank(),
                         panel.grid.major = element_blank())
                 + xlab(NULL) + ylab("Set Size")
-                + coord_flip()
+                + coord_flip() 
                 + scale_y_reverse())
   
   Size_plot <- ggplot_gtable(ggplot_build(Size_plot))
