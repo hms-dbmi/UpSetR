@@ -66,7 +66,7 @@ QuerieInterBar  <- function(q, data1, first_col, num_sets, data2, exp, names, pa
 }
 
 #Generate attribute data for intersection queries 
-QuerieInterAtt <- function(data, first_col, q, num_sets, att_x, att_y, exp, names, palette){
+QuerieInterAtt <- function(q, data, first_col, num_sets, att_x, att_y, exp, names, palette){
   rows <- data.frame()
   if(length(q) == 0){
     return(NULL)
@@ -113,7 +113,7 @@ QuerieInterAtt <- function(data, first_col, q, num_sets, att_x, att_y, exp, name
 }
 
 #Generate attribute data from element queries 
-QuerieElemAtt <- function(data, q, start_col, exp, names, att_x, att_y, palette){
+QuerieElemAtt <- function(q, data, start_col, exp, names, att_x, att_y, palette){
   rows <- data.frame()
   if(length(q) == 0){
     return(NULL)
@@ -243,7 +243,7 @@ SeperateQueries <- function(queries, choice, palette){
   }
   if(choice == 1){
     for(i in 1:length(queries)){
-      if(is.function(queries[[i]]$query) == F){
+      if(identical(intersection, queries[[i]]$query) == T || identical(element, queries[[i]]$query) == T){
         seperated <- c(seperated, list(queries[[i]]))
       }
       else{
@@ -253,7 +253,7 @@ SeperateQueries <- function(queries, choice, palette){
   }
   else if(choice == 2){
     for(i in 1:length(queries)){
-      if(is.function(queries[[i]]$query) == T){
+      if(identical(intersection, queries[[i]]$query) == F && identical(element, queries[[i]]$query) == F){
         seperated <- c(seperated, list(queries[[i]]))
       }
       else{
@@ -337,4 +337,14 @@ combineQueriesData <- function(Intersection, Elements, Custom, att_x, att_y){
     all_data <- all_data[order(all_data$val1, all_data$val2), ]
   }
   return(all_data)
+}
+
+intersection <- function(func, query, ...){
+  data <- func(query,...)
+  return(data)
+}
+
+element <- function(func, query, ...){
+  data <- func(query, ...)
+  return(data)
 }

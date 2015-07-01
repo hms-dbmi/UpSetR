@@ -72,12 +72,13 @@
 #' upset(movies, nsets = 7, nintersects = 30, mb.ratio = c(0.5, 0.5), order.matrix = c("freq", "degree"))
 #'
 #' upset(movies, sets = c("Drama", "Comedy", "Action", "Thriller", "Western", "Documentary"),
-#'       queries = list(list(query = "Intersection",params = list("Drama", "Action")),
+#'       queries = list(list(query = intersection, params = list("Drama", "Action")),
 #'                 list(query = between, params = list(1970, 1980), color = "red", active = TRUE)))
 #'
 #' upset(movies, custom.plot = customplot, 
 #'      queries = list(list(query = between, params = list(1920, 1940)),
-#'                     list(query = "Intersection", params = list("Drama"), color= "red")),
+#'                     list(query = intersection, params = list("Drama"), color= "red"),
+#'                     list(query = element, params = list("ReleaseDate", 1990, 1991, 1992))),
 #'       main.bar.color = "yellow")
 #' @export
 upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.color = "gray23",
@@ -147,25 +148,26 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.color =
   }
   if(is.null(queries) == F){
     Intersection <- SeperateQueries(queries, 1, palette)
-    Matrix_col <-  QuerieInterData(Intersection, New_data, first.col, Num_of_set, All_Freqs, 
-                                   expression, Set_names, palette)
+    Matrix_col <- intersection(QuerieInterData, Intersection, New_data, first.col, Num_of_set,
+                               All_Freqs, expression, Set_names, palette)
   }
   else{
     Matrix_col <- NULL
   }
+  
   Matrix_layout <- Create_layout(Matrix_setup, matrix.color, Matrix_col)
   Set_sizes <- FindSetFreqs(New_data, first.col, Num_of_set, Set_names)
   Bar_Q <- NULL
   if(is.null(queries) == F){
-    Bar_Q <- QuerieInterBar(Intersection, New_data, first.col, Num_of_set, All_Freqs, expression, Set_names, palette)
+    Bar_Q <- intersection(QuerieInterBar, Intersection, New_data, first.col, Num_of_set, All_Freqs, expression, Set_names, palette)
   }
   QInter_att_data <- NULL
   QElem_att_data <- NULL
   if((is.null(queries) == F) & (is.null(att.x) == F)){
-    QInter_att_data <- QuerieInterAtt(New_data, first.col, Intersection, Num_of_set, att.x, att.y, 
+    QInter_att_data <- intersection(QuerieInterAtt, Intersection, New_data, first.col, Num_of_set, att.x, att.y, 
                                       expression, Set_names, palette)
     Element <- SeperateQueries(queries, 1, palette)
-    QElem_att_data <- QuerieElemAtt(New_data, Element, first.col, expression, Set_names, att.x, att.y,
+    QElem_att_data <- element(QuerieElemAtt, Element,New_data, first.col, expression, Set_names, att.x, att.y,
                                     palette)
   }
   AllQueryData <- combineQueriesData(QInter_att_data, QElem_att_data, customAttDat, att.x, att.y)

@@ -115,12 +115,13 @@ customplot <- list(nrows = 55,
 upset(movies, nsets = 7, nintersects = 30, mb.ratio = c(0.5, 0.5), order.matrix = c("freq", "degree"))
 
 upset(movies, sets = c("Drama", "Comedy", "Action", "Thriller", "Western", "Documentary"),
-      queries = list(list(query = "Intersection",params = list("Drama", "Action")),
+      queries = list(list(query = intersection, params = list("Drama", "Action")),
                 list(query = between, params = list(1970, 1980), color = "red", active = TRUE)))
 
 upset(movies, custom.plot = customplot,
      queries = list(list(query = between, params = list(1920, 1940)),
-                    list(query = "Intersection", params = list("Drama"), color= "red")),
+                    list(query = intersection, params = list("Drama"), color= "red"),
+                    list(query = element, params = list("ReleaseDate", 1990, 1991, 1992))),
       main.bar.color = "yellow")
 }
 \references{
