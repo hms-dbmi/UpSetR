@@ -266,7 +266,7 @@ BaseCustomPlot <- function(custom_plot, plots, position, size_plot_height, Main_
   bar_top <- 1
   matrix_bottom <- 100
   custom_top <- 101
-  custom_bottom <- (custom_plot$nrows + 100)
+  custom_bottom <- (custom_plot$gridrows + 100)
   grid.newpage()
   pushViewport(viewport(layout = grid.layout(custom_bottom,100)))
   print(arrangeGrob(Main_bar_plot, Matrix_plot, heights = hratios), vp = vplayout(bar_top:matrix_bottom, 21:100))
