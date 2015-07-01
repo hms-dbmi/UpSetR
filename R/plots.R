@@ -1,5 +1,5 @@
 #Generate main bar plot
-Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ){
+Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_angles){
   if(is.null(Q) == F){
     inter_data <- Q
     if(nrow(inter_data) != 0){
@@ -25,7 +25,8 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ){
                             plot.margin = unit(c(0.5,0.5,0.1,0.5), "lines"), panel.border = element_blank(),
                             axis.title.y = element_text(vjust = -0.8)))
   if((show_num == "yes") || (show_num == "Yes")){
-    Main_bar_plot <- (Main_bar_plot + geom_text(aes(label = freq), size = 3.0, vjust = -0.4, colour = Main_bar_data$color))
+    Main_bar_plot <- (Main_bar_plot + geom_text(aes(label = freq), size = 3.0, vjust = -1,
+                                                angle = number_angles, colour = Main_bar_data$color))
   }
   bInterDat <- NULL
   pInterDat <- NULL

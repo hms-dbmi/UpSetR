@@ -17,6 +17,7 @@
 #' @param att.color Color of attribute histogram bins or scatterplot points for unqueried data represented by main bars. Default set to color of main bars.
 #' @param order.matrix How the intersections in the matrix should be ordered by. Options include frequency (entered as "freq"), degree, or both in any order.
 #' @param show.numbers Show numbers of intersection sizes above bars 
+#' @param number.angles The angle of the numbers atop the intersection size bars
 #' @param aggregate.by How the data should be aggregated ("degree" or "sets")
 #' @param cutoff The number of intersections from each set (to cut off at) when aggregating by sets
 #' @param queries Unified querie of intersections, elements, and custom row functions. Entered as a list that contains a list of
@@ -84,10 +85,10 @@
 #' @export
 upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.color = "gray23",
                        main.bar.color = "gray23", sets.bar.color = "gray23",point.size = 4, line.size = 1, 
-                       name.size = 10, mb.ratio = c(0.70,0.30), expression = NULL, 
-                       att.pos = NULL, att.color = main.bar.color, order.matrix = c("degree", "freq"), 
-                       show.numbers = "yes", aggregate.by = "degree",cutoff = NULL, queries = NULL, query.legend = "none", 
-                       shade.color = "gray88", shade.alpha = 0.25, empty.intersections = NULL, 
+                       name.size = 10, mb.ratio = c(0.70,0.30), expression = NULL, att.pos = NULL, 
+                       att.color = main.bar.color, order.matrix = c("degree", "freq"), show.numbers = "yes", 
+                       number.angles = 0, aggregate.by = "degree",cutoff = NULL, queries = NULL, 
+                       query.legend = "none", shade.color = "gray88", shade.alpha = 0.25, empty.intersections = NULL, 
                        color.pal = 1, boxplot.summary = NULL, custom.plot = NULL){
   require(ggplot2);
   require(gridExtra);
@@ -173,7 +174,7 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.color =
   }
   AllQueryData <- combineQueriesData(QInter_att_data, QElem_att_data, customAttDat, att.x, att.y)
   ShadingData <- MakeShading(Matrix_layout)
-  Main_bar <- Make_main_bar(All_Freqs, Bar_Q, show.numbers, mb.ratio, customQBar)
+  Main_bar <- Make_main_bar(All_Freqs, Bar_Q, show.numbers, mb.ratio, customQBar, number.angles)
   Matrix <- Make_matrix_plot(Matrix_layout, Set_sizes, All_Freqs, point.size, line.size,
                              name.size, labels, ShadingData, shade.color, shade.alpha)
   Sizes <- Make_size_plot(Set_sizes, sets.bar.color, mb.ratio)

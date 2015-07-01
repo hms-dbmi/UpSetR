@@ -9,10 +9,11 @@ upset(data, nsets = 5, nintersects = 40, sets = NULL,
   sets.bar.color = "gray23", point.size = 4, line.size = 1,
   name.size = 10, mb.ratio = c(0.7, 0.3), expression = NULL,
   att.pos = NULL, att.color = main.bar.color, order.matrix = c("degree",
-  "freq"), show.numbers = "yes", aggregate.by = "degree", cutoff = NULL,
-  queries = NULL, query.legend = "none", shade.color = "gray88",
-  shade.alpha = 0.25, empty.intersections = NULL, color.pal = 1,
-  boxplot.summary = NULL, custom.plot = NULL)
+  "freq"), show.numbers = "yes", number.angles = 0,
+  aggregate.by = "degree", cutoff = NULL, queries = NULL,
+  query.legend = "none", shade.color = "gray88", shade.alpha = 0.25,
+  empty.intersections = NULL, color.pal = 1, boxplot.summary = NULL,
+  custom.plot = NULL)
 }
 \arguments{
 \item{data}{Data set}
@@ -46,6 +47,8 @@ upset(data, nsets = 5, nintersects = 40, sets = NULL,
 \item{order.matrix}{How the intersections in the matrix should be ordered by. Options include frequency (entered as "freq"), degree, or both in any order.}
 
 \item{show.numbers}{Show numbers of intersection sizes above bars}
+
+\item{number.angles}{The angle of the numbers atop the intersection size bars}
 
 \item{aggregate.by}{How the data should be aggregated ("degree" or "sets")}
 
