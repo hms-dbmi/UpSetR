@@ -11,8 +11,8 @@ upset(data, nsets = 5, nintersects = 40, sets = NULL,
   att.pos = NULL, att.color = main.bar.color, order.matrix = c("degree",
   "freq"), show.numbers = "yes", aggregate.by = "degree", cutoff = NULL,
   queries = NULL, query.legend = "none", shade.color = "gray88",
-  shade.alpha = 0.25, color.pal = 1, boxplot.summary = NULL,
-  custom.plot = NULL)
+  shade.alpha = 0.25, empty.intersections = NULL, color.pal = 1,
+  boxplot.summary = NULL, custom.plot = NULL)
 }
 \arguments{
 \item{data}{Data set}
@@ -62,6 +62,8 @@ See examples section on how to do this.}
 \item{shade.color}{Color of row shading in matrix}
 
 \item{shade.alpha}{Transparency of shading in matrix}
+
+\item{empty.intersections}{Additionally display empty sets up to nintersects}
 
 \item{color.pal}{Color palette for attribute plots}
 

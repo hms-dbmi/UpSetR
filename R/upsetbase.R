@@ -27,6 +27,7 @@
 #' @param query.legend Position query legend on top or bottom of UpSet plot
 #' @param shade.color Color of row shading in matrix
 #' @param shade.alpha Transparency of shading in matrix
+#' @param empty.intersections Additionally display empty sets up to nintersects
 #' @param color.pal Color palette for attribute plots
 #' @param boxplot.summary Boxplots representing the distribution of a selected attribute for each intersection. Change param from NULL to "on" for this option. 
 #' @param custom.plot Create custom ggplot using intersection data represented in the main bar plot. Prior to adding custom plots, the UpSet plot is set up in a 100 by 100 grid.
@@ -86,7 +87,7 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.color =
                        name.size = 10, mb.ratio = c(0.70,0.30), expression = NULL, 
                        att.pos = NULL, att.color = main.bar.color, order.matrix = c("degree", "freq"), 
                        show.numbers = "yes", aggregate.by = "degree",cutoff = NULL, queries = NULL, query.legend = "none", 
-                       shade.color = "gray88", shade.alpha = 0.25, 
+                       shade.color = "gray88", shade.alpha = 0.25, empty.intersections = NULL, 
                        color.pal = 1, boxplot.summary = NULL, custom.plot = NULL){
   require(ggplot2);
   require(gridExtra);
@@ -113,7 +114,7 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.color =
   New_data <- Wanted(data, Sets_to_remove)
   Num_of_set <- Number_of_sets(Set_names)
   All_Freqs <- Counter(New_data, Num_of_set, first.col, Set_names, nintersects, main.bar.color,
-                       rev(order.matrix), aggregate.by, cutoff)
+                       rev(order.matrix), aggregate.by, cutoff, empty.intersections)
   Matrix_setup <- Create_matrix(All_Freqs)
   labels <- Make_labels(Matrix_setup)
   att.x <- NULL; att.y <- NULL;
@@ -219,14 +220,22 @@ Number_of_sets <- function(sets){
 
 #Counts the frequency of each intersection being looked at and sets up data for main bar plot
 Counter <- function(data, num_sets, start_col, name_of_sets, nintersections, mbar_color, order_mat,
-                    aggregate, cut){
+                    aggregate, cut, empty_intersects){
   temp_data <- list()
   Freqs <- data.frame()
   end_col <- as.numeric(((start_col + num_sets) -1))
   for( i in 1:num_sets){
     temp_data[i] <- match(name_of_sets[i], colnames(data))
   }
-  Freqs <- count(data[ ,as.integer(temp_data)])
+  Freqs <- data.frame(count(data[ ,as.integer(temp_data)]))
+  if(is.null(empty_intersects) == F){
+  empty <- rep(list(c(0,1)), times = num_sets)
+  empty <- data.frame(expand.grid(empty))
+  colnames(empty) <- name_of_sets
+  empty$freq <- 0
+  all <- rbind(Freqs, empty)
+  Freqs <- data.frame(all[!duplicated(all[1:num_sets]), ])
+  }
   Freqs <- Freqs[!(rowSums(Freqs[ ,1:num_sets]) == 0), ]
   if(tolower(aggregate) == "degree"){
     for(i in 1:nrow(Freqs)){
