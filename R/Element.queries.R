@@ -1,4 +1,4 @@
-#Creates data set for element query to be plotted in attribute plots
+## Creates data set for element query to be plotted in attribute plots
 GetElements <- function(data, elements){
   col_num <- match(elements[1], colnames(data))
   num_elem <- length(elements)
@@ -7,7 +7,7 @@ GetElements <- function(data, elements){
   return(temp_data)
 }
 
-#Generate attribute data from element queries 
+## Generate attribute data from element queries 
 QuerieElemAtt <- function(q, data, start_col, exp, names, att_x, att_y, palette){
   rows <- data.frame()
   if(length(q) == 0){

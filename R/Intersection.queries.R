@@ -1,4 +1,4 @@
-#Creates data set for intersection queries to be plotted in attribute plots
+## Creates data set for intersection queries to be plotted in attribute plots
 GetIntersects <- function(data, start_col, sets, num_sets){
   end_col <- as.numeric(((start_col + num_sets) -1))
   set_cols <- data[ ,start_col:end_col]
@@ -16,7 +16,7 @@ GetIntersects <- function(data, start_col, sets, num_sets){
   }
 }
 
-#Generates data needed to represent selected intersections on matrix
+## Generates data needed to represent selected intersections on matrix
 QuerieInterData <- function(query, data1, first_col, num_sets, data2, exp, names, palette){
   rows <- data.frame()
   if(length(query) == 0){
@@ -53,7 +53,7 @@ QuerieInterData <- function(query, data1, first_col, num_sets, data2, exp, names
   return(rows)
 }
 
-#Generates intersection bar data to overlay main bars 
+## Generates intersection bar data to overlay main bars 
 QuerieInterBar  <- function(q, data1, first_col, num_sets, data2, exp, names, palette){
   rows <- data.frame()
   act <- c()
@@ -83,7 +83,7 @@ QuerieInterBar  <- function(q, data1, first_col, num_sets, data2, exp, names, pa
   return(rows)
 }
 
-#Generate attribute data for intersection queries 
+## Generate attribute data for intersection queries 
 QuerieInterAtt <- function(q, data, first_col, num_sets, att_x, att_y, exp, names, palette){
   rows <- data.frame()
   if(length(q) == 0){

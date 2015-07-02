@@ -1,4 +1,4 @@
-#Generates list of custom plots to be plotted underneath UpSet plot
+## Generates list of custom plots to be plotted underneath UpSet plot
 GenerateCustomPlots <- function(custom_plot, Set_data, QueryData, att_color, attx, atty){
   CustomPlot <- list()
   Set_data$color <- att_color

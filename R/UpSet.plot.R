@@ -1,4 +1,4 @@
-#Assemble plots to make UpSet plot
+## Assemble plots to make UpSet plot
 Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratios, att_x, att_y,
                            Set_data, exp, position, start_col, att_color, QueryData,
                            Q_Title, custom_plot, legend, query_legend, boxplot){
@@ -55,12 +55,12 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
   }
 }
 
-#Viewport function 
+## Viewport function 
 vplayout <- function(x,y){
   viewport(layout.pos.row = x, layout.pos.col = y)
 }
 
-#Generates UpSet plot with boxplots representing distributions of attributes
+## Generates UpSet plot with boxplots representing distributions of attributes
 BaseBoxPlot <- function(box_plot, position, size_plot_height, Main_bar_plot, Matrix_plot, 
                         Size_plot, hratios){
   if(length(box_plot) > 2){
@@ -109,7 +109,7 @@ BaseBoxPlot <- function(box_plot, position, size_plot_height, Main_bar_plot, Mat
   }
 }
 
-#Generates UpSet plot when no attributes are selected to be plotted
+## Generates UpSet plot when no attributes are selected to be plotted
 NoAttBasePlot <- function(legend, size_plot_height, Main_bar_plot, Matrix_plot, hratios,
                           Size_plot, query_legend){
   top <- 1
@@ -146,7 +146,7 @@ NoAttBasePlot <- function(legend, size_plot_height, Main_bar_plot, Matrix_plot, 
   }
 }
 
-#Function that plots out the list of plots generated from custom plot input
+## Function that plots out the list of plots generated from custom plot input
 BaseCustomPlot <- function(custom_plot, plots, position, size_plot_height, Main_bar_plot, Matrix_plot, 
                            Size_plot, hratios){
   bar_top <- 1

@@ -1,4 +1,4 @@
-#Finds the columns that represent the sets 
+## Finds the columns that represent the sets 
 FindStartEnd <- function(data){
   startend <- c()
   for(i in 1:ncol(data)){
@@ -26,7 +26,7 @@ FindStartEnd <- function(data){
   return(startend)
 }
 
-#Finds the n largest sets if the user hasn't specified any sets
+## Finds the n largest sets if the user hasn't specified any sets
 FindMostFreq <- function(data, start_col, end_col, n_sets){  
   temp_data <- data[ ,start_col:end_col]
   temp_data <- colSums(temp_data)
@@ -36,18 +36,18 @@ FindMostFreq <- function(data, start_col, end_col, n_sets){
   return(temp_data)
 }
 
-#Finds the names of the sets that aren't being used
+## Finds the names of the sets that aren't being used
 Remove <- function(data, start_col, end_col, sets){
   temp_data <- as.data.frame(data[ , start_col:end_col])
   Unwanted_sets <- colnames(temp_data[ ,!(colnames(temp_data) %in% sets), drop = F])
 }
 
-#Removes unwanted sets from data
+## Removes unwanted sets from data
 Wanted <- function(data, unwanted_sets){
   temp_data <- (data[ ,!(colnames(data) %in% unwanted_sets), drop = F])
 }
 
-#Subsets intersection and element queries using expression parameter
+## Subsets intersection and element queries using expression parameter
 Subset_att <- function(data, exp){
   attach(data)
   express <- paste("data$", exp, sep = "")
@@ -56,14 +56,14 @@ Subset_att <- function(data, exp){
   return(data)
 }
 
-#Number of sets being looked at
+## Number of sets being looked at
 Number_of_sets <- function(sets){
   temp <- length(sets)
   return(temp)
 }
 
 
-#Creates data set if data is aggregated by sets
+## Creates data set if data is aggregated by sets
 Get_aggregates <- function(data, num_sets, order_mat, cut){
   temp_data <- list()
   set_agg <- list()
@@ -93,7 +93,7 @@ Get_aggregates <- function(data, num_sets, order_mat, cut){
   return(set_agg)
 }
 
-#Creates data set to overlay main bar plot and matrix plot with intersection queries
+## Creates data set to overlay main bar plot and matrix plot with intersection queries
 OverlayEdit <- function(data1, data2, start_col, num_sets, intersects, exp, inter_color){
   end_col <- as.numeric(((start_col + num_sets) -1))
   set_cols <- data1[ ,start_col:end_col]

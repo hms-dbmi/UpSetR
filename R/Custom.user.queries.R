@@ -1,4 +1,4 @@
-#Apply custom functions passed into queries and generate list of data sets from these functions
+## Apply custom functions passed into queries and generate list of data sets from these functions
 customQueries <- function(data, custom, names){
   data_sets <- list()
   dataAndrow <- list(data, 1)
@@ -18,7 +18,7 @@ customQueries <- function(data, custom, names){
   return(data_sets)
 }
 
-#Generate list of data sets to overlay main bars
+## Generate list of data sets to overlay main bars
 customQueriesBar <- function(cust_data, sets,bar_data,custom){
   setup <- list()
   final_data <- list()

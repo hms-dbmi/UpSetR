@@ -55,7 +55,7 @@ Create_layout <- function(setup, mat_color, mat_col){
   return(Matrix_layout)
 }
 
-#Create data set to shade matrix 
+## Create data set to shade matrix 
 MakeShading <- function(Mat_data){
   y <- unique(Mat_data$y)
   y <- (y[which(y %% 2 != 0)])
@@ -69,7 +69,7 @@ MakeShading <- function(Mat_data){
   return(data)
 }
 
-#Generate matrix plot
+## Generate matrix plot
 Make_matrix_plot <- function(Mat_data,Set_size_data, Main_bar_data, point_size, line_size, name_size, labels,
                              shading_data, shade_color, shade_alpha){
   Matrix_plot <- (ggplot() 

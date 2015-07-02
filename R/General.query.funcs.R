@@ -1,5 +1,5 @@
-#Seperate the queries between and paramters by built in(intersection and element), and custom functions
-#Apply colors if not specified
+## Seperate the queries between and paramters by built in(intersection and element), and custom functions
+## Apply colors if not specified
 SeperateQueries <- function(queries, choice, palette){
   seperated <- list()
   for(i in 1:length(queries)){
@@ -34,7 +34,7 @@ SeperateQueries <- function(queries, choice, palette){
   return(seperated)
 }
 
-#Combine all attribute data generated from queries 
+## Combine all attribute data generated from queries 
 combineQueriesData <- function(Intersection, Elements, Custom, att_x, att_y){
   all_data <- data.frame()
   all_data <- rbind(Intersection, Elements, Custom)
@@ -50,7 +50,7 @@ combineQueriesData <- function(Intersection, Elements, Custom, att_x, att_y){
   return(all_data)
 }
 
-#Create legend data for queries
+## Create legend data for queries
 GuideGenerator <- function(queries, palette){
   numbers <- c()
   colors <- c()
@@ -72,7 +72,7 @@ guide <- cbind(numbers, colors)
 return(as.data.frame(guide))
 }
 
-#Make plot of that legend using legend data 
+## Make plot of that legend using legend data 
 Make_legend <- function(legend){
   colors <- as.character(legend$colors)
   labels <- as.character(legend$numbers)

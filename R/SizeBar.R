@@ -1,4 +1,4 @@
-#Find frequency of each set for set size bar plot
+## Find frequency of each set for set size bar plot
 FindSetFreqs <- function(data, start_col, num_sets, set_names){
   end_col <- as.numeric(((start_col + num_sets) -1))
   temp_data <- data[ ,start_col:end_col]
@@ -10,7 +10,7 @@ FindSetFreqs <- function(data, start_col, num_sets, set_names){
   return(as.data.frame(temp_data))
 }
 
-#Generate set size plot
+## Generate set size plot
 Make_size_plot <- function(Set_size_data, sbar_color, ratios){
   if(ratios[2] < 0.46){
     m <- 0.4

@@ -56,7 +56,7 @@ Counter <- function(data, num_sets, start_col, name_of_sets, nintersections, mba
   return(Freqs)
 }
 
-#Generate main bar plot
+## Generate main bar plot
 Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_angles){
   if(is.null(Q) == F){
     inter_data <- Q
@@ -70,7 +70,7 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_an
   else{
     inter_data <- NULL
   }
-  #teb perc creates appropriate space above highest bar so number doesnt get cut off
+  #ten_perc creates appropriate space above highest bar so number doesnt get cut off
   ten_perc <- ((max(Main_bar_data$freq)) * 0.1)
   Main_bar_plot <- (ggplot(data = Main_bar_data, aes(x = x, y = freq)) 
                     + geom_bar(stat = "identity", colour = Main_bar_data$color, width = 0.6, 
