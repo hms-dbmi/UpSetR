@@ -119,18 +119,29 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.color =
                        rev(order.matrix), aggregate.by, cutoff, empty.intersections)
   Matrix_setup <- Create_matrix(All_Freqs)
   labels <- Make_labels(Matrix_setup)
+  
+  #Chose NA to represent NULL case as result of NA being inserted when at least one contained both x and y
+  #i.e. if one custom plot had both x and y, and others had only x, the y's for the other plots were NA
+  #if I decided to make the NULL case (all x and no y, or vice versa), there would have been alot more if/else statements
+  #NA can be indexed so that we still get the non NA y aesthetics on correct plot. NULL cant be indexed.
   att.x <- c(); att.y <- c();
   if(is.null(custom.plot) == F){
     for(i in seq_along(custom.plot$plots)){
       if(length(custom.plot$plots[[i]]$x) != 0){
         att.x[i] <- custom.plot$plots[[i]]$x
       }
+      else if(length(custom.plot$plots[[i]]$x) == 0){
+        att.x[i] <- NA
+      }
       if(length(custom.plot$plots[[i]]$y) != 0){
         att.y[i] <- custom.plot$plots[[i]]$y
       }
+      else if(length(custom.plot$plots[[i]]$y) == 0){
+        att.y[i] <- NA
+      }
     }
   }
-  else{att.x <- NULL; att.y <- NULL}
+
   BoxPlots <- NULL
   if(is.null(boxplot.summary) == F){
     BoxData <- IntersectionBoxPlot(All_Freqs, New_data, first.col, Set_names)

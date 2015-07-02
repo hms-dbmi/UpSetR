@@ -20,27 +20,8 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
   if((hratios[1] > 0.7 || hratios[1] < 0.3) ||
        (hratios[2] > 0.7 || hratios[2] < 0.3)) warning("Plot might be out of range if ratio > 0.7 or < 0.3")
   if(is.null(custom_plot) == T && is.null(boxplot) == T){
-    if((is.null(att_x) == T) && (is.null(att_y) == F)){
-      warning("Please place lone attribute in att.x if you wish to plot a histogram")
-    }
-    
-    else if((is.null(att_x) == T) && (is.null(att_y) == T)){
       NoAttBasePlot(legend, size_plot_height, Main_bar_plot, Matrix_plot, hratios, Size_plot, query_legend)
-    }
-    
-    else if((is.null(att_x) == F) && (is.null(att_y) == T)){
-      HistoAttPlot(att_x, att_y, Set_data, start_col, labels, exp, att_color, QueryData,
-                   Q_Title, hratios, position, size_plot_height, legend,
-                   Main_bar_plot, Matrix_plot, Size_plot, query_legend)
-    }
-    
-    else if((is.null(att_x) == F) && (is.null(att_y) == F)){
-      ScatterAttPlot(att_x, att_y, Set_data, start_col, labels, exp, att_color, QueryData,
-                     Q_Title, hratios, position, size_plot_height, legend,
-                     Main_bar_plot, Matrix_plot, Size_plot, query_legend)
-    }
   }
-  
   else if(is.null(custom_plot) == F && is.null(boxplot) == T){
     plots <- GenerateCustomPlots(custom_plot, Set_data, QueryData, att_color, att_x, att_y, names)
     #      for(i in seq_along(plots)){
