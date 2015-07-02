@@ -2,7 +2,7 @@
 % Please edit documentation in R/intersects.R
 \name{intersects}
 \alias{intersects}
-\title{intersection query for queries paramter}
+\title{Intersection query for queries paramter}
 \usage{
 intersects(func, query, ...)
 }
