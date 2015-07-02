@@ -10,6 +10,8 @@ element(func, query, ...)
 \item{func}{A functions provided internally}
 
 \item{query}{Input from the queries parameter assigned to the element function.}
+
+\item{...}{Additional parameters to be supplied internally}
 }
 \description{
 A query paramter to visualize specific elements of interest if queries = active (in custom plots only)

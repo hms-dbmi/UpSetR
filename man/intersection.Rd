@@ -10,6 +10,8 @@ intersection(func, query, ...)
 \item{func}{A functions provided internally}
 
 \item{query}{Input from the queries parameter assigned to the intersection function.}
+
+\item{...}{Additional paramters to be applied internally}
 }
 \description{
 A query paramter to visualize elements contained in specific intersections
