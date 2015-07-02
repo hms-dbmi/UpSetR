@@ -1,9 +1,10 @@
 Package: UpSetR
 Title: Visualization of Intersecting Sets
-Version: 1.0
-Date: 2015-06-25
-Author: Nils Gehlenborg
-Maintainer: Nils Gehlenborg <nils@hms.harvard.edu>
+Version: 0.0.1
+Date: 2015-07-02
+Authors@R: c(
+    person("Conway", "Jake", email = "jake_conway@student.uml.edu", role = "cre"),
+    person("Gehlenborg", "Nils", email = "nils@hms.harvard.edu", role = "aut"))
 Description: Creates visualizations of intersecting sets using a novel matrix design,
              along with visualizations of several common set, element and attribute
              related tasks
