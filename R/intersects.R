@@ -1,4 +1,4 @@
-#' intersection query for queries paramter
+#' Intersection query for queries paramter
 #' 
 #' @description A query paramter to visualize elements contained in specific intersections
 #' @param func A functions provided internally
