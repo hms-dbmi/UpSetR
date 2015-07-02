@@ -243,7 +243,7 @@ SeperateQueries <- function(queries, choice, palette){
   }
   if(choice == 1){
     for(i in 1:length(queries)){
-      if(identical(intersection, queries[[i]]$query) == T || identical(element, queries[[i]]$query) == T){
+      if(identical(intersects, queries[[i]]$query) == T || identical(elements, queries[[i]]$query) == T){
         seperated <- c(seperated, list(queries[[i]]))
       }
       else{
@@ -253,7 +253,7 @@ SeperateQueries <- function(queries, choice, palette){
   }
   else if(choice == 2){
     for(i in 1:length(queries)){
-      if(identical(intersection, queries[[i]]$query) == F && identical(element, queries[[i]]$query) == F){
+      if(identical(intersects, queries[[i]]$query) == F && identical(elements, queries[[i]]$query) == F){
         seperated <- c(seperated, list(queries[[i]]))
       }
       else{

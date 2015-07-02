@@ -6,7 +6,7 @@
 #' @param ... Additional parameters to be supplied internally 
 #' @note See examples section of upset function on how to use this function in the queries parameter.
 #' @export
-element <- function(func, query, ...){
+elements <- function(func, query, ...){
   data <- func(query, ...)
   return(data)
 }

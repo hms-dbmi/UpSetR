@@ -6,7 +6,7 @@
 #' @param ... Additional paramters to be applied internally 
 #' @note See examples section of upset function on how to use this function in the queries parameter.
 #' @export
-intersection <- function(func, query, ...){
+intersects <- function(func, query, ...){
   data <- func(query,...)
   return(data)
 }
