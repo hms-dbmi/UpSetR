@@ -1,5 +1,5 @@
 #' UpSetR Plot
-#' 
+#'
 #' @description Visualization of set intersections using novel UpSet matrix design.
 #' @param data Data set
 #' @param nsets Number of sets to look at
@@ -16,13 +16,13 @@
 #' @param att.pos Position of attribute plot. If NULL or "bottom" the plot will be at below UpSet plot. If "top" it will be above UpSert plot
 #' @param att.color Color of attribute histogram bins or scatterplot points for unqueried data represented by main bars. Default set to color of main bars.
 #' @param order.matrix How the intersections in the matrix should be ordered by. Options include frequency (entered as "freq"), degree, or both in any order.
-#' @param show.numbers Show numbers of intersection sizes above bars 
+#' @param show.numbers Show numbers of intersection sizes above bars
 #' @param number.angles The angle of the numbers atop the intersection size bars
 #' @param aggregate.by How the data should be aggregated ("degree" or "sets")
 #' @param cutoff The number of intersections from each set (to cut off at) when aggregating by sets
 #' @param queries Unified querie of intersections, elements, and custom row functions. Entered as a list that contains a list of
-#'        queries. query is the type of query being conducted. params are the parameters of the query (if any). color is the color of the points on the 
-#'        plot that will represent the query. If no color is selected one will be provided automatically. active takes TRUE or FALSE, and if 
+#'        queries. query is the type of query being conducted. params are the parameters of the query (if any). color is the color of the points on the
+#'        plot that will represent the query. If no color is selected one will be provided automatically. active takes TRUE or FALSE, and if
 #'        TRUE, it will overlay the bars present  with the results from the query. If FALSE a tick mark will indicate the intersection size.
 #'        See examples section on how to do this.
 #' @param query.legend Position query legend on top or bottom of UpSet plot
@@ -30,17 +30,17 @@
 #' @param shade.alpha Transparency of shading in matrix
 #' @param empty.intersections Additionally display empty sets up to nintersects
 #' @param color.pal Color palette for attribute plots
-#' @param boxplot.summary Boxplots representing the distribution of a selected attribute for each intersection. Change param from NULL to "on" for this option. 
+#' @param boxplot.summary Boxplots representing the distribution of a selected attribute for each intersection. Change param from NULL to "on" for this option.
 #' @param custom.plot Create custom ggplot using intersection data represented in the main bar plot. Prior to adding custom plots, the UpSet plot is set up in a 100 by 100 grid.
 #'        The custom.plot parameter takes a list that contains the number of rows that should be allocated for the custom plot, and a list of plots with specified positions.
 #'        nrows is the number of rows the custom plots should take up. There is already 100 allocated for the custom plot. plots takes a list that contains a function that returns
-#'        a custom ggplots and the x and y aesthetics for the function. ncols is the number of columns that your ggplots should take up. See examples for how to add custom ggplots. 
-#' @details Visualization of set data in the layout described by Lex and Gehlenborg in \url{<http://www.nature.com/nmeth/journal/v11/n8/full/nmeth.3033.html>}. 
-#' UpSet also allows for visualization of queries on intersections and elements, along with custom queries queries implemented using 
+#'        a custom ggplots and the x and y aesthetics for the function. ncols is the number of columns that your ggplots should take up. See examples for how to add custom ggplots.
+#' @details Visualization of set data in the layout described by Lex and Gehlenborg in \url{<http://www.nature.com/nmeth/journal/v11/n8/full/nmeth.3033.html>}.
+#' UpSet also allows for visualization of queries on intersections and elements, along with custom queries queries implemented using
 #' Hadley Wickhams apply function. To further analyze the data contained in the intersections, the user may select additional attribute plots
 #' to be displayed alongside the UpSet plot. The user also has the the ability to pass their own plots into the function to further analyze
 #' data belonging to queries of interest. Most aspects of the UpSet plot are customizable, allowing the user to select the plot that best suits their style.
-#' Depending on how the featuers are selected, UpSet can display between 25-65 sets and between 40-100 intersections. 
+#' Depending on how the featuers are selected, UpSet can display between 25-65 sets and between 40-100 intersections.
 #' @note Data set must be formatted as described on the orginal UpSet github page: \url{<https://github.com/VCG/upset/wiki>}.
 #' @references Lex et al. (2014). UpSet: Visualization of Intersecting Sets
 #' IEEE Transactions on Visualization and Computer Graphics (Proceedings of InfoVis ’14), vol 20, pp. 1983-1992, (2014). \url{http://people.seas.harvard.edu/~alex/papers/2014_infovis_upset.pdf}
@@ -78,27 +78,27 @@
 #'       queries = list(list(query = intersects, params = list("Drama", "Action")),
 #'                 list(query = between, params = list(1970, 1980), color = "red", active = TRUE)))
 #'
-#' upset(movies, custom.plot = customplot, 
+#' upset(movies, custom.plot = customplot,
 #'      queries = list(list(query = between, params = list(1920, 1940)),
 #'                     list(query = intersects, params = list("Drama"), color= "red"),
 #'                     list(query = elements, params = list("ReleaseDate", 1990, 1991, 1992))),
 #'       main.bar.color = "yellow")
 #' @export
 upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.color = "gray23",
-                       main.bar.color = "gray23", sets.bar.color = "gray23",point.size = 4, line.size = 1, 
-                       name.size = 10, mb.ratio = c(0.70,0.30), expression = NULL, att.pos = NULL, 
-                       att.color = main.bar.color, order.matrix = c("degree", "freq"), show.numbers = "yes", 
-                       number.angles = 0, aggregate.by = "degree",cutoff = NULL, queries = NULL, 
-                       query.legend = "none", shade.color = "gray88", shade.alpha = 0.25, empty.intersections = NULL, 
-                       color.pal = 1, boxplot.summary = NULL, custom.plot = NULL){
+                  main.bar.color = "gray23", sets.bar.color = "gray23",point.size = 4, line.size = 1,
+                  name.size = 10, mb.ratio = c(0.70,0.30), expression = NULL, att.pos = NULL,
+                  att.color = main.bar.color, order.matrix = c("degree", "freq"), show.numbers = "yes",
+                  number.angles = 0, aggregate.by = "degree",cutoff = NULL, queries = NULL,
+                  query.legend = "none", shade.color = "gray88", shade.alpha = 0.25, empty.intersections = NULL,
+                  color.pal = 1, boxplot.summary = NULL, custom.plot = NULL){
   require(ggplot2);
   require(gridExtra);
   require(plyr);
   
-  startend <-FindStartEnd(data) 
+  startend <-FindStartEnd(data)
   first.col <- startend[1]
   last.col <- startend[2]
-
+  
   if(color.pal == 1){
     palette <- c("#1F77B4", "#FF7F0E", "#2CA02C", "#D62728", "#9467BD", "#8C564B", "#E377C2",
                  "#7F7F7F", "#BCBD22", "#17BECF")
@@ -119,18 +119,24 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.color =
                        rev(order.matrix), aggregate.by, cutoff, empty.intersections)
   Matrix_setup <- Create_matrix(All_Freqs)
   labels <- Make_labels(Matrix_setup)
-  att.x <- NULL; att.y <- NULL;
+  att.x <- c(); att.y <- c();
   if(is.null(custom.plot) == F){
-    for(i in seq_along(custom.plot$plots))
-    att.x <- unique(custom.plot$plots[[i]]$x)
-    att.y <- unique(custom.plot$plots[[i]]$y)
+    for(i in seq_along(custom.plot$plots)){
+      if(length(custom.plot$plots[[i]]$x) != 0){
+        att.x[i] <- custom.plot$plots[[i]]$x
+      }
+      if(length(custom.plot$plots[[i]]$y) != 0){
+        att.y[i] <- custom.plot$plots[[i]]$y
+      }
+    }
   }
+  else{att.x <- NULL; att.y <- NULL}
   BoxPlots <- NULL
   if(is.null(boxplot.summary) == F){
-  BoxData <- IntersectionBoxPlot(All_Freqs, New_data, first.col, Set_names)
+    BoxData <- IntersectionBoxPlot(All_Freqs, New_data, first.col, Set_names)
     BoxPlots <- list()
     for(i in seq_along(boxplot.summary)){
-  BoxPlots[[i]] <- BoxPlotsPlot(BoxData, boxplot.summary[i], att.color)
+      BoxPlots[[i]] <- BoxPlotsPlot(BoxData, boxplot.summary[i], att.color)
     }
   }
   
@@ -145,14 +151,14 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.color =
     legend <- GuideGenerator(queries, palette)
     legend <- Make_legend(legend)
     if(is.null(att.x) == F && is.null(customDat) == F){
-        customAttDat <- CustomAttData(customDat, att.x, att.y)
+      customAttDat <- CustomAttData(customDat, Set_names)
     }
     customQBar <- customQueriesBar(customDat, Set_names, All_Freqs, custom.queries)
   }
   if(is.null(queries) == F){
     Intersection <- SeperateQueries(queries, 1, palette)
     Matrix_col <- intersects(QuerieInterData, Intersection, New_data, first.col, Num_of_set,
-                               All_Freqs, expression, Set_names, palette)
+                             All_Freqs, expression, Set_names, palette)
   }
   else{
     Matrix_col <- NULL
@@ -167,11 +173,11 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.color =
   QInter_att_data <- NULL
   QElem_att_data <- NULL
   if((is.null(queries) == F) & (is.null(att.x) == F)){
-    QInter_att_data <- intersects(QuerieInterAtt, Intersection, New_data, first.col, Num_of_set, att.x, att.y, 
-                                      expression, Set_names, palette)
+    QInter_att_data <- intersects(QuerieInterAtt, Intersection, New_data, first.col, Num_of_set, att.x, att.y,
+                                  expression, Set_names, palette)
     Element <- SeperateQueries(queries, 1, palette)
     QElem_att_data <- elements(QuerieElemAtt, Element,New_data, first.col, expression, Set_names, att.x, att.y,
-                                    palette)
+                               palette)
   }
   AllQueryData <- combineQueriesData(QInter_att_data, QElem_att_data, customAttDat, att.x, att.y)
   ShadingData <- MakeShading(Matrix_layout)
@@ -181,5 +187,5 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.color =
   Sizes <- Make_size_plot(Set_sizes, sets.bar.color, mb.ratio)
   Make_base_plot(Main_bar, Matrix, Sizes, labels, mb.ratio, att.x, att.y, New_data,
                  expression, att.pos, first.col, att.color, AllQueryData,
-                 query.plot.title, custom.plot, legend, query.legend, BoxPlots)
+                 query.plot.title, custom.plot, legend, query.legend, BoxPlots, Set_names)
 }

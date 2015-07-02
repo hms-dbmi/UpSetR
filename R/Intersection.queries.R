@@ -53,7 +53,7 @@ QuerieInterData <- function(query, data1, first_col, num_sets, data2, exp, names
   return(rows)
 }
 
-## Generates intersection bar data to overlay main bars 
+## Generates intersection bar data to overlay main bars
 QuerieInterBar  <- function(q, data1, first_col, num_sets, data2, exp, names, palette){
   rows <- data.frame()
   act <- c()
@@ -83,7 +83,7 @@ QuerieInterBar  <- function(q, data1, first_col, num_sets, data2, exp, names, pa
   return(rows)
 }
 
-## Generate attribute data for intersection queries 
+## Generate attribute data for intersection queries
 QuerieInterAtt <- function(q, data, first_col, num_sets, att_x, att_y, exp, names, palette){
   rows <- data.frame()
   if(length(q) == 0){
@@ -99,32 +99,22 @@ QuerieInterAtt <- function(q, data, first_col, num_sets, att_x, att_y, exp, name
     }
     else{
       intersect <- GetIntersects(data, first_col, index_q, num_sets)
-      if(is.null(att_y) == T){
+      if(is.na(att_y[i]) == T){
         if(is.null(exp) == F){
           intersect <- Subset_att(intersect, exp)
         }
-        c1 <- match(att_x, colnames(intersect))
-        colnames(intersect)[c1] <- "val1"
         if(nrow(intersect) != 0){
           intersect$color <- inter_color
-          intersect <- intersect[ , c("val1", "color")]
-          intersect <- as.data.frame(intersect[order(intersect$val1), ])
         }
       }
-      else if(is.null(att_y) == F){
+      else if(is.na(att_y[i]) == F){
         if(is.null(exp) == F){
           intersect <- Subset_att(intersect, exp)
         }
-        c1 <- match(att_x, colnames(intersect))
-        c2 <- match(att_y, colnames(intersect))
-        colnames(intersect)[c1] <- "val1"
-        colnames(intersect)[c2] <- "val2"
-        intersect$color <- inter_color
-        intersect <- intersect[ , c("val1", "val2", "color")]
-        intersect <- as.data.frame(intersect[order(intersect$val1, intersect$val2), ])
-        
+        intersect$color <- inter_color        
       }
     }
+    intersect <- intersect[ ,-which(names(intersect) %in% index_q)]
     rows <- rbind(rows, intersect)
   }
   return(rows)

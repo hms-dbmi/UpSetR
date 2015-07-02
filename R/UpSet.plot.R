@@ -1,23 +1,23 @@
 ## Assemble plots to make UpSet plot
 Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratios, att_x, att_y,
                            Set_data, exp, position, start_col, att_color, QueryData,
-                           Q_Title, custom_plot, legend, query_legend, boxplot){
+                           Q_Title, custom_plot, legend, query_legend, boxplot, names){
   
   end_col <- ((start_col + as.integer(length(labels))) - 1)
   Set_data <- Set_data[which(rowSums(Set_data[ ,start_col:end_col]) != 0), ]
   Main_bar_plot$widths <- Matrix_plot$widths
-  Matrix_plot$heights <- Size_plot$heights 
+  Matrix_plot$heights <- Size_plot$heights
   if(is.null(legend)==F){
     legend$widths <- Matrix_plot$widths
   }
   if(is.null(boxplot) == F){
     for(i in seq_along(boxplot)){
-    boxplot[[i]]$widths <- Matrix_plot$widths
+      boxplot[[i]]$widths <- Matrix_plot$widths
     }
   }
   
-  size_plot_height <- (((hratios[1])+0.01)*100) 
-  if((hratios[1] > 0.7 || hratios[1] < 0.3) || 
+  size_plot_height <- (((hratios[1])+0.01)*100)
+  if((hratios[1] > 0.7 || hratios[1] < 0.3) ||
        (hratios[2] > 0.7 || hratios[2] < 0.3)) warning("Plot might be out of range if ratio > 0.7 or < 0.3")
   if(is.null(custom_plot) == T && is.null(boxplot) == T){
     if((is.null(att_x) == T) && (is.null(att_y) == F)){
@@ -42,12 +42,12 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
   }
   
   else if(is.null(custom_plot) == F && is.null(boxplot) == T){
-   plots <- GenerateCustomPlots(custom_plot, Set_data, QueryData, att_color, att_x, att_y)
-#      for(i in seq_along(plots)){
-#        custom_plot$plots[[i]]$plot <- plots[[i]]
-#      }
-         BaseCustomPlot(custom_plot, plots, position, size_plot_height, Main_bar_plot, Matrix_plot, Size_plot,
-                        hratios)
+    plots <- GenerateCustomPlots(custom_plot, Set_data, QueryData, att_color, att_x, att_y, names)
+    #      for(i in seq_along(plots)){
+    #        custom_plot$plots[[i]]$plot <- plots[[i]]
+    #      }
+    BaseCustomPlot(custom_plot, plots, position, size_plot_height, Main_bar_plot, Matrix_plot, Size_plot,
+                   hratios)
   }
   else if(is.null(boxplot)==F && is.null(custom_plot) == T){
     BaseBoxPlot(boxplot, position, size_plot_height, Main_bar_plot, Matrix_plot, Size_plot,
@@ -55,13 +55,13 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
   }
 }
 
-## Viewport function 
+## Viewport function
 vplayout <- function(x,y){
   viewport(layout.pos.row = x, layout.pos.col = y)
 }
 
 ## Generates UpSet plot with boxplots representing distributions of attributes
-BaseBoxPlot <- function(box_plot, position, size_plot_height, Main_bar_plot, Matrix_plot, 
+BaseBoxPlot <- function(box_plot, position, size_plot_height, Main_bar_plot, Matrix_plot,
                         Size_plot, hratios){
   if(length(box_plot) > 2){
     return(warning("UpSet can only show 2 box plots at a time"))
@@ -89,7 +89,7 @@ BaseBoxPlot <- function(box_plot, position, size_plot_height, Main_bar_plot, Mat
       size_plot_height <- (size_plot_height + 50)
       bar_top <- 51
       matrix_bottom <- 150
-      att_top <- 15 
+      att_top <- 15
       att_bottom <- 30
       gridrow <- 150
     }
@@ -147,7 +147,7 @@ NoAttBasePlot <- function(legend, size_plot_height, Main_bar_plot, Matrix_plot, 
 }
 
 ## Function that plots out the list of plots generated from custom plot input
-BaseCustomPlot <- function(custom_plot, plots, position, size_plot_height, Main_bar_plot, Matrix_plot, 
+BaseCustomPlot <- function(custom_plot, plots, position, size_plot_height, Main_bar_plot, Matrix_plot,
                            Size_plot, hratios){
   bar_top <- 1
   matrix_bottom <- 100

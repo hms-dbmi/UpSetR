@@ -7,7 +7,7 @@ GetElements <- function(data, elements){
   return(temp_data)
 }
 
-## Generate attribute data from element queries 
+## Generate attribute data from element queries
 QuerieElemAtt <- function(q, data, start_col, exp, names, att_x, att_y, palette){
   rows <- data.frame()
   if(length(q) == 0){
@@ -19,17 +19,13 @@ QuerieElemAtt <- function(q, data, start_col, exp, names, att_x, att_y, palette)
     test <- as.character(index_q[1])
     check <- match(test, names)
     if(length(check) != 0){
-      if(is.null(att_y) == F){
+      if(is.na(att_y[i]) == F){
         elems <- GetElements(data, index_q)
         end_col <- ((start_col + as.integer(length(names))) - 1)
         elems <- elems[which(rowSums(elems[ ,start_col:end_col]) != 0), ]
         if(is.null(exp) == F){
           elems <- Subset_att(elems, exp)
         }
-        col1 <- match(att_x, colnames(elems))
-        col2 <- match(att_y, colnames(elems))
-        colnames(elems)[col1] <- "val1"
-        colnames(elems)[col2] <- "val2"
         if(nrow(elems) != 0){
           elems$color <- elem_color
         }
@@ -37,15 +33,13 @@ QuerieElemAtt <- function(q, data, start_col, exp, names, att_x, att_y, palette)
           elems <- NULL
         }
       }
-      else if(is.null(att_y) == T){
+      else if(is.na(att_y[i]) == T){
         elems <- GetElements(data, index_q)
         end_col <- ((start_col + as.integer(length(names))) - 1)
         elems <- elems[which(rowSums(elems[ ,start_col:end_col]) != 0), ]
         if(is.null(exp) == F){
           elems <- Subset_att(elems, exp)
         }
-        col1 <- match(att_x, colnames(elems))
-        colnames(elems)[col1] <- "val1"
         if(nrow(elems) != 0){
           elems$color <- elem_color
         }
@@ -57,20 +51,14 @@ QuerieElemAtt <- function(q, data, start_col, exp, names, att_x, att_y, palette)
     else{
       elems <- NULL
     }
+    elems <- elems[ ,-which(names(elems) %in% names)]
     rows <- rbind(rows, elems)
   }
   rows <- as.data.frame(rows)
   if(length(rows) == 0){
     return(NULL)
   }
-  else if(is.null(att_y) == F && length(rows) != 0){
-    rows <- rows[c("val1","val2","color")]
-    rows <- rows[order(rows$val1, rows$val2), ]
-    return(rows)
-  }
-  else if(is.null(att_y) == T && length(rows) != 0){
-    rows <- rows[c("val1", "color")]
-    rows <- rows[order(rows$val1), ]
+  else{
     return(rows)
   }
 }

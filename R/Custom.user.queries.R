@@ -27,7 +27,7 @@ customQueriesBar <- function(cust_data, sets,bar_data,custom){
     return(NULL)
   }
   for(i in 1:length(cust_data)){
-    cust_data[[i]] <- count(cust_data[[i]][sets]) 
+    cust_data[[i]] <- count(cust_data[[i]][sets])
     colnames(cust_data[[i]])[num] <- "freq2"
     cust_data[[i]] <- cust_data[[i]][!(rowSums(cust_data[[i]][ ,1:length(sets)]) == 0), ]
     setup[[i]] <- merge(cust_data[[i]], bar_data, by = sets)
@@ -47,25 +47,13 @@ customQueriesBar <- function(cust_data, sets,bar_data,custom){
 }
 
 #Generate attribute data for queries of custom functions
-CustomAttData <- function(custom_data, att_x, att_y){
+CustomAttData <- function(custom_data, names){
   customAttDat <- data.frame()
   for(i in 1:length(custom_data)){
     customAttDat <- rbind(customAttDat, custom_data[[i]])
   }
-  if(is.null(att_x) == F && is.null(att_y) == T){
-    col1 <- match(att_x, colnames(customAttDat))
-    colnames(customAttDat)[col1] <- "val1"
-    customAttDat <- customAttDat[c("val1", "color")]
-    customAttDat <- customAttDat[order(customAttDat$val1), ]
-  }
-  if(is.null(att_y) == F && is.null(att_y) == F){
-    col1 <- match(att_x, colnames(customAttDat))
-    col2 <- match(att_y, colnames(customAttDat))
-    colnames(customAttDat)[col1] <- "val1"
-    colnames(customAttDat)[col2] <- "val2"
-    customAttDat <- customAttDat[c("val1", "val2", "color")]
-    customAttDat <- customAttDat[order(customAttDat$val1, customAttDat$val2), ]
-  }
+  customAttDat <- customAttDat[ ,-which(names(customAttDat) %in% names)]
   return(customAttDat)
 }
+
 
