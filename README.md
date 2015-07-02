@@ -33,6 +33,20 @@ upset(mutations, sets = c("PTEN", "TP53", "EGFR", "PIK3R1", "RB1"), sets.bar.col
 order.matrix = "freq", empty.intersections = "on")
 ```
 
+An example using two set queries (war movies and noir movies) along with attribute plots comparing the average rating (top) and average rating vs the number of times the movies have been watched (bottom).
+
+![image](https://cloud.githubusercontent.com/assets/1216518/8486663/2bc2bf44-20d4-11e5-9651-4b660a652b05.png)
+
+```R
+upset(movies, custom.plot=list(gridrows = 100, ncols = 1, 
+plots = list(list(plot=histogram, x="AvgRating",queries=T),
+list(plot = scatter_plot, y = "AvgRating", x = "Watches", queries = T))), 
+sets = c("Action", "Adventure", "Children", "War", "Noir"),
+queries = list(list(query = intersects, params = list("War"), active = T),
+list(query = intersects, params = list("Noir"))))
+```
+
+
 ## Download
 Download the latest version of UpSetR from github with
 
