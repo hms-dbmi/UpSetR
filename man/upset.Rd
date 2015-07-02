@@ -2,7 +2,7 @@
 % Please edit documentation in R/upsetbase.R
 \name{upset}
 \alias{upset}
-\title{Base Plot for UpSetR}
+\title{UpSetR Plot}
 \usage{
 upset(data, nsets = 5, nintersects = 40, sets = NULL,
   matrix.color = "gray23", main.bar.color = "gray23",
