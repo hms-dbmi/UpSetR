@@ -1,5 +1,7 @@
 # UpSetR
 
+[![Travis-CI Build Status](https://travis-ci.org/hms-dbmi/UpSetR.svg?branch=master)](https://travis-ci.org/hms-dbmi/UpSetR)
+
 ## Sample Data
 
 A sample data set for UpSet is included in the package and can be loaded like this:
