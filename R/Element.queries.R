@@ -22,14 +22,14 @@ QuerieElemAtt <- function(q, data, start_col, exp, names, att_x, att_y, palette)
       if(is.null(att_y) == F){
         elems <- GetElements(data, index_q)
         end_col <- ((start_col + as.integer(length(names))) - 1)
-        col1 <- match(att_x, colnames(elems))
-        col2 <- match(att_y, colnames(elems))
-        colnames(elems)[col1] <- "val1"
-        colnames(elems)[col2] <- "val2"
         elems <- elems[which(rowSums(elems[ ,start_col:end_col]) != 0), ]
         if(is.null(exp) == F){
           elems <- Subset_att(elems, exp)
         }
+        col1 <- match(att_x, colnames(elems))
+        col2 <- match(att_y, colnames(elems))
+        colnames(elems)[col1] <- "val1"
+        colnames(elems)[col2] <- "val2"
         if(nrow(elems) != 0){
           elems$color <- elem_color
         }
@@ -40,12 +40,12 @@ QuerieElemAtt <- function(q, data, start_col, exp, names, att_x, att_y, palette)
       else if(is.null(att_y) == T){
         elems <- GetElements(data, index_q)
         end_col <- ((start_col + as.integer(length(names))) - 1)
-        col1 <- match(att_x, colnames(elems))
-        colnames(elems)[col1] <- "val1"
         elems <- elems[which(rowSums(elems[ ,start_col:end_col]) != 0), ]
         if(is.null(exp) == F){
           elems <- Subset_att(elems, exp)
         }
+        col1 <- match(att_x, colnames(elems))
+        colnames(elems)[col1] <- "val1"
         if(nrow(elems) != 0){
           elems$color <- elem_color
         }

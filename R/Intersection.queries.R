@@ -100,11 +100,11 @@ QuerieInterAtt <- function(q, data, first_col, num_sets, att_x, att_y, exp, name
     else{
       intersect <- GetIntersects(data, first_col, index_q, num_sets)
       if(is.null(att_y) == T){
-        c1 <- match(att_x, colnames(intersect))
-        colnames(intersect)[c1] <- "val1"
         if(is.null(exp) == F){
           intersect <- Subset_att(intersect, exp)
         }
+        c1 <- match(att_x, colnames(intersect))
+        colnames(intersect)[c1] <- "val1"
         if(nrow(intersect) != 0){
           intersect$color <- inter_color
           intersect <- intersect[ , c("val1", "color")]
@@ -112,13 +112,13 @@ QuerieInterAtt <- function(q, data, first_col, num_sets, att_x, att_y, exp, name
         }
       }
       else if(is.null(att_y) == F){
+        if(is.null(exp) == F){
+          intersect <- Subset_att(intersect, exp)
+        }
         c1 <- match(att_x, colnames(intersect))
         c2 <- match(att_y, colnames(intersect))
         colnames(intersect)[c1] <- "val1"
         colnames(intersect)[c2] <- "val2"
-        if(is.null(exp) == F){
-          intersect <- Subset_att(intersect, exp)
-        }
         intersect$color <- inter_color
         intersect <- intersect[ , c("val1", "val2", "color")]
         intersect <- as.data.frame(intersect[order(intersect$val1, intersect$val2), ])
