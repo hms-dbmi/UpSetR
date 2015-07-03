@@ -19,7 +19,7 @@ A view of the UpSet plot with additional plots based on elements in the intersec
 ![Image](https://cloud.githubusercontent.com/assets/12614369/8464958/2af1008c-2014-11e5-93d8-8d8442ec5631.png)
 
 ```R
-upset(movies,custom.plot=list(gridrows=60,plots=list(list(plot=scatter_plot, x="ReleaseDate", y="AvgRating"),
+upset(movies,attribute.plots=list(gridrows=60,plots=list(list(plot=scatter_plot, x="ReleaseDate", y="AvgRating"),
 list(plot=scatter_plot, x="ReleaseDate", y="Watches"),list(plot=scatter_plot, x="Watches", y="AvgRating"),
 list(plot=histogram, x="ReleaseDate")), ncols = 2))
 ```
@@ -38,7 +38,7 @@ An example using two set queries (war movies and noir movies) along with attribu
 ![image](https://cloud.githubusercontent.com/assets/1216518/8486663/2bc2bf44-20d4-11e5-9651-4b660a652b05.png)
 
 ```R
-upset(movies, custom.plot=list(gridrows = 100, ncols = 1, 
+upset(movies, attribute.plots=list(gridrows = 100, ncols = 1, 
 plots = list(list(plot=histogram, x="AvgRating",queries=T),
 list(plot = scatter_plot, y = "AvgRating", x = "Watches", queries = T))), 
 sets = c("Action", "Adventure", "Children", "War", "Noir"),
