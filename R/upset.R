@@ -31,8 +31,8 @@
 #' @param empty.intersections Additionally display empty sets up to nintersects
 #' @param color.pal Color palette for attribute plots
 #' @param boxplot.summary Boxplots representing the distribution of a selected attribute for each intersection. Change param from NULL to "on" for this option.
-#' @param custom.plot Create custom ggplot using intersection data represented in the main bar plot. Prior to adding custom plots, the UpSet plot is set up in a 100 by 100 grid.
-#'        The custom.plot parameter takes a list that contains the number of rows that should be allocated for the custom plot, and a list of plots with specified positions.
+#' @param attribute.plots Create custom ggplot using intersection data represented in the main bar plot. Prior to adding custom plots, the UpSet plot is set up in a 100 by 100 grid.
+#'        The attribute.plots parameter takes a list that contains the number of rows that should be allocated for the custom plot, and a list of plots with specified positions.
 #'        nrows is the number of rows the custom plots should take up. There is already 100 allocated for the custom plot. plots takes a list that contains a function that returns
 #'        a custom ggplots and the x and y aesthetics for the function. ncols is the number of columns that your ggplots should take up. See examples for how to add custom ggplots.
 #' @details Visualization of set data in the layout described by Lex and Gehlenborg in \url{<http://www.nature.com/nmeth/journal/v11/n8/full/nmeth.3033.html>}.
@@ -65,7 +65,7 @@
 #'             + theme_bw() + theme(plot.margin = unit(c(0,0,0,0), "cm")))
 #' }
 #'
-#' customplot <- list(gridrows = 55,
+#' attributeplots <- list(gridrows = 55,
 #'                   plots = list(list(plot = plot1, x= "ReleaseDate",  queries = FALSE),
 #'                                list(plot = plot1, x= "ReleaseDate", queries = TRUE),
 #'                                list(plot = plot2, x = "ReleaseDate", y = "AvgRating", queries = FALSE),
@@ -78,7 +78,7 @@
 #'       queries = list(list(query = intersects, params = list("Drama", "Action")),
 #'                 list(query = between, params = list(1970, 1980), color = "red", active = TRUE)))
 #'
-#' upset(movies, custom.plot = customplot,
+#' upset(movies, attribute.plots = attributeplots,
 #'      queries = list(list(query = between, params = list(1920, 1940)),
 #'                     list(query = intersects, params = list("Drama"), color= "red"),
 #'                     list(query = elements, params = list("ReleaseDate", 1990, 1991, 1992))),
@@ -90,7 +90,7 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.color =
                   att.color = main.bar.color, order.matrix = c("degree", "freq"), show.numbers = "yes",
                   number.angles = 0, aggregate.by = "degree",cutoff = NULL, queries = NULL,
                   query.legend = "none", shade.color = "gray88", shade.alpha = 0.25, empty.intersections = NULL,
-                  color.pal = 1, boxplot.summary = NULL, custom.plot = NULL){
+                  color.pal = 1, boxplot.summary = NULL, attribute.plots = NULL){
   require(ggplot2);
   require(gridExtra);
   require(plyr);
@@ -125,18 +125,18 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.color =
   #if I decided to make the NULL case (all x and no y, or vice versa), there would have been alot more if/else statements
   #NA can be indexed so that we still get the non NA y aesthetics on correct plot. NULL cant be indexed.
   att.x <- c(); att.y <- c();
-  if(is.null(custom.plot) == F){
-    for(i in seq_along(custom.plot$plots)){
-      if(length(custom.plot$plots[[i]]$x) != 0){
-        att.x[i] <- custom.plot$plots[[i]]$x
+  if(is.null(attribute.plots) == F){
+    for(i in seq_along(attribute.plots$plots)){
+      if(length(attribute.plots$plots[[i]]$x) != 0){
+        att.x[i] <- attribute.plots$plots[[i]]$x
       }
-      else if(length(custom.plot$plots[[i]]$x) == 0){
+      else if(length(attribute.plots$plots[[i]]$x) == 0){
         att.x[i] <- NA
       }
-      if(length(custom.plot$plots[[i]]$y) != 0){
-        att.y[i] <- custom.plot$plots[[i]]$y
+      if(length(attribute.plots$plots[[i]]$y) != 0){
+        att.y[i] <- attribute.plots$plots[[i]]$y
       }
-      else if(length(custom.plot$plots[[i]]$y) == 0){
+      else if(length(attribute.plots$plots[[i]]$y) == 0){
         att.y[i] <- NA
       }
     }
@@ -198,5 +198,5 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.color =
   Sizes <- Make_size_plot(Set_sizes, sets.bar.color, mb.ratio)
   Make_base_plot(Main_bar, Matrix, Sizes, labels, mb.ratio, att.x, att.y, New_data,
                  expression, att.pos, first.col, att.color, AllQueryData,
-                 query.plot.title, custom.plot, legend, query.legend, BoxPlots, Set_names)
+                 query.plot.title, attribute.plots, legend, query.legend, BoxPlots, Set_names)
 }

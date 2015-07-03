@@ -1,7 +1,7 @@
 ## Assemble plots to make UpSet plot
 Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratios, att_x, att_y,
                            Set_data, exp, position, start_col, att_color, QueryData,
-                           Q_Title, custom_plot, legend, query_legend, boxplot, names){
+                           Q_Title, attribute_plots, legend, query_legend, boxplot, names){
   
   end_col <- ((start_col + as.integer(length(labels))) - 1)
   Set_data <- Set_data[which(rowSums(Set_data[ ,start_col:end_col]) != 0), ]
@@ -19,18 +19,18 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
   size_plot_height <- (((hratios[1])+0.01)*100)
   if((hratios[1] > 0.7 || hratios[1] < 0.3) ||
        (hratios[2] > 0.7 || hratios[2] < 0.3)) warning("Plot might be out of range if ratio > 0.7 or < 0.3")
-  if(is.null(custom_plot) == T && is.null(boxplot) == T){
+  if(is.null(attribute_plots) == T && is.null(boxplot) == T){
       NoAttBasePlot(legend, size_plot_height, Main_bar_plot, Matrix_plot, hratios, Size_plot, query_legend)
   }
-  else if(is.null(custom_plot) == F && is.null(boxplot) == T){
-    plots <- GenerateCustomPlots(custom_plot, Set_data, QueryData, att_color, att_x, att_y, names)
+  else if(is.null(attribute_plots) == F && is.null(boxplot) == T){
+    plots <- GenerateCustomPlots(attribute_plots, Set_data, QueryData, att_color, att_x, att_y, names)
     #      for(i in seq_along(plots)){
-    #        custom_plot$plots[[i]]$plot <- plots[[i]]
+    #        attribute_plots$plots[[i]]$plot <- plots[[i]]
     #      }
-    BaseCustomPlot(custom_plot, plots, position, size_plot_height, Main_bar_plot, Matrix_plot, Size_plot,
+    BaseCustomPlot(attribute_plots, plots, position, size_plot_height, Main_bar_plot, Matrix_plot, Size_plot,
                    hratios)
   }
-  else if(is.null(boxplot)==F && is.null(custom_plot) == T){
+  else if(is.null(boxplot)==F && is.null(attribute_plots) == T){
     BaseBoxPlot(boxplot, position, size_plot_height, Main_bar_plot, Matrix_plot, Size_plot,
                 hratios)
   }
@@ -128,20 +128,20 @@ NoAttBasePlot <- function(legend, size_plot_height, Main_bar_plot, Matrix_plot, 
 }
 
 ## Function that plots out the list of plots generated from custom plot input
-BaseCustomPlot <- function(custom_plot, plots, position, size_plot_height, Main_bar_plot, Matrix_plot,
+BaseCustomPlot <- function(attribute_plots, plots, position, size_plot_height, Main_bar_plot, Matrix_plot,
                            Size_plot, hratios){
   bar_top <- 1
   matrix_bottom <- 100
   custom_top <- 101
-  custom_bottom <- (custom_plot$gridrows + 100)
+  custom_bottom <- (attribute_plots$gridrows + 100)
   grid.newpage()
   pushViewport(viewport(layout = grid.layout(custom_bottom,100)))
   print(arrangeGrob(Main_bar_plot, Matrix_plot, heights = hratios), vp = vplayout(bar_top:matrix_bottom, 21:100))
   print(arrangeGrob(Size_plot), vp = vplayout(size_plot_height:matrix_bottom, 1:20))
-  print(do.call(arrangeGrob, c(plots, ncol = custom_plot$ncols)),
+  print(do.call(arrangeGrob, c(plots, ncol = attribute_plots$ncols)),
         vp = vplayout(custom_top:custom_bottom, 1:100), newpage = F)
-  #   print(custom_plot$plot, vp = vplayout(custom_plot$rows, custom_plot$cols), newpage = F)
+  #   print(attribute_plots$plot, vp = vplayout(attribute_plots$rows, attribute_plots$cols), newpage = F)
 }
-# printCustom <- function(custom_plot){
-#   print(custom_plot$plot, vp = vplayout(custom_plot$rows, custom_plot$cols), newpage = F)
+# printCustom <- function(attribute_plots){
+#   print(attribute_plots$plot, vp = vplayout(attribute_plots$rows, attribute_plots$cols), newpage = F)
 # }

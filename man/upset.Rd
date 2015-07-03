@@ -13,7 +13,7 @@ upset(data, nsets = 5, nintersects = 40, sets = NULL,
   aggregate.by = "degree", cutoff = NULL, queries = NULL,
   query.legend = "none", shade.color = "gray88", shade.alpha = 0.25,
   empty.intersections = NULL, color.pal = 1, boxplot.summary = NULL,
-  custom.plot = NULL)
+  attribute.plots = NULL)
 }
 \arguments{
 \item{data}{Data set}
@@ -72,8 +72,8 @@ See examples section on how to do this.}
 
 \item{boxplot.summary}{Boxplots representing the distribution of a selected attribute for each intersection. Change param from NULL to "on" for this option.}
 
-\item{custom.plot}{Create custom ggplot using intersection data represented in the main bar plot. Prior to adding custom plots, the UpSet plot is set up in a 100 by 100 grid.
-The custom.plot parameter takes a list that contains the number of rows that should be allocated for the custom plot, and a list of plots with specified positions.
+\item{attribute.plots}{Create custom ggplot using intersection data represented in the main bar plot. Prior to adding custom plots, the UpSet plot is set up in a 100 by 100 grid.
+The attribute.plots parameter takes a list that contains the number of rows that should be allocated for the custom plot, and a list of plots with specified positions.
 nrows is the number of rows the custom plots should take up. There is already 100 allocated for the custom plot. plots takes a list that contains a function that returns
 a custom ggplots and the x and y aesthetics for the function. ncols is the number of columns that your ggplots should take up. See examples for how to add custom ggplots.}
 }
@@ -110,7 +110,7 @@ plot2 <- function(mydata, x, y){
             + theme_bw() + theme(plot.margin = unit(c(0,0,0,0), "cm")))
 }
 
-customplot <- list(gridrows = 55,
+attributeplots <- list(gridrows = 55,
                   plots = list(list(plot = plot1, x= "ReleaseDate",  queries = FALSE),
                                list(plot = plot1, x= "ReleaseDate", queries = TRUE),
                                list(plot = plot2, x = "ReleaseDate", y = "AvgRating", queries = FALSE),
@@ -123,7 +123,7 @@ upset(movies, sets = c("Drama", "Comedy", "Action", "Thriller", "Western", "Docu
       queries = list(list(query = intersects, params = list("Drama", "Action")),
                 list(query = between, params = list(1970, 1980), color = "red", active = TRUE)))
 
-upset(movies, custom.plot = customplot,
+upset(movies, attribute.plots = attributeplots,
      queries = list(list(query = between, params = list(1920, 1940)),
                     list(query = intersects, params = list("Drama"), color= "red"),
                     list(query = elements, params = list("ReleaseDate", 1990, 1991, 1992))),
