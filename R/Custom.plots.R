@@ -8,6 +8,7 @@ GenerateCustomPlots <- function(attribute_plots, Set_data, QueryData, att_color,
     SetAndQueryData <- data.frame(rbind(Set_data, QueryData))
   }
   for(i in seq_along(attribute_plots$plots)){
+    if(length(QueryData) != 0){SetAndQueryData[1:nrow(Set_data), ]$color <- "gray23"}
     #      x_att <- attribute_plots$plots[[i]]$x
     #      y_att <- attribute_plots$plots[[i]]$y
     if(isTRUE(attribute_plots$plots[[i]]$queries) == T){
@@ -27,9 +28,11 @@ GenerateCustomPlots <- function(attribute_plots, Set_data, QueryData, att_color,
                         If attempting to display plot that needs both x and y aesthetics please enter att.y parameter.
                         Plots that require just the x aestheitc will not be affected.")
           }
+          if(att_color == "gray23"){SetAndQueryData[1:nrow(Set_data), ]$color <- "gray65"}
           CustomPlot[[i]] <- attribute_plots$plots[[i]]$plot(SetAndQueryData, attribute_plots$plots[[i]]$x, attribute_plots$plots[[i]]$y)
         }
         else{
+           if(att_color == "gray23"){SetAndQueryData[1:nrow(Set_data), ]$color <- "gray65"}
           CustomPlot[[i]] <- attribute_plots$plots[[i]]$plot(SetAndQueryData, attribute_plots$plots[[i]]$x)
         }
         
