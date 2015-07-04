@@ -48,7 +48,7 @@ list(query = intersects, params = list("Noir"))))
 
 
 ## Download
-Download the latest version of UpSetR from github with
+Download the latest version of UpSetR from GitHub with
 
 ```R
 devtools::install_github("hms-dbmi/UpSetR")
