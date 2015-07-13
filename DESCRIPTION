@@ -7,10 +7,11 @@ Authors@R: c(
     person("Gehlenborg", "Nils", email = "nils@hms.harvard.edu", role = "aut"))
 Description: Creates visualizations of intersecting sets using a novel matrix design,
              along with visualizations of several common set, element and attribute
-             related tasks
+             related tasks.
 Depends: R (>= 2.5)
-Imports: ggplot2,
-  gridExtra,
-  plyr
-License: MIT
+Imports: 
+    ggplot2,
+    gridExtra,
+    plyr
+License: MIT + file LICENSE
 LazyData: true
