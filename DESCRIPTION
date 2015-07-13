@@ -1,6 +1,6 @@
 Package: UpSetR
 Title: Visualization of Intersecting Sets
-Version: 0.0.1
+Version: 0.0.2
 Date: 2015-07-02
 Authors@R: c(
     person("Conway", "Jake", email = "jake_conway@student.uml.edu", role = "cre"),
