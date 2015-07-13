@@ -115,11 +115,11 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_an
   }
   if(length(pCustomDat) != 0){
     Main_bar_plot <- (Main_bar_plot + geom_point(data = pCustomDat, aes(x=x, y = freq2), colour = pCustomDat$color2,
-                                                 size = 2, shape = 17, position = position_jitter(w = 0.2, h = 0.2)))
+                                                 size = 2, shape = 17, position = position_jitter(width = 0.2, height = 0.2)))
   }
   if(length(pInterDat) != 0){
     Main_bar_plot <- (Main_bar_plot + geom_point(data = pInterDat, aes(x=x, y = freq),
-                                                 position = position_jitter(w = 0.2, h = 0.2),
+                                                 position = position_jitter(width = 0.2, height = 0.2),
                                                  colour = pInterDat$color, size = 2, shape = 17))
   }
   

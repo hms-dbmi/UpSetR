@@ -64,15 +64,16 @@
 #'             + geom_point() + scale_color_identity()
 #'             + theme_bw() + theme(plot.margin = unit(c(0,0,0,0), "cm")))
 #' }
-#'
+#' 1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
 #' attributeplots <- list(gridrows = 55,
 #'                   plots = list(list(plot = plot1, x= "ReleaseDate",  queries = FALSE),
-#'                                list(plot = plot1, x= "ReleaseDate", queries = TRUE),
-#'                                list(plot = plot2, x = "ReleaseDate", y = "AvgRating", queries = FALSE),
-#'                                list(plot = plot2, x = "ReleaseDate", y = "AvgRating", queries = TRUE)),
+#'                          list(plot = plot1, x= "ReleaseDate", queries = TRUE),
+#'                          list(plot = plot2, x = "ReleaseDate", y = "AvgRating", queries = FALSE),
+#'                          list(plot = plot2, x = "ReleaseDate", y = "AvgRating", queries = TRUE)),
 #'                    ncols = 3)
 #'
-#' upset(movies, nsets = 7, nintersects = 30, mb.ratio = c(0.5, 0.5), order.matrix = c("freq", "degree"))
+#' upset(movies, nsets = 7, nintersects = 30, mb.ratio = c(0.5, 0.5),
+#'       order.matrix = c("freq", "degree"))
 #'
 #' upset(movies, sets = c("Drama", "Comedy", "Action", "Thriller", "Western", "Documentary"),
 #'       queries = list(list(query = intersects, params = list("Drama", "Action")),
@@ -83,6 +84,10 @@
 #'                     list(query = intersects, params = list("Drama"), color= "red"),
 #'                     list(query = elements, params = list("ReleaseDate", 1990, 1991, 1992))),
 #'       main.bar.color = "yellow")
+#' @import ggplot2
+#' @import plyr
+#' @import grid
+#' @import gridExtra       
 #' @export
 upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.color = "gray23",
                   main.bar.color = "gray23", sets.bar.color = "gray23",point.size = 4, line.size = 1,
@@ -91,9 +96,10 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.color =
                   number.angles = 0, aggregate.by = "degree",cutoff = NULL, queries = NULL,
                   query.legend = "none", shade.color = "gray88", shade.alpha = 0.25, empty.intersections = NULL,
                   color.pal = 1, boxplot.summary = NULL, attribute.plots = NULL){
-  require(ggplot2);
-  require(gridExtra);
-  require(plyr);
+  
+  require(ggplot2)
+  require(plyr)
+  require(gridExtra)
   
   startend <-FindStartEnd(data)
   first.col <- startend[1]

@@ -109,15 +109,16 @@ plot2 <- function(mydata, x, y){
             + geom_point() + scale_color_identity()
             + theme_bw() + theme(plot.margin = unit(c(0,0,0,0), "cm")))
 }
-
+1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
 attributeplots <- list(gridrows = 55,
                   plots = list(list(plot = plot1, x= "ReleaseDate",  queries = FALSE),
-                               list(plot = plot1, x= "ReleaseDate", queries = TRUE),
-                               list(plot = plot2, x = "ReleaseDate", y = "AvgRating", queries = FALSE),
-                               list(plot = plot2, x = "ReleaseDate", y = "AvgRating", queries = TRUE)),
+                         list(plot = plot1, x= "ReleaseDate", queries = TRUE),
+                         list(plot = plot2, x = "ReleaseDate", y = "AvgRating", queries = FALSE),
+                         list(plot = plot2, x = "ReleaseDate", y = "AvgRating", queries = TRUE)),
                    ncols = 3)
 
-upset(movies, nsets = 7, nintersects = 30, mb.ratio = c(0.5, 0.5), order.matrix = c("freq", "degree"))
+upset(movies, nsets = 7, nintersects = 30, mb.ratio = c(0.5, 0.5),
+      order.matrix = c("freq", "degree"))
 
 upset(movies, sets = c("Drama", "Comedy", "Action", "Thriller", "Western", "Documentary"),
       queries = list(list(query = intersects, params = list("Drama", "Action")),
