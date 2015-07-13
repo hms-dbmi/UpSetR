@@ -1,4 +1,3 @@
-
 ## Seperate the queries between and paramters by built in(intersection and element), and custom functions
 ## Apply colors if not specified
 SeperateQueries <- function(queries, choice, palette){

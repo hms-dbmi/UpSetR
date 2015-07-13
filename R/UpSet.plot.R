@@ -28,7 +28,7 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
     #        attribute_plots$plots[[i]]$plot <- plots[[i]]
     #      }
     BaseCustomPlot(attribute_plots, plots, position, size_plot_height, Main_bar_plot, Matrix_plot, Size_plot,
-                   hratios)
+                   hratios, legend, query_legend)
   }
   else if(is.null(boxplot)==F && is.null(attribute_plots) == T){
     BaseBoxPlot(boxplot, position, size_plot_height, Main_bar_plot, Matrix_plot, Size_plot,
@@ -129,17 +129,25 @@ NoAttBasePlot <- function(legend, size_plot_height, Main_bar_plot, Matrix_plot, 
 
 ## Function that plots out the list of plots generated from custom plot input
 BaseCustomPlot <- function(attribute_plots, plots, position, size_plot_height, Main_bar_plot, Matrix_plot,
-                           Size_plot, hratios){
+                           Size_plot, hratios, legend, q_legend){
   bar_top <- 1
   matrix_bottom <- 100
   custom_top <- 101
   custom_bottom <- (attribute_plots$gridrows + 100)
+  if((is.null(legend) == F) && (q_legend != tolower("none"))){custom_bottom <- (custom_bottom + 5)}
   grid.newpage()
   pushViewport(viewport(layout = grid.layout(custom_bottom,100)))
   print(arrangeGrob(Main_bar_plot, Matrix_plot, heights = hratios), vp = vplayout(bar_top:matrix_bottom, 21:100))
   print(arrangeGrob(Size_plot), vp = vplayout(size_plot_height:matrix_bottom, 1:20))
-  print(do.call(arrangeGrob, c(plots, ncol = attribute_plots$ncols)),
-        vp = vplayout(custom_top:custom_bottom, 1:100), newpage = F)
+  if((is.null(legend) == F) && (q_legend != tolower("none"))){
+    print(do.call(arrangeGrob, c(plots, ncol = attribute_plots$ncols)),
+          vp = vplayout(custom_top:(custom_bottom - 5), 1:100), newpage = F)
+    print(arrangeGrob(legend), vp = vplayout((custom_bottom - 4):custom_bottom, 1:100))
+  }
+  else{
+    print(do.call(arrangeGrob, c(plots, ncol = attribute_plots$ncols)),
+          vp = vplayout(custom_top:custom_bottom, 1:100), newpage = F)
+  }
   #   print(attribute_plots$plot, vp = vplayout(attribute_plots$rows, attribute_plots$cols), newpage = F)
 }
 # printCustom <- function(attribute_plots){
