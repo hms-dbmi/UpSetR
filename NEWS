@@ -1,0 +1,13 @@
+Release v0.0.2
+
+- Renamed custom.plots as attribute.plots to better fit its purpose.
+- Re-added query legend option when user selects for attribute plots
+- Lowered minimum required R version. 
+- Allowed for 360 degree rotation of intersection size bar labels 
+- Changed default color of matrix shaing from dodgerblue to light gray
+
+----------------- 
+
+Release v0.0.1
+
+- First public release.
