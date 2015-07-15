@@ -89,7 +89,11 @@
 #' @import ggplot2
 #' @import plyr
 #' @import grid
-#' @import gridExtra       
+#' @import gridExtra
+#' @import utils
+#' @import stats
+#' @import methods
+#' @import grDevices       
 #' @export
 upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.color = "gray23",
                   main.bar.color = "gray23", sets.bar.color = "gray23",point.size = 4, line.size = 1,
