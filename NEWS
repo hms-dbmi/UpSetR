@@ -1,3 +1,10 @@
+Release v0.0.3
+
+- Fixed all CRAN issues
+- changed all ggplot2 aesthetics to aes_string() to resort from using "hacky" methods to get around CRAN issues
+
+----------------- 
+
 Release v0.0.2
 
 - Renamed custom.plots as attribute.plots to better fit its purpose.
