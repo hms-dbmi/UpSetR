@@ -81,7 +81,7 @@ a custom ggplots and the x and y aesthetics for the function. ncols is the numbe
 Visualization of set intersections using novel UpSet matrix design.
 }
 \details{
-Visualization of set data in the layout described by Lex and Gehlenborg in \url{<http://www.nature.com/nmeth/journal/v11/n8/full/nmeth.3033.html>}.
+Visualization of set data in the layout described by Lex and Gehlenborg in \url{http://www.nature.com/nmeth/journal/v11/n8/full/nmeth.3033.html}.
 UpSet also allows for visualization of queries on intersections and elements, along with custom queries queries implemented using
 Hadley Wickhams apply function. To further analyze the data contained in the intersections, the user may select additional attribute plots
 to be displayed alongside the UpSet plot. The user also has the the ability to pass their own plots into the function to further analyze
@@ -89,10 +89,12 @@ data belonging to queries of interest. Most aspects of the UpSet plot are custom
 Depending on how the featuers are selected, UpSet can display between 25-65 sets and between 40-100 intersections.
 }
 \note{
-Data set must be formatted as described on the orginal UpSet github page: \url{<https://github.com/VCG/upset/wiki>}.
+Data set must be formatted as described on the orginal UpSet github page: \url{http://github.com/VCG/upset/wiki}.
 }
 \examples{
 movies <- read.csv( system.file("extdata", "movies.csv", package = "UpSetR"), header=TRUE, sep=";" )
+
+require(ggplot2); require(plyr); require(gridExtra);
 
 between <- function(row, min, max){
   newData <- (row["ReleaseDate"] < max) & (row["ReleaseDate"] > min)
@@ -109,7 +111,7 @@ plot2 <- function(mydata, x, y){
             + geom_point() + scale_color_identity()
             + theme_bw() + theme(plot.margin = unit(c(0,0,0,0), "cm")))
 }
-1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
+
 attributeplots <- list(gridrows = 55,
                   plots = list(list(plot = plot1, x= "ReleaseDate",  queries = FALSE),
                          list(plot = plot1, x= "ReleaseDate", queries = TRUE),
@@ -132,13 +134,13 @@ upset(movies, attribute.plots = attributeplots,
 }
 \references{
 Lex et al. (2014). UpSet: Visualization of Intersecting Sets
-IEEE Transactions on Visualization and Computer Graphics (Proceedings of InfoVis ’14), vol 20, pp. 1983-1992, (2014). \url{http://people.seas.harvard.edu/~alex/papers/2014_infovis_upset.pdf}
+IEEE Transactions on Visualization and Computer Graphics (Proceedings of InfoVis 2014), vol 20, pp. 1983-1992, (2014). \url{http://people.seas.harvard.edu/~alex/papers/2014_infovis_upset.pdf}
 
 Lex and Gehlenborg (2014). Points of view: Sets and intersections. Nature Methods 11, 779 (2014). \url{http://www.nature.com/nmeth/journal/v11/n8/full/nmeth.3033.html}
 }
 \seealso{
 Original UpSet Website: \url{http://vcg.github.io/upset/about/}
 
-UpSetR github for additional examples: \url{https://github.com/hms-dbmi/UpSetR}
+UpSetR github for additional examples: \url{http://github.com/hms-dbmi/UpSetR}
 }
 

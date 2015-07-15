@@ -1,7 +1,7 @@
 ## Assemble plots to make UpSet plot
 Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratios, att_x, att_y,
                            Set_data, exp, position, start_col, att_color, QueryData,
-                           Q_Title, attribute_plots, legend, query_legend, boxplot, names){
+                           attribute_plots, legend, query_legend, boxplot, names){
   
   end_col <- ((start_col + as.integer(length(labels))) - 1)
   Set_data <- Set_data[which(rowSums(Set_data[ ,start_col:end_col]) != 0), ]

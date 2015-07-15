@@ -49,10 +49,17 @@ Wanted <- function(data, unwanted_sets){
 
 ## Subsets intersection and element queries using expression parameter
 Subset_att <- function(data, exp){
-  attach(data)
-  express <- paste("data$", exp, sep = "")
+  express <- unlist(strsplit(exp, " "))
+  for(i in seq_along(express)){
+    if(is.na(match(express[i], colnames(data))) == F){
+      express[i] <- paste("data$",express[i], sep = "")
+    }
+    else{
+      next;
+    }
+  }
+  express <- paste(express, sep = "", collapse = " ")
   data <- data[which(eval(parse(text = express))), ]
-  detach(data)
   return(data)
 }
 

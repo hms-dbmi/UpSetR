@@ -87,10 +87,11 @@ Make_matrix_plot <- function(Mat_data,Set_size_data, Main_bar_data, point_size, 
                                        limits = c(0.5,(nrow(Set_size_data) +0.5)),
                                        labels = labels, expand = c(0,0))
                   + scale_x_continuous(limits = c(0,(nrow(Main_bar_data)+1 )), expand = c(0,0))
-                  + geom_rect(data = shading_data, aes(xmin = min, xmax = max, ymin = y_min, ymax = y_max ),
+                  + geom_rect(data = shading_data, aes_string(xmin = "min", xmax = "max",
+                                                              ymin = "y_min", ymax = "y_max"),
                               fill = shade_color, alpha = shade_alpha)
-                  + geom_point(data=Mat_data, aes(x= x, y= y), colour = Mat_data$color, size= point_size)
-                  + geom_line(data = Mat_data, aes(group = Intersection, x=x, y=y), 
+                  + geom_point(data=Mat_data, aes_string(x= "x", y= "y"), colour = Mat_data$color, size= point_size)
+                  + geom_line(data = Mat_data, aes_string(group = "Intersection", x="x", y="y"), 
                               size = line_size, colour = Mat_data$color))
   Matrix_plot <- ggplot_gtable(ggplot_build(Matrix_plot))
   return(Matrix_plot)

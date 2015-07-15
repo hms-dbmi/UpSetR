@@ -35,19 +35,21 @@
 #'        The attribute.plots parameter takes a list that contains the number of rows that should be allocated for the custom plot, and a list of plots with specified positions.
 #'        nrows is the number of rows the custom plots should take up. There is already 100 allocated for the custom plot. plots takes a list that contains a function that returns
 #'        a custom ggplots and the x and y aesthetics for the function. ncols is the number of columns that your ggplots should take up. See examples for how to add custom ggplots.
-#' @details Visualization of set data in the layout described by Lex and Gehlenborg in \url{<http://www.nature.com/nmeth/journal/v11/n8/full/nmeth.3033.html>}.
+#' @details Visualization of set data in the layout described by Lex and Gehlenborg in \url{http://www.nature.com/nmeth/journal/v11/n8/full/nmeth.3033.html}.
 #' UpSet also allows for visualization of queries on intersections and elements, along with custom queries queries implemented using
 #' Hadley Wickhams apply function. To further analyze the data contained in the intersections, the user may select additional attribute plots
 #' to be displayed alongside the UpSet plot. The user also has the the ability to pass their own plots into the function to further analyze
 #' data belonging to queries of interest. Most aspects of the UpSet plot are customizable, allowing the user to select the plot that best suits their style.
 #' Depending on how the featuers are selected, UpSet can display between 25-65 sets and between 40-100 intersections.
-#' @note Data set must be formatted as described on the orginal UpSet github page: \url{<https://github.com/VCG/upset/wiki>}.
+#' @note Data set must be formatted as described on the orginal UpSet github page: \url{http://github.com/VCG/upset/wiki}.
 #' @references Lex et al. (2014). UpSet: Visualization of Intersecting Sets
-#' IEEE Transactions on Visualization and Computer Graphics (Proceedings of InfoVis ’14), vol 20, pp. 1983-1992, (2014). \url{http://people.seas.harvard.edu/~alex/papers/2014_infovis_upset.pdf}
+#' IEEE Transactions on Visualization and Computer Graphics (Proceedings of InfoVis 2014), vol 20, pp. 1983-1992, (2014). \url{http://people.seas.harvard.edu/~alex/papers/2014_infovis_upset.pdf}
 #' @references Lex and Gehlenborg (2014). Points of view: Sets and intersections. Nature Methods 11, 779 (2014). \url{http://www.nature.com/nmeth/journal/v11/n8/full/nmeth.3033.html}
 #' @seealso Original UpSet Website: \url{http://vcg.github.io/upset/about/}
-#' @seealso UpSetR github for additional examples: \url{https://github.com/hms-dbmi/UpSetR}
+#' @seealso UpSetR github for additional examples: \url{http://github.com/hms-dbmi/UpSetR}
 #' @examples movies <- read.csv( system.file("extdata", "movies.csv", package = "UpSetR"), header=TRUE, sep=";" )
+#'
+#'require(ggplot2); require(plyr); require(gridExtra);
 #'
 #' between <- function(row, min, max){
 #'   newData <- (row["ReleaseDate"] < max) & (row["ReleaseDate"] > min)
@@ -64,7 +66,7 @@
 #'             + geom_point() + scale_color_identity()
 #'             + theme_bw() + theme(plot.margin = unit(c(0,0,0,0), "cm")))
 #' }
-#' 1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
+#' 
 #' attributeplots <- list(gridrows = 55,
 #'                   plots = list(list(plot = plot1, x= "ReleaseDate",  queries = FALSE),
 #'                          list(plot = plot1, x= "ReleaseDate", queries = TRUE),
@@ -96,10 +98,6 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.color =
                   number.angles = 0, aggregate.by = "degree",cutoff = NULL, queries = NULL,
                   query.legend = "none", shade.color = "gray88", shade.alpha = 0.25, empty.intersections = NULL,
                   color.pal = 1, boxplot.summary = NULL, attribute.plots = NULL){
-  
-  require(ggplot2)
-  require(plyr)
-  require(gridExtra)
   
   startend <-FindStartEnd(data)
   first.col <- startend[1]
@@ -203,6 +201,6 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.color =
                              name.size, labels, ShadingData, shade.color, shade.alpha)
   Sizes <- Make_size_plot(Set_sizes, sets.bar.color, mb.ratio)
   Make_base_plot(Main_bar, Matrix, Sizes, labels, mb.ratio, att.x, att.y, New_data,
-                 expression, att.pos, first.col, att.color, AllQueryData,
-                 query.plot.title, attribute.plots, legend, query.legend, BoxPlots, Set_names)
+                 expression, att.pos, first.col, att.color, AllQueryData, attribute.plots,
+                 legend, query.legend, BoxPlots, Set_names)
 }

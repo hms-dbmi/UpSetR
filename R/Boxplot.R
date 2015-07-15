@@ -50,7 +50,7 @@ BoxPlotsPlot <- function(bdat, att, att_color){
                                  panel.grid.minor = element_blank(),
                                  panel.grid.major = element_blank(),
                                  axis.title.x = element_blank())
-                         + geom_boxplot(data = bdat, aes(x=factor(x), y=attribute),
+                         + geom_boxplot(data = bdat, aes_string(x=factor("x"), y="attribute"),
                                         fill = att_color, colour = "gray80"))
   return(boxplots)
 }

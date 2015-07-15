@@ -21,7 +21,7 @@ Make_size_plot <- function(Set_size_data, sbar_color, ratios){
   else{
     m <- 0.3
   }
-  Size_plot <- (ggplot(data = Set_size_data, aes(x =x, y = y))
+  Size_plot <- (ggplot(data = Set_size_data, aes_string(x ="x", y = "y"))
                 + geom_bar(stat = "identity",colour = sbar_color, width = 0.4,
                            fill = sbar_color, position = "identity")
                 + scale_x_continuous(limits = c(0.5, (nrow(Set_size_data)+0.5)),
