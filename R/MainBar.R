@@ -84,7 +84,7 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_an
                             plot.margin = unit(c(0.5,0.5,0.1,0.5), "lines"), panel.border = element_blank(),
                             axis.title.y = element_text(vjust = -0.8)))
   if((show_num == "yes") || (show_num == "Yes")){
-    Main_bar_plot <- (Main_bar_plot + geom_text(aes(label = "freq"), size = 3.0, vjust = -1,
+    Main_bar_plot <- (Main_bar_plot + geom_text(aes_string(label = "freq"), size = 3.0, vjust = -1,
                                                 angle = number_angles, colour = Main_bar_data$color))
   }
   bInterDat <- NULL
