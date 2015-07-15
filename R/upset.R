@@ -49,7 +49,7 @@
 #' @seealso UpSetR github for additional examples: \url{http://github.com/hms-dbmi/UpSetR}
 #' @examples movies <- read.csv( system.file("extdata", "movies.csv", package = "UpSetR"), header=TRUE, sep=";" )
 #'
-#'require(ggplot2); require(plyr); require(gridExtra);
+#'require(ggplot2); require(plyr); require(gridExtra); require(grid)
 #'
 #' between <- function(row, min, max){
 #'   newData <- (row["ReleaseDate"] < max) & (row["ReleaseDate"] > min)

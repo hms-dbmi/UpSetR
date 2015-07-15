@@ -11,6 +11,7 @@ Description: Creates visualizations of intersecting sets using a novel matrix de
 Depends: R (>= 2.5)
 Imports: 
     ggplot2,
+    grid,
     gridExtra,
     plyr
 License: MIT + file LICENSE
