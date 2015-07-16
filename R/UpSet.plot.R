@@ -20,7 +20,7 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
   if((hratios[1] > 0.7 || hratios[1] < 0.3) ||
        (hratios[2] > 0.7 || hratios[2] < 0.3)) warning("Plot might be out of range if ratio > 0.7 or < 0.3")
   if(is.null(attribute_plots) == T && is.null(boxplot) == T){
-      NoAttBasePlot(legend, size_plot_height, Main_bar_plot, Matrix_plot, hratios, Size_plot, query_legend)
+    NoAttBasePlot(legend, size_plot_height, Main_bar_plot, Matrix_plot, hratios, Size_plot, query_legend)
   }
   else if(is.null(attribute_plots) == F && is.null(boxplot) == T){
     plots <- GenerateCustomPlots(attribute_plots, Set_data, QueryData, att_color, att_x, att_y, names)
@@ -82,11 +82,23 @@ BaseBoxPlot <- function(box_plot, position, size_plot_height, Main_bar_plot, Mat
   else if(length(box_plot) == 2){
     pushViewport(viewport(layout = grid.layout(gridrow,100)))
   }
-  print(arrangeGrob(Main_bar_plot, Matrix_plot, heights = hratios), vp = vplayout(bar_top:matrix_bottom, 21:100))
-  print(arrangeGrob(Size_plot), vp = vplayout(size_plot_height:matrix_bottom, 1:20))
-  print(arrangeGrob(box_plot[[1]]), vp = vplayout(att_top:att_bottom, 21:100))
+  vp = vplayout(bar_top:matrix_bottom, 21:100)
+  pushViewport(vp)
+  grid.draw(arrangeGrob(Main_bar_plot, Matrix_plot, heights = hratios))
+  popViewport()
+  vp = vplayout(size_plot_height:matrix_bottom, 1:20)
+  pushViewport(vp)
+  grid.draw(arrangeGrob(Size_plot))
+  popViewport()
+  vp = vplayout(att_top:att_bottom, 21:100)
+  pushViewport(vp)
+  grid.draw(arrangeGrob(box_plot[[1]]))
+  popViewport()
   if(length(box_plot) == 2){
-    print(arrangeGrob(box_plot[[2]]), vp = vplayout((att_bottom + 10):(att_bottom + 25), 21:100))
+    vp = vplayout((att_bottom + 10):(att_bottom + 25), 21:100)
+    pushViewport(vp)
+    grid.draw(arrangeGrob(box_plot[[2]]))
+    popViewport()
   }
 }
 
@@ -120,10 +132,19 @@ NoAttBasePlot <- function(legend, size_plot_height, Main_bar_plot, Matrix_plot, 
   else if((is.null(legend) == T)|| (query_legend == tolower("none"))){
     pushViewport(viewport(layout = grid.layout(100,100)))
   }
-  print(arrangeGrob(Main_bar_plot, Matrix_plot, heights = hratios), vp = vplayout(top:bottom, 21:100))
-  print(arrangeGrob(Size_plot), vp = vplayout(size_plot_height:bottom, 1:20))
+  vp = vplayout(top:bottom, 21:100)
+  pushViewport(vp)
+  grid.draw(arrangeGrob(Main_bar_plot, Matrix_plot, heights = hratios))
+  popViewport()
+  vp = vplayout(size_plot_height:bottom, 1:20)
+  pushViewport(vp)
+  grid.draw(arrangeGrob(Size_plot))
+  popViewport()
   if((is.null(legend) == F) && (query_legend != tolower("none"))){
-    print(arrangeGrob(legend), vp = vplayout(legend_top:legend_bottom, 21:100))
+    vp = vplayout(legend_top:legend_bottom, 21:100)
+    pushViewport(vp)
+    grid.draw(arrangeGrob(legend))
+    popViewport()
   }
 }
 
@@ -137,16 +158,29 @@ BaseCustomPlot <- function(attribute_plots, plots, position, size_plot_height, M
   if((is.null(legend) == F) && (q_legend != tolower("none"))){custom_bottom <- (custom_bottom + 5)}
   grid.newpage()
   pushViewport(viewport(layout = grid.layout(custom_bottom,100)))
-  print(arrangeGrob(Main_bar_plot, Matrix_plot, heights = hratios), vp = vplayout(bar_top:matrix_bottom, 21:100))
-  print(arrangeGrob(Size_plot), vp = vplayout(size_plot_height:matrix_bottom, 1:20))
+  vp = vplayout(bar_top:matrix_bottom, 21:100)
+  pushViewport(vp)
+  grid.draw(arrangeGrob(Main_bar_plot, Matrix_plot, heights = hratios))
+  popViewport()
+  vp = vplayout(size_plot_height:matrix_bottom, 1:20)
+  pushViewport(vp)
+  grid.draw(arrangeGrob(Size_plot))
+  popViewport()
   if((is.null(legend) == F) && (q_legend != tolower("none"))){
-    print(do.call(arrangeGrob, c(plots, ncol = attribute_plots$ncols)),
-          vp = vplayout(custom_top:(custom_bottom - 5), 1:100), newpage = F)
-    print(arrangeGrob(legend), vp = vplayout((custom_bottom - 4):custom_bottom, 1:100))
+    vp = vplayout(custom_top:(custom_bottom - 5), 1:100)
+    pushViewport(vp)
+    grid.draw(do.call(arrangeGrob, c(plots, ncol = attribute_plots$ncols)))
+    popViewport()
+    vp = vplayout((custom_bottom - 4):custom_bottom, 1:100)
+    pushViewport(vp)
+    grid.draw(arrangeGrob(legend))
+    popViewport()
   }
   else{
-    print(do.call(arrangeGrob, c(plots, ncol = attribute_plots$ncols)),
-          vp = vplayout(custom_top:custom_bottom, 1:100), newpage = F)
+    vp = vplayout(custom_top:custom_bottom, 1:100)
+    pushViewport(vp)
+    grid.draw(do.call(arrangeGrob, c(plots, ncol = attribute_plots$ncols)))
+    popViewport()
   }
   #   print(attribute_plots$plot, vp = vplayout(attribute_plots$rows, attribute_plots$cols), newpage = F)
 }
