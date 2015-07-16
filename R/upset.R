@@ -30,7 +30,8 @@
 #' @param shade.alpha Transparency of shading in matrix
 #' @param empty.intersections Additionally display empty sets up to nintersects
 #' @param color.pal Color palette for attribute plots
-#' @param boxplot.summary Boxplots representing the distribution of a selected attribute for each intersection. Change param from NULL to "on" for this option.
+#' @param boxplot.summary Boxplots representing the distribution of a selected attribute for each intersection. Select attributes by entering a character vector of attribute names (e.g. c("Name1", "Name2")).
+#'        The maximum number of attributes that can be entered is 2. 
 #' @param attribute.plots Create custom ggplot using intersection data represented in the main bar plot. Prior to adding custom plots, the UpSet plot is set up in a 100 by 100 grid.
 #'        The attribute.plots parameter takes a list that contains the number of rows that should be allocated for the custom plot, and a list of plots with specified positions.
 #'        nrows is the number of rows the custom plots should take up. There is already 100 allocated for the custom plot. plots takes a list that contains a function that returns
