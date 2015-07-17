@@ -52,7 +52,14 @@ list(query = intersects, params = list("Noir"))))
 
 
 ## Download
-Download the latest version of UpSetR from GitHub with
+
+Install the latest released version from CRAN
+
+```R
+install.packages("UpSetR")
+```
+
+Download the latest development code of UpSetR from GitHub using [devtools](https://cran.r-project.org/web/packages/devtools/index.html) with
 
 ```R
 devtools::install_github("hms-dbmi/UpSetR")
