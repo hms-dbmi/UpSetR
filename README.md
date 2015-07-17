@@ -8,14 +8,14 @@ For further details about the original technique see the [UpSet website](http://
 
 ## Sample Data
 
-A sample data set for UpSet is included in the package and can be loaded like this:
+Sample data sets for UpSetR are included in the package and can be loaded like this:
 
 ```R
 movies <- read.csv( system.file("extdata", "movies.csv", package = "UpSetR"), header=T, sep=";" )
 mutations <- read.csv( system.file("extdata", "mutations.csv", package = "UpSetR"), header=T, sep = ",")
 ```
 
-The sample data set is a movie data set created by the [GroupLens Lab](http://grouplens.org/datasets/movielens) and curated by [Bilal Alsallakh](https://github.com/bilalsal).
+The movie data set created by the [GroupLens Lab](http://grouplens.org/datasets/movielens) and curated by [Bilal Alsallakh](https://github.com/bilalsal) and the mutations data set was originally created by the TCGA Consortium and represents mutations for the 100 most mutated genes in a glioblastoma multiforme cohort.
 
 ## Examples
 A view of the UpSet plot with additional plots based on elements in the intersections.
