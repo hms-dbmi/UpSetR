@@ -8,6 +8,10 @@ FindStartEnd <- function(data){
       startend[1] <- i
       break
     }
+    else if((column[1] == "1") && (length(column) == 1)){
+      startend[1] <- i
+      break
+    }
     else{
       next
     }
@@ -16,6 +20,10 @@ FindStartEnd <- function(data){
     column <- data[ ,i]
     column <- (levels(factor(column)))
     if((column[1] == "0") && (column[2] == "1") && (length(column) == 2)){
+      startend[2] <- i
+      break
+    }
+    else if((column[1] == "1") && (length(column) == 1)){
       startend[2] <- i
       break
     }

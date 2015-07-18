@@ -29,7 +29,7 @@ Make_size_plot <- function(Set_size_data, sbar_color, ratios){
                                      expand = c(0,0))
                 + theme(panel.background = element_rect(fill = "white"),
                         plot.margin=unit(c(-m,-1.3,0.5,0.5), "lines"),
-                        axis.title.x = element_text(size = 10, face = "bold"),
+                        axis.title.x = element_text(size = 11),
                         axis.line = element_line(colour = "gray0"),
                         axis.line.y = element_blank(),
                         axis.line.x = element_line(colour = "gray0", size = 0.3),
