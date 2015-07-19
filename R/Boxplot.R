@@ -1,4 +1,3 @@
-
 ## Create data for boxplots of all intersections
 IntersectionBoxPlot <- function(data1, data2, start_col, names){
   end_col <- ((start_col + length(names)) - 1)
