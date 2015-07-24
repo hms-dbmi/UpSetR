@@ -11,7 +11,7 @@ Description: Creates visualizations of intersecting sets using a novel matrix de
              along with visualizations of several common set, element and attribute
              related tasks.
 Depends: 
-    R (>= 2.5)
+    R (>= 3.0)
 Imports: 
     ggplot2,
     grid,
