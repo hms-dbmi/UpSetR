@@ -1,20 +1,15 @@
 ---
 title: "Basic Usage"
-output: html_document
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+    theme: "cosmo"
 ---
 
-Brief overview of examples:
+<br>
 
-- **Example 1:** choose number of sets, change matrix point size, change set name size, change matrix line size, angle of numbers above intersection size bars
-
-- **Example 2:** choose specific sets, number of intersections to be displayed, proportion of plot assigned to intersection size bars and matrix, order of matrix
-
-- **Example 3:** aggregation by sets, how many aggregates to show per set
-
-- **Example 4:** display empty intersections
-
-
-For all examples the movies data set contained in the package will be used. 
+For all examples the movies data set contained in the package will be used.
 ```{r}
 library(UpSetR)
 movies <- read.csv( system.file("extdata", "movies.csv", package = "UpSetR"), header=T, sep=";" )
@@ -22,36 +17,36 @@ movies <- read.csv( system.file("extdata", "movies.csv", package = "UpSetR"), he
 
 <br>
 
-Example 1
+Example 1: choose number of sets, change matrix point size, change set name size, change matrix line size, angle of numbers above intersection size bars
 -----------
-When not specifying specific sets, **nsets** selects the *n* largest sets from the data. **number.angles** determines the angle (in degrees) of the numbers above the intersection size bars. **point size** changes the size of the circles in the matrix. **name.size** changes the size of the set names. **line.size** changes the size of the lines connecting the circles in the matrix. 
+When not specifying specific sets, **nsets** selects the *n* largest sets from the data. **number.angles** determines the angle (in degrees) of the numbers above the intersection size bars. **point size** changes the size of the circles in the matrix. **name.size** changes the size of the set names. **line.size** changes the size of the lines connecting the circles in the matrix.
 ```{r, fig.width=12}
 upset(movies, nsets = 6, number.angles = 30, point.size = 5, name.size = 12, line.size = 2)
 ```
 
 <br>
 
-Example 2
+Example 2: choose specific sets, number of intersections to be displayed, proportion of plot assigned to intersection size bars and matrix, order of matrix
 ------------
-To look at specific sets, a vector of set names can be entered into the **sets** parameter. To change the proportions of the plot assigned to the matrix and intersection size bar plot, the use the **mb.ratio** paramter entered as percentages. If no order is specified, the matrix will be ordered by degree then frequency. To order by frequency use **order.matrix** as shown below.  
+To look at specific sets, a vector of set names can be entered into the **sets** parameter. To change the proportions of the plot assigned to the matrix and intersection size bar plot, the use the **mb.ratio** paramter entered as percentages. If no order is specified, the matrix will be ordered by degree then frequency. To order by frequency use **order.matrix** as shown below.
 ```{r, fig.width=12}
 upset(movies, sets = c("Action", "Adventure", "Comedy", "Drama", "Mystery", "Thriller", "Romance", "War", "Western"), mb.ratio = c(0.55,0.45), order.matrix = "freq")
 ```
 
 <br>
 
-Example 3
+Example 3: aggregation by sets, how many aggregates to show per set
 ------------
-Instead of the traditional method of aggregating by degree, aggregation by sets can be acheived using **aggregate.by**. To set a cutoff for the number of aggregates per set use **cutoff**. 
+Instead of the traditional method of aggregating by degree, aggregation by sets can be acheived using **aggregate.by**. To set a cutoff for the number of aggregates per set use **cutoff**.
 ```{r, fig.width=12}
 upset(movies, nintersects = 70, aggregate.by = "sets", cutoff = 7)
 ```
 
 <br>
 
-Example 4
+Example 4: display empty intersections
 ------------
-There may be times where an intersection you are looking for is not present in the matrix. This may be due to not showing enough intersections which can be changes with **nintersects**, or it may be because the intersection contains no elements. To additionally show empty intersections turn on **empty.intersections**. 
+There may be times where an intersection you are looking for is not present in the matrix. This may be due to not showing enough intersections which can be changes with **nintersects**, or it may be because the intersection contains no elements. To additionally show empty intersections turn on **empty.intersections**.
 ```{r, fig.width=12}
 upset(movies, empty.intersections = "on", order.matrix = "freq")
 ```

@@ -1,21 +1,15 @@
 ---
 title: "Attribute Plots"
-output: html_document
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+    theme: "cosmo"
 ---
-
-Brief overview of examples:
-
-- **Example 1:** Built in attribute histogram
-
-- **Example 2:** Built in attribute scatter plot
-
-- **Example 3:** Creating your own attribute plot
-
-- **Example 4:** All at once
 
 <br>
 
-For all examples the movies data set contained in the package will be used. 
+For all examples the movies data set contained in the package will be used.
 ```{r}
 library(UpSetR); library(ggplot2); library(grid)
 movies <- read.csv( system.file("extdata", "movies.csv", package = "UpSetR"), header=T, sep=";" )
@@ -31,30 +25,30 @@ The **attribute.plots** parameter is broken down into 3 fields: gridrows, plots,
 
 - *plots*: takes a list of paramters. These paramters include *plot*, *x*, *y* (if applicable), and *queries*.
 
-    - *plot*: is a function that returns a ggplot
-    
-    - *x*: is the x aesthetic to be used in the ggplot (entered as string)
-    
-    - *y*: is the y aesthetic to be used in the ggplot (entered as string)
-    
-    - *queries*: indicates whether or not to overlay the plot with the queries present. If *queries* is TRUE, the attribute plot will be overlayed with data from the queries. If *queries* is FALSE, no query data will be plotted on the attribute plot.
+- *plot*: is a function that returns a ggplot
 
-- *ncols*: specifies how the plots should be arranged in the *gridrows* space. If two attribute plots are entered and *ncols* = 1,then the plots will display one above the other. Alternatively, if two attribute plots are entered and *ncols* = 2, the attribute plots will be displayed side by side. 
+- *x*: is the x aesthetic to be used in the ggplot (entered as string)
+
+- *y*: is the y aesthetic to be used in the ggplot (entered as string)
+
+- *queries*: indicates whether or not to overlay the plot with the queries present. If *queries* is TRUE, the attribute plot will be overlayed with data from the queries. If *queries* is FALSE, no query data will be plotted on the attribute plot.
+
+- *ncols*: specifies how the plots should be arranged in the *gridrows* space. If two attribute plots are entered and *ncols* = 1,then the plots will display one above the other. Alternatively, if two attribute plots are entered and *ncols* = 2, the attribute plots will be displayed side by side.
 
 **Additional:** to add a legend of the queries, *use query.legend* = "bottom" (see Example 2)
 
 <br>
 
-Example 1
+Example 1: Built in attribute histogram
 -------------
-Example of how to add built in histogram attribute plot. If *main.bar.color* not specified as black, elements contained in black intersection size bars will be represented as gray in attribute plots. 
+Example of how to add built in histogram attribute plot. If *main.bar.color* not specified as black, elements contained in black intersection size bars will be represented as gray in attribute plots.
 ```{r, fig.width=12, fig.height=7}
 upset(movies, main.bar.color = "black", queries = list(list(query = intersects, params = list("Drama"), active = T)), attribute.plots = list(gridrows = 50, plots = list(list(plot = histogram, x = "ReleaseDate", queries = F), list(plot = histogram, x = "AvgRating", queries = T)), ncols = 2))
 ```
 
 <br>
 
-Example 2
+Example 2: Built in attribute scatter plot
 -------------
 Example of how to add built in attribute scatter plot. If *main.bar.color* not specified as black, elements contained in black intersection size bars will be represented as gray in attribute plots.
 <br> <br>
@@ -65,12 +59,12 @@ upset(movies, main.bar.color = "black", queries = list(list(query = intersects, 
 
 <br>
 
-Example 3
+Example 3: Creating your own attribute plot
 -------------
-How to create custom plot. Contents of *aes_string()* along with *scale_color_identity* function are **required** to pass in aesthetics and to make sure the correct colors are applied. A *plot.margin* of c(0.5,0,0,1) is **recommended**. 
+How to create custom plot. Contents of *aes_string()* along with *scale_color_identity* function are **required** to pass in aesthetics and to make sure the correct colors are applied. A *plot.margin* of c(0.5,0,0,1) is **recommended**.
 ```{r}
 myplot <- function(mydata,x,y){
- plot <- (ggplot(data = mydata, aes_string(x=x, y=y, colour = "color")) + geom_point() +    scale_color_identity() + theme(plot.margin = unit(c(0,0,0,0), "cm"))) 
+    plot <- (ggplot(data = mydata, aes_string(x=x, y=y, colour = "color")) + geom_point() +    scale_color_identity() + theme(plot.margin = unit(c(0,0,0,0), "cm")))
 }
 ```
 
@@ -81,9 +75,9 @@ upset(movies, main.bar.color = "black", queries = list(list(query = intersects, 
 
 <br>
 
-Example 4
+Example 4: All at once
 -------------
-Combining the use of built in scatter_plot and histogram plots with user created plots.  
+Combining the use of built in scatter_plot and histogram plots with user created plots.
 ```{r, fig.width=12, fig.height=7}
 upset(movies, main.bar.color = "black", mb.ratio = c(0.5,0.5), queries = list(list(query = intersects, params = list("Drama"), color = "red", active = F), list(query = intersects, params = list("Action", "Drama"), active = T), list(query = intersects, params = list("Drama", "Comedy", "Action"), color = "orange", active = T)), attribute.plots = list(gridrows=50, plots = list(list(plot = histogram, x = "ReleaseDate", queries = F), list(plot = scatter_plot, x = "ReleaseDate", y = "AvgRating", queries = T),list(plot = myplot, x = "AvgRating", y = "Watches", queries = F)), ncols = 3))
 ```
