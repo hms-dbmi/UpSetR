@@ -181,7 +181,7 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.color =
     Matrix_col <- intersects(QuerieInterData, Intersection, New_data, first.col, Num_of_set,
                              All_Freqs, expression, Set_names, palette)
     Element <- SeperateQueries(queries, 1, palette)
-    EBar_data <-ElemBarDat(Element, New_data, first.col, expression, Set_names, palette, All_Freqs)
+    EBar_data <-ElemBarDat(Element, New_data, first.col, expression, Set_names,palette, All_Freqs)
   }
   else{
     Matrix_col <- NULL

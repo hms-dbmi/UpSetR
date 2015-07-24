@@ -83,6 +83,9 @@ ElemBarDat <- function(q, data1, first_col, exp, names, palette, mbdata){
     }
     else{
       elem_data <- data1[which(as.character(data1[ ,test]) %in% c(index_q[2:length(index_q)])), ]
+      if(!is.null(exp)){
+      elem_data <- Subset_att(elem_data, exp)
+      }
       elem_data <- count(elem_data[names])
       elem_data <- elem_data[which(rowSums(elem_data[names]) != 0), ]
       x <- merge(mbdata, elem_data[names])
