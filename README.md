@@ -34,7 +34,7 @@ http://www.nature.com/nmeth/journal/v11/n8/abs/nmeth.3033.html
 
 ```R
 upset(mutations, sets = c("PTEN", "TP53", "EGFR", "PIK3R1", "RB1"), sets.bar.color = "#56B4E9",
-order.matrix = "freq", empty.intersections = "on")
+order.by = "freq", empty.intersections = "on")
 ```
 
 An example using two set queries (war movies and noir movies) along with attribute plots comparing the average rating (top) and average rating vs the number of times the movies have been watched (bottom).
