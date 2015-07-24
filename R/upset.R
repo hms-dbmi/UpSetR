@@ -50,7 +50,7 @@
 #' @seealso UpSetR github for additional examples: \url{http://github.com/hms-dbmi/UpSetR}
 #' @examples movies <- read.csv( system.file("extdata", "movies.csv", package = "UpSetR"), header=TRUE, sep=";" )
 #'
-#'require(ggplot2); require(plyr); require(gridExtra); require(grid)
+#'require(ggplot2); require(plyr); require(gridExtra); require(grid);
 #'
 #' between <- function(row, min, max){
 #'   newData <- (row["ReleaseDate"] < max) & (row["ReleaseDate"] > min)
@@ -150,7 +150,7 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.color =
       }
     }
   }
-
+  
   BoxPlots <- NULL
   if(is.null(boxplot.summary) == F){
     BoxData <- IntersectionBoxPlot(All_Freqs, New_data, first.col, Set_names)
@@ -165,6 +165,7 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.color =
   Intersection <- NULL
   Element <- NULL
   legend <- NULL
+  EBar_data <- NULL
   if(is.null(queries) == F){
     custom.queries <- SeperateQueries(queries, 2, palette)
     customDat <- customQueries(New_data, custom.queries, Set_names)
@@ -179,6 +180,8 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.color =
     Intersection <- SeperateQueries(queries, 1, palette)
     Matrix_col <- intersects(QuerieInterData, Intersection, New_data, first.col, Num_of_set,
                              All_Freqs, expression, Set_names, palette)
+    Element <- SeperateQueries(queries, 1, palette)
+    EBar_data <-ElemBarDat(Element, New_data, first.col, expression, Set_names, palette, All_Freqs)
   }
   else{
     Matrix_col <- NULL
@@ -195,17 +198,18 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.color =
   if((is.null(queries) == F) & (is.null(att.x) == F)){
     QInter_att_data <- intersects(QuerieInterAtt, Intersection, New_data, first.col, Num_of_set, att.x, att.y,
                                   expression, Set_names, palette)
-    Element <- SeperateQueries(queries, 1, palette)
-    QElem_att_data <- elements(QuerieElemAtt, Element,New_data, first.col, expression, Set_names, att.x, att.y,
+    QElem_att_data <- elements(QuerieElemAtt, Element, New_data, first.col, expression, Set_names, att.x, att.y,
                                palette)
   }
   AllQueryData <- combineQueriesData(QInter_att_data, QElem_att_data, customAttDat, att.x, att.y)
   ShadingData <- MakeShading(Matrix_layout)
-  Main_bar <- Make_main_bar(All_Freqs, Bar_Q, show.numbers, mb.ratio, customQBar, number.angles)
+  Main_bar <- Make_main_bar(All_Freqs, Bar_Q, show.numbers, mb.ratio, customQBar, number.angles, EBar_data)
   Matrix <- Make_matrix_plot(Matrix_layout, Set_sizes, All_Freqs, point.size, line.size,
                              name.size, labels, ShadingData, shade.color, shade.alpha)
   Sizes <- Make_size_plot(Set_sizes, sets.bar.color, mb.ratio)
+  
   Make_base_plot(Main_bar, Matrix, Sizes, labels, mb.ratio, att.x, att.y, New_data,
                  expression, att.pos, first.col, att.color, AllQueryData, attribute.plots,
                  legend, query.legend, BoxPlots, Set_names)
+  
 }

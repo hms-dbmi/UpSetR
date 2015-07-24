@@ -62,3 +62,42 @@ QuerieElemAtt <- function(q, data, start_col, exp, names, att_x, att_y, palette)
     return(rows)
   }
 }
+
+
+ElemBarDat <- function(q, data1, first_col, exp, names, palette, mbdata){
+  data1 <- data.frame(data1)
+  bar <- count(data1)
+  bar$x <- 1:nrow(bar)
+  rows <- data.frame()
+  act <- c()
+  if(length(q) == 0){
+    return(NULL)
+  }
+  for(i in 1:length(q)){
+    index_q <- unlist(q[[i]]$params)
+    test <- as.character(index_q[1])
+    check <- match(test, names)
+    elem_color <- q[[i]]$color
+    if(is.na(check) != T){
+      elem_data <- NULL
+    }
+    else{
+      elem_data <- data1[which(as.character(data1[ ,test]) %in% c(index_q[2:length(index_q)])), ]
+      elem_data <- count(elem_data[names])
+      elem_data <- elem_data[which(rowSums(elem_data[names]) != 0), ]
+      x <- merge(mbdata, elem_data[names])
+      x <- x$x
+      elem_data$x <- x
+      if((isTRUE(q[[i]]$active) == T) && (is.null(elem_data) == F)){
+        act <- T
+      }
+      else if((isTRUE(q[[i]]$active) == F || is.null(q[[i]]$active) == T) && (is.null(elem_data) == F)){
+        act <- F
+      }
+      elem_data$color <- elem_color
+      elem_data$act <- act
+    }
+    rows <- rbind(rows, elem_data)
+  }
+  return(rows)
+}
