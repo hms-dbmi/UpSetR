@@ -27,11 +27,15 @@ movies <- read.csv( system.file("extdata", "movies.csv", package = "UpSetR"), he
 
 *queries* Parameter Breakdown
 ----------------------------------
-Each list contained in the queries parameter takes 4 fields: query, params, color, and active.
-*query* specifies which query is going to be run
-*params* is a list of paramters for the query to work on
-*color* is the color that will represent the query on the plot. If no color is provided one will be selected from a color palette. 
-*active* determines how the query will be represented on the plot. If active is TRUE, the intersection size bar will be overlayed by a bar representing the query. If active is FALSE, a jitter point will be placed on the intersection size bar.
+Each list contained in the **queries** parameter takes 4 fields: query, params, color, and active.
+
+- *query* specifies which query is going to be run
+
+- *params* is a list of paramters for the query to work on
+
+- *color* is the color that will represent the query on the plot. If no color is provided one will be selected from a color palette. 
+
+- *active* determines how the query will be represented on the plot. If active is TRUE, the intersection size bar will be overlayed by a bar representing the query. If active is FALSE, a jitter point will be placed on the intersection size bar.
 
 To see how queries can be explored and visualized on an element level visit the **Attribute Plots** vignette.
 
