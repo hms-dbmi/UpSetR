@@ -23,18 +23,18 @@ upset(movies, nsets = 6, number.angles = 30, point.size = 5, name.size = 12, lin
 
 Example 2: choose specific sets, number of intersections to be displayed, proportion of plot assigned to intersection size bars and matrix, order of matrix
 ------------
-To look at specific sets, a vector of set names can be entered into the **sets** parameter. To change the proportions of the plot assigned to the matrix and intersection size bar plot, the use the **mb.ratio** paramter entered as percentages. If no order is specified, the matrix will be ordered by degree then frequency. To order by frequency use **order.matrix** as shown below.
+To look at specific sets, a vector of set names can be entered into the **sets** parameter. To change the proportions of the plot assigned to the matrix and intersection size bar plot, the use the **mb.ratio** paramter entered as percentages. If no order is specified, the matrix will be ordered by degree then frequency. To order by frequency use **order.by** as shown below.
 ```{r, fig.width=12}
-upset(movies, sets = c("Action", "Adventure", "Comedy", "Drama", "Mystery", "Thriller", "Romance", "War", "Western"), mb.ratio = c(0.55,0.45), order.matrix = "freq")
+upset(movies, sets = c("Action", "Adventure", "Comedy", "Drama", "Mystery", "Thriller", "Romance", "War", "Western"), mb.ratio = c(0.55,0.45), order.by = "freq")
 ```
 
 <br>
 
-Example 3: aggregation by sets, how many aggregates to show per set
+Example 3: group by sets, how many intersections to show per group of sets
 ------------
-Instead of the traditional method of aggregating by degree, aggregation by sets can be acheived using **aggregate.by**. To set a cutoff for the number of aggregates per set use **cutoff**.
+Instead of the traditional method of grouping by degree, grouping by sets can be acheived using **group.by**. To set a cutoff for the number of intersections per group of sets use **cutoff**.
 ```{r, fig.width=12}
-upset(movies, nintersects = 70, aggregate.by = "sets", cutoff = 7)
+upset(movies, nintersects = 70, group.by = "sets", cutoff = 7)
 ```
 
 <br>
@@ -43,5 +43,5 @@ Example 4: display empty intersections
 ------------
 There may be times where an intersection you are looking for is not present in the matrix. This may be due to not showing enough intersections which can be changes with **nintersects**, or it may be because the intersection contains no elements. To additionally show empty intersections turn on **empty.intersections**.
 ```{r, fig.width=12}
-upset(movies, empty.intersections = "on", order.matrix = "freq")
+upset(movies, empty.intersections = "on", order.by = "freq")
 ```
