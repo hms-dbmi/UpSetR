@@ -1,3 +1,16 @@
+Release v.0.0.5
+
+- Now plotting using the base grid package to make compatible with all versions of gridExtra package 
+- Allowed for element query overlay of intersection size bars
+- Added vignettes of basic usage, queries, and attribute plots
+- Matched set size font with intersection size font
+- Added utils, stats, methods, grDevices to imports to be safe (usually pre-installed)
+- Added badges
+- Updated README
+- Bumped required R version up to 3.0
+
+-----------------
+
 Release v.0.0.4
 
 - changed aes to aes_string for ggplot2 aesthetics
