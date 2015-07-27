@@ -1,5 +1,6 @@
 ---
 title: "Basic Usage"
+author: "Jake Conway and Nils Gehlenborg"
 ---
 
 <br>

@@ -1,5 +1,6 @@
 ---
 title: "Querying the Data"
+author: "Jake Conway and Nils Gehlenborg"
 ---
 
 <br>

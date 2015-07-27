@@ -1,5 +1,6 @@
 ---
 title: "Attribute Plots"
+author: "Jake Conway and Nils Gehlenborg"
 ---
 
 <br>
