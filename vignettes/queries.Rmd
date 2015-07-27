@@ -14,23 +14,23 @@ movies <- read.csv( system.file("extdata", "movies.csv", package = "UpSetR"), he
 
 *queries* Parameter Breakdown
 ----------------------------------
-Each list contained in the **queries** parameter takes 4 fields: query, params, color, and active.
+Each list contained in the `queries` parameter takes 4 fields: `query`, `params`, `color`, and `active`.
 
-- *query* specifies which query is going to be run
+- `query` specifies which query is going to be run
 
-- *params* is a list of paramters for the query to work on
+- `params` is a list of paramters for the query to work on
 
-- *color* is the color that will represent the query on the plot. If no color is provided one will be selected from a color palette.
+- `color` is the color that will represent the query on the plot. If no color is provided, a color will be selected from the _UpSetR_ default color palette.
 
-- *active* determines how the query will be represented on the plot. If active is TRUE, the intersection size bar will be overlayed by a bar representing the query. If active is FALSE, a jitter point will be placed on the intersection size bar.
+- `active` determines how the query will be represented on the plot. If `active` is `TRUE`, the intersection size bar will be overlayed by a bar representing the query. If `active` is `FALSE`, a jitter point will be placed on the intersection size bar.
 
-To see how queries can be explored and visualized on an element level visit the **Attribute Plots** vignette.
+To learn how queries can be explored and visualized on an element level see the **Attribute Plots** vignette.
 
 <br>
 
 Example 1: Built-in Intersection Query
 -------------
-This example shows how to use the built in intersection query, **intersects**, to find or display elements in specific intersections.
+This example shows how to use the built in intersection query, `intersects`, to find or display elements in specific intersections. In this example the color selected for the active query is from the default color palette.
 ```{r, fig.width=12}
 upset(movies, queries = list(list(query = intersects, params = list("Drama", "Comedy", "Action"), color = "orange", active = T), list(query = intersects, params = list("Drama"), color = "red", active = F), list(query = intersects, params = list("Action", "Drama"), active = T)))
 ```
@@ -39,7 +39,7 @@ upset(movies, queries = list(list(query = intersects, params = list("Drama", "Co
 
 Example 2: Built-In Elements Query
 -------------
-This example shows how to use the built in element query, **elements**, to visualize how certain elements are distributed amongst the intersections.
+This example shows how to use the built in element query, `elements`, to visualize how certain elements are distributed amongst the intersections.
 ```{r, fig.width=12}
 upset(movies, queries = list(list(query = elements, params = list("AvgRating", 3.5, 4.1), color = "blue", active = T), list(query = elements, params = list("ReleaseDate", 1980, 1990, 2000), color = "red", active = F)))
 ```
@@ -48,7 +48,7 @@ upset(movies, queries = list(list(query = elements, params = list("AvgRating", 3
 
 Example 3: Using Expression Parameter to Subset Intersection and Element Queries
 -------------
-This example shows how to use the **expression** parameter to subset element and intersection queries.
+This example shows how to use the `expression` parameter to subset the results of element and intersection queries.
 ```{r, fig.width=12}
 upset(movies, queries = list(list(query = intersects, params = list("Action", "Drama"), active = T), list(query = elements, params = list("ReleaseDate", 1980, 1990, 2000), color = "red", active = F)), expression = "AvgRating > 3 & Watches > 100")
 ```
