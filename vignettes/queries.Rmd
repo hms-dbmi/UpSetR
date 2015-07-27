@@ -1,5 +1,5 @@
 ---
-title: "Querying the data"
+title: "Querying the Data"
 ---
 
 <br>
@@ -28,7 +28,7 @@ To see how queries can be explored and visualized on an element level visit the 
 
 <br>
 
-Example 1: Built in intersection query
+Example 1: Built-in Intersection Query
 -------------
 This example shows how to use the built in intersection query, **intersects**, to find or display elements in specific intersections.
 ```{r, fig.width=12}
@@ -37,7 +37,7 @@ upset(movies, queries = list(list(query = intersects, params = list("Drama", "Co
 
 <br>
 
-Example 2: Built in elements query
+Example 2: Built-In Elements Query
 -------------
 This example shows how to use the built in element query, **elements**, to visualize how certain elements are distributed amongst the intersections.
 ```{r, fig.width=12}
@@ -46,7 +46,7 @@ upset(movies, queries = list(list(query = elements, params = list("AvgRating", 3
 
 <br>
 
-Example 3: Using expression parameter to subset intersection and element queries
+Example 3: Using Expression Parameter to Subset Intersection and Element Queries
 -------------
 This example shows how to use the **expression** parameter to subset element and intersection queries.
 ```{r, fig.width=12}
@@ -55,7 +55,7 @@ upset(movies, queries = list(list(query = intersects, params = list("Action", "D
 
 <br>
 
-Example 4: Create your own query to operate on the rows of the data and apply it
+Example 4: Creating Custom Queries on Set Elements and Attributes
 -------------
 Creating a custom query to operate on the rows of the data.
 ```{r}
@@ -71,7 +71,7 @@ upset(movies, queries = list(list(query = Myfunc, params = list(c(1970,1980, 199
 
 <br>
 
-Example 5: All at once
+Example 5: Applying Everything at Once
 --------------
 Combining pieces from all previous examples into one awesome query!
 ```{r, fig.width=12}
