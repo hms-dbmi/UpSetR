@@ -14,21 +14,21 @@ movies <- read.csv( system.file("extdata", "movies.csv", package = "UpSetR"), he
 
 *attribute.plots* Parameter Breakdown
 ----------------------------------
-The **attribute.plots** parameter is broken down into 3 fields: gridrows, plots, and ncols
+The `attribute.plots` parameter is broken down into 3 fields: `gridrows`, `plots`, and `ncols`
 
-- *gridrows*: specifies how much to expand the plot window to add room for attribute plots. The *UpSetR* plot is plotted on a 100 by 100 grid. So for example, if we set *gridrows* to 50, the new grid layout would be 150 by 100, setting aside 1/3 of the plot for the attribute plots.
+- `gridrows`: specifies how much to expand the plot window to add room for attribute plots. The _UpSetR_ plot is plotted on a 100 by 100 grid. So for example, if we set `gridrows` to 50, the new grid layout would be 150 by 100, setting aside 1/3 of the plot for the attribute plots.
 
-- *plots*: takes a list of paramters. These paramters include *plot*, *x*, *y* (if applicable), and *queries*.
+- `plots`: takes a list of paramters. These paramters include `plot`, `x`, `y` (if applicable), and `queries`.
 
-- *plot*: is a function that returns a ggplot
+- `plot`: is a function that returns a ggplot
 
-- *x*: is the x aesthetic to be used in the ggplot (entered as string)
+- `x`: is the x aesthetic to be used in the ggplot (entered as string)
 
-- *y*: is the y aesthetic to be used in the ggplot (entered as string)
+- `y`: is the y aesthetic to be used in the ggplot (entered as string)
 
-- *queries*: indicates whether or not to overlay the plot with the queries present. If *queries* is `TRUE`, the attribute plot will be overlayed with data from the queries. If *queries* is `FALSE`, no query results will be plotted on the attribute plot.
+- `queries`: indicates whether or not to overlay the plot with the queries present. If `queries` is `TRUE`, the attribute plot will be overlayed with data from the queries. If `queries` is `FALSE`, no query results will be plotted on the attribute plot.
 
-- *ncols*: specifies how the plots should be arranged in the *gridrows* space. If two attribute plots are entered and *ncols* is 1,then the plots will display one above the other. Alternatively, if two attribute plots are entered and *ncols* is 2, the attribute plots will be displayed side by side.
+- `ncols`: specifies how the plots should be arranged in the `gridrows` space. If two attribute plots are entered and `ncols` is 1,then the plots will display one above the other. Alternatively, if two attribute plots are entered and `ncols` is 2, the attribute plots will be displayed side by side.
 
 **Additional:** to add a legend of the queries, use `query.legend = "bottom"` (see Example 2).
 
@@ -36,7 +36,7 @@ The **attribute.plots** parameter is broken down into 3 fields: gridrows, plots,
 
 Example 1: Built-In Attribute Histogram
 -------------
-Example of how to add built-in histogram attribute plot. If *main.bar.color* not specified as black, elements contained in black intersection size bars will be represented as gray in attribute plots.
+Example of how to add built-in histogram attribute plot. If `main.bar.color` is not specified as black, elements contained in black intersection size bars will be represented as gray in attribute plots.
 ```{r, fig.width=12, fig.height=7}
 upset(movies, main.bar.color = "black", queries = list(list(query = intersects, params = list("Drama"), active = T)), attribute.plots = list(gridrows = 50, plots = list(list(plot = histogram, x = "ReleaseDate", queries = F), list(plot = histogram, x = "AvgRating", queries = T)), ncols = 2))
 ```
@@ -45,7 +45,7 @@ upset(movies, main.bar.color = "black", queries = list(list(query = intersects, 
 
 Example 2: Built-In Attribute Scatter Plot
 -------------
-Example of how to add built-in attribute scatter plot. If *main.bar.color* not specified as black, elements contained in black intersection size bars will be represented as gray in attribute plots.
+Example of how to add built-in attribute scatter plot. If `main.bar.color` not specified as black, elements contained in black intersection size bars will be represented as gray in attribute plots.
 <br> <br>
 *notice the use of query.legend*
 ```{r, fig.width=12, fig.height=7}
@@ -56,7 +56,7 @@ upset(movies, main.bar.color = "black", queries = list(list(query = intersects, 
 
 Example 3: Creating a Custom Attribute Plot
 -------------
-Contents of *aes_string()* along with *scale_color_identity* function are **required** to pass in aesthetics and to make sure the correct colors are applied. A *plot.margin* of c(0.5,0,0,1) is **recommended**.
+Contents of `aes_string()` along with the `scale_color_identity()` function are **required** to pass in aesthetics and to make sure the correct colors are applied. A `plot.margin` of `c(0.5,0,0,1)` is **recommended**.
 ```{r}
 myplot <- function(mydata,x,y){
     plot <- (ggplot(data = mydata, aes_string(x=x, y=y, colour = "color")) + geom_point() +    scale_color_identity() + theme(plot.margin = unit(c(0,0,0,0), "cm")))
