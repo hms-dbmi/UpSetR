@@ -23,9 +23,15 @@ upset(movies, nsets = 6, number.angles = 30, point.size = 5, name.size = 12, lin
 
 Example 2: choose specific sets, number of intersections to be displayed, proportion of plot assigned to intersection size bars and matrix, order of matrix
 ------------
-To look at specific sets, a vector of set names can be entered into the **sets** parameter. To change the proportions of the plot assigned to the matrix and intersection size bar plot, the use the **mb.ratio** paramter entered as percentages. If no order is specified, the matrix will be ordered by degree then frequency. To order by frequency use **order.by** as shown below.
+To look at specific sets, a vector of set names can be entered into the **sets** parameter. To change the proportions of the plot assigned to the matrix and intersection size bar plot, the use the **mb.ratio** paramter entered as percentages. If no order is specified, the matrix will be ordered by degree then frequency. The 3 plots below show different ways the data can be ordered.
 ```{r, fig.width=12}
 upset(movies, sets = c("Action", "Adventure", "Comedy", "Drama", "Mystery", "Thriller", "Romance", "War", "Western"), mb.ratio = c(0.55,0.45), order.by = "freq")
+```
+```{r, fig.width=12}
+upset(movies, sets = c("Action", "Adventure", "Comedy", "Drama", "Mystery", "Thriller", "Romance", "War", "Western"), mb.ratio = c(0.55,0.45), order.by = "degree")
+```
+```{r, fig.width=12}
+upset(movies, sets = c("Action", "Adventure", "Comedy", "Drama", "Mystery", "Thriller", "Romance", "War", "Western"), mb.ratio = c(0.55,0.45), order.by = c("degree", "freq"))
 ```
 
 <br>
