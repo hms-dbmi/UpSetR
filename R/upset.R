@@ -128,7 +128,6 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.color =
                        rev(order.by), group.by, cutoff, empty.intersections)
   Matrix_setup <- Create_matrix(All_Freqs)
   labels <- Make_labels(Matrix_setup)
-  
   #Chose NA to represent NULL case as result of NA being inserted when at least one contained both x and y
   #i.e. if one custom plot had both x and y, and others had only x, the y's for the other plots were NA
   #if I decided to make the NULL case (all x and no y, or vice versa), there would have been alot more if/else statements
