@@ -18,6 +18,16 @@ mutations <- read.csv( system.file("extdata", "mutations.csv", package = "UpSetR
 The movie data set created by the [GroupLens Lab](http://grouplens.org/datasets/movielens) and curated by [Bilal Alsallakh](https://github.com/bilalsal) and the mutations data set was originally created by the TCGA Consortium and represents mutations for the 100 most mutated genes in a glioblastoma multiforme cohort.
 
 ## Examples
+
+### Vignettes
+
+There are currently three vignettes that explain how to use the features included in the UpSetR package:
+* [Basic Usage](https://cran.r-project.org/web/packages/UpSetR/vignettes/basic.usage.html)
+* [Queries](https://cran.r-project.org/web/packages/UpSetR/vignettes/queries.html)
+* [Attribute Plots](https://cran.r-project.org/web/packages/UpSetR/vignettes/attribute.plots.html)
+
+### Demo
+
 A view of the UpSet plot with additional plots based on elements in the intersections.
 
 ![Image](https://cloud.githubusercontent.com/assets/12614369/8464958/2af1008c-2014-11e5-93d8-8d8442ec5631.png)
