@@ -12,6 +12,10 @@ FindStartEnd <- function(data){
       startend[1] <- i
       break
     }
+    else if((column[1] == "-1") && (column[2] == "0") && (column[3] == "1") && (length(column) == 3)){
+      startend[1] <- i
+      break
+    }
     else{
       next
     }
@@ -24,6 +28,10 @@ FindStartEnd <- function(data){
       break
     }
     else if((column[1] == "1") && (length(column) == 1)){
+      startend[2] <- i
+      break
+    }
+    else if((column[1] == "-1") && (column[2] == "0") && (column[3] == "1") && (length(column) == 3)){
       startend[2] <- i
       break
     }
