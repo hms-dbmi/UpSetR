@@ -1,3 +1,9 @@
+Release v1.0.0
+
+- Added directionality when choosing sets (-1,0,+1)
+
+-----------------
+
 Release v.0.0.5
 
 - Now plotting using the base grid package to make compatible with all versions of gridExtra package 
