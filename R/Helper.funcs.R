@@ -133,6 +133,7 @@ OverlayEdit <- function(data1, data2, start_col, num_sets, intersects, exp, inte
   if(is.null(exp) == F){
     temp_data <- Subset_att(temp_data, exp)
   }
+  temp_data <- temp_data[intersects]
   temp_data <- na.omit(temp_data)
   
   other_data <- data2[which(rowSums(data2[ ,1:num_sets]) == length(intersects)), ]
