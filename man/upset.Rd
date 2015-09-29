@@ -8,11 +8,12 @@ upset(data, nsets = 5, nintersects = 40, sets = NULL,
   matrix.color = "gray23", main.bar.color = "gray23",
   sets.bar.color = "gray23", point.size = 4, line.size = 1,
   name.size = 10, mb.ratio = c(0.7, 0.3), expression = NULL,
-  att.pos = NULL, att.color = main.bar.color, order.by = c("degree",
-  "freq"), show.numbers = "yes", number.angles = 0, group.by = "degree",
-  cutoff = NULL, queries = NULL, query.legend = "none",
-  shade.color = "gray88", shade.alpha = 0.25, empty.intersections = NULL,
-  color.pal = 1, boxplot.summary = NULL, attribute.plots = NULL)
+  att.pos = NULL, att.color = main.bar.color, order.by = c("freq",
+  "degree"), decreasing = c(T, F), show.numbers = "yes",
+  number.angles = 0, group.by = "degree", cutoff = NULL, queries = NULL,
+  query.legend = "none", shade.color = "gray88", shade.alpha = 0.25,
+  empty.intersections = NULL, color.pal = 1, boxplot.summary = NULL,
+  attribute.plots = NULL)
 }
 \arguments{
 \item{data}{Data set}
@@ -44,6 +45,8 @@ upset(data, nsets = 5, nintersects = 40, sets = NULL,
 \item{att.color}{Color of attribute histogram bins or scatterplot points for unqueried data represented by main bars. Default set to color of main bars.}
 
 \item{order.by}{How the intersections in the matrix should be ordered by. Options include frequency (entered as "freq"), degree, or both in any order.}
+
+\item{decreasing}{How the variables in order.by should be ordered. "freq" is decreasing (greatest to least) and "degree" is increasing (least to greatest)}
 
 \item{show.numbers}{Show numbers of intersection sizes above bars}
 
@@ -120,7 +123,7 @@ attributeplots <- list(gridrows = 55,
                    ncols = 3)
 
 upset(movies, nsets = 7, nintersects = 30, mb.ratio = c(0.5, 0.5),
-      order.by = c("freq", "degree"))
+      order.by = c("freq", "degree"), decreasing = c(TRUE,FALSE))
 
 upset(movies, sets = c("Drama", "Comedy", "Action", "Thriller", "Western", "Documentary"),
       queries = list(list(query = intersects, params = list("Drama", "Action")),

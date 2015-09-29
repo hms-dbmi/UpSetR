@@ -16,6 +16,7 @@
 #' @param att.pos Position of attribute plot. If NULL or "bottom" the plot will be at below UpSet plot. If "top" it will be above UpSert plot
 #' @param att.color Color of attribute histogram bins or scatterplot points for unqueried data represented by main bars. Default set to color of main bars.
 #' @param order.by How the intersections in the matrix should be ordered by. Options include frequency (entered as "freq"), degree, or both in any order.
+#' @param decreasing How the variables in order.by should be ordered. "freq" is decreasing (greatest to least) and "degree" is increasing (least to greatest)
 #' @param show.numbers Show numbers of intersection sizes above bars
 #' @param number.angles The angle of the numbers atop the intersection size bars
 #' @param group.by How the data should be grouped ("degree" or "sets")
@@ -76,7 +77,7 @@
 #'                    ncols = 3)
 #'
 #' upset(movies, nsets = 7, nintersects = 30, mb.ratio = c(0.5, 0.5),
-#'       order.by = c("freq", "degree"))
+#'       order.by = c("freq", "degree"), decreasing = c(TRUE,FALSE))
 #'
 #' upset(movies, sets = c("Drama", "Comedy", "Action", "Thriller", "Western", "Documentary"),
 #'       queries = list(list(query = intersects, params = list("Drama", "Action")),
@@ -99,7 +100,7 @@
 upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.color = "gray23",
                   main.bar.color = "gray23", sets.bar.color = "gray23",point.size = 4, line.size = 1,
                   name.size = 10, mb.ratio = c(0.70,0.30), expression = NULL, att.pos = NULL,
-                  att.color = main.bar.color, order.by = c("degree", "freq"), show.numbers = "yes",
+                  att.color = main.bar.color, order.by = c("freq", "degree"), decreasing = c(T, F), show.numbers = "yes",
                   number.angles = 0, group.by = "degree",cutoff = NULL, queries = NULL,
                   query.legend = "none", shade.color = "gray88", shade.alpha = 0.25, empty.intersections = NULL,
                   color.pal = 1, boxplot.summary = NULL, attribute.plots = NULL){
@@ -125,7 +126,7 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.color =
   New_data <- Wanted(data, Sets_to_remove)
   Num_of_set <- Number_of_sets(Set_names)
   All_Freqs <- Counter(New_data, Num_of_set, first.col, Set_names, nintersects, main.bar.color,
-                       rev(order.by), group.by, cutoff, empty.intersections)
+                       rev(order.by), group.by, cutoff, empty.intersections, decreasing)
   Matrix_setup <- Create_matrix(All_Freqs)
   labels <- Make_labels(Matrix_setup)
   #Chose NA to represent NULL case as result of NA being inserted when at least one contained both x and y
