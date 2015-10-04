@@ -31,8 +31,8 @@ Counter <- function(data, num_sets, start_col, name_of_sets, nintersections, mba
     for(i in 1:length(order_mat)){
       order_cols[i] <- match(order_mat[i], colnames(Freqs))
     }
-    if(length(order_cols)==2 && order_cols[1]>order_cols[2]){decrease <- rev(decrease)}
-    for(i in length(order_cols)){
+    # if(length(order_cols)==2 && order_cols[1]>order_cols[2]){decrease <- rev(decrease)}
+    for(i in 1:length(order_cols)){
       logic <- decrease[i]
       Freqs <- Freqs[order(Freqs[ , order_cols[i]], decreasing = logic), ]
     }

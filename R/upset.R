@@ -126,7 +126,7 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.color =
   New_data <- Wanted(data, Sets_to_remove)
   Num_of_set <- Number_of_sets(Set_names)
   All_Freqs <- Counter(New_data, Num_of_set, first.col, Set_names, nintersects, main.bar.color,
-                       rev(order.by), group.by, cutoff, empty.intersections, decreasing)
+                       order.by, group.by, cutoff, empty.intersections, decreasing)
   Matrix_setup <- Create_matrix(All_Freqs)
   labels <- Make_labels(Matrix_setup)
   #Chose NA to represent NULL case as result of NA being inserted when at least one contained both x and y
