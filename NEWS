@@ -1,6 +1,11 @@
 Release v1.0.0
 
 - Added directionality when choosing sets (-1,0,+1)
+- Allowed for NA's in non-set columns
+- Added increasing/decreasing options for ordering intersections
+- Added fromList to convert a list of named vectors to an UpSetR data frame
+- Added fromExpression to convert a vector acting as an expression to an UpSetR data frame
+- Updated vignette for alternative input formats (list & expression)
 
 -----------------
 
