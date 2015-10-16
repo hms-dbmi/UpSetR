@@ -1,7 +1,7 @@
 #' Expression to UpSetR converters 
 #' 
 #' @description A function to convert an expression to a data frame compatible with UpSetR.
-#' @param input An expression to be converted to an input compatible with UpSetR
+#' @param input An vector (expression) to be converted to an input compatible with UpSetR
 #' @note See "Basic Usage" vignette for an example on how to use this function in UpSetR.
 #' @export 
 fromExpression <- function(input){

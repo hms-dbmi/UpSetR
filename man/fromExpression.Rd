@@ -7,7 +7,7 @@
 fromExpression(input)
 }
 \arguments{
-\item{input}{An expression to be converted to an input compatible with UpSetR}
+\item{input}{An vector (expression) to be converted to an input compatible with UpSetR}
 }
 \description{
 A function to convert an expression to a data frame compatible with UpSetR.
