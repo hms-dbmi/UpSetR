@@ -1,3 +1,9 @@
+Release v1.0.1
+
+- Fixed matrix plot to correctly work with new ggplot2 update
+
+-----------------
+
 Release v1.0.0
 
 - Added directionality when choosing sets (-1,0,+1)
