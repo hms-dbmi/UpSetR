@@ -57,3 +57,20 @@ There may be times where an intersection you are looking for is not present in t
 upset(movies, empty.intersections = "on", order.by = "freq")
 ```
 
+Example 5: Alternative Input Formats
+------------
+In some cases, the data you have may not be in the form of a .csv file. In UpSetR there are two built in converter functions `fromList` and `fromExpression` that take alternative data formats. The `fromList` function takes a list of named vectors and converts them into a data frame compatible with UpSetR. The `fromExpression` function takes a vector that acts as an expression. The elements of the expression vector are the names of the sets in an intersection, seperated by an amerpsand (&), and the number elements in that intersection. 
+```{r, tidy=TRUE}
+#example of list input (list of named vectors)
+listInput <-list(one = c(1,2,3,5,7,8,11,12,13), two = c(1,2,4,5,10), three = c(1,5,6,7,8,9,10,12,13))
+
+#example of expression input
+expressionInput <- c("one" = 2, "two" = 1, "three" = 2, "one&two" = 1, "one&three" = 4, "two&three" = 1, "one&two&three" = 2)
+```
+Note that both of these inputs contain the same data. To generate an UpSet plot with these inputs set the `data` paramter equal to either `fromList(listInput)` or `fromExpression(expressionInput)`. Use the examples from above to format the UpSet plot as you like. 
+```{r, out.width="850px", fig.width=13, fig.height =7,tidy=TRUE, fig.align='center'}
+upset(fromList(listInput), order.by = "freq")
+```
+```{r, out.width="850px", fig.width=13, fig.height =7,tidy=TRUE, fig.align='center'}
+upset(fromExpression(expressionInput), order.by = "freq")
+```

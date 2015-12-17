@@ -20,3 +20,16 @@ upset(movies, nintersects = 70, group.by = "sets", cutoff = 7)
 ## ---- out.width="850px", fig.width=13, fig.height =7,tidy=TRUE, fig.align='center'----
 upset(movies, empty.intersections = "on", order.by = "freq")
 
+## ---- tidy=TRUE----------------------------------------------------------
+#example of list input (list of named vectors)
+listInput <-list(one = c(1,2,3,5,7,8,11,12,13), two = c(1,2,4,5,10), three = c(1,5,6,7,8,9,10,12,13))
+
+#example of expression input
+expressionInput <- c("one" = 2, "two" = 1, "three" = 2, "one&two" = 1, "one&three" = 4, "two&three" = 1, "one&two&three" = 2)
+
+## ---- out.width="850px", fig.width=13, fig.height =7,tidy=TRUE, fig.align='center'----
+upset(fromList(listInput), order.by = "freq")
+
+## ---- out.width="850px", fig.width=13, fig.height =7,tidy=TRUE, fig.align='center'----
+upset(fromExpression(expressionInput), order.by = "freq")
+
