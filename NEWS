@@ -1,3 +1,9 @@
+Release v1.0.2
+
+- Updated vignettes to include examples of the fromExpression and fromList functions
+
+-----------------
+
 Release v1.0.1
 
 - Fixed matrix plot to correctly work with new ggplot2 update
