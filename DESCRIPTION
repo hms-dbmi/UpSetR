@@ -7,21 +7,22 @@ BugReports: http://github.com/hms-dbmi/UpSetR/issues
 Authors@R: c(
     person("Jake", "Conway", email = "jake_conway@student.uml.edu", role = "cre"),
     person("Nils", "Gehlenborg", email = "nils@hms.harvard.edu", role = "aut"))
-Description: Creates visualizations of intersecting sets using a novel matrix design,
-             along with visualizations of several common set, element and attribute
-             related tasks.
-Depends: 
+Description: Creates visualizations of intersecting sets using a novel matrix
+    design, along with visualizations of several common set, element and attribute
+    related tasks.
+Depends:
     R (>= 3.0)
-Imports: 
+Imports:
     ggplot2,
-    grid,
     gridExtra,
     plyr,
     utils,
-    stats, 
+    stats,
     methods,
     grDevices
 License: MIT + file LICENSE
 LazyData: true
 VignetteBuilder: knitr
-Suggests: knitr
+Suggests:
+    knitr
+RoxygenNote: 5.0.1
