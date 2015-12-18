@@ -1,3 +1,12 @@
+#' @importFrom grid grid.newpage
+#' @importFrom grid pushViewport
+#' @importFrom grid viewport
+#' @importFrom grid grid.layout
+#' @importFrom grid grid.draw
+#' @importFrom grid popViewport
+#' @importFrom grid legendGrob
+#' @importFrom grid gpar
+
 ## Assemble plots to make UpSet plot
 Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratios, att_x, att_y,
                            Set_data, exp, position, start_col, att_color, QueryData,

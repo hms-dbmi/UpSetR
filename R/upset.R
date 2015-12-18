@@ -88,10 +88,9 @@
 #'                     list(query = intersects, params = list("Drama"), color= "red"),
 #'                     list(query = elements, params = list("ReleaseDate", 1990, 1991, 1992))),
 #'       main.bar.color = "yellow")
-#' @import ggplot2
 #' @import plyr
-#' @import grid
 #' @import gridExtra
+#' @import ggplot2
 #' @import utils
 #' @import stats
 #' @import methods
