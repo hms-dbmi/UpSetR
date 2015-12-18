@@ -1,6 +1,7 @@
 Release v1.0.2
 
 - Updated vignettes to include examples of the fromExpression and fromList functions
+- Changed to selective imports from grid package
 
 -----------------
 
