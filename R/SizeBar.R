@@ -12,15 +12,15 @@ FindSetFreqs <- function(data, start_col, num_sets, set_names){
 
 ## Generate set size plot
 Make_size_plot <- function(Set_size_data, sbar_color, ratios){
-  if(ratios[1] < 0.4){
-    m <- (-0.05)
-  }
-  else if((ratios[1] > 0.4) & (ratios[1] < 0.46)){
-    m <- (-0.03)
-  }
-  else{
-    m <- 0
-  }
+#   if(ratios[1] < 0.4){
+#     m <- (-0.05)
+#   }
+#   else if((ratios[1] > 0.4) & (ratios[1] < 0.46)){
+#     m <- (-0.03)
+#   }
+#   else{
+#     m <- 0
+#   }
   Size_plot <- (ggplot(data = Set_size_data, aes_string(x ="x", y = "y"))
                 + geom_bar(stat = "identity",colour = sbar_color, width = 0.4,
                            fill = sbar_color, position = "identity")
@@ -28,7 +28,7 @@ Make_size_plot <- function(Set_size_data, sbar_color, ratios){
                                      breaks = c(0, max(Set_size_data)),
                                      expand = c(0,0))
                 + theme(panel.background = element_rect(fill = "white"),
-                        plot.margin=unit(c(m,-1.3,0.5,0.5), "lines"),
+                        plot.margin=unit(c(-0.11,-1.3,0.5,0.5), "lines"),
                         axis.title.x = element_text(size = 11),
                         axis.line = element_line(colour = "gray0"),
                         axis.line.y = element_blank(),

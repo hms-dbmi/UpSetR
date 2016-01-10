@@ -85,8 +85,8 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_an
                                          expand = c(c(0,0), c(0,0)))
                     + xlab(NULL) + ylab("Intersection Size") +labs(title = NULL)
                     + theme(panel.background = element_rect(fill = "white"),
-                            plot.margin = unit(c(0.5,0.5,0.18,0.5), "lines"), panel.border = element_blank(),
-                            axis.title.y = element_text(vjust = -0.8)))
+                            plot.margin = unit(c(0.5,0.5,0.19,0.5), "lines"), panel.border = element_blank(),
+                            axis.title.y = element_text(vjust = -0.8), axis.text.y = element_text(vjust=0.3)))
   if((show_num == "yes") || (show_num == "Yes")){
     Main_bar_plot <- (Main_bar_plot + geom_text(aes_string(label = "freq"), size = 3.0, vjust = -1,
                                                 angle = number_angles, colour = Main_bar_data$color))
