@@ -96,7 +96,7 @@
 #' @import methods
 #' @import grDevices       
 #' @export
-upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.color = "gray23",
+upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, set.metadata = NULL, matrix.color = "gray23",
                   main.bar.color = "gray23", sets.bar.color = "gray23",point.size = 4, line.size = 1,
                   name.size = 10, mb.ratio = c(0.70,0.30), expression = NULL, att.pos = NULL,
                   att.color = main.bar.color, order.by = c("freq", "degree"), decreasing = c(T, F), show.numbers = "yes",
@@ -209,6 +209,6 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.color =
   
   Make_base_plot(Main_bar, Matrix, Sizes, labels, mb.ratio, att.x, att.y, New_data,
                  expression, att.pos, first.col, att.color, AllQueryData, attribute.plots,
-                 legend, query.legend, BoxPlots, Set_names)
+                 legend, query.legend, BoxPlots, Set_names, set.metadata)
   
 }
