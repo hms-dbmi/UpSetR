@@ -11,7 +11,7 @@ FindSetFreqs <- function(data, start_col, num_sets, set_names){
 }
 
 ## Generate set size plot
-Make_size_plot <- function(Set_size_data, sbar_color, ratios){
+Make_size_plot <- function(Set_size_data, sbar_color, ratios, ylabel){
 #   if(ratios[1] < 0.4){
 #     m <- (-0.05)
 #   }
@@ -38,7 +38,7 @@ Make_size_plot <- function(Set_size_data, sbar_color, ratios){
                         axis.ticks.y = element_blank(),
                         panel.grid.minor = element_blank(),
                         panel.grid.major = element_blank())
-                + xlab(NULL) + ylab("Set Size")
+                + xlab(NULL) + ylab(ylabel)
                 + coord_flip() 
                 + scale_y_reverse())
   
