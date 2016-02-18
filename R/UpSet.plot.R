@@ -16,6 +16,9 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
   Set_data <- Set_data[which(rowSums(Set_data[ ,start_col:end_col]) != 0), ]
   Main_bar_plot$widths <- Matrix_plot$widths
   Matrix_plot$heights <- Size_plot$heights
+  if(is.null(set_metadata) ==F){
+    set_metadata$heights <- Size_plot$heights
+  }
   if(is.null(legend)==F){
     legend$widths <- Matrix_plot$widths
   }
@@ -117,7 +120,7 @@ BaseBoxPlot <- function(box_plot, position, size_plot_height, Main_bar_plot, Mat
   if(is.null(set_metadata) == F){
     vp = vplayout(size_plot_height:matrix_bottom, metadata_left:metadata_right)
     pushViewport(vp)
-    #grid.draw(arrangeGrob())
+    grid.draw(arrangeGrob(set_metadata))
     popViewport()
   }
   vp = vplayout(att_top:att_bottom, matrix_and_mainbar_left:matrix_and_mainbar_right)
@@ -187,7 +190,7 @@ NoAttBasePlot <- function(legend, size_plot_height, Main_bar_plot, Matrix_plot, 
   if(is.null(set_metadata) == F){
     vp = vplayout(size_plot_height:bottom, metadata_left:metadata_right)
     pushViewport(vp)
-    #grid.draw(arrangeGrob())
+    grid.draw(arrangeGrob(set_metadata))
     popViewport()
   }
   if((is.null(legend) == F) && (query_legend != tolower("none"))){
@@ -232,6 +235,12 @@ BaseCustomPlot <- function(attribute_plots, plots, position, size_plot_height, M
   pushViewport(vp)
   grid.draw(arrangeGrob(Size_plot))
   popViewport()
+  if(is.null(set_metadata) == F){
+    vp = vplayout(size_plot_height:bottom, metadata_left:metadata_right)
+    pushViewport(vp)
+    grid.draw(arrangeGrob(set_metadata))
+    popViewport()
+  }
   if((is.null(legend) == F) && (q_legend != tolower("none"))){
     vp = vplayout(custom_top:(custom_bottom - 5), 1:matrix_and_mainbar_right)
     pushViewport(vp)

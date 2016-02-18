@@ -207,6 +207,8 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, set.metadata =
                              name.size, labels, ShadingData, shade.color, shade.alpha)
   Sizes <- Make_size_plot(Set_sizes, sets.bar.color, mb.ratio)
   
+  set.metadata <- Make_set_metadata_plot(set.metadata, Set_names)
+  
   Make_base_plot(Main_bar, Matrix, Sizes, labels, mb.ratio, att.x, att.y, New_data,
                  expression, att.pos, first.col, att.color, AllQueryData, attribute.plots,
                  legend, query.legend, BoxPlots, Set_names, set.metadata)
