@@ -4,7 +4,7 @@
 
 UpSetR generates static [UpSet](http://vcg.github.io/upset/) plots. The UpSet technique visualizes set intersections in a matrix layout and introduces aggregates based on groupings and queries. The matrix layout enables the effective representation of associated data, such as the number of elements in the aggregates and intersections, as well as additional summary statistics derived from subset or element attributes.
 
-For further details about the original technique see the [UpSet website](http://vcg.github.io/upset/about/).
+For further details about the original technique see the [UpSet website](http://vcg.github.io/upset/about/). You can also check out the [UpSetR shiny app](https://upsetr.shinyapps.io/UpSetR-shiny/).
 
 ## Sample Data
 
