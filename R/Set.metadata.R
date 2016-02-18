@@ -24,7 +24,7 @@ Make_set_metadata_plot <- function(metadata, set_names){
 
   metadata_plot <- (ggplot(data=metadata, aes_string(x="sets", y=y_data))
                     + geom_bar(stat="identity", position="identity", width = 0.4,
-                               fill = "blue")
+                               fill = "gray23")
                     + scale_x_continuous(limits = c(0.5, (nrow(metadata)+0.5)),
                                          breaks = c(0, max(metadata)),
                                          expand = c(0,0))

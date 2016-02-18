@@ -97,11 +97,11 @@
 #' @import grDevices       
 #' @export
 upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, set.metadata = NULL, matrix.color = "gray23",
-                  main.bar.color = "gray23", sets.bar.color = "gray23",point.size = 4, line.size = 1,
-                  name.size = 10, mb.ratio = c(0.70,0.30), expression = NULL, att.pos = NULL,
-                  att.color = main.bar.color, order.by = c("freq", "degree"), decreasing = c(T, F), show.numbers = "yes",
-                  number.angles = 0, group.by = "degree",cutoff = NULL, queries = NULL,
-                  query.legend = "none", shade.color = "gray88", shade.alpha = 0.25, empty.intersections = NULL,
+                  main.bar.color = "gray23", mainbar.y.label = "Intersection Size", sets.bar.color = "gray23",
+                  sets.x.label = "Set Size", point.size = 4, line.size = 1, name.size = 10, mb.ratio = c(0.70,0.30),
+                  expression = NULL, att.pos = NULL, att.color = main.bar.color, order.by = c("freq", "degree"),
+                  decreasing = c(T, F), show.numbers = "yes", number.angles = 0, group.by = "degree",cutoff = NULL,
+                  queries = NULL, query.legend = "none", shade.color = "gray88", shade.alpha = 0.25, empty.intersections = NULL,
                   color.pal = 1, boxplot.summary = NULL, attribute.plots = NULL){
   
   startend <-FindStartEnd(data)
@@ -202,10 +202,10 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, set.metadata =
   }
   AllQueryData <- combineQueriesData(QInter_att_data, QElem_att_data, customAttDat, att.x, att.y)
   ShadingData <- MakeShading(Matrix_layout)
-  Main_bar <- Make_main_bar(All_Freqs, Bar_Q, show.numbers, mb.ratio, customQBar, number.angles, EBar_data)
+  Main_bar <- Make_main_bar(All_Freqs, Bar_Q, show.numbers, mb.ratio, customQBar, number.angles, EBar_data, mainbar.y.label)
   Matrix <- Make_matrix_plot(Matrix_layout, Set_sizes, All_Freqs, point.size, line.size,
                              name.size, labels, ShadingData, shade.color, shade.alpha)
-  Sizes <- Make_size_plot(Set_sizes, sets.bar.color, mb.ratio)
+  Sizes <- Make_size_plot(Set_sizes, sets.bar.color, mb.ratio, sets.x.label)
   
   if(is.null(set.metadata) == F){
   set.metadata <- Make_set_metadata_plot(set.metadata, Set_names)

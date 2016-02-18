@@ -236,7 +236,7 @@ BaseCustomPlot <- function(attribute_plots, plots, position, size_plot_height, M
   grid.draw(arrangeGrob(Size_plot))
   popViewport()
   if(is.null(set_metadata) == F){
-    vp = vplayout(size_plot_height:bottom, metadata_left:metadata_right)
+    vp = vplayout(size_plot_height:matrix_bottom, metadata_left:metadata_right)
     pushViewport(vp)
     grid.draw(arrangeGrob(set_metadata))
     popViewport()
