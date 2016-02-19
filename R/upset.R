@@ -96,7 +96,7 @@
 #' @import methods
 #' @import grDevices       
 #' @export
-upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, set.metadata = NULL, matrix.color = "gray23",
+upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, set.metadata = NULL, intersections = NULL, matrix.color = "gray23",
                   main.bar.color = "gray23", mainbar.y.label = "Intersection Size", sets.bar.color = "gray23",
                   sets.x.label = "Set Size", point.size = 4, line.size = 1, name.size = 10, mb.ratio = c(0.70,0.30),
                   expression = NULL, att.pos = NULL, att.color = main.bar.color, order.by = c("freq", "degree"),
@@ -117,6 +117,15 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, set.metadata =
                  "#CC79A7")
   }
   
+  if(is.null(intersections) == F){
+    All_Freqs <- specific_intersections(data, first.col, last.col, intersections, order.by, group.by, decreasing,
+                           cutoff, main.bar.color)
+    Set_names <- unique((unlist(intersections)))
+    Sets_to_remove <- Remove(data, first.col, last.col, Set_names)
+    New_data <- Wanted(data, Sets_to_remove)
+    Num_of_set <- Number_of_sets(Set_names)
+  }
+  else if(is.null(intersections) == T){
   Set_names <- sets
   if(is.null(Set_names) == T || length(Set_names) == 0 ){
     Set_names <- FindMostFreq(data, first.col, last.col, nsets)
@@ -126,6 +135,7 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, set.metadata =
   Num_of_set <- Number_of_sets(Set_names)
   All_Freqs <- Counter(New_data, Num_of_set, first.col, Set_names, nintersects, main.bar.color,
                        order.by, group.by, cutoff, empty.intersections, decreasing)
+  }
   Matrix_setup <- Create_matrix(All_Freqs)
   labels <- Make_labels(Matrix_setup)
   #Chose NA to represent NULL case as result of NA being inserted when at least one contained both x and y
