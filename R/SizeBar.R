@@ -9,7 +9,6 @@ FindSetFreqs <- function(data, start_col, num_sets, set_names){
   x <- seq(1:num_sets)
   temp_data <- cbind(temp_data, x)
   colnames(temp_data) <- c("y", "x")
-  print(temp_data)
   return(as.data.frame(temp_data))
 }
 
