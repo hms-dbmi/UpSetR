@@ -5,6 +5,9 @@
 #' @param nsets Number of sets to look at
 #' @param nintersects Number of intersections to plot
 #' @param sets Specific sets to look at (Include as combinations. Ex: c("Name1", "Name2"))
+#' @param intersections Specific intersections to include in plot entered as a list of lists.
+#'        Ex: list(list("Set name1", "Set name2"), list("Set name1", "Set name3")). If data is entered into this parameter the only data shown on the UpSet plot
+#'        will be the specific intersections listed.
 #' @param matrix.color Color of the intersection points
 #' @param main.bar.color Color of the main bar plot
 #' @param sets.bar.color Color of set size bar plot
