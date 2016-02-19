@@ -4,9 +4,12 @@ FindSetFreqs <- function(data, start_col, num_sets, set_names){
   temp_data <- data[ ,start_col:end_col]
   temp_data <- temp_data[set_names]
   temp_data <- as.data.frame(colSums(temp_data))
+  colnames(temp_data) <- c("y")
+  temp_data <- temp_data[order(temp_data$y, decreasing = T), ]
   x <- seq(1:num_sets)
   temp_data <- cbind(temp_data, x)
   colnames(temp_data) <- c("y", "x")
+  print(temp_data)
   return(as.data.frame(temp_data))
 }
 
