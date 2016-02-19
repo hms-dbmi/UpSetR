@@ -4,7 +4,9 @@ specific_intersections <- function(data, first.col, last.col, intersections, ord
   keep <- unique(unlist(intersections))
   remove <- sets[which(!sets %in% keep)]
   remove <- which(names(data) %in% remove)
-  data <- data[-remove]
+  if(length(remove) != 0){
+    data <- data[-remove]
+  }
   data <- count(data[keep])
   sets <- names(data[1:length(keep)])
   data <- lapply(intersections, function(x){
