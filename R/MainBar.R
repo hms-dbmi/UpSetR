@@ -20,7 +20,7 @@ Counter <- function(data, num_sets, start_col, name_of_sets, nintersections, mba
     all <- rbind(Freqs, empty)
     Freqs <- data.frame(all[!duplicated(all[1:num_sets]), ])
   }
-  #Remove univeral empty set
+  #Remove universal empty set
   Freqs <- Freqs[!(rowSums(Freqs[ ,1:num_sets]) == 0), ]
   #Aggregation by degree
   if(tolower(aggregate) == "degree"){
@@ -55,7 +55,8 @@ Counter <- function(data, num_sets, start_col, name_of_sets, nintersections, mba
 }
 
 ## Generate main bar plot
-Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_angles, ebar){
+Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_angles,
+                          ebar, ylabel){
   if(is.null(Q) == F){
     inter_data <- Q
     if(nrow(inter_data) != 0){
@@ -83,7 +84,7 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_an
                                          breaks = NULL)
                     + scale_y_continuous(limits = c(0, max(Main_bar_data$freq) + ten_perc), 
                                          expand = c(c(0,0), c(0,0)))
-                    + xlab(NULL) + ylab("Intersection Size") +labs(title = NULL)
+                    + xlab(NULL) + ylab(ylabel) +labs(title = NULL)
                     + theme(panel.background = element_rect(fill = "white"),
                             plot.margin = unit(c(0.5,0.5,0.19,0.5), "lines"), panel.border = element_blank(),
                             axis.title.y = element_text(vjust = -0.8), axis.text.y = element_text(vjust=0.3)))

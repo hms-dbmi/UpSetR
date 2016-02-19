@@ -5,6 +5,9 @@
 #' @param nsets Number of sets to look at
 #' @param nintersects Number of intersections to plot
 #' @param sets Specific sets to look at (Include as combinations. Ex: c("Name1", "Name2"))
+#' @param intersections Specific intersections to include in plot entered as a list of lists.
+#'        Ex: list(list("Set name1", "Set name2"), list("Set name1", "Set name3")). If data is entered into this parameter the only data shown on the UpSet plot
+#'        will be the specific intersections listed.
 #' @param matrix.color Color of the intersection points
 #' @param main.bar.color Color of the main bar plot
 #' @param sets.bar.color Color of set size bar plot
@@ -96,12 +99,12 @@
 #' @import methods
 #' @import grDevices       
 #' @export
-upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.color = "gray23",
-                  main.bar.color = "gray23", sets.bar.color = "gray23",point.size = 4, line.size = 1,
-                  name.size = 10, mb.ratio = c(0.70,0.30), expression = NULL, att.pos = NULL,
-                  att.color = main.bar.color, order.by = c("freq", "degree"), decreasing = c(T, F), show.numbers = "yes",
-                  number.angles = 0, group.by = "degree",cutoff = NULL, queries = NULL,
-                  query.legend = "none", shade.color = "gray88", shade.alpha = 0.25, empty.intersections = NULL,
+upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, set.metadata = NULL, intersections = NULL, matrix.color = "gray23",
+                  main.bar.color = "gray23", mainbar.y.label = "Intersection Size", sets.bar.color = "gray23",
+                  sets.x.label = "Set Size", point.size = 4, line.size = 1, name.size = 10, mb.ratio = c(0.70,0.30),
+                  expression = NULL, att.pos = NULL, att.color = main.bar.color, order.by = c("freq", "degree"),
+                  decreasing = c(T, F), show.numbers = "yes", number.angles = 0, group.by = "degree",cutoff = NULL,
+                  queries = NULL, query.legend = "none", shade.color = "gray88", shade.alpha = 0.25, empty.intersections = NULL,
                   color.pal = 1, boxplot.summary = NULL, attribute.plots = NULL){
   
   startend <-FindStartEnd(data)
@@ -117,6 +120,15 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.color =
                  "#CC79A7")
   }
   
+  if(is.null(intersections) == F){
+    All_Freqs <- specific_intersections(data, first.col, last.col, intersections, order.by, group.by, decreasing,
+                           cutoff, main.bar.color)
+    Set_names <- unique((unlist(intersections)))
+    Sets_to_remove <- Remove(data, first.col, last.col, Set_names)
+    New_data <- Wanted(data, Sets_to_remove)
+    Num_of_set <- Number_of_sets(Set_names)
+  }
+  else if(is.null(intersections) == T){
   Set_names <- sets
   if(is.null(Set_names) == T || length(Set_names) == 0 ){
     Set_names <- FindMostFreq(data, first.col, last.col, nsets)
@@ -126,6 +138,7 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.color =
   Num_of_set <- Number_of_sets(Set_names)
   All_Freqs <- Counter(New_data, Num_of_set, first.col, Set_names, nintersects, main.bar.color,
                        order.by, group.by, cutoff, empty.intersections, decreasing)
+  }
   Matrix_setup <- Create_matrix(All_Freqs)
   labels <- Make_labels(Matrix_setup)
   #Chose NA to represent NULL case as result of NA being inserted when at least one contained both x and y
@@ -202,13 +215,17 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, matrix.color =
   }
   AllQueryData <- combineQueriesData(QInter_att_data, QElem_att_data, customAttDat, att.x, att.y)
   ShadingData <- MakeShading(Matrix_layout)
-  Main_bar <- Make_main_bar(All_Freqs, Bar_Q, show.numbers, mb.ratio, customQBar, number.angles, EBar_data)
+  Main_bar <- Make_main_bar(All_Freqs, Bar_Q, show.numbers, mb.ratio, customQBar, number.angles, EBar_data, mainbar.y.label)
   Matrix <- Make_matrix_plot(Matrix_layout, Set_sizes, All_Freqs, point.size, line.size,
                              name.size, labels, ShadingData, shade.color, shade.alpha)
-  Sizes <- Make_size_plot(Set_sizes, sets.bar.color, mb.ratio)
+  Sizes <- Make_size_plot(Set_sizes, sets.bar.color, mb.ratio, sets.x.label)
+  
+  if(is.null(set.metadata) == F){
+  set.metadata <- Make_set_metadata_plot(set.metadata, Set_names)
+  }
   
   Make_base_plot(Main_bar, Matrix, Sizes, labels, mb.ratio, att.x, att.y, New_data,
                  expression, att.pos, first.col, att.color, AllQueryData, attribute.plots,
-                 legend, query.legend, BoxPlots, Set_names)
+                 legend, query.legend, BoxPlots, Set_names, set.metadata)
   
 }
