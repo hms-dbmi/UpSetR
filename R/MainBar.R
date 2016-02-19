@@ -20,7 +20,7 @@ Counter <- function(data, num_sets, start_col, name_of_sets, nintersections, mba
     all <- rbind(Freqs, empty)
     Freqs <- data.frame(all[!duplicated(all[1:num_sets]), ])
   }
-  #Remove univeral empty set
+  #Remove universal empty set
   Freqs <- Freqs[!(rowSums(Freqs[ ,1:num_sets]) == 0), ]
   #Aggregation by degree
   if(tolower(aggregate) == "degree"){
