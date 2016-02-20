@@ -1,5 +1,5 @@
 specific_intersections <- function(data, first.col, last.col, intersections, order_mat,
-                                   aggregate, decrease, cut, mbar_color){
+                                   aggregate, decrease, cut, mbar_color, set_names){
   sets <- names(data[c(first.col:last.col)])
   keep <- unique(unlist(intersections))
   remove <- sets[which(!sets %in% keep)]
@@ -28,6 +28,8 @@ specific_intersections <- function(data, first.col, last.col, intersections, ord
     Freqs <- rbind(Freqs, data[[i]])
   }
   
+  Freqs <- Freqs[c(set_names, "freq")]
+  
   num_sets <- length(keep)
   
   if(tolower(aggregate) == "degree"){
@@ -38,7 +40,7 @@ specific_intersections <- function(data, first.col, last.col, intersections, ord
     for(i in 1:length(order_mat)){
       order_cols[i] <- match(order_mat[i], colnames(Freqs))
     }
-
+    
     for(i in 1:length(order_cols)){
       logic <- decrease[i]
       Freqs <- Freqs[order(Freqs[ , order_cols[i]], decreasing = logic), ]
