@@ -19,9 +19,9 @@ movies <- read.csv( system.file("extdata", "movies.csv", package = "UpSetR"), he
 
 Example 1: Choosing the Top Largest Sets and Plot Formatting
 -----------
-When not specifying specific sets, `nsets` selects the *n* largest sets from the data. `number.angles` determines the angle (in degrees) of the numbers above the intersection size bars. `point.size` changes the size of the circles in the matrix. `name.size` changes the size of the set names. `line.size` changes the size of the lines connecting the circles in the matrix.
+When not specifying specific sets, `nsets` selects the *n* largest sets from the data. `number.angles` determines the angle (in degrees) of the numbers above the intersection size bars. `point.size` changes the size of the circles in the matrix. `name.size` changes the size of the set names. `line.size` changes the size of the lines connecting the circles in the matrix. `mainbar.y.label` and `sets.x.label` can be used to change the axis labels on the intersection size bar plot and set size bar plot, respectively.
 ```{r, out.width="850px", fig.width=13, fig.height =7, tidy =TRUE, fig.align='center'}
-upset(movies, nsets = 6, number.angles = 30, point.size = 5, name.size = 12, line.size = 2)
+upset(movies, nsets = 6, number.angles = 30, point.size = 5, name.size = 12, line.size = 2, mainbar.y.label = "Genre Intersections", sets.x.label = "Movies Per Genre")
 ```
 
 <br>
