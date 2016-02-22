@@ -2,7 +2,7 @@ Make_set_metadata_plot <- function(metadata, set_names){
   metadata <- as.data.frame(metadata)
   metadata_columns <- colnames(metadata)
   check <- rep(TRUE, length(set_names))
-  setcol <- which(unname(apply(setdata,2,
+  setcol <- which(unname(apply(metadata,2,
                function(x) {
                  x <- set_names %in% x;
                  if (identical(x,check)) {
