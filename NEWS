@@ -1,3 +1,14 @@
+Release v1.1.0
+
+- Added set metadata plot feature
+- Added intersections parameter to include only intersections specified
+- Reorder sets when using `sets` or `intersections` parameter
+- Add label option for intersection size and size size bar plots
+- Include boxplot summary example in attribute vignette
+- Added setmetadata example in attribute vignette and label parameter examples to basic usage vignette
+
+-----------------
+
 Release v1.0.3
 
 - Fixed overlapping between matrix and intersection size bar plot (caused by late changes to ggplot2 update)
