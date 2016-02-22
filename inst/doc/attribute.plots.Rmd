@@ -89,3 +89,28 @@ Combining the built-in scatter plot and histogram plot with the `myplot` custom 
 ```{r, fig.width=12, fig.height=7,out.width="850px",tidy=TRUE, fig.align='center'}
 upset(movies, main.bar.color = "black", mb.ratio = c(0.5,0.5), queries = list(list(query = intersects, params = list("Drama"), color = "red", active = F), list(query = intersects, params = list("Action", "Drama"), active = T), list(query = intersects, params = list("Drama", "Comedy", "Action"), color = "orange", active = T)), attribute.plots = list(gridrows=50, plots = list(list(plot = histogram, x = "ReleaseDate", queries = F), list(plot = scatter_plot, x = "ReleaseDate", y = "AvgRating", queries = T),list(plot = myplot, x = "AvgRating", y = "Watches", queries = F)), ncols = 3))
 ```
+
+<br>
+
+Example 5: Intersection Box Plots
+-------------
+Box plots that show the distribution of an attribute across all intersections. Can display a maximum of two box plot summaries at once. The `boxplot.summary` parameter takes a vector of one or two attribute names.
+```{r, fig.width=12, fig.height=7,out.width="850px", tidy=TRUE, fig.align='center'}
+upset(movies, boxplot.summary = c("AvgRating", "ReleaseDate"))
+```
+
+<br>
+
+Example 6: Set Metadata Plot
+-------------
+UpSetR now allows for the addition of set metadata. This may be convienient if there exists a set attribute that can provide insight on the data being visualized. Currently, the `set.metadata` parameter takes a data frame where one column is the set names, and the other is numeric data. The data will be visualized in a second bar plot aligned with the set names. In this example, the average Rotten Tomatoes movie ratings for each set will be used as the set metadata. This may help us draw more conclusions from the visualization by knowing how professional movie reviewers typically rate movies in these categories. 
+
+```{r, tidy=TRUE}
+sets <- names(movies[3:19])
+avgRottenTomatoesScore <- sample(1:100, 17, replace = T)
+setdata <- cbind(sets, avgRottenTomatoesScore)
+```
+
+```{r, fig.width=12, fig.height=7,out.width="850px", tidy=TRUE, fig.align='center'}
+upset(movies, set.metadata = setdata)
+```

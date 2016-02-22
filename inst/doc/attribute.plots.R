@@ -27,3 +27,14 @@ upset(movies, main.bar.color = "black", queries = list(list(query = intersects, 
 ## ---- fig.width=12, fig.height=7,out.width="850px",tidy=TRUE, fig.align='center'----
 upset(movies, main.bar.color = "black", mb.ratio = c(0.5,0.5), queries = list(list(query = intersects, params = list("Drama"), color = "red", active = F), list(query = intersects, params = list("Action", "Drama"), active = T), list(query = intersects, params = list("Drama", "Comedy", "Action"), color = "orange", active = T)), attribute.plots = list(gridrows=50, plots = list(list(plot = histogram, x = "ReleaseDate", queries = F), list(plot = scatter_plot, x = "ReleaseDate", y = "AvgRating", queries = T),list(plot = myplot, x = "AvgRating", y = "Watches", queries = F)), ncols = 3))
 
+## ---- fig.width=12, fig.height=7,out.width="850px", tidy=TRUE, fig.align='center'----
+upset(movies, boxplot.summary = c("AvgRating", "ReleaseDate"))
+
+## ---- tidy=TRUE----------------------------------------------------------
+sets <- names(movies[3:19])
+avgRottenTomatoesScore <- sample(1:100, 17, replace = T)
+setdata <- cbind(sets, avgRottenTomatoesScore)
+
+## ---- fig.width=12, fig.height=7,out.width="850px", tidy=TRUE, fig.align='center'----
+upset(movies, set.metadata = setdata)
+
