@@ -5,15 +5,16 @@
 \title{UpSetR Plot}
 \usage{
 upset(data, nsets = 5, nintersects = 40, sets = NULL,
-  set.metadata = NULL, matrix.color = "gray23", main.bar.color = "gray23",
-  sets.bar.color = "gray23", point.size = 4, line.size = 1,
-  name.size = 10, mb.ratio = c(0.7, 0.3), expression = NULL,
-  att.pos = NULL, att.color = main.bar.color, order.by = c("freq",
-  "degree"), decreasing = c(T, F), show.numbers = "yes",
-  number.angles = 0, group.by = "degree", cutoff = NULL, queries = NULL,
-  query.legend = "none", shade.color = "gray88", shade.alpha = 0.25,
-  empty.intersections = NULL, color.pal = 1, boxplot.summary = NULL,
-  attribute.plots = NULL)
+  set.metadata = NULL, intersections = NULL, matrix.color = "gray23",
+  main.bar.color = "gray23", mainbar.y.label = "Intersection Size",
+  sets.bar.color = "gray23", sets.x.label = "Set Size", point.size = 4,
+  line.size = 1, name.size = 10, mb.ratio = c(0.7, 0.3),
+  expression = NULL, att.pos = NULL, att.color = main.bar.color,
+  order.by = c("freq", "degree"), decreasing = c(T, F),
+  show.numbers = "yes", number.angles = 0, group.by = "degree",
+  cutoff = NULL, queries = NULL, query.legend = "none",
+  shade.color = "gray88", shade.alpha = 0.25, empty.intersections = NULL,
+  color.pal = 1, boxplot.summary = NULL, attribute.plots = NULL)
 }
 \arguments{
 \item{data}{Data set}
@@ -24,11 +25,22 @@ upset(data, nsets = 5, nintersects = 40, sets = NULL,
 
 \item{sets}{Specific sets to look at (Include as combinations. Ex: c("Name1", "Name2"))}
 
+\item{set.metadata}{Metadata that offers insight to an attribute of the sets. Input should be a data frame with 2 columns. One column should be the names of the sets,
+and the other column numeric attribute data. The final result will be a second bar plot alongside the set names.}
+
+\item{intersections}{Specific intersections to include in plot entered as a list of lists.
+Ex: list(list("Set name1", "Set name2"), list("Set name1", "Set name3")). If data is entered into this parameter the only data shown on the UpSet plot
+will be the specific intersections listed.}
+
 \item{matrix.color}{Color of the intersection points}
 
 \item{main.bar.color}{Color of the main bar plot}
 
+\item{mainbar.y.label}{The y-axis label of the intersection size bar plot}
+
 \item{sets.bar.color}{Color of set size bar plot}
+
+\item{sets.x.label}{The x-axis label of the set size bar plot}
 
 \item{point.size}{Size of points in matrix plot}
 
