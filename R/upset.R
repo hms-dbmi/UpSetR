@@ -5,12 +5,16 @@
 #' @param nsets Number of sets to look at
 #' @param nintersects Number of intersections to plot
 #' @param sets Specific sets to look at (Include as combinations. Ex: c("Name1", "Name2"))
+#' @param set.metadata Metadata that offers insight to an attribute of the sets. Input should be a data frame with 2 columns. One column should be the names of the sets,
+#'        and the other column numeric attribute data. The final result will be a second bar plot alongside the set names. 
 #' @param intersections Specific intersections to include in plot entered as a list of lists.
 #'        Ex: list(list("Set name1", "Set name2"), list("Set name1", "Set name3")). If data is entered into this parameter the only data shown on the UpSet plot
 #'        will be the specific intersections listed.
 #' @param matrix.color Color of the intersection points
 #' @param main.bar.color Color of the main bar plot
+#' @param mainbar.y.label The y-axis label of the intersection size bar plot
 #' @param sets.bar.color Color of set size bar plot
+#' @param sets.x.label The x-axis label of the set size bar plot
 #' @param point.size Size of points in matrix plot
 #' @param line.size Width of lines in matrix plot
 #' @param name.size Size of set names in matrix plot
