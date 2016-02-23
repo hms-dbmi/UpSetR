@@ -56,7 +56,7 @@ Counter <- function(data, num_sets, start_col, name_of_sets, nintersections, mba
 
 ## Generate main bar plot
 Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_angles,
-                          ebar, ylabel){
+                          ebar, ylabel, ymax){
   if(is.null(Q) == F){
     inter_data <- Q
     if(nrow(inter_data) != 0){
@@ -76,13 +76,16 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_an
   else{elem_data <- NULL}
   
   #ten_perc creates appropriate space above highest bar so number doesnt get cut off
+  if(is.null(ymax) == T){
   ten_perc <- ((max(Main_bar_data$freq)) * 0.1)
+  ymax <- max(Main_bar_data$freq) + ten_perc
+  }
   Main_bar_plot <- (ggplot(data = Main_bar_data, aes_string(x = "x", y = "freq")) 
                     + geom_bar(stat = "identity", width = 0.6, 
                                fill = Main_bar_data$color)
                     + scale_x_continuous(limits = c(0,(nrow(Main_bar_data)+1 )), expand = c(0,0),
                                          breaks = NULL)
-                    + scale_y_continuous(limits = c(0, max(Main_bar_data$freq) + ten_perc), 
+                    + scale_y_continuous(limits = c(0, ymax), 
                                          expand = c(c(0,0), c(0,0)))
                     + xlab(NULL) + ylab(ylabel) +labs(title = NULL)
                     + theme(panel.background = element_rect(fill = "white"),

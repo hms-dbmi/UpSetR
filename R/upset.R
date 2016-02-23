@@ -13,6 +13,7 @@
 #' @param matrix.color Color of the intersection points
 #' @param main.bar.color Color of the main bar plot
 #' @param mainbar.y.label The y-axis label of the intersection size bar plot
+#' @param mainbar.y.max The maximum y value of the intersection size bar plot scale. May be useful when aligning multiple UpSet plots horizontally.
 #' @param sets.bar.color Color of set size bar plot
 #' @param sets.x.label The x-axis label of the set size bar plot
 #' @param point.size Size of points in matrix plot
@@ -104,7 +105,7 @@
 #' @import grDevices       
 #' @export
 upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, set.metadata = NULL, intersections = NULL, matrix.color = "gray23",
-                  main.bar.color = "gray23", mainbar.y.label = "Intersection Size", sets.bar.color = "gray23",
+                  main.bar.color = "gray23", mainbar.y.label = "Intersection Size", mainbar.y.max = NULL, sets.bar.color = "gray23",
                   sets.x.label = "Set Size", point.size = 4, line.size = 1, name.size = 10, mb.ratio = c(0.70,0.30),
                   expression = NULL, att.pos = NULL, att.color = main.bar.color, order.by = c("freq", "degree"),
                   decreasing = c(T, F), show.numbers = "yes", number.angles = 0, group.by = "degree",cutoff = NULL,
@@ -221,7 +222,8 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, set.metadata =
   }
   AllQueryData <- combineQueriesData(QInter_att_data, QElem_att_data, customAttDat, att.x, att.y)
   ShadingData <- MakeShading(Matrix_layout)
-  Main_bar <- Make_main_bar(All_Freqs, Bar_Q, show.numbers, mb.ratio, customQBar, number.angles, EBar_data, mainbar.y.label)
+  Main_bar <- Make_main_bar(All_Freqs, Bar_Q, show.numbers, mb.ratio, customQBar, number.angles, EBar_data, mainbar.y.label,
+                            mainbar.y.max)
   Matrix <- Make_matrix_plot(Matrix_layout, Set_sizes, All_Freqs, point.size, line.size,
                              name.size, labels, ShadingData, shade.color, shade.alpha)
   Sizes <- Make_size_plot(Set_sizes, sets.bar.color, mb.ratio, sets.x.label)
