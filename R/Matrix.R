@@ -14,8 +14,9 @@ Create_matrix <- function(data){
       Spaces[i] <- paste(replicate(Spaces_needed, " "), collapse = "")
       rownames(Matrix_setup)[i] <- paste(as.character(Spaces[i]), names[i], collapse = "")
     }
-    rownames(Matrix_setup) <- gsub(x = rownames(Matrix_setup), pattern = "\\.", replacement = " ")
   }
+  
+  rownames(Matrix_setup) <- gsub(x = rownames(Matrix_setup), pattern = "\\.", replacement = " ")
   return(Matrix_setup)
 }
 
