@@ -7,14 +7,15 @@
 upset(data, nsets = 5, nintersects = 40, sets = NULL,
   set.metadata = NULL, intersections = NULL, matrix.color = "gray23",
   main.bar.color = "gray23", mainbar.y.label = "Intersection Size",
-  sets.bar.color = "gray23", sets.x.label = "Set Size", point.size = 4,
-  line.size = 1, name.size = 10, mb.ratio = c(0.7, 0.3),
-  expression = NULL, att.pos = NULL, att.color = main.bar.color,
-  order.by = c("freq", "degree"), decreasing = c(T, F),
-  show.numbers = "yes", number.angles = 0, group.by = "degree",
-  cutoff = NULL, queries = NULL, query.legend = "none",
-  shade.color = "gray88", shade.alpha = 0.25, empty.intersections = NULL,
-  color.pal = 1, boxplot.summary = NULL, attribute.plots = NULL)
+  mainbar.y.max = NULL, sets.bar.color = "gray23",
+  sets.x.label = "Set Size", point.size = 4, line.size = 1,
+  name.size = 10, mb.ratio = c(0.7, 0.3), expression = NULL,
+  att.pos = NULL, att.color = main.bar.color, order.by = c("freq",
+  "degree"), decreasing = c(T, F), show.numbers = "yes",
+  number.angles = 0, group.by = "degree", cutoff = NULL, queries = NULL,
+  query.legend = "none", shade.color = "gray88", shade.alpha = 0.25,
+  empty.intersections = NULL, color.pal = 1, boxplot.summary = NULL,
+  attribute.plots = NULL)
 }
 \arguments{
 \item{data}{Data set}
@@ -37,6 +38,8 @@ will be the specific intersections listed.}
 \item{main.bar.color}{Color of the main bar plot}
 
 \item{mainbar.y.label}{The y-axis label of the intersection size bar plot}
+
+\item{mainbar.y.max}{The maximum y value of the intersection size bar plot scale. May be useful when aligning multiple UpSet plots horizontally.}
 
 \item{sets.bar.color}{Color of set size bar plot}
 
