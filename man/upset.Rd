@@ -149,6 +149,7 @@ upset(movies, attribute.plots = attributeplots,
                     list(query = intersects, params = list("Drama"), color= "red"),
                     list(query = elements, params = list("ReleaseDate", 1990, 1991, 1992))),
       main.bar.color = "yellow")
+      
 }
 \references{
 Lex et al. (2014). UpSet: Visualization of Intersecting Sets
