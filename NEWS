@@ -1,6 +1,6 @@
 Release v1.1.1
 
-- Added selective import from plyr package to avoid warning from gridExtra package update
+- Added selective import from plyr package to avoid warning from gridExtra package update (Requested by CRAN)
 
 -----------------
 
