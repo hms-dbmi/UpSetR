@@ -1,3 +1,9 @@
+Release v1.1.1
+
+- Added selective import from plyr package to avoid warning from gridExtra package update
+
+-----------------
+
 Release v1.1.0
 
 - Added set metadata plot feature
