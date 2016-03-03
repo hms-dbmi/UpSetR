@@ -18,14 +18,14 @@ Make_set_metadata_plot <- function(metadata, set_names){
   metadata_columns[set_column] <- "sets"
   names(metadata) <- metadata_columns
   metadata <- metadata[which(metadata$sets %in% set_names), ]
-  metadata <- metadata[order(set_names), ]
+  metadata <- metadata[match(set_names, metadata$sets), ]
   metadata$sets <- seq(1,nrow(metadata))
   rownames(metadata) <- set_names
   
   y_data_name <- names(metadata[2])
   colnames(metadata) <- c("sets", "y")
   metadata$y <- as.numeric(as.character(metadata$y))
-  
+
 
   metadata_plot <- (ggplot(data=metadata, aes_string(x="sets", y="y"))
                     + geom_bar(stat="identity", position="identity", width = 0.4,

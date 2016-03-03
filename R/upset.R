@@ -229,7 +229,7 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, set.metadata =
   Sizes <- Make_size_plot(Set_sizes, sets.bar.color, mb.ratio, sets.x.label)
   
   if(is.null(set.metadata) == F){
-    set.metadata <- Make_set_metadata_plot(set.metadata, Set_names)
+    set.metadata <- Make_set_metadata_plot(set.metadata, labels)
   }
   
   Make_base_plot(Main_bar, Matrix, Sizes, labels, mb.ratio, att.x, att.y, New_data,
