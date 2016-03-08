@@ -57,9 +57,11 @@ Create_layout <- function(setup, mat_color, mat_col){
 }
 
 ## Create data set to shade matrix 
-MakeShading <- function(Mat_data){
+MakeShading <- function(Mat_data, shade_color){
   y <- unique(Mat_data$y)
-  y <- (y[which(y %% 2 != 0)])
+  if(length(shade_color) == 1){
+    y <- (y[which(y %% 2 != 0)])
+  }
   data <- data.frame(cbind(y))
   data$min <- 0
   data$max <- (max(Mat_data$x) + 1)
