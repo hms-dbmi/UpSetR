@@ -1,5 +1,5 @@
 ## Find frequency of each set for set size bar plot
-FindSetFreqs <- function(data, start_col, num_sets, set_names){
+FindSetFreqs <- function(data, start_col, num_sets, set_names, show_num){
   end_col <- as.numeric(((start_col + num_sets) -1))
   temp_data <- data[ ,start_col:end_col]
   temp_data <- temp_data[set_names]
@@ -43,7 +43,10 @@ Make_size_plot <- function(Set_size_data, sbar_color, ratios, ylabel){
                 + xlab(NULL) + ylab(ylabel)
                 + coord_flip() 
                 + scale_y_reverse())
-  
+  if((show_num == "yes") || (show_num == "Yes")){
+    Size_plot <- (Size_plot + geom_text(aes_string(label = "y"), size = 3.0, vjust = -1,
+                                                angle = 90, colour = sbar_color))
+  }
   Size_plot <- ggplot_gtable(ggplot_build(Size_plot))
   return(Size_plot)
 }
