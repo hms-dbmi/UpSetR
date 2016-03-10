@@ -13,7 +13,7 @@ FindSetFreqs <- function(data, start_col, num_sets, set_names, show_num){
 }
 
 ## Generate set size plot
-Make_size_plot <- function(Set_size_data, sbar_color, ratios, ylabel){
+Make_size_plot <- function(Set_size_data, sbar_color, ratios, ylabel, show_num){
 #   if(ratios[1] < 0.4){
 #     m <- (-0.05)
 #   }
