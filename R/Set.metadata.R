@@ -1,48 +1,29 @@
-Make_set_metadata_plot <- function(metadata, set_names){
+Make_set_metadata_plot <- function(set.metadata, set_names){
+  metadata <- set.metadata$data
+  num_of_att <- ncol(metadata)-1
   metadata_columns <- colnames(metadata)
-  check <- rep(TRUE, length(set_names))
-  set_column <- names(metadata[which(unname(apply(setdata,2,
-                             function(x) {
-                               x <- set_names %in% x;
-                               if (identical(x,check)) {
-                                   x <- TRUE
-                                 }
-                               else{
-                                   x <- FALSE
-                                 }
-                             })) == TRUE)])
-  
-  set_column <- match(set_column, metadata_columns)
-  metadata_columns[set_column] <- "sets"
+  metadata_columns[1] <- "sets"
   names(metadata) <- metadata_columns
   metadata <- metadata[which(metadata$sets %in% set_names), ]
   metadata <- metadata[order(set_names), ]
   metadata$sets <- seq(1,nrow(metadata))
   rownames(metadata) <- set_names
   
-  y_data <- names(metadata[2])
-
-  metadata_plot <- (ggplot(data=metadata, aes_string(x="sets", y=y_data))
-                    + geom_bar(stat="identity", position="identity", width = 0.4,
-                               fill = "gray23")
-                    + scale_x_continuous(limits = c(0.5, (nrow(metadata)+0.5)),
-                                         breaks = c(0, max(metadata)),
-                                         expand = c(0,0))
-                    + theme(panel.background = element_rect("white"),
-                            plot.margin=unit(c(-0.11,-0.3,0.5,0.5), "lines"),
-                            axis.title.x = element_text(size = 11),
-                            axis.line = element_line(colour = "gray0"),
-                            axis.line.y = element_blank(),
-                            axis.line.x = element_line(colour = "gray0", size = 0.3),
-                            axis.text.y = element_blank(),
-                            axis.ticks.y = element_blank(),
-                            panel.grid.minor = element_blank(),
-                            panel.grid.major = element_blank())
-                    + xlab(NULL)
-                    + coord_flip()
-                    +scale_y_reverse())
+  y_data <- c()
+  plot_type <- c()
+  
+    for(i in 1:num_of_att){
+      y_data[i] <- names(metadata[i+1])
+      plot_type[i] <- set.metadata$type[i]
+    }
+  
+  for(i in 1:num_of_att){
+    if(plot_type[i] == "hist"){
+  metadata_plot <- metadataHist(metadata, y_data[i])
   
   metadata_plot <- ggplot_gtable(ggplot_build(metadata_plot))
+    }
+  }
   
 return(metadata_plot)
 }
