@@ -19,9 +19,20 @@ Make_set_metadata_plot <- function(set.metadata, set_names){
   
   for(i in 1:num_of_att){
     if(plot_type[i] == "hist"){
-  metadata_plot <- metadataHist(metadata, y_data[i])
-  
-  metadata_plot <- ggplot_gtable(ggplot_build(metadata_plot))
+      metadata_plot <- metadataHist(metadata, y_data[i])
+      metadata_plot <- ggplot_gtable(ggplot_build(metadata_plot))
+    }
+    if(plot_type[i] == "heat"){
+      metadata_plot <- metadataHeat(metadata, y_data[i], plot_type[i])
+      metadata_plot <- ggplot_gtable(ggplot_build(metadata_plot))
+    }
+    if(plot_type[i] == "bool"){
+      metadata_plot <- metadataHeat(metadata, y_data[i], plot_type[i])
+      metadata_plot <- ggplot_gtable(ggplot_build(metadata_plot))
+    }
+    if(plot_type[i] == "text"){
+      metadata_plot <- metadataText(metadata, y_data[i])
+      metadata_plot <- ggplot_gtable(ggplot_build(metadata_plot))
     }
   }
   
