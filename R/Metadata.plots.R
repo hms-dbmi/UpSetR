@@ -59,9 +59,12 @@ metadataHeat <- function(metadata, y_data, plot_type, colors){
     }
     metadata$current <- as.numeric(metadata$current)
   }
-  if(is.character(metadata$current) == TRUE){
+  else if(is.character(metadata$current) == TRUE){
     colortype <- "category"
     uniquecats <- length(unique(metadata$current))
+  }
+  else if(is.numeric(metadata$current) == TRUE){
+    colortype <- "factor"
   }
   
   names(metadata)[colnum] <- y_data
