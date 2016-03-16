@@ -64,7 +64,13 @@ metadataHeat <- function(metadata, y_data, plot_type, colors){
     uniquecats <- length(unique(metadata$current))
   }
   else if(is.numeric(metadata$current) == TRUE){
+    if(plot_type != "bool"){
     colortype <- "factor"
+    }
+    else if(plot_type == "bool"){
+      metadata$current <- as.character(metadata$current)
+      colortype = "category"
+    }
   }
   
   names(metadata)[colnum] <- y_data
@@ -133,7 +139,7 @@ metadataHeat <- function(metadata, y_data, plot_type, colors){
     }
     else{
       plot <- plot + geom_tile()
-      plot <- plot + scale_fill_manual(values = colors)
+      plot <- plot + scale_fill_manual(values = c("0" = colors[1], "1" = colors[2]))
     }
   }
   
