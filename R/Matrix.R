@@ -14,9 +14,8 @@ Create_matrix <- function(data){
       Spaces[i] <- paste(replicate(Spaces_needed, " "), collapse = "")
       rownames(Matrix_setup)[i] <- paste(as.character(Spaces[i]), names[i], collapse = "")
     }
+    rownames(Matrix_setup) <- gsub(x = rownames(Matrix_setup), pattern = "\\.", replacement = " ")
   }
-  
-  rownames(Matrix_setup) <- gsub(x = rownames(Matrix_setup), pattern = "\\.", replacement = " ")
   return(Matrix_setup)
 }
 
@@ -29,16 +28,19 @@ Make_labels <- function(setup){
 
 ## Takes matrix setup data and turns it into grid format (binary)
 ## 1's represent dark circles, 0's light, and if x-value has multiple 1's they are connected.
-Create_layout <- function(setup, mat_color, mat_col){
+Create_layout <- function(setup, mat_color, mat_col, matrix_dot_alpha){
   Matrix_layout <- expand.grid(y=seq(nrow(setup)), x=seq(ncol(setup)))
   Matrix_layout <- data.frame(Matrix_layout, value = as.vector(setup))
   for(i in 1:nrow(Matrix_layout)){
     if(Matrix_layout$value[i] > as.integer(0)){
       Matrix_layout$color[i] <- mat_color
+      Matrix_layout$alpha[i] <- 1
       Matrix_layout$Intersection[i] <- paste(Matrix_layout$x[i], "yes", sep ="")
     }
     else{
+      
       Matrix_layout$color[i] <- "gray83"
+      Matrix_layout$alpha[i] <- matrix_dot_alpha
       Matrix_layout$Intersection[i] <- paste(i, "No", sep = "")
     } 
   }
@@ -92,9 +94,10 @@ Make_matrix_plot <- function(Mat_data,Set_size_data, Main_bar_data, point_size, 
                   + geom_rect(data = shading_data, aes_string(xmin = "min", xmax = "max",
                                                               ymin = "y_min", ymax = "y_max"),
                               fill = shade_color, alpha = shade_alpha)
-                  + geom_point(data=Mat_data, aes_string(x= "x", y= "y"), colour = Mat_data$color, size= point_size)
-                  + geom_line(data = Mat_data, aes_string(group = "Intersection", x="x", y="y",
-                                                          colour = "color"), size = line_size)
+                  + geom_point(data= Mat_data, aes_string(x= "x", y= "y"), colour = Mat_data$color,
+                               size= point_size, alpha = Mat_data$alpha)
+                  + geom_line(data= Mat_data, aes_string(group = "Intersection", x="x", y="y",
+                                                         colour = "color"), size = line_size)
                   + scale_color_identity())
   Matrix_plot <- ggplot_gtable(ggplot_build(Matrix_plot))
   return(Matrix_plot)
