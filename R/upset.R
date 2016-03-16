@@ -5,8 +5,9 @@
 #' @param nsets Number of sets to look at
 #' @param nintersects Number of intersections to plot
 #' @param sets Specific sets to look at (Include as combinations. Ex: c("Name1", "Name2"))
-#' @param set.metadata Metadata that offers insight to an attribute of the sets. Input should be a data frame with 2 columns. One column should be the names of the sets,
-#'        and the other column numeric attribute data. The final result will be a second bar plot alongside the set names. 
+#' @param set.metadata Metadata that offers insight to an attribute of the sets. Input should be a data frame where the first column is set names, and the 
+#'        remaining columns are attributes of those sets. To learn how to use this parameter it is highly suggested to view the set metadata vignette. The link
+#'        can be found on the package's GitHub page.
 #' @param intersections Specific intersections to include in plot entered as a list of lists.
 #'        Ex: list(list("Set name1", "Set name2"), list("Set name1", "Set name3")). If data is entered into this parameter the only data shown on the UpSet plot
 #'        will be the specific intersections listed.
@@ -37,6 +38,7 @@
 #' @param query.legend Position query legend on top or bottom of UpSet plot
 #' @param shade.color Color of row shading in matrix
 #' @param shade.alpha Transparency of shading in matrix
+#' @param matrix.dot.alpha Transparency of the empty intersections points in the matrix
 #' @param empty.intersections Additionally display empty sets up to nintersects
 #' @param color.pal Color palette for attribute plots
 #' @param boxplot.summary Boxplots representing the distribution of a selected attribute for each intersection. Select attributes by entering a character vector of attribute names (e.g. c("Name1", "Name2")).
