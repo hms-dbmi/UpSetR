@@ -33,7 +33,13 @@ Make_set_metadata_plot <- function(set.metadata, set_names){
       metadata_plot[[i]] <- ggplot_gtable(ggplot_build(metadata_plot[[i]]))
     }
     if(set.metadata$plots[[i]]$type == "text"){
-      metadata_plot[[i]] <- metadataText(metadata, set.metadata$plots[[i]]$column, colors)
+      if(is.null(set.metadata$plots[[i]]$alignment)){
+        alignment <- NULL
+      }
+      else{
+        alignment <- set.metadata$plots[[i]]$alignment
+      }
+      metadata_plot[[i]] <- metadataText(metadata, set.metadata$plots[[i]]$column, colors, alignment)
       metadata_plot[[i]] <- ggplot_gtable(ggplot_build(metadata_plot[[i]]))
     }
   }

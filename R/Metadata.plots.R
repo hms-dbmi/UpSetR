@@ -137,7 +137,16 @@ metadataHeat <- function(metadata, y_data, plot_type, colors){
   return(plot)
 }
 
-metadataText <- function(metadata, y_data, colors){
+metadataText <- function(metadata, y_data, colors, alignment){
+  if(is.null(alignment) || alignment == "center"){
+    align <- 0.5
+  }
+  else if(alignment == "right"){
+    align <- 1
+  }
+  else if(alignment == "left"){
+    align <- 0
+  }
   ncols <- ncol(metadata)
   metadata <- cbind(metadata, c(1:nrow(metadata)))
   names(metadata)[ncol(metadata)] <- "x"
@@ -158,7 +167,7 @@ metadataText <- function(metadata, y_data, colors){
                    axis.text.x = element_blank(),
                    axis.ticks.x = element_blank(),
                    axis.title.x = element_blank())
-           + geom_text(size = 3)
+           + geom_text(size = 3, hjust = align)
            + xlab(NULL)
            + ylab(NULL)
            + coord_flip()
