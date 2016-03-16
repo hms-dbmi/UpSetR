@@ -104,8 +104,8 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, set.metadata =
                   sets.x.label = "Set Size", point.size = 4, line.size = 1, name.size = 10, mb.ratio = c(0.70,0.30),
                   expression = NULL, att.pos = NULL, att.color = main.bar.color, order.by = c("freq", "degree"),
                   decreasing = c(T, F), show.numbers = "yes", number.angles = 0, group.by = "degree",cutoff = NULL,
-                  queries = NULL, query.legend = "none", shade.color = "gray88", shade.alpha = 0.25, empty.intersections = NULL,
-                  color.pal = 1, boxplot.summary = NULL, attribute.plots = NULL){
+                  queries = NULL, query.legend = "none", shade.color = "gray88", shade.alpha = 0.25, matrix.dot.alpha = 0.75,
+                  empty.intersections = NULL, color.pal = 1, boxplot.summary = NULL, attribute.plots = NULL){
   
   startend <-FindStartEnd(data)
   first.col <- startend[1]
@@ -199,7 +199,7 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, set.metadata =
     Matrix_col <- NULL
   }
   
-  Matrix_layout <- Create_layout(Matrix_setup, matrix.color, Matrix_col)
+  Matrix_layout <- Create_layout(Matrix_setup, matrix.color, Matrix_col, matrix.dot.alpha)
   Set_sizes <- FindSetFreqs(New_data, first.col, Num_of_set, Set_names)
   Bar_Q <- NULL
   if(is.null(queries) == F){
