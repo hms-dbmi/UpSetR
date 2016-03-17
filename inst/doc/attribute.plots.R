@@ -30,11 +30,3 @@ upset(movies, main.bar.color = "black", mb.ratio = c(0.5,0.5), queries = list(li
 ## ---- fig.width=12, fig.height=7,out.width="850px", tidy=TRUE, fig.align='center'----
 upset(movies, boxplot.summary = c("AvgRating", "ReleaseDate"))
 
-## ---- tidy=TRUE----------------------------------------------------------
-sets <- names(movies[3:19])
-avgRottenTomatoesScore <- sample(1:100, 17, replace = T)
-setdata <- cbind(sets, avgRottenTomatoesScore)
-
-## ---- fig.width=12, fig.height=7,out.width="850px", tidy=TRUE, fig.align='center'----
-upset(movies, set.metadata = setdata)
-
