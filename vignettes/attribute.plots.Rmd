@@ -98,19 +98,3 @@ Box plots that show the distribution of an attribute across all intersections. C
 ```{r, fig.width=12, fig.height=7,out.width="850px", tidy=TRUE, fig.align='center'}
 upset(movies, boxplot.summary = c("AvgRating", "ReleaseDate"))
 ```
-
-<br>
-
-Example 6: Set Metadata Plot
--------------
-UpSetR now allows for the addition of set metadata. This may be convienient if there exists a set attribute that can provide insight on the data being visualized. Currently, the `set.metadata` parameter takes a data frame where one column is the set names, and the other is numeric data. The data will be visualized in a second bar plot aligned with the set names. In this example, the average Rotten Tomatoes movie ratings for each set will be used as the set metadata. This may help us draw more conclusions from the visualization by knowing how professional movie reviewers typically rate movies in these categories. 
-
-```{r, tidy=TRUE}
-sets <- names(movies[3:19])
-avgRottenTomatoesScore <- sample(1:100, 17, replace = T)
-setdata <- cbind(sets, avgRottenTomatoesScore)
-```
-
-```{r, fig.width=12, fig.height=7,out.width="850px", tidy=TRUE, fig.align='center'}
-upset(movies, set.metadata = setdata)
-```
