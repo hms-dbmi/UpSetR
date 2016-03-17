@@ -1,5 +1,5 @@
 Make_set_metadata_plot <- function(set.metadata, set_names){
-  metadata <- set.metadata$data
+  metadata <- as.data.frame(set.metadata$data)
   num_of_att <- length(set.metadata$plots)
   metadata_columns <- colnames(metadata)
   metadata_columns[1] <- "sets"
@@ -11,7 +11,6 @@ Make_set_metadata_plot <- function(set.metadata, set_names){
   
   
   metadata_plot <- list()
-  
   
   for(i in 1:num_of_att){
     if(is.null(set.metadata$plots[[i]]$colors) == FALSE){
@@ -43,6 +42,5 @@ Make_set_metadata_plot <- function(set.metadata, set_names){
       metadata_plot[[i]] <- ggplot_gtable(ggplot_build(metadata_plot[[i]]))
     }
   }
-  
   return(metadata_plot)
 }

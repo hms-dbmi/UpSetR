@@ -18,9 +18,12 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
   Main_bar_plot$widths <- Matrix_plot$widths
   Matrix_plot$heights <- Size_plot$heights
   if(is.null(set_metadata) ==F){
+    ncols <- 0
     for(i in 1:length(set_metadata_plots)){
+      ncols <- ncols + set_metadata$plots[[i]]$assign
       set_metadata_plots[[i]]$heights <- Size_plot$heights
     }
+    set_metadata$ncols <- ncols
   }
   if(is.null(legend)==F){
     legend$widths <- Matrix_plot$widths
