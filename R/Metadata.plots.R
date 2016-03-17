@@ -156,6 +156,15 @@ metadataText <- function(metadata, y_data, colors, alignment){
   else if(alignment == "left"){
     align <- 0
   }
+  
+  if(nchar(y_data) > 5){
+    titleAdjustment <- nchar(y_data)-5
+    titleAdjustment <- 41 + titleAdjustment*6
+  }
+  else{
+    titleAdjustment <- 40
+  }
+  
   ncols <- ncol(metadata)
   metadata <- cbind(metadata, c(1:nrow(metadata)))
   names(metadata)[ncol(metadata)] <- "x"
@@ -163,6 +172,8 @@ metadataText <- function(metadata, y_data, colors, alignment){
            + scale_x_continuous(limits = c(0.5, (nrow(metadata)+0.5)),
                                 expand = c(0,0))
            + theme(panel.background = element_rect("white"),
+                   plot.title = element_text(margin = margin(b=titleAdjustment), hjust = 0,
+                                             size = 9.25, angle = 90),
                    plot.margin=unit(c(0,0,0,0), "lines"),
                    axis.title.x = element_text(size = 11),
                    legend.position = "none",
@@ -180,6 +191,7 @@ metadataText <- function(metadata, y_data, colors, alignment){
            + xlab(NULL)
            + ylab(NULL)
            + coord_flip()
+           + ggtitle(y_data)
            + scale_y_reverse())
   if(is.null(colors) == FALSE){
     plot <- plot + scale_colour_manual(values = colors)
