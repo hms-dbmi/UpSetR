@@ -5,7 +5,7 @@ Make_set_metadata_plot <- function(set.metadata, set_names){
   metadata_columns[1] <- "sets"
   names(metadata) <- metadata_columns
   metadata <- metadata[which(metadata$sets %in% set_names), ]
-  metadata <- metadata[order(set_names), ]
+  metadata <- metadata[match(set_names, metadata$sets), ]
   metadata$sets <- seq(1,nrow(metadata))
   rownames(metadata) <- set_names
   

@@ -187,15 +187,19 @@ metadataText <- function(metadata, y_data, colors, alignment){
                    axis.text.x = element_blank(),
                    axis.ticks.x = element_blank(),
                    axis.title.x = element_blank())
-           + geom_text(size = 3, hjust = align)
            + xlab(NULL)
            + ylab(NULL)
            + coord_flip()
            + ggtitle(y_data)
            + scale_y_reverse())
   if(is.null(colors) == FALSE){
+    plot <- plot + geom_text(size = 3, hjust = align)
     plot <- plot + scale_colour_manual(values = colors)
   }
+  else{
+    plot <- plot + geom_text(size = 3, hjust = align, colour = "gray23")
+  }
+  return(plot)
 }
 
 get_shade_groups <- function(set_metadata, set_names, Mat_data, shade_alpha) {
