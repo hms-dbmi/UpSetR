@@ -223,16 +223,24 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, set.metadata =
                                palette)
   }
   AllQueryData <- combineQueriesData(QInter_att_data, QElem_att_data, customAttDat, att.x, att.y)
-  ShadingData <- MakeShading(Matrix_layout)
-  Main_bar <- Make_main_bar(All_Freqs, Bar_Q, show.numbers, mb.ratio, customQBar, number.angles, EBar_data, mainbar.y.label,
-                            mainbar.y.max)
-  Matrix <- Make_matrix_plot(Matrix_layout, Set_sizes, All_Freqs, point.size, line.size,
-                             name.size, labels, ShadingData, shade.color, shade.alpha)
-  Sizes <- Make_size_plot(Set_sizes, sets.bar.color, mb.ratio, sets.x.label)
+  
+  ShadingData <- NULL
   
   if(is.null(set.metadata) == F){
     set.metadata.plots <- Make_set_metadata_plot(set.metadata, Set_names)
+    ShadingData <- get_shade_groups(set.metadata, Set_names, Matrix_layout, shade.alpha)
+    if(is.null(ShadingData) == FALSE){
+    shade.alpha <- unique(ShadingData$alpha)
+    }
   }
+  if(is.null(ShadingData) == TRUE){
+  ShadingData <- MakeShading(Matrix_layout, shade.color)
+  }
+  Main_bar <- Make_main_bar(All_Freqs, Bar_Q, show.numbers, mb.ratio, customQBar, number.angles, EBar_data, mainbar.y.label,
+                            mainbar.y.max)
+  Matrix <- Make_matrix_plot(Matrix_layout, Set_sizes, All_Freqs, point.size, line.size,
+                             name.size, labels, ShadingData, shade.alpha)
+  Sizes <- Make_size_plot(Set_sizes, sets.bar.color, mb.ratio, sets.x.label)
   
   Make_base_plot(Main_bar, Matrix, Sizes, labels, mb.ratio, att.x, att.y, New_data,
                  expression, att.pos, first.col, att.color, AllQueryData, attribute.plots,

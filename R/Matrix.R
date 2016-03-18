@@ -59,7 +59,7 @@ Create_layout <- function(setup, mat_color, mat_col, matrix_dot_alpha){
 }
 
 ## Create data set to shade matrix 
-MakeShading <- function(Mat_data){
+MakeShading <- function(Mat_data, color){
   y <- unique(Mat_data$y)
   y <- (y[which(y %% 2 != 0)])
   data <- data.frame(cbind(y))
@@ -69,12 +69,13 @@ MakeShading <- function(Mat_data){
     data$y_min[i] <- ((y[i]) - 0.5)
     data$y_max[i] <- ((y[i]) + 0.5)
   }
+  data$shade_color <- color
   return(data)
 }
 
 ## Generate matrix plot
 Make_matrix_plot <- function(Mat_data,Set_size_data, Main_bar_data, point_size, line_size, name_size, labels,
-                             shading_data, shade_color, shade_alpha){
+                             shading_data, shade_alpha){
   
   Matrix_plot <- (ggplot() 
                   + theme(panel.background = element_rect(fill = "white"),
@@ -93,7 +94,7 @@ Make_matrix_plot <- function(Mat_data,Set_size_data, Main_bar_data, point_size, 
                   + scale_x_continuous(limits = c(0,(nrow(Main_bar_data)+1 )), expand = c(0,0))
                   + geom_rect(data = shading_data, aes_string(xmin = "min", xmax = "max",
                                                               ymin = "y_min", ymax = "y_max"),
-                              fill = shade_color, alpha = shade_alpha)
+                              fill = shading_data$shade_color, alpha = shade_alpha)
                   + geom_point(data= Mat_data, aes_string(x= "x", y= "y"), colour = Mat_data$color,
                                size= point_size, alpha = Mat_data$alpha)
                   + geom_line(data= Mat_data, aes_string(group = "Intersection", x="x", y="y",

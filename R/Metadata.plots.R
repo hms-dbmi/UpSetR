@@ -197,3 +197,38 @@ metadataText <- function(metadata, y_data, colors, alignment){
     plot <- plot + scale_colour_manual(values = colors)
   }
 }
+
+get_shade_groups <- function(set_metadata, set_names, Mat_data, shade_alpha) {
+  data <- set_metadata$data
+  names(data)[1] <- "sets"
+  data <- data[which(data$sets %in% set_names), ]
+  data <- data[match(set_names, data$sets), ]
+  for (i in 1:length(set_metadata$plots)) {
+    if (set_metadata$plots[[i]]$type == "matrix_rows") {
+      col <- match(set_metadata$plots[[i]]$column, colnames(data))
+      colors <- set_metadata$plots[[i]]$colors
+      names(data)[col] <- "group"
+      groups <- unique(data$group)
+      data$color <- "none"
+      for (j in 1:length(groups)) {
+        data$color[which(data$group == names(colors)[j])] <- colors[[j]]
+      }
+      y <- c(1:length(set_names))
+      shade_data <- data.frame(cbind(y))
+      shade_data$min <- 0
+      shade_data$max <- (max(Mat_data$x) + 1)
+      for(k in 1:length(y)){
+        shade_data$y_min[k] <- ((k) - 0.5)
+        shade_data$y_max[k] <- ((k) + 0.5)
+      }
+      shade_data$shade_color <- data$color
+      if(is.null(set_metadata$plots[[i]]$alpha) == TRUE){
+        shade_data$alpha <- shade_alpha
+      }
+      else{
+        shade_data$alpha <- set_metadata$plots[[i]]$alpha
+      }
+      return(shade_data)
+    }
+  }
+}
