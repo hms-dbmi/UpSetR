@@ -14,8 +14,8 @@ upset(data, nsets = 5, nintersects = 40, sets = NULL,
   "degree"), decreasing = c(T, F), show.numbers = "yes",
   number.angles = 0, group.by = "degree", cutoff = NULL, queries = NULL,
   query.legend = "none", shade.color = "gray88", shade.alpha = 0.25,
-  empty.intersections = NULL, color.pal = 1, boxplot.summary = NULL,
-  attribute.plots = NULL)
+  matrix.dot.alpha = 0.5, empty.intersections = NULL, color.pal = 1,
+  boxplot.summary = NULL, attribute.plots = NULL)
 }
 \arguments{
 \item{data}{Data set}
@@ -26,8 +26,9 @@ upset(data, nsets = 5, nintersects = 40, sets = NULL,
 
 \item{sets}{Specific sets to look at (Include as combinations. Ex: c("Name1", "Name2"))}
 
-\item{set.metadata}{Metadata that offers insight to an attribute of the sets. Input should be a data frame with 2 columns. One column should be the names of the sets,
-and the other column numeric attribute data. The final result will be a second bar plot alongside the set names.}
+\item{set.metadata}{Metadata that offers insight to an attribute of the sets. Input should be a data frame where the first column is set names, and the 
+remaining columns are attributes of those sets. To learn how to use this parameter it is highly suggested to view the set metadata vignette. The link
+can be found on the package's GitHub page.}
 
 \item{intersections}{Specific intersections to include in plot entered as a list of lists.
 Ex: list(list("Set name1", "Set name2"), list("Set name1", "Set name3")). If data is entered into this parameter the only data shown on the UpSet plot
@@ -82,6 +83,8 @@ See examples section on how to do this.}
 \item{shade.color}{Color of row shading in matrix}
 
 \item{shade.alpha}{Transparency of shading in matrix}
+
+\item{matrix.dot.alpha}{Transparency of the empty intersections points in the matrix}
 
 \item{empty.intersections}{Additionally display empty sets up to nintersects}
 
