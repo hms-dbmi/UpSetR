@@ -3,7 +3,7 @@ title: "Incorporating Set Metadata"
 author: "Jake Conway and Nils Gehlenborg"
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteIndexEntry{Querying the Data}
+  %\VignetteIndexEntry{Incorporating Set Metadata}
   \usepackage[utf8]{inputenc}
 ---
 
