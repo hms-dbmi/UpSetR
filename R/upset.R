@@ -123,7 +123,7 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, set.metadata =
                  "#7F7F7F", "#BCBD22", "#17BECF")
   }
   else{
-    palette <- c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00",
+    palette <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00",
                  "#CC79A7")
   }
   
