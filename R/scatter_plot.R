@@ -13,6 +13,7 @@ scatter_plot <- function(mydata, x, y){
                        plot.title = element_text(vjust = 1.3),
                        panel.grid.minor = element_blank(),
                        panel.grid.major = element_blank(),
-                       axis.title.y = element_text(vjust = 1.3),
+                       axis.title.y = element_text(vjust = 1.3, size = 8.3),
+                       axis.title.x = element_text(size = 8.3),
                        plot.margin=unit(c(0.5,0,0,1), "cm")))
 }

@@ -92,9 +92,10 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_an
                     + xlab(NULL) + ylab(ylabel) +labs(title = NULL)
                     + theme(panel.background = element_rect(fill = "white"),
                             plot.margin = unit(c(0.5,0.5,0.19,0.5), "lines"), panel.border = element_blank(),
-                            axis.title.y = element_text(vjust = -0.8), axis.text.y = element_text(vjust=0.3)))
+                            axis.title.y = element_text(vjust = -0.8, size = 8.3), axis.text.y = element_text(vjust=0.3,
+                                                                                                            size=7 )))
   if((show_num == "yes") || (show_num == "Yes")){
-    Main_bar_plot <- (Main_bar_plot + geom_text(aes_string(label = "freq"), size = 3.0, vjust = -1,
+    Main_bar_plot <- (Main_bar_plot + geom_text(aes_string(label = "freq"), size = 2.2, vjust = -1,
                                                 angle = number_angles, colour = Main_bar_data$color))
   }
   bInterDat <- NULL

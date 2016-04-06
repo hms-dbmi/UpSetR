@@ -108,7 +108,7 @@
 #' @export
 upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, set.metadata = NULL, intersections = NULL, matrix.color = "gray23",
                   main.bar.color = "gray23", mainbar.y.label = "Intersection Size", mainbar.y.max = NULL, sets.bar.color = "gray23",
-                  sets.x.label = "Set Size", point.size = 4, line.size = 1, name.size = 10, mb.ratio = c(0.70,0.30),
+                  sets.x.label = "Set Size", point.size = 2.2, line.size = 0.7, name.size = 7, mb.ratio = c(0.70,0.30),
                   expression = NULL, att.pos = NULL, att.color = main.bar.color, order.by = c("freq", "degree"),
                   decreasing = c(T, F), show.numbers = "yes", number.angles = 0, group.by = "degree",cutoff = NULL,
                   queries = NULL, query.legend = "none", shade.color = "gray88", shade.alpha = 0.25, matrix.dot.alpha =0.5,
