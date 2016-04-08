@@ -1,4 +1,4 @@
-# UpSetR [![Travis-CI Build Status](https://travis-ci.org/hms-dbmi/UpSetR.svg?branch=master)](https://travis-ci.org/hms-dbmi/UpSetR) [![](http://www.r-pkg.org/badges/version/UpSetR)](http://cran.rstudio.com/web/packages/UpSetR/index.html) [![](http://cranlogs.r-pkg.org/badges/grand-total/UpSetR)](http://cranlogs.r-pkg.org/badges/grand-total/UpSetR)
+# UpSetR [![Travis-CI Build Status](https://travis-ci.org/hms-dbmi/UpSetR.svg?branch=master)](https://travis-ci.org/hms-dbmi/UpSetR) [![](http://www.r-pkg.org/badges/version/UpSetR)](https://cran.r-project.org/package=UpSetR) [![](http://cranlogs.r-pkg.org/badges/grand-total/UpSetR)](http://cranlogs.r-pkg.org/badges/grand-total/UpSetR)
 
 ## Technique
 
@@ -69,7 +69,7 @@ Install the latest released version from CRAN
 install.packages("UpSetR")
 ```
 
-Download the latest development code of UpSetR from GitHub using [devtools](https://cran.r-project.org/web/packages/devtools/index.html) with
+Download the latest development code of UpSetR from GitHub using [devtools](https://cran.r-project.org/package=devtools) with
 
 ```R
 devtools::install_github("hms-dbmi/UpSetR")
