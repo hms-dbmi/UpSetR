@@ -5,6 +5,7 @@ Release v1.2.0
 - Option to color matrix background using metadata
 - Created set.metadata.plots vignette
 - Removed set metadata example from attribute.plots vignette
+- Size adjustment of geoms for ggplot2 version 2.1.0
 
 -----------------
 
