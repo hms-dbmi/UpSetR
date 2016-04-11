@@ -24,7 +24,8 @@ metadataHist <- function(metadata, y_data, colors){
                                 expand = c(0,0))
            + theme(panel.background = element_rect("white"),
                    plot.margin=unit(c(0,0,0,0), "lines"),
-                   axis.title.x = element_text(size = 11),
+                   axis.title.x = element_text(size = 8.3),
+                   axis.text.x = element_text(size = 7),
                    axis.line = element_line(colour = "gray0"),
                    axis.line.y = element_blank(),
                    axis.line.x = element_line(colour = "gray0", size = 0.3),
@@ -89,7 +90,7 @@ metadataHeat <- function(metadata, y_data, plot_type, colors){
                    plot.title = element_text(margin = margin(b=titleAdjustment), hjust = 0,
                                              size = 9.25, angle = 90),
                    plot.margin=unit(c(0,0,0,0), "lines"),
-                   axis.title.x = element_text(size = 11),
+                   axis.title.x = element_text(size = 8.3),
                    legend.position = "none",
                    axis.line = element_blank(),
                    axis.line = element_line(colour = "gray0"),
@@ -168,14 +169,14 @@ metadataText <- function(metadata, y_data, colors, alignment){
   ncols <- ncol(metadata)
   metadata <- cbind(metadata, c(1:nrow(metadata)))
   names(metadata)[ncol(metadata)] <- "x"
-  plot <- (ggplot(data=metadata, aes_string(x="x", y=1, label = y_data, colour = y_data))
+  plot <- (ggplot(data=metadata, aes_string(x="x", y=1, label = y_data, colour = y_data, size =10))
            + scale_x_continuous(limits = c(0.5, (nrow(metadata)+0.5)),
                                 expand = c(0,0))
            + theme(panel.background = element_rect("white"),
                    plot.title = element_text(margin = margin(b=titleAdjustment), hjust = 0,
-                                             size = 9.25, angle = 90),
+                                             size = 8.3, angle = 90),
                    plot.margin=unit(c(0,0,0,0), "lines"),
-                   axis.title.x = element_text(size = 11),
+                   axis.title.x = element_text(size = 7),
                    legend.position = "none",
                    axis.line = element_blank(),
                    axis.line = element_line(colour = "gray0"),
@@ -193,11 +194,11 @@ metadataText <- function(metadata, y_data, colors, alignment){
            + ggtitle(y_data)
            + scale_y_reverse())
   if(is.null(colors) == FALSE){
-    plot <- plot + geom_text(size = 3, hjust = align)
+    plot <- plot + geom_text(size = 2.7, hjust = align)
     plot <- plot + scale_colour_manual(values = colors)
   }
   else{
-    plot <- plot + geom_text(size = 3, hjust = align, colour = "gray23")
+    plot <- plot + geom_text(size = 2.7, hjust = align, colour = "gray23")
   }
   return(plot)
 }
