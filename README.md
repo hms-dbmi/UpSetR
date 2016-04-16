@@ -25,6 +25,7 @@ There are currently three vignettes that explain how to use the features include
 * [Basic Usage](https://cran.r-project.org/web/packages/UpSetR/vignettes/basic.usage.html)
 * [Queries](https://cran.r-project.org/web/packages/UpSetR/vignettes/queries.html)
 * [Attribute Plots](https://cran.r-project.org/web/packages/UpSetR/vignettes/attribute.plots.html)
+* [Set Metadata](https://cran.r-project.org/web/packages/UpSetR/vignettes/set.metadata.plots.html)
 
 ### Demo
 
