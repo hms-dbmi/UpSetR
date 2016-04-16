@@ -233,7 +233,6 @@ get_shade_groups <- function(set_metadata, set_names, Mat_data, shade_alpha) {
       else{
         shade_data$alpha <- set_metadata$plots[[i]]$alpha
       }
-      print(shade_data)
       return(shade_data)
     }
   }
