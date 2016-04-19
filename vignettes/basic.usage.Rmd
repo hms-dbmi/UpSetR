@@ -17,7 +17,25 @@ movies <- read.csv( system.file("extdata", "movies.csv", package = "UpSetR"), he
 
 <br>
 
-Example 1: Choosing the Top Largest Sets and Plot Formatting
+Example 1: Alternative Input Formats
+------------
+Before we start producing examples using the movies dataset, it is important to know alternative formats to input data. In some cases, the data you have may not be in the form of a file. In UpSetR there are two built in converter functions `fromList` and `fromExpression` that take alternative data formats. The `fromList` function takes a list of named vectors and converts them into a data frame compatible with UpSetR. The `fromExpression` function takes a vector that acts as an expression. The elements of the expression vector are the names of the sets in an intersection, seperated by an amerpsand (&), and the number elements in that intersection. 
+```{r, tidy=TRUE}
+#example of list input (list of named vectors)
+listInput <-list(one = c(1,2,3,5,7,8,11,12,13), two = c(1,2,4,5,10), three = c(1,5,6,7,8,9,10,12,13))
+
+#example of expression input
+expressionInput <- c("one" = 2, "two" = 1, "three" = 2, "one&two" = 1, "one&three" = 4, "two&three" = 1, "one&two&three" = 2)
+```
+Note that both of these inputs contain the same data. To generate an UpSet plot with these inputs set the `data` paramter equal to either `fromList(listInput)` or `fromExpression(expressionInput)`.
+```{r, out.width="850px", fig.width=13, fig.height =7,tidy=TRUE, fig.align='center'}
+upset(fromList(listInput), order.by = "freq")
+```
+```{r, out.width="850px", fig.width=13, fig.height =7,tidy=TRUE, fig.align='center'}
+upset(fromExpression(expressionInput), order.by = "freq")
+```
+
+Example 2: Choosing the Top Largest Sets and Plot Formatting
 -----------
 When not specifying specific sets, `nsets` selects the *n* largest sets from the data. `number.angles` determines the angle (in degrees) of the numbers above the intersection size bars. `point.size` changes the size of the circles in the matrix. `name.size` changes the size of the set names. `line.size` changes the size of the lines connecting the circles in the matrix. `mainbar.y.label` and `sets.x.label` can be used to change the axis labels on the intersection size bar plot and set size bar plot, respectively.
 ```{r, out.width="850px", fig.width=13, fig.height =7, tidy =TRUE, fig.align='center'}
@@ -26,7 +44,7 @@ upset(movies, nsets = 6, number.angles = 30, point.size = 5, name.size = 12, lin
 
 <br>
 
-Example 2: Choosing Specific Sets and Matrix Ordering
+Example 3: Choosing Specific Sets and Matrix Ordering
 ------------
 To look at specific sets, a vector of set names can be entered into the `sets` parameter. To change the proportions of the plot heights assigned to the matrix and intersection size bar plot, use the `mb.ratio` parameter entered as percentages. If no order is specified, the matrix will be ordered by degree, then frequency. The 3 plots below show different ways the data can be ordered.
 ```{r, out.width="850px", fig.width=13, fig.height =7, tidy=TRUE, fig.align='center'}
@@ -41,7 +59,7 @@ upset(movies, sets = c("Action", "Adventure", "Comedy", "Drama", "Mystery", "Thr
 
 <br>
 
-Example 3: Grouping of Intersections
+Example 4: Grouping of Intersections
 ------------
 Instead of the default method of grouping by degree, grouping by sets can be acheived using `group.by`. To set a cutoff for the number of intersections per group of sets use `cutoff`.
 ```{r, out.width="850px", fig.width=13, fig.height =7,tidy=TRUE, fig.align='center'}
@@ -50,27 +68,9 @@ upset(movies, nintersects = 70, group.by = "sets", cutoff = 7)
 
 <br>
 
-Example 4: Displaying Empty Intersections
+Example 5: Displaying Empty Intersections
 ------------
 There may be times where an intersection you are looking for is not present in the matrix. This may be due to not showing enough intersections which can be changes with `nintersects`, or it may be because the intersection contains no elements. To additionally show empty intersections turn on `empty.intersections`.
 ```{r, out.width="850px", fig.width=13, fig.height =7,tidy=TRUE, fig.align='center'}
 upset(movies, empty.intersections = "on", order.by = "freq")
-```
-
-Example 5: Alternative Input Formats
-------------
-In some cases, the data you have may not be in the form of a .csv file. In UpSetR there are two built in converter functions `fromList` and `fromExpression` that take alternative data formats. The `fromList` function takes a list of named vectors and converts them into a data frame compatible with UpSetR. The `fromExpression` function takes a vector that acts as an expression. The elements of the expression vector are the names of the sets in an intersection, seperated by an amerpsand (&), and the number elements in that intersection. 
-```{r, tidy=TRUE}
-#example of list input (list of named vectors)
-listInput <-list(one = c(1,2,3,5,7,8,11,12,13), two = c(1,2,4,5,10), three = c(1,5,6,7,8,9,10,12,13))
-
-#example of expression input
-expressionInput <- c("one" = 2, "two" = 1, "three" = 2, "one&two" = 1, "one&three" = 4, "two&three" = 1, "one&two&three" = 2)
-```
-Note that both of these inputs contain the same data. To generate an UpSet plot with these inputs set the `data` paramter equal to either `fromList(listInput)` or `fromExpression(expressionInput)`. Use the examples from above to format the UpSet plot as you like. 
-```{r, out.width="850px", fig.width=13, fig.height =7,tidy=TRUE, fig.align='center'}
-upset(fromList(listInput), order.by = "freq")
-```
-```{r, out.width="850px", fig.width=13, fig.height =7,tidy=TRUE, fig.align='center'}
-upset(fromExpression(expressionInput), order.by = "freq")
 ```
