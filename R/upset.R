@@ -227,8 +227,11 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, set.metadata =
   ShadingData <- NULL
   
   if(is.null(set.metadata) == F){
-    set.metadata.plots <- Make_set_metadata_plot(set.metadata, Set_names)
     ShadingData <- get_shade_groups(set.metadata, Set_names, Matrix_layout, shade.alpha)
+    output <- Make_set_metadata_plot(set.metadata, Set_names)
+    set.metadata.plots <- output[[1]]
+    set.metadata <- output[[2]]
+    
     if(is.null(ShadingData) == FALSE){
     shade.alpha <- unique(ShadingData$alpha)
     }

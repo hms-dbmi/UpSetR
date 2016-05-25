@@ -1,6 +1,5 @@
 Make_set_metadata_plot <- function(set.metadata, set_names){
   metadata <- as.data.frame(set.metadata$data)
-  num_of_att <- length(set.metadata$plots)
   metadata_columns <- colnames(metadata)
   metadata_columns[1] <- "sets"
   names(metadata) <- metadata_columns
@@ -9,9 +8,23 @@ Make_set_metadata_plot <- function(set.metadata, set_names){
   metadata$sets <- seq(1,nrow(metadata))
   rownames(metadata) <- set_names
   
+  num_of_att <- 0
+  num_of_plots <- length(set.metadata$plots)
+  
+  for(i in 1:num_of_plots){
+    if(set.metadata$plots[[i]]$type != "matrix_rows"){
+      num_of_att <- num_of_att + 1
+    }
+    else{
+       set.metadata$plots <- set.metadata$plots[-i]
+       num_of_att <- length(set.metadata$plots)
+       break
+    }
+  }
   
   metadata_plot <- list()
-  
+
+  if(num_of_att != 0){
   for(i in 1:num_of_att){
     if(is.null(set.metadata$plots[[i]]$colors) == FALSE){
       colors <- set.metadata$plots[[i]]$colors
@@ -45,5 +58,10 @@ Make_set_metadata_plot <- function(set.metadata, set_names){
       next
     }
   }
-  return(metadata_plot)
+
+  return(list(metadata_plot, set.metadata))
+  }
+  else{
+    return(c(NULL, NULL))
+  }
 }
