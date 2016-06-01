@@ -1,3 +1,13 @@
+Release v1.2.1
+
+- Updated vignettes
+- Adjusted metadata plot text size for ggplot2 update
+- Default gray88 color if matrix_rows metadata attribute used and no colors supplied
+- Fixed metadata error so that matrix_rows may be used alone
+- New link to UpSetR Shiny app in README
+
+-----------------
+
 Release v1.2.0
 
 - Options for set metadata heat map, boolean heat map, text, and bar plot
