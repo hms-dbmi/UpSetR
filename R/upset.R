@@ -112,7 +112,7 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, set.metadata =
                   expression = NULL, att.pos = NULL, att.color = main.bar.color, order.by = c("freq", "degree"),
                   decreasing = c(T, F), show.numbers = "yes", number.angles = 0, group.by = "degree",cutoff = NULL,
                   queries = NULL, query.legend = "none", shade.color = "gray88", shade.alpha = 0.25, matrix.dot.alpha =0.5,
-                  empty.intersections = NULL, color.pal = 1, boxplot.summary = NULL, attribute.plots = NULL){
+                  empty.intersections = NULL, color.pal = 1, boxplot.summary = NULL, attribute.plots = NULL, log.transform = c(F, F)){
   
   startend <-FindStartEnd(data)
   first.col <- startend[1]
@@ -240,10 +240,10 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, set.metadata =
   ShadingData <- MakeShading(Matrix_layout, shade.color)
   }
   Main_bar <- Make_main_bar(All_Freqs, Bar_Q, show.numbers, mb.ratio, customQBar, number.angles, EBar_data, mainbar.y.label,
-                            mainbar.y.max)
+                            mainbar.y.max, log.transform)
   Matrix <- Make_matrix_plot(Matrix_layout, Set_sizes, All_Freqs, point.size, line.size,
                              name.size, labels, ShadingData, shade.alpha)
-  Sizes <- Make_size_plot(Set_sizes, sets.bar.color, mb.ratio, sets.x.label)
+  Sizes <- Make_size_plot(Set_sizes, sets.bar.color, mb.ratio, sets.x.label, log.transform)
   
   Make_base_plot(Main_bar, Matrix, Sizes, labels, mb.ratio, att.x, att.y, New_data,
                  expression, att.pos, first.col, att.color, AllQueryData, attribute.plots,

@@ -15,7 +15,7 @@ upset(data, nsets = 5, nintersects = 40, sets = NULL,
   number.angles = 0, group.by = "degree", cutoff = NULL, queries = NULL,
   query.legend = "none", shade.color = "gray88", shade.alpha = 0.25,
   matrix.dot.alpha = 0.5, empty.intersections = NULL, color.pal = 1,
-  boxplot.summary = NULL, attribute.plots = NULL)
+  boxplot.summary = NULL, attribute.plots = NULL, log.transform = c(F, F))
 }
 \arguments{
 \item{data}{Data set}

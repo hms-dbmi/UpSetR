@@ -58,7 +58,7 @@ Counter <- function(data, num_sets, start_col, name_of_sets, nintersections, mba
 
 ## Generate main bar plot
 Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_angles,
-                          ebar, ylabel, ymax){
+                          ebar, ylabel, ymax, log_transform){
   if(is.null(Q) == F){
     inter_data <- Q
     if(nrow(inter_data) != 0){
@@ -82,13 +82,18 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_an
   ten_perc <- ((max(Main_bar_data$freq)) * 0.1)
   ymax <- max(Main_bar_data$freq) + ten_perc
   }
+  
+  log_transform <- log_transform[1]
+  
+  if(log_transform == T){
+    Main_bar_data$freq <- round(log10(Main_bar_data$freq), 1)
+  }
+  
   Main_bar_plot <- (ggplot(data = Main_bar_data, aes_string(x = "x", y = "freq")) 
                     + geom_bar(stat = "identity", width = 0.6, 
                                fill = Main_bar_data$color)
                     + scale_x_continuous(limits = c(0,(nrow(Main_bar_data)+1 )), expand = c(0,0),
                                          breaks = NULL)
-                    + scale_y_continuous(limits = c(0, ymax), 
-                                         expand = c(c(0,0), c(0,0)))
                     + xlab(NULL) + ylab(ylabel) +labs(title = NULL)
                     + theme(panel.background = element_rect(fill = "white"),
                             plot.margin = unit(c(0.5,0.5,0.19,0.5), "lines"), panel.border = element_blank(),

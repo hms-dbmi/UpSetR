@@ -13,7 +13,7 @@ FindSetFreqs <- function(data, start_col, num_sets, set_names){
 }
 
 ## Generate set size plot
-Make_size_plot <- function(Set_size_data, sbar_color, ratios, ylabel){
+Make_size_plot <- function(Set_size_data, sbar_color, ratios, ylabel, log_transform){
 #   if(ratios[1] < 0.4){
 #     m <- (-0.05)
 #   }
@@ -23,6 +23,11 @@ Make_size_plot <- function(Set_size_data, sbar_color, ratios, ylabel){
 #   else{
 #     m <- 0
 #   }
+  
+  log_transform <- log_transform[2]
+  if(log_transform == T){
+    Set_size_data$y <- round(log10(Set_size_data$y), 1)
+  }
   
   Size_plot <- (ggplot(data = Set_size_data, aes_string(x ="x", y = "y"))
                 + geom_bar(stat = "identity",colour = sbar_color, width = 0.4,
