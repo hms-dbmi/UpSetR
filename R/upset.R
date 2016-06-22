@@ -47,6 +47,8 @@
 #'        The attribute.plots parameter takes a list that contains the number of rows that should be allocated for the custom plot, and a list of plots with specified positions.
 #'        nrows is the number of rows the custom plots should take up. There is already 100 allocated for the custom plot. plots takes a list that contains a function that returns
 #'        a custom ggplots and the x and y aesthetics for the function. ncols is the number of columns that your ggplots should take up. See examples for how to add custom ggplots.
+#' @param log.transform Apply a log10 scale to the intersection size and set size scales by setting their respective value to TRUE. The parameter is a vector defaulted to c(F,F).
+#'        The first indice controls the intersection size scale, and the second indice controls the set size scale.
 #' @details Visualization of set data in the layout described by Lex and Gehlenborg in \url{http://www.nature.com/nmeth/journal/v11/n8/abs/nmeth.3033.html}.
 #' UpSet also allows for visualization of queries on intersections and elements, along with custom queries queries implemented using
 #' Hadley Wickhams apply function. To further analyze the data contained in the intersections, the user may select additional attribute plots
