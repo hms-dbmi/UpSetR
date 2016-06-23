@@ -12,8 +12,22 @@ FindSetFreqs <- function(data, start_col, num_sets, set_names){
   return(as.data.frame(temp_data))
 }
 
+log10_reverse_trans <- function(){
+  trans <- function(x) -log(x, 10)
+  inv <- function(x) (10 ^ -x)
+  trans_new(paste0("reverselog2-", format(2), "reverse"), trans, inv,
+            log_breaks(base = 10), domain = c(1e-100, Inf))
+}
+
+log2_reverse_trans <- function(){
+  trans <- function(x) -log(x, 2)
+  inv <- function(x) (2 ^ -x)
+  trans_new(paste0("reverselog2-", format(2), "reverse"), trans, inv,
+            log_breaks(base = 2), domain = c(1e-100, Inf))
+}
+
 ## Generate set size plot
-Make_size_plot <- function(Set_size_data, sbar_color, ratios, ylabel, log_transform){
+Make_size_plot <- function(Set_size_data, sbar_color, ratios, ylabel, scale_sets){
 #   if(ratios[1] < 0.4){
 #     m <- (-0.05)
 #   }
@@ -23,11 +37,6 @@ Make_size_plot <- function(Set_size_data, sbar_color, ratios, ylabel, log_transf
 #   else{
 #     m <- 0
 #   }
-  
-  log_transform <- log_transform[2]
-  if(log_transform == T){
-    Set_size_data$y <- round(log10(Set_size_data$y), 1)
-  }
   
   Size_plot <- (ggplot(data = Set_size_data, aes_string(x ="x", y = "y"))
                 + geom_bar(stat = "identity",colour = sbar_color, width = 0.4,
@@ -47,8 +56,17 @@ Make_size_plot <- function(Set_size_data, sbar_color, ratios, ylabel, log_transf
                         panel.grid.minor = element_blank(),
                         panel.grid.major = element_blank())
                 + xlab(NULL) + ylab(ylabel)
-                + coord_flip() 
-                + scale_y_reverse())
+                + coord_flip())
+  
+  if(scale_sets == "log10"){
+    Size_plot <- (Size_plot + scale_y_continuous(trans = log10_reverse_trans()))
+  }
+  else if (scale_sets == "log2"){
+    Size_plot <- (Size_plot + scale_y_continuous(trans = log2_reverse_trans()))
+  }
+  else{
+    Size_plot <- (Size_plot + scale_y_continuous(trans = "reverse"))
+  }
   
   Size_plot <- ggplot_gtable(ggplot_build(Size_plot))
   return(Size_plot)

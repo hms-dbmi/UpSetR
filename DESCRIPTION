@@ -19,7 +19,8 @@ Imports:
     utils,
     stats,
     methods,
-    grDevices
+    grDevices,
+    scales
 License: MIT + file LICENSE
 LazyData: true
 VignetteBuilder: knitr

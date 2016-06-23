@@ -47,8 +47,8 @@
 #'        The attribute.plots parameter takes a list that contains the number of rows that should be allocated for the custom plot, and a list of plots with specified positions.
 #'        nrows is the number of rows the custom plots should take up. There is already 100 allocated for the custom plot. plots takes a list that contains a function that returns
 #'        a custom ggplots and the x and y aesthetics for the function. ncols is the number of columns that your ggplots should take up. See examples for how to add custom ggplots.
-#' @param log.transform Apply a log10 scale to the intersection size and set size scales by setting their respective value to TRUE. The parameter is a vector defaulted to c(F,F).
-#'        The first indice controls the intersection size scale, and the second indice controls the set size scale.
+#' @param scale.intersections The scale to be used for the intersection sizes. Options: "identity", "log10", "log2"
+#' @param scale.sets The scale to be used for the set sizes. Options: "identity", "log10", "log2"
 #' @details Visualization of set data in the layout described by Lex and Gehlenborg in \url{http://www.nature.com/nmeth/journal/v11/n8/abs/nmeth.3033.html}.
 #' UpSet also allows for visualization of queries on intersections and elements, along with custom queries queries implemented using
 #' Hadley Wickhams apply function. To further analyze the data contained in the intersections, the user may select additional attribute plots
@@ -106,7 +106,8 @@
 #' @import utils
 #' @import stats
 #' @import methods
-#' @import grDevices       
+#' @import grDevices
+#' @import scales       
 #' @export
 upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, set.metadata = NULL, intersections = NULL, matrix.color = "gray23",
                   main.bar.color = "gray23", mainbar.y.label = "Intersection Size", mainbar.y.max = NULL, sets.bar.color = "gray23",
@@ -114,7 +115,8 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, set.metadata =
                   expression = NULL, att.pos = NULL, att.color = main.bar.color, order.by = c("freq", "degree"),
                   decreasing = c(T, F), show.numbers = "yes", number.angles = 0, group.by = "degree",cutoff = NULL,
                   queries = NULL, query.legend = "none", shade.color = "gray88", shade.alpha = 0.25, matrix.dot.alpha =0.5,
-                  empty.intersections = NULL, color.pal = 1, boxplot.summary = NULL, attribute.plots = NULL, log.transform = c(F, F)){
+                  empty.intersections = NULL, color.pal = 1, boxplot.summary = NULL, attribute.plots = NULL, scale.intersections = "identity",
+                  scale.sets = "identity"){
   
   startend <-FindStartEnd(data)
   first.col <- startend[1]
@@ -242,10 +244,10 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, set.metadata =
   ShadingData <- MakeShading(Matrix_layout, shade.color)
   }
   Main_bar <- Make_main_bar(All_Freqs, Bar_Q, show.numbers, mb.ratio, customQBar, number.angles, EBar_data, mainbar.y.label,
-                            mainbar.y.max, log.transform)
+                            mainbar.y.max, scale.intersections)
   Matrix <- Make_matrix_plot(Matrix_layout, Set_sizes, All_Freqs, point.size, line.size,
                              name.size, labels, ShadingData, shade.alpha)
-  Sizes <- Make_size_plot(Set_sizes, sets.bar.color, mb.ratio, sets.x.label, log.transform)
+  Sizes <- Make_size_plot(Set_sizes, sets.bar.color, mb.ratio, sets.x.label, scale.sets)
   
   Make_base_plot(Main_bar, Matrix, Sizes, labels, mb.ratio, att.x, att.y, New_data,
                  expression, att.pos, first.col, att.color, AllQueryData, attribute.plots,
