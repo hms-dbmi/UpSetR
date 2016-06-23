@@ -83,6 +83,10 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_an
   ymax <- max(Main_bar_data$freq) + ten_perc
   }
   
+  if(ylabel == "Intersection Size" && scale_intersections != "identity"){
+    ylabel <- paste("Intersection Size", paste0("( ", scale_intersections, " )"))
+  }
+  
   Main_bar_plot <- (ggplot(data = Main_bar_data, aes_string(x = "x", y = "freq")) 
                     + scale_y_continuous(trans = scale_intersections)
                     + geom_bar(stat = "identity", width = 0.6,
