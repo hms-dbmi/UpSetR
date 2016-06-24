@@ -1,3 +1,9 @@
+Release v1.2.2
+
+- Support for log10 and log2 scale transformations 
+
+-----------------
+
 Release v1.2.1
 
 - Updated vignettes
