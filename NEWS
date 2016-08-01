@@ -1,3 +1,10 @@
+Release v1.2.3
+
+- Allow user to keep order of sets entered when using sets parameter
+- Updated Basic Usage vignette with example on how to do this
+
+-----------------
+
 Release v1.2.2
 
 - Support for log10 and log2 scale transformations 
