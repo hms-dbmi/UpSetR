@@ -4,7 +4,7 @@
 \alias{upset}
 \title{UpSetR Plot}
 \usage{
-upset(data, nsets = 5, nintersects = 40, sets = NULL,
+upset(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F,
   set.metadata = NULL, intersections = NULL, matrix.color = "gray23",
   main.bar.color = "gray23", mainbar.y.label = "Intersection Size",
   mainbar.y.max = NULL, sets.bar.color = "gray23",
@@ -26,6 +26,8 @@ upset(data, nsets = 5, nintersects = 40, sets = NULL,
 \item{nintersects}{Number of intersections to plot}
 
 \item{sets}{Specific sets to look at (Include as combinations. Ex: c("Name1", "Name2"))}
+
+\item{keep.order}{Keep sets in the order entered using the sets parameter. The default is FALSE, which orders the sets by their sizes.}
 
 \item{set.metadata}{Metadata that offers insight to an attribute of the sets. Input should be a data frame where the first column is set names, and the 
 remaining columns are attributes of those sets. To learn how to use this parameter it is highly suggested to view the set metadata vignette. The link

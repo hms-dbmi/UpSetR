@@ -27,6 +27,9 @@ upset(movies, sets = c("Action", "Adventure", "Comedy", "Drama", "Mystery", "Thr
 ## ---- out.width="850px", fig.width=13, fig.height =7,tidy=TRUE, fig.align='center'----
 upset(movies, sets = c("Action", "Adventure", "Comedy", "Drama", "Mystery", "Thriller", "Romance", "War", "Western"), mb.ratio = c(0.55,0.45), order.by = c("degree", "freq"))
 
+## ---- out.width="850px", fig.width=13, fig.height =7, tidy=TRUE, fig.align='center'----
+upset(movies, sets = c("Action", "Adventure", "Comedy", "Drama", "Mystery", "Thriller", "Romance", "War", "Western"), mb.ratio = c(0.55,0.45), order.by = "freq", keep.order = TRUE)
+
 ## ---- out.width="850px", fig.width=13, fig.height =7,tidy=TRUE, fig.align='center'----
 upset(movies, nintersects = 70, group.by = "sets", cutoff = 7)
 

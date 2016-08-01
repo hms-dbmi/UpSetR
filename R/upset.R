@@ -5,6 +5,7 @@
 #' @param nsets Number of sets to look at
 #' @param nintersects Number of intersections to plot
 #' @param sets Specific sets to look at (Include as combinations. Ex: c("Name1", "Name2"))
+#' @param keep.order Keep sets in the order entered using the sets parameter. The default is FALSE, which orders the sets by their sizes.
 #' @param set.metadata Metadata that offers insight to an attribute of the sets. Input should be a data frame where the first column is set names, and the 
 #'        remaining columns are attributes of those sets. To learn how to use this parameter it is highly suggested to view the set metadata vignette. The link
 #'        can be found on the package's GitHub page.
@@ -109,10 +110,10 @@
 #' @import grDevices
 #' @import scales       
 #' @export
-upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, set.metadata = NULL, intersections = NULL, matrix.color = "gray23",
-                  main.bar.color = "gray23", mainbar.y.label = "Intersection Size", mainbar.y.max = NULL, sets.bar.color = "gray23",
-                  sets.x.label = "Set Size", point.size = 2.2, line.size = 0.7, name.size = 7, mb.ratio = c(0.70,0.30),
-                  expression = NULL, att.pos = NULL, att.color = main.bar.color, order.by = c("freq", "degree"),
+upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F, set.metadata = NULL, intersections = NULL,
+                  matrix.color = "gray23", main.bar.color = "gray23", mainbar.y.label = "Intersection Size", mainbar.y.max = NULL,
+                  sets.bar.color = "gray23", sets.x.label = "Set Size", point.size = 2.2, line.size = 0.7, name.size = 7,
+                  mb.ratio = c(0.70,0.30), expression = NULL, att.pos = NULL, att.color = main.bar.color, order.by = c("freq", "degree"),
                   decreasing = c(T, F), show.numbers = "yes", number.angles = 0, group.by = "degree",cutoff = NULL,
                   queries = NULL, query.legend = "none", shade.color = "gray88", shade.alpha = 0.25, matrix.dot.alpha =0.5,
                   empty.intersections = NULL, color.pal = 1, boxplot.summary = NULL, attribute.plots = NULL, scale.intersections = "identity",
@@ -136,7 +137,9 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, set.metadata =
     Sets_to_remove <- Remove(data, first.col, last.col, Set_names)
     New_data <- Wanted(data, Sets_to_remove)
     Num_of_set <- Number_of_sets(Set_names)
-    Set_names <- order_sets(New_data, Set_names)
+    if(keep.order == F){
+      Set_names <- order_sets(New_data, Set_names)
+    }
     All_Freqs <- specific_intersections(data, first.col, last.col, intersections, order.by, group.by, decreasing,
                                         cutoff, main.bar.color, Set_names)
   }
@@ -148,7 +151,9 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, set.metadata =
     Sets_to_remove <- Remove(data, first.col, last.col, Set_names)
     New_data <- Wanted(data, Sets_to_remove)
     Num_of_set <- Number_of_sets(Set_names)
+    if(keep.order == F){
     Set_names <- order_sets(New_data, Set_names)
+    }
     All_Freqs <- Counter(New_data, Num_of_set, first.col, Set_names, nintersects, main.bar.color,
                          order.by, group.by, cutoff, empty.intersections, decreasing)
   }
