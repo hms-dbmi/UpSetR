@@ -218,7 +218,7 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F
   }
   
   Matrix_layout <- Create_layout(Matrix_setup, matrix.color, Matrix_col, matrix.dot.alpha)
-  Set_sizes <- FindSetFreqs(New_data, first.col, Num_of_set, Set_names)
+  Set_sizes <- FindSetFreqs(New_data, first.col, Num_of_set, Set_names, keep.order)
   Bar_Q <- NULL
   if(is.null(queries) == F){
     Bar_Q <- intersects(QuerieInterBar, Intersection, New_data, first.col, Num_of_set, All_Freqs, expression, Set_names, palette)
