@@ -75,3 +75,10 @@ Download the latest development code of UpSetR from GitHub using [devtools](http
 ```R
 devtools::install_github("hms-dbmi/UpSetR")
 ```
+
+## Citation
+If you use UpSetR in a paper, please cite: 
+Alexander Lex, Nils Gehlenborg, Hendrik Strobelt, Romain Vuillemot, Hanspeter Pfister 
+UpSet: Visualization of Intersecting Sets, 
+IEEE Transactions on Visualization and Computer Graphics (InfoVis '14), vol. 20, no. 12, pp. 1983–1992, 2014.
+doi:10.1109/TVCG.2014.2346248
