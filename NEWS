@@ -1,3 +1,10 @@
+Release v1.2.4
+
+- Fix check.names bug so that it reorders the set size bar plot, not just the set labels
+- Show all intersections when nintersects is set to NA
+
+-----------------
+
 Release v1.2.3
 
 - Allow user to keep order of sets entered when using sets parameter
