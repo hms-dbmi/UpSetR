@@ -23,7 +23,7 @@ upset(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F,
 
 \item{nsets}{Number of sets to look at}
 
-\item{nintersects}{Number of intersections to plot}
+\item{nintersects}{Number of intersections to plot. If set to NA, all intersections will be plotted.}
 
 \item{sets}{Specific sets to look at (Include as combinations. Ex: c("Name1", "Name2"))}
 

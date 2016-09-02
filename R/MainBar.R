@@ -51,6 +51,9 @@ Counter <- function(data, num_sets, start_col, name_of_sets, nintersections, mba
     Freqs$x[i] <- i
     Freqs$color <- mbar_color
   }
+  if(is.na(nintersections)){
+    nintersections = nrow(Freqs)
+  }
   Freqs <- Freqs[1:nintersections, ]
   Freqs <- na.omit(Freqs)
   return(Freqs)
