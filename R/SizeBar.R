@@ -32,7 +32,7 @@ log2_reverse_trans <- function(){
 }
 
 ## Generate set size plot
-Make_size_plot <- function(Set_size_data, sbar_color, ratios, ylabel, scale_sets, font_scale){
+Make_size_plot <- function(Set_size_data, sbar_color, ratios, ylabel, scale_sets, font_scale, size_angle){
 #   if(ratios[1] < 0.4){
 #     m <- (-0.05)
 #   }
@@ -56,7 +56,7 @@ Make_size_plot <- function(Set_size_data, sbar_color, ratios, ylabel, scale_sets
                 + theme(panel.background = element_rect(fill = "white"),
                         plot.margin=unit(c(-0.11,-1.3,0.5,0.5), "lines"),
                         axis.title.x = element_text(size = 8.3*font_scale),
-                        axis.text.x = element_text(size = 7*font_scale),
+                        axis.text.x = element_text(size = 7*font_scale, angle = size_angle, vjust = 1, hjust = 1),
                         axis.line = element_line(colour = "gray0"),
                         axis.line.y = element_blank(),
                         axis.line.x = element_line(colour = "gray0", size = 0.3),
