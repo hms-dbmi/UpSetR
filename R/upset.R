@@ -50,6 +50,8 @@
 #'        a custom ggplots and the x and y aesthetics for the function. ncols is the number of columns that your ggplots should take up. See examples for how to add custom ggplots.
 #' @param scale.intersections The scale to be used for the intersection sizes. Options: "identity", "log10", "log2"
 #' @param scale.sets The scale to be used for the set sizes. Options: "identity", "log10", "log2"
+#' @param font.scale Numeric, value to scale the font sizes, applies to the y-axis of the main bar plot, the x-axis of the set size plot, and the numbers above the intersection size bars (if present)
+#' @param size.angle Numeric, angle to rotate the size bar x-axis text
 #' @details Visualization of set data in the layout described by Lex and Gehlenborg in \url{http://www.nature.com/nmeth/journal/v11/n8/abs/nmeth.3033.html}.
 #' UpSet also allows for visualization of queries on intersections and elements, along with custom queries queries implemented using
 #' Hadley Wickhams apply function. To further analyze the data contained in the intersections, the user may select additional attribute plots
@@ -117,7 +119,7 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F
                   decreasing = c(T, F), show.numbers = "yes", number.angles = 0, group.by = "degree",cutoff = NULL,
                   queries = NULL, query.legend = "none", shade.color = "gray88", shade.alpha = 0.25, matrix.dot.alpha =0.5,
                   empty.intersections = NULL, color.pal = 1, boxplot.summary = NULL, attribute.plots = NULL, scale.intersections = "identity",
-                  scale.sets = "identity"){
+                  scale.sets = "identity", font.scale = 1, size.angle = 0 ){
   
   startend <-FindStartEnd(data)
   first.col <- startend[1]
@@ -249,10 +251,10 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F
   ShadingData <- MakeShading(Matrix_layout, shade.color)
   }
   Main_bar <- Make_main_bar(All_Freqs, Bar_Q, show.numbers, mb.ratio, customQBar, number.angles, EBar_data, mainbar.y.label,
-                            mainbar.y.max, scale.intersections)
+                            mainbar.y.max, scale.intersections, font.scale)
   Matrix <- Make_matrix_plot(Matrix_layout, Set_sizes, All_Freqs, point.size, line.size,
                              name.size, labels, ShadingData, shade.alpha)
-  Sizes <- Make_size_plot(Set_sizes, sets.bar.color, mb.ratio, sets.x.label, scale.sets)
+  Sizes <- Make_size_plot(Set_sizes, sets.bar.color, mb.ratio, sets.x.label, scale.sets, font.scale, size.angle)
   
   Make_base_plot(Main_bar, Matrix, Sizes, labels, mb.ratio, att.x, att.y, New_data,
                  expression, att.pos, first.col, att.color, AllQueryData, attribute.plots,

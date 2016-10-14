@@ -16,7 +16,8 @@ upset(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F,
   query.legend = "none", shade.color = "gray88", shade.alpha = 0.25,
   matrix.dot.alpha = 0.5, empty.intersections = NULL, color.pal = 1,
   boxplot.summary = NULL, attribute.plots = NULL,
-  scale.intersections = "identity", scale.sets = "identity")
+  scale.intersections = "identity", scale.sets = "identity",
+  font.scale = 1, size.angle = 0)
 }
 \arguments{
 \item{data}{Data set}
@@ -104,6 +105,10 @@ a custom ggplots and the x and y aesthetics for the function. ncols is the numbe
 \item{scale.intersections}{The scale to be used for the intersection sizes. Options: "identity", "log10", "log2"}
 
 \item{scale.sets}{The scale to be used for the set sizes. Options: "identity", "log10", "log2"}
+
+\item{font.scale}{Numeric, value to scale the font sizes, applies to the y-axis of the main bar plot, the x-axis of the set size plot, and the numbers above the intersection size bars (if present)}
+
+\item{size.angle}{Numeric, angle to rotate the size bar x-axis text}
 }
 \description{
 Visualization of set intersections using novel UpSet matrix design.
