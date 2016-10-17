@@ -106,7 +106,8 @@ a custom ggplots and the x and y aesthetics for the function. ncols is the numbe
 
 \item{scale.sets}{The scale to be used for the set sizes. Options: "identity", "log10", "log2"}
 
-\item{text.scale}{Numeric, value to scale the text sizes, applies to the y-axis of the main bar plot, the x-axis of the set size plot, and the numbers above the intersection size bars (if present)}
+\item{text.scale}{Numeric, value to scale the text sizes, applies to all axis labels, tick labels, and numbers above bar plot. Can be a universal scale, or a vector containing individual scales
+in the following format: c(intersection size title, intersection size tick labels, set size title, set size tick labels, numbers above bars)}
 
 \item{set_size.angles}{Numeric, angle to rotate the set size plot x-axis text}
 }

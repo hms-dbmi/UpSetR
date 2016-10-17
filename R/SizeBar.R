@@ -43,6 +43,15 @@ Make_size_plot <- function(Set_size_data, sbar_color, ratios, ylabel, scale_sets
 #     m <- 0
 #   }
   
+  if(length(text_scale) > 1 && length(text_scale) <= 5){
+    x_axis_title_scale <- text_scale[3]
+    x_axis_tick_label_scale <- text_scale[4]
+  }
+  else{
+    x_axis_title_scale <- text_scale
+    x_axis_tick_label_scale <- text_scale
+  }
+  
   if(ylabel == "Set Size" && scale_sets != "identity"){
     ylabel <- paste("Set Size", paste0("( ", scale_sets, " )"))
   }
@@ -55,8 +64,9 @@ Make_size_plot <- function(Set_size_data, sbar_color, ratios, ylabel, scale_sets
                                      expand = c(0,0))
                 + theme(panel.background = element_rect(fill = "white"),
                         plot.margin=unit(c(-0.11,-1.3,0.5,0.5), "lines"),
-                        axis.title.x = element_text(size = 8.3*text_scale),
-                        axis.text.x = element_text(size = 7*text_scale, angle = set_size_angle, vjust = 1, hjust = 1),
+                        axis.title.x = element_text(size = 8.3*x_axis_title_scale),
+                        axis.text.x = element_text(size = 7*x_axis_tick_label_scale, angle = set_size_angle,
+                                                   vjust = 1, hjust = 1),
                         axis.line = element_line(colour = "gray0"),
                         axis.line.y = element_blank(),
                         axis.line.x = element_line(colour = "gray0", size = 0.3),
