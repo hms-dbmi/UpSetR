@@ -59,7 +59,7 @@ metadata$avgRottenTomatoesScore <- as.numeric(as.character(metadata$avgRottenTom
 ```
 
 
-```{r, fig.width=12, fig.height=7,out.width="850px", tidy=TRUE, fig.align='center'}
+```{r, fig.width=9, fig.height=5,out.width="850px", tidy=TRUE, fig.align='center'}
 upset(movies, set.metadata = list(data = metadata, plots = list(list(type="hist", column="avgRottenTomatoesScore", assign=20))))
 ```
 
@@ -73,12 +73,12 @@ metadata$Cities <- as.character(metadata$Cities)
 metadata[which(metadata$sets %in% c("Drama", "Comedy", "Action", "Thriller", "Romance")), ]
 ```
 
-```{r, fig.width=12, fig.height=7,out.width="850px", tidy=TRUE, fig.align='center'}
+```{r, fig.width=9, fig.height=5,out.width="850px", tidy=TRUE, fig.align='center'}
 upset(movies, set.metadata = list(data = metadata, plots = list(list(type = "heat", column = "Cities", assign = 10, colors = c("Boston" = "green", "NYC" = "navy", "LA" = "purple")))))
 ```
 
 Now lets also use our numeric critic values!
-```{r, fig.width=12, fig.height=7,out.width="850px", tidy=TRUE, fig.align='center'}
+```{r, fig.width=9, fig.height=5,out.width="850px", tidy=TRUE, fig.align='center'}
 upset(movies, set.metadata = list(data = metadata, plots = list(list(type = "heat", column = "Cities", assign = 10, colors = c("Boston" = "green", "NYC" = "navy", "LA" = "purple")), list(type = "heat", column = "avgRottenTomatoesScore", assign = 10))))
 ```
 
@@ -89,7 +89,7 @@ Example 3: Set Metadata Boolean Heat Map
 Now suppose we have metadata that tells us whether or not these genres are well accepted overseas. This could be used as a categorical column where there are only two categories, but for this example we will assume that your data is coded in 1's and 0's. It is important to keep in mind that if you run a "heat" with 0's and 1's instead of a "bool" the binary data will be treated as numerical values, and a color gradient will be used to show the relative differences.
 
 
-```{r, fig.width=12, fig.height=7,out.width="850px", tidy=TRUE, fig.align='center'}
+```{r, fig.width=9, fig.height=5,out.width="850px", tidy=TRUE, fig.align='center'}
 accepted <- round(runif(17, min = 0, max = 1))
 metadata <- cbind(metadata, accepted)
 metadata[which(metadata$sets %in% c("Drama", "Comedy", "Action", "Thriller", "Romance")), ]
@@ -98,7 +98,7 @@ upset(movies, set.metadata = list(data = metadata, plots = list(list(type="bool"
 
 
 Let's see what happens when we choose a "heat" instead of a "bool" for our binary data column.
-```{r, fig.width=12, fig.height=7,out.width="850px", tidy=TRUE, fig.align='center'}
+```{r, fig.width=9, fig.height=5,out.width="850px", tidy=TRUE, fig.align='center'}
 upset(movies, set.metadata = list(data = metadata, plots = list(list(type="heat", column= "accepted", assign = 5, colors = c("red", "green")))))
 ```
 
@@ -106,7 +106,7 @@ Example 4: Set Metadata Text
 -------------
 Lets say we prefer to show text instead of a heat map for the cities these genres were most popular in.
 
-```{r, fig.width=12, fig.height=7,out.width="850px", tidy=TRUE, fig.align='center'}
+```{r, fig.width=9, fig.height=5,out.width="850px", tidy=TRUE, fig.align='center'}
 upset(movies, set.metadata = list(data = metadata, plots = list(list(type = "text", column = "Cities", assign = 10, colors = c("Boston" = "green", "NYC" = "navy", "LA" = "purple")))))
 ```
 
@@ -114,7 +114,7 @@ Example 5: Applying Metadata to the Matrix
 -------------
 In some cases we may just want to incorporate categorical set metadata directly into the UpSet plot to easily identify characteristics of the sets via the matrix. To do this we need to specify the type as `"matrix_rows"`, what column we're using to categorize the sets, and the colors to apply to each category. There is also an option to change the opacity of the matrix background using `alpha`. To change the opacity of the matrix background without applying set metadata see the `shade.alpha` parameter in the `upset()` function documentation.
 
-```{r, fig.width=12, fig.height=7,out.width="850px", tidy=TRUE, fig.align='center'}
+```{r, fig.width=9, fig.height=5,out.width="850px", tidy=TRUE, fig.align='center'}
 upset(movies, set.metadata = list(data = metadata, plots = list(list(type="hist", column="avgRottenTomatoesScore", assign=20),list(type="matrix_rows", column = "Cities", colors = c("Boston" = "green", "NYC" = "navy", "LA" = "purple"), alpha = 0.5))))
 ```
 
@@ -122,13 +122,13 @@ upset(movies, set.metadata = list(data = metadata, plots = list(list(type="hist"
 Example 6: Multiple Metadata Plots At Once
 -------------
 Now lets sum up all of our metadata information together on one plot!
-```{r, fig.width=12, fig.height=7,out.width="850px", tidy=TRUE, fig.align='center'}
+```{r, fig.width=9, fig.height=5,out.width="850px", tidy=TRUE, fig.align='center'}
 upset(movies, set.metadata = list(data = metadata, plots = list(list(type="hist", column="avgRottenTomatoesScore", assign=20),list(type="bool", column= "accepted", assign = 5, colors = c("#FF3333", "#006400")), list(type = "text", column = "Cities", assign = 5, colors = c("Boston" = "green", "NYC" = "navy", "LA" = "purple")))))
 ```
 
 Example 7: Metadata Plots, Queries, and Attribute Plots
 -------------
 Finally, lets include functionalities discussed in all of the other UpSetR Vignettes! This gives us a very in depth look at information about our sets, intersections, and specific elements.
-```{r, fig.width=12, fig.height=7,out.width="850px", tidy=TRUE, fig.align='center'}
+```{r, fig.width=9, fig.height=5,out.width="850px", tidy=TRUE, fig.align='center'}
 upset(movies, set.metadata = list(data = metadata, plots = list(list(type="hist", column="avgRottenTomatoesScore", assign=20), list(type="bool", column= "accepted", assign = 5, colors = c("#FF3333", "#006400")), list(type="text", column="Cities", assign=5, colors=c("Boston"="green","NYC"="navy","LA"="purple")), list(type="matrix_rows", column="Cities", colors=c("Boston"="green", "NYC"="navy", "LA"="purple"), alpha=0.5))), queries=list(list(query=intersects, params=list("Drama"), color="red", active=F), list(query=intersects, params=list("Action", "Drama"), active = T), list(query=intersects, params=list("Drama", "Comedy", "Action"), color="orange", active=T)), attribute.plots = list(gridrows=45, plots = list(list(plot=scatter_plot, x="ReleaseDate", y="AvgRating", queries=T), list(plot=scatter_plot, x="AvgRating", y="Watches", queries=F)), ncols=2), query.legend="bottom")
 ```
