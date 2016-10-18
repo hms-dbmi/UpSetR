@@ -42,7 +42,7 @@ The `attribute.plots` parameter is broken down into 3 fields: `gridrows`, `plots
 Example 1: Built-In Attribute Histogram
 -------------
 Example of how to add built-in histogram attribute plot. If `main.bar.color` is not specified as black, elements contained in black intersection size bars will be represented as gray in attribute plots.
-```{r, fig.width=12, fig.height=7, out.width="850px",tidy=TRUE, fig.align='center'}
+```{r, fig.width=9, fig.height=5, out.width="850px",tidy=TRUE, fig.align='center'}
 upset(movies, main.bar.color = "black", queries = list(list(query = intersects, params = list("Drama"), active = T)), attribute.plots = list(gridrows = 50, plots = list(list(plot = histogram, x = "ReleaseDate", queries = F), list(plot = histogram, x = "AvgRating", queries = T)), ncols = 2))
 ```
 
@@ -53,7 +53,7 @@ Example 2: Built-In Attribute Scatter Plot
 Example of how to add built-in attribute scatter plot. If `main.bar.color` not specified as black, elements contained in black intersection size bars will be represented as gray in attribute plots.
 <br> <br>
 *notice the use of query.legend*
-```{r, fig.width=12, fig.height=7,out.width="850px",tidy=TRUE, fig.align='center'}
+```{r, fig.width=9, fig.height=5,out.width="850px",tidy=TRUE, fig.align='center'}
 upset(movies, main.bar.color = "black", queries = list(list(query = intersects, params = list("Drama"), color = "red", active = F), list(query = intersects, params = list("Action", "Drama"), active = T), list(query = intersects, params = list("Drama", "Comedy", "Action"), color = "orange", active = T)), attribute.plots = list(gridrows = 45, plots = list(list(plot = scatter_plot, x = "ReleaseDate", y = "AvgRating", queries = T), list(plot = scatter_plot, x = "AvgRating", y = "Watches", queries = F)), ncols = 2), query.legend = "bottom")
 ```
 
@@ -77,7 +77,7 @@ another.plot <- function(data, x, y){
 ```
 
 Example of applying the `myplot` custom attribute plot defined above to the data.
-```{r, fig.width=12, fig.height=7, out.width="850px",tidy=TRUE, fig.align='center'}
+```{r, fig.width=9, fig.height=5, out.width="850px",tidy=TRUE, fig.align='center'}
 upset(movies, main.bar.color = "black", queries = list(list(query = intersects, params = list("Drama"), color = "red", active = F), list(query = intersects, params = list("Action", "Drama"), active = T), list(query = intersects, params = list("Drama", "Comedy", "Action"), color = "orange", active = T)), attribute.plots = list(gridrows = 45, plots = list(list(plot = myplot, x = "ReleaseDate", y = "AvgRating", queries = T), list(plot = another.plot, x = "AvgRating", y = "ReleaseDate", queries = F)), ncols = 2))
 ```
 
@@ -86,7 +86,7 @@ upset(movies, main.bar.color = "black", queries = list(list(query = intersects, 
 Example 4: Applying Everything at Once
 -------------
 Combining the built-in scatter plot and histogram plot with the `myplot` custom plot defined in the example above.
-```{r, fig.width=12, fig.height=7,out.width="850px",tidy=TRUE, fig.align='center'}
+```{r, fig.width=9, fig.height=5,out.width="850px",tidy=TRUE, fig.align='center'}
 upset(movies, main.bar.color = "black", mb.ratio = c(0.5,0.5), queries = list(list(query = intersects, params = list("Drama"), color = "red", active = F), list(query = intersects, params = list("Action", "Drama"), active = T), list(query = intersects, params = list("Drama", "Comedy", "Action"), color = "orange", active = T)), attribute.plots = list(gridrows=50, plots = list(list(plot = histogram, x = "ReleaseDate", queries = F), list(plot = scatter_plot, x = "ReleaseDate", y = "AvgRating", queries = T),list(plot = myplot, x = "AvgRating", y = "Watches", queries = F)), ncols = 3))
 ```
 
@@ -95,6 +95,6 @@ upset(movies, main.bar.color = "black", mb.ratio = c(0.5,0.5), queries = list(li
 Example 5: Intersection Box Plots
 -------------
 Box plots that show the distribution of an attribute across all intersections. Can display a maximum of two box plot summaries at once. The `boxplot.summary` parameter takes a vector of one or two attribute names.
-```{r, fig.width=12, fig.height=7,out.width="850px", tidy=TRUE, fig.align='center'}
+```{r, fig.width=9, fig.height=5,out.width="850px", tidy=TRUE, fig.align='center'}
 upset(movies, boxplot.summary = c("AvgRating", "ReleaseDate"))
 ```

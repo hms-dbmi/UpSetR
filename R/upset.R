@@ -20,7 +20,6 @@
 #' @param sets.x.label The x-axis label of the set size bar plot
 #' @param point.size Size of points in matrix plot
 #' @param line.size Width of lines in matrix plot
-#' @param name.size Size of set names in matrix plot
 #' @param mb.ratio Ratio between matrix plot and main bar plot (Keep in terms of hundreths)
 #' @param expression Expression to subset attributes of intersection or element query data. Enter as string (Ex: "ColName > 3")
 #' @param att.pos Position of attribute plot. If NULL or "bottom" the plot will be at below UpSet plot. If "top" it will be above UpSert plot
@@ -51,7 +50,7 @@
 #' @param scale.intersections The scale to be used for the intersection sizes. Options: "identity", "log10", "log2"
 #' @param scale.sets The scale to be used for the set sizes. Options: "identity", "log10", "log2"
 #' @param text.scale Numeric, value to scale the text sizes, applies to all axis labels, tick labels, and numbers above bar plot. Can be a universal scale, or a vector containing individual scales
-#'        in the following format: c(intersection size title, intersection size tick labels, set size title, set size tick labels, numbers above bars)
+#'        in the following format: c(intersection size title, intersection size tick labels, set size title, set size tick labels, set names, numbers above bars)
 #' @param set_size.angles Numeric, angle to rotate the set size plot x-axis text
 #' @details Visualization of set data in the layout described by Lex and Gehlenborg in \url{http://www.nature.com/nmeth/journal/v11/n8/abs/nmeth.3033.html}.
 #' UpSet also allows for visualization of queries on intersections and elements, along with custom queries queries implemented using
@@ -115,7 +114,7 @@
 #' @export
 upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F, set.metadata = NULL, intersections = NULL,
                   matrix.color = "gray23", main.bar.color = "gray23", mainbar.y.label = "Intersection Size", mainbar.y.max = NULL,
-                  sets.bar.color = "gray23", sets.x.label = "Set Size", point.size = 2.2, line.size = 0.7, name.size = 7,
+                  sets.bar.color = "gray23", sets.x.label = "Set Size", point.size = 2.2, line.size = 0.7,
                   mb.ratio = c(0.70,0.30), expression = NULL, att.pos = NULL, att.color = main.bar.color, order.by = c("freq", "degree"),
                   decreasing = c(T, F), show.numbers = "yes", number.angles = 0, group.by = "degree",cutoff = NULL,
                   queries = NULL, query.legend = "none", shade.color = "gray88", shade.alpha = 0.25, matrix.dot.alpha =0.5,
@@ -254,7 +253,7 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F
   Main_bar <- Make_main_bar(All_Freqs, Bar_Q, show.numbers, mb.ratio, customQBar, number.angles, EBar_data, mainbar.y.label,
                             mainbar.y.max, scale.intersections, text.scale)
   Matrix <- Make_matrix_plot(Matrix_layout, Set_sizes, All_Freqs, point.size, line.size,
-                             name.size, labels, ShadingData, shade.alpha)
+                             text.scale, labels, ShadingData, shade.alpha)
   Sizes <- Make_size_plot(Set_sizes, sets.bar.color, mb.ratio, sets.x.label, scale.sets, text.scale, set_size.angles)
   
   Make_base_plot(Main_bar, Matrix, Sizes, labels, mb.ratio, att.x, att.y, New_data,

@@ -28,18 +28,18 @@ listInput <-list(one = c(1,2,3,5,7,8,11,12,13), two = c(1,2,4,5,10), three = c(1
 expressionInput <- c("one" = 2, "two" = 1, "three" = 2, "one&two" = 1, "one&three" = 4, "two&three" = 1, "one&two&three" = 2)
 ```
 Note that both of these inputs contain the same data. To generate an UpSet plot with these inputs set the `data` paramter equal to either `fromList(listInput)` or `fromExpression(expressionInput)`.
-```{r, out.width="850px", fig.width=13, fig.height =7,tidy=TRUE, fig.align='center'}
+```{r, out.width="850px", fig.width=9, fig.height =5,tidy=TRUE, fig.align='center'}
 upset(fromList(listInput), order.by = "freq")
 ```
-```{r, out.width="850px", fig.width=13, fig.height =7,tidy=TRUE, fig.align='center'}
+```{r, out.width="850px", fig.width=9, fig.height =5,tidy=TRUE, fig.align='center'}
 upset(fromExpression(expressionInput), order.by = "freq")
 ```
 
 Example 2: Choosing the Top Largest Sets and Plot Formatting
 -----------
-When not specifying specific sets, `nsets` selects the *n* largest sets from the data. `number.angles` determines the angle (in degrees) of the numbers above the intersection size bars. `point.size` changes the size of the circles in the matrix. `name.size` changes the size of the set names. `line.size` changes the size of the lines connecting the circles in the matrix. `mainbar.y.label` and `sets.x.label` can be used to change the axis labels on the intersection size bar plot and set size bar plot, respectively.
-```{r, out.width="850px", fig.width=13, fig.height =7, tidy =TRUE, fig.align='center'}
-upset(movies, nsets = 6, number.angles = 30, point.size = 5, name.size = 12, line.size = 2, mainbar.y.label = "Genre Intersections", sets.x.label = "Movies Per Genre")
+When not specifying specific sets, `nsets` selects the *n* largest sets from the data. `number.angles` determines the angle (in degrees) of the numbers above the intersection size bars. `point.size` changes the size of the circles in the matrix. `line.size` changes the size of the lines connecting the circles in the matrix. `mainbar.y.label` and `sets.x.label` can be used to change the axis labels on the intersection size bar plot and set size bar plot, respectively. Recently added, `text.scale` allows scaling of all axis titles, tick labels, and numbers above the intersection size bars. `text.scale` can either take a universal scale in the form of an integer, or a vector of specific scales in the format: `c(intersection size title, intersection size tick labels, set size title, set size tick labels, set names, numbers above bars)`.
+```{r, out.width="850px", fig.width=9, fig.height =5, tidy =TRUE, fig.align='center'}
+upset(movies, nsets = 6, number.angles = 30, point.size = 3.5, line.size = 2, mainbar.y.label = "Genre Intersections", sets.x.label = "Movies Per Genre", text.scale=c(1.3, 1.3, 1, 1, 2, 0.75))
 ```
 
 <br>
@@ -47,13 +47,13 @@ upset(movies, nsets = 6, number.angles = 30, point.size = 5, name.size = 12, lin
 Example 3: Choosing Specific Sets and Matrix Ordering
 ------------
 To look at specific sets, a vector of set names can be entered into the `sets` parameter. To change the proportions of the plot heights assigned to the matrix and intersection size bar plot, use the `mb.ratio` parameter entered as percentages. If no order is specified, the matrix will be ordered by degree, then frequency. The 3 plots below show different ways the data can be ordered.
-```{r, out.width="850px", fig.width=13, fig.height =7, tidy=TRUE, fig.align='center'}
+```{r, out.width="850px", fig.width=9, fig.height =5, tidy=TRUE, fig.align='center'}
 upset(movies, sets = c("Action", "Adventure", "Comedy", "Drama", "Mystery", "Thriller", "Romance", "War", "Western"), mb.ratio = c(0.55,0.45), order.by = "freq")
 ```
-```{r, out.width="850px", fig.width=13, fig.height =7,tidy=TRUE, fig.align='center'}
+```{r, out.width="850px", fig.width=9, fig.height =5,tidy=TRUE, fig.align='center'}
 upset(movies, sets = c("Action", "Adventure", "Comedy", "Drama", "Mystery", "Thriller", "Romance", "War", "Western"), mb.ratio = c(0.55,0.45), order.by = "degree")
 ```
-```{r, out.width="850px", fig.width=13, fig.height =7,tidy=TRUE, fig.align='center'}
+```{r, out.width="850px", fig.width=9, fig.height =5,tidy=TRUE, fig.align='center'}
 upset(movies, sets = c("Action", "Adventure", "Comedy", "Drama", "Mystery", "Thriller", "Romance", "War", "Western"), mb.ratio = c(0.55,0.45), order.by = c("degree", "freq"))
 ```
 
@@ -62,7 +62,7 @@ upset(movies, sets = c("Action", "Adventure", "Comedy", "Drama", "Mystery", "Thr
 Example 4: Keeping Order of Sets When Using Sets Parameter
 ------------
 To keep the sets in the order entered using the `sets` parameter (Example 3), set the `keep.order` parameter to **TRUE**.
-```{r, out.width="850px", fig.width=13, fig.height =7, tidy=TRUE, fig.align='center'}
+```{r, out.width="850px", fig.width=9, fig.height =5, tidy=TRUE, fig.align='center'}
 upset(movies, sets = c("Action", "Adventure", "Comedy", "Drama", "Mystery", "Thriller", "Romance", "War", "Western"), mb.ratio = c(0.55,0.45), order.by = "freq", keep.order = TRUE)
 ```
 
@@ -71,7 +71,7 @@ upset(movies, sets = c("Action", "Adventure", "Comedy", "Drama", "Mystery", "Thr
 Example 5: Grouping of Intersections
 ------------
 Instead of the default method of grouping by degree, grouping by sets can be acheived using `group.by`. To set a cutoff for the number of intersections per group of sets use `cutoff`.
-```{r, out.width="850px", fig.width=13, fig.height =7,tidy=TRUE, fig.align='center'}
+```{r, out.width="850px", fig.width=9, fig.height =5,tidy=TRUE, fig.align='center'}
 upset(movies, nintersects = 70, group.by = "sets", cutoff = 7)
 ```
 
@@ -80,6 +80,6 @@ upset(movies, nintersects = 70, group.by = "sets", cutoff = 7)
 Example 6: Displaying Empty Intersections
 ------------
 There may be times where an intersection you are looking for is not present in the matrix. This may be due to not showing enough intersections which can be changes with `nintersects`, or it may be because the intersection contains no elements. To additionally show empty intersections turn on `empty.intersections`.
-```{r, out.width="850px", fig.width=13, fig.height =7,tidy=TRUE, fig.align='center'}
+```{r, out.width="850px", fig.width=9, fig.height =5,tidy=TRUE, fig.align='center'}
 upset(movies, empty.intersections = "on", order.by = "freq")
 ```

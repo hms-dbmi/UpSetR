@@ -74,8 +74,15 @@ MakeShading <- function(Mat_data, color){
 }
 
 ## Generate matrix plot
-Make_matrix_plot <- function(Mat_data,Set_size_data, Main_bar_data, point_size, line_size, name_size, labels,
+Make_matrix_plot <- function(Mat_data,Set_size_data, Main_bar_data, point_size, line_size, text_scale, labels,
                              shading_data, shade_alpha){
+  
+  if(length(text_scale) == 1){
+    name_size_scale <- text_scale 
+  }
+  if(length(text_scale) > 1 && length(text_scale) <= 6){
+    name_size_scale <- text_scale[5]
+  }
   
   Matrix_plot <- (ggplot() 
                   + theme(panel.background = element_rect(fill = "white"),
@@ -84,7 +91,7 @@ Make_matrix_plot <- function(Mat_data,Set_size_data, Main_bar_data, point_size, 
                           axis.ticks.x = element_blank(),
                           axis.ticks.y = element_blank(),
                           axis.text.y = element_text(colour = "gray0", 
-                                                     size = name_size, hjust = 0.4),
+                                                     size = 7*name_size_scale, hjust = 0.4),
                           panel.grid.major = element_blank(), 
                           panel.grid.minor = element_blank())
                   + xlab(NULL) + ylab("   ")

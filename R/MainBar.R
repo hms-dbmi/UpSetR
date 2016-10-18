@@ -62,10 +62,10 @@ Counter <- function(data, num_sets, start_col, name_of_sets, nintersections, mba
 ## Generate main bar plot
 Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_angles,
                           ebar, ylabel, ymax, scale_intersections, text_scale){
-  if(length(text_scale) > 1 && length(text_scale) <= 5){
+  if(length(text_scale) > 1 && length(text_scale) <= 6){
     y_axis_title_scale <- text_scale[1]
     y_axis_tick_label_scale <- text_scale[2]
-    intersection_size_number_scale <- text_scale[5]
+    intersection_size_number_scale <- text_scale[6]
   }
   else{
     y_axis_title_scale <- text_scale
