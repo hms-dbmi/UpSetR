@@ -22,10 +22,10 @@ The movie data set created by the [GroupLens Lab](http://grouplens.org/datasets/
 ### Vignettes
 
 There are currently four vignettes that explain how to use the features included in the UpSetR package:
-* [Basic Usage](https://cran.r-project.org/web/packages/UpSetR/vignettes/basic.usage.html)
-* [Queries](https://cran.r-project.org/web/packages/UpSetR/vignettes/queries.html)
-* [Attribute Plots](https://cran.r-project.org/web/packages/UpSetR/vignettes/attribute.plots.html)
-* [Set Metadata](https://cran.r-project.org/web/packages/UpSetR/vignettes/set.metadata.plots.html)
+* [Basic Usage](https://cran.r-project.org/package=UpSetR/vignettes/basic.usage.html)
+* [Queries](https://cran.r-project.org/package=UpSetR/vignettes/queries.html)
+* [Attribute Plots](https://cran.r-project.org/package=UpSetR/vignettes/attribute.plots.html)
+* [Set Metadata](https://cran.r-project.org/package=UpSetR/vignettes/set.metadata.plots.html)
 
 ### Demo
 
