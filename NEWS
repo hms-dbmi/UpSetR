@@ -1,3 +1,11 @@
+Release v1.3.0
+
+- Introduce text scales for all plot axis labels, tick labels, set names, and numbers above the bars
+- Remove names.size parameter and replace with a text scale
+- Fix vignettes so plot size and text is appropriately scaled
+
+-----------------
+
 Release v1.2.4
 
 - Fix check.names bug so that it reorders the set size bar plot, not just the set labels
