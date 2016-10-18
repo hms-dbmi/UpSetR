@@ -37,9 +37,9 @@ upset(fromExpression(expressionInput), order.by = "freq")
 
 Example 2: Choosing the Top Largest Sets and Plot Formatting
 -----------
-When not specifying specific sets, `nsets` selects the *n* largest sets from the data. `number.angles` determines the angle (in degrees) of the numbers above the intersection size bars. `point.size` changes the size of the circles in the matrix. `name.size` changes the size of the set names. `line.size` changes the size of the lines connecting the circles in the matrix. `mainbar.y.label` and `sets.x.label` can be used to change the axis labels on the intersection size bar plot and set size bar plot, respectively. Recently added, `text.scale` allows scaling of all axis titles, tick labels, and numbers above the intersection size bars. `text.scale` can either take a universal scale in the form of an integer, or a vector of specific scales in the format: `c(intersection size title, intersection size tick labels, set size title, set size tick labels, numbers above bars)`.
+When not specifying specific sets, `nsets` selects the *n* largest sets from the data. `number.angles` determines the angle (in degrees) of the numbers above the intersection size bars. `point.size` changes the size of the circles in the matrix. `line.size` changes the size of the lines connecting the circles in the matrix. `mainbar.y.label` and `sets.x.label` can be used to change the axis labels on the intersection size bar plot and set size bar plot, respectively. Recently added, `text.scale` allows scaling of all axis titles, tick labels, and numbers above the intersection size bars. `text.scale` can either take a universal scale in the form of an integer, or a vector of specific scales in the format: `c(intersection size title, intersection size tick labels, set size title, set size tick labels, set names, numbers above bars)`.
 ```{r, out.width="850px", fig.width=9, fig.height =5, tidy =TRUE, fig.align='center'}
-upset(movies, nsets = 6, number.angles = 30, point.size = 5, name.size = 12, line.size = 2, mainbar.y.label = "Genre Intersections", sets.x.label = "Movies Per Genre", text.scale=c(1.3, 1.3, 1, 1, 0.75))
+upset(movies, nsets = 6, number.angles = 30, point.size = 3.5, line.size = 2, mainbar.y.label = "Genre Intersections", sets.x.label = "Movies Per Genre", text.scale=c(1.3, 1.3, 1, 1, 2, 0.75))
 ```
 
 <br>
