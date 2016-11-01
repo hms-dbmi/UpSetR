@@ -5,7 +5,7 @@ Date: 2016-10-18
 URL: http://github.com/hms-dbmi/UpSetR
 BugReports: http://github.com/hms-dbmi/UpSetR/issues
 Authors@R: c(
-    person("Jake", "Conway", email = "jake_conway@student.uml.edu", role = "cre"),
+    person("Jake", "Conway", email = "jake_conway@hms.harvard.edu", role = "cre"),
     person("Nils", "Gehlenborg", email = "nils@hms.harvard.edu", role = "aut"))
 Description: Creates visualizations of intersecting sets using a novel matrix
     design, along with visualizations of several common set, element and attribute
