@@ -252,7 +252,13 @@ BaseCustomPlot <- function(attribute_plots, plots, position, size_plot_height, M
     metadata_left <- 1
   }
   
-  if((is.null(legend) == F) && (q_legend != tolower("none"))){custom_bottom <- (custom_bottom + 5)}
+  if((is.null(legend) == F) && (q_legend == tolower("bottom"))){custom_bottom <- (custom_bottom + 5)}
+  if((is.null(legend) == F) && (q_legend == tolower("top"))){
+    bar_top <- bar_top + 5
+    matrix_bottom <- matrix_bottom + 5
+    custom_top <- custom_top + 5
+    custom_bottom <- custom_bottom + 5
+  }
   grid.newpage()
   pushViewport(viewport(layout = grid.layout(custom_bottom,matrix_and_mainbar_right)))
   vp = vplayout(bar_top:matrix_bottom, matrix_and_mainbar_left:matrix_and_mainbar_right)
@@ -280,12 +286,22 @@ BaseCustomPlot <- function(attribute_plots, plots, position, size_plot_height, M
       popViewport()
     }
   }
-  if((is.null(legend) == F) && (q_legend != tolower("none"))){
+  if((is.null(legend) == F) && (q_legend == tolower("bottom"))){
     vp = vplayout(custom_top:(custom_bottom - 5), 1:matrix_and_mainbar_right)
     pushViewport(vp)
     grid.draw(do.call(arrangeGrob, c(plots, ncol = attribute_plots$ncols)))
     popViewport()
     vp = vplayout((custom_bottom - 4):custom_bottom, 1:matrix_and_mainbar_right)
+    pushViewport(vp)
+    grid.draw(arrangeGrob(legend))
+    popViewport()
+  }
+  else if((is.null(legend) == F) && (q_legend == tolower("top"))){
+    vp = vplayout(custom_top:custom_bottom, 1:matrix_and_mainbar_right)
+    pushViewport(vp)
+    grid.draw(do.call(arrangeGrob, c(plots, ncol = attribute_plots$ncols)))
+    popViewport()
+    vp = vplayout((bar_top-5):(bar_top-1), 1:matrix_and_mainbar_right)
     pushViewport(vp)
     grid.draw(arrangeGrob(legend))
     popViewport()
