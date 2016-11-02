@@ -87,21 +87,19 @@ metadataHeat <- function(metadata, y_data, plot_type, colors){
   plot <- (ggplot(data=metadata, aes_string(x="sets", y = 1, fill = y_data))
            + scale_x_continuous(expand = c(c(0,0), c(0,0)))
            + theme(panel.background = element_rect("white"),
-                   plot.title = element_text(margin = margin(b=titleAdjustment), hjust = 0,
+                   plot.title = element_text(margin = margin(b=titleAdjustment),
                                              size = 9.25, angle = 90),
                    plot.margin=unit(c(0,0,0,0), "lines"),
                    axis.title.x = element_text(size = 8.3),
                    legend.position = "none",
                    axis.line = element_blank(),
-                   axis.line = element_line(colour = "gray0"),
                    axis.line.y = element_blank(),
-                   axis.line.x = element_line(colour = "gray0", size = 0.3),
+                   axis.line.x = element_blank(),
                    axis.text.y = element_blank(),
                    axis.ticks.y = element_blank(),
                    axis.title.y = element_blank(),
                    axis.text.x = element_blank(),
-                   axis.ticks.x = element_blank(),
-                   axis.title.x = element_blank())
+                   axis.ticks.x = element_blank())
            + ylab(NULL)
            + xlab(NULL)
            + ggtitle(y_data)
@@ -173,21 +171,19 @@ metadataText <- function(metadata, y_data, colors, alignment){
            + scale_x_continuous(limits = c(0.5, (nrow(metadata)+0.5)),
                                 expand = c(0,0))
            + theme(panel.background = element_rect("white"),
-                   plot.title = element_text(margin = margin(b=titleAdjustment), hjust = 0,
+                   plot.title = element_text(margin = margin(b=titleAdjustment),
                                              size = 8.3, angle = 90),
                    plot.margin=unit(c(0,0,0,0), "lines"),
                    axis.title.x = element_text(size = 7),
                    legend.position = "none",
                    axis.line = element_blank(),
-                   axis.line = element_line(colour = "gray0"),
                    axis.line.y = element_blank(),
-                   axis.line.x = element_line(colour = "gray0", size = 0.3),
+                   axis.line.x = element_blank(),
                    axis.text.y = element_blank(),
                    axis.ticks.y = element_blank(),
                    axis.title.y = element_blank(),
                    axis.text.x = element_blank(),
-                   axis.ticks.x = element_blank(),
-                   axis.title.x = element_blank())
+                   axis.ticks.x = element_blank())
            + xlab(NULL)
            + ylab(NULL)
            + coord_flip()
