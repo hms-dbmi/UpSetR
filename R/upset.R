@@ -251,7 +251,7 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F
   ShadingData <- MakeShading(Matrix_layout, shade.color)
   }
   Main_bar <- Make_main_bar(All_Freqs, Bar_Q, show.numbers, mb.ratio, customQBar, number.angles, EBar_data, mainbar.y.label,
-                            mainbar.y.max, scale.intersections, text.scale)
+                            mainbar.y.max, scale.intersections, text.scale, attribute.plots)
   Matrix <- Make_matrix_plot(Matrix_layout, Set_sizes, All_Freqs, point.size, line.size,
                              text.scale, labels, ShadingData, shade.alpha)
   Sizes <- Make_size_plot(Set_sizes, sets.bar.color, mb.ratio, sets.x.label, scale.sets, text.scale, set_size.angles)

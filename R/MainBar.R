@@ -61,7 +61,15 @@ Counter <- function(data, num_sets, start_col, name_of_sets, nintersections, mba
 
 ## Generate main bar plot
 Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_angles,
-                          ebar, ylabel, ymax, scale_intersections, text_scale){
+                          ebar, ylabel, ymax, scale_intersections, text_scale, attribute_plots){
+  
+
+  bottom_margin <- (-1)*0.65
+
+  if(is.null(attribute_plots) == FALSE){
+    bottom_margin <- (-1)*0.45
+  }
+  
   if(length(text_scale) > 1 && length(text_scale) <= 6){
     y_axis_title_scale <- text_scale[1]
     y_axis_tick_label_scale <- text_scale[2]
@@ -109,7 +117,7 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_an
                                          breaks = NULL)
                     + xlab(NULL) + ylab(ylabel) +labs(title = NULL)
                     + theme(panel.background = element_rect(fill = "white"),
-                            plot.margin = unit(c(0.5,0.5,0.19,0.5), "lines"), panel.border = element_blank(),
+                            plot.margin = unit(c(0.5,0.5,bottom_margin,0.5), "lines"), panel.border = element_blank(),
                             axis.title.y = element_text(vjust = -0.8, size = 8.3*y_axis_title_scale), axis.text.y = element_text(vjust=0.3,
                                                                                                             size=7*y_axis_tick_label_scale)))
   if((show_num == "yes") || (show_num == "Yes")){
