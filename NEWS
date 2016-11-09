@@ -1,14 +1,24 @@
+Release v1.3.1
+
+- Fixed log scale bugs
+- Allow users to label their own queries, which can be displayed in query legend
+- Fixed query legend positioning bug. Allows query legend to be placed on top or bottom of plot grid
+- Fixed warnings and notes from new ggplot2 release
+- Updated plot margin of intersection size bar plot
+
+-----------------
+
 Release v1.3.0
 
-- Introduce text scales for all plot axis labels, tick labels, set names, and numbers above the bars
-- Remove names.size parameter and replace with a text scale
-- Fix vignettes so plot size and text is appropriately scaled
+- Introduced text scales for all plot axis labels, tick labels, set names, and numbers above the bars
+- Removed names.size parameter and replaced it with a text scale
+- Fixed vignettes so plot size and text is appropriately scaled
 
 -----------------
 
 Release v1.2.4
 
-- Fix check.names bug so that it reorders the set size bar plot, not just the set labels
+- Fixed check.names bug so that it reorders the set size bar plot, not just the set labels
 - Show all intersections when nintersects is set to NA
 
 -----------------
