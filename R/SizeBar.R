@@ -54,6 +54,12 @@ Make_size_plot <- function(Set_size_data, sbar_color, ratios, ylabel, scale_sets
   
   if(ylabel == "Set Size" && scale_sets != "identity"){
     ylabel <- paste("Set Size", paste0("( ", scale_sets, " )"))
+    if(scale_sets == "log2"){
+      Set_size_data$y <- log2(Set_size_data$y)
+    }
+    if(scale_sets == "log10"){
+      Set_size_data$y <- log10(Set_size_data$y)
+    }
   }
   
   Size_plot <- (ggplot(data = Set_size_data, aes_string(x ="x", y = "y"))
@@ -66,7 +72,7 @@ Make_size_plot <- function(Set_size_data, sbar_color, ratios, ylabel, scale_sets
                         plot.margin=unit(c(-0.11,-1.3,0.5,0.5), "lines"),
                         axis.title.x = element_text(size = 8.3*x_axis_title_scale),
                         axis.text.x = element_text(size = 7*x_axis_tick_label_scale, angle = set_size_angle,
-                                                   vjust = 1, hjust = 1),
+                                                   vjust = 1, hjust = 0.5),
                         axis.line = element_line(colour = "gray0"),
                         axis.line.y = element_blank(),
                         axis.line.x = element_line(colour = "gray0", size = 0.3),
