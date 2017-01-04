@@ -1,3 +1,11 @@
+Release v1.3.2
+
+- update logarithmic axis and bar labels
+- allow decimal values for log scales
+- set intersection size axis min to 0 for log scales
+
+-----------------
+
 Release v1.3.1
 
 - Fixed log scale bugs
