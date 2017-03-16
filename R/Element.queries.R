@@ -65,7 +65,7 @@ QuerieElemAtt <- function(q, data, start_col, exp, names, att_x, att_y, palette)
 
 
 ElemBarDat <- function(q, data1, first_col, exp, names, palette, mbdata){
-  data1 <- data.frame(data1)
+  data1 <- data.frame(data1, check.names = F)
   bar <- count(data1)
   bar$x <- 1:nrow(bar)
   rows <- data.frame()
@@ -86,9 +86,11 @@ ElemBarDat <- function(q, data1, first_col, exp, names, palette, mbdata){
       if(!is.null(exp)){
       elem_data <- Subset_att(elem_data, exp)
       }
-      elem_data <- count(elem_data[names])
+      elem_data <- as.data.frame(count(elem_data[names]))
+      names(elem_data) <- c(names, "freq")
       elem_data <- elem_data[which(rowSums(elem_data[names]) != 0), ]
-      x <- merge(mbdata, elem_data[names])
+      x <- merge(mbdata, elem_data[names], by = names)
+      elem_data <- merge(x[names], elem_data, by = names)
       x <- x$x
       elem_data$x <- x
       if((isTRUE(q[[i]]$active) == T) && (is.null(elem_data) == F)){
