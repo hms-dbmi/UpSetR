@@ -157,13 +157,13 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_an
   
   if(length(bInterDat) != 0){
     Main_bar_plot <- Main_bar_plot + geom_bar(data = bInterDat,
-                                              aes_string(x="x", y = "freq"), colour = bInterDat$color,
+                                              aes_string(x="x", y = "freq"),
                                               fill = bInterDat$color,
                                               stat = "identity", position = "identity", width = 0.6)
   }
   if(length(bElemDat) != 0){
     Main_bar_plot <- Main_bar_plot + geom_bar(data = bElemDat,
-                                              aes_string(x="x", y = "freq"), colour = bElemDat$color,
+                                              aes_string(x="x", y = "freq"),
                                               fill = bElemDat$color,
                                               stat = "identity", position = "identity", width = 0.6)
   }
