@@ -76,19 +76,19 @@ metadataHeat <- function(metadata, y_data, plot_type, colors){
   
   names(metadata)[colnum] <- y_data
   
-  if(nchar(y_data) > 5){
-    titleAdjustment <- nchar(y_data)-5
-    titleAdjustment <- 41 + titleAdjustment*6
-  }
-  else{
-    titleAdjustment <- 40
-  }
+  # if(nchar(y_data) > 5){
+  #   titleAdjustment <- nchar(y_data)-5
+  #   titleAdjustment <- 41 + titleAdjustment*6
+  # }
+  # else{
+    titleAdjustment <- 25
+  #}
   
   plot <- (ggplot(data=metadata, aes_string(x="sets", y = 1, fill = y_data))
            + scale_x_continuous(expand = c(c(0,0), c(0,0)))
            + theme(panel.background = element_rect("white"),
                    plot.title = element_text(margin = margin(b=titleAdjustment),
-                                             size = 9.25, angle = 90),
+                                             size = 9, hjust = 0.5),
                    plot.margin=unit(c(0,0,0,0), "lines"),
                    axis.title.x = element_text(size = 8.3),
                    legend.position = "none",
@@ -156,13 +156,13 @@ metadataText <- function(metadata, y_data, colors, alignment){
     align <- 0
   }
   
-  if(nchar(y_data) > 5){
-    titleAdjustment <- nchar(y_data)-5
-    titleAdjustment <- 41 + titleAdjustment*6
-  }
-  else{
-    titleAdjustment <- 40
-  }
+  # if(nchar(y_data) > 5){
+  #   titleAdjustment <- nchar(y_data)-5
+  #   titleAdjustment <- 41 + titleAdjustment*6
+  # }
+  #else{
+    titleAdjustment <- 25
+  #}
   
   ncols <- ncol(metadata)
   metadata <- cbind(metadata, c(1:nrow(metadata)))
@@ -172,7 +172,7 @@ metadataText <- function(metadata, y_data, colors, alignment){
                                 expand = c(0,0))
            + theme(panel.background = element_rect("white"),
                    plot.title = element_text(margin = margin(b=titleAdjustment),
-                                             size = 8.3, angle = 90),
+                                             size = 9, hjust = 0.5),
                    plot.margin=unit(c(0,0,0,0), "lines"),
                    axis.title.x = element_text(size = 7),
                    legend.position = "none",
