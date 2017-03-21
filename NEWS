@@ -1,3 +1,11 @@
+Release v1.3.3
+
+- Made element query compatible with check.names
+- Removed border from active query bars
+- Adjusted metadata heatmap and text title positions (centered title and removed 90 degree rotation)
+
+-----------------
+
 Release v1.3.2
 
 - update logarithmic axis and bar labels
