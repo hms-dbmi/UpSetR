@@ -1,6 +1,6 @@
 Package: UpSetR
 Title: A More Scalable Alternative to Venn and Euler Diagrams for Visualizing Intersecting Sets
-Version: 1.3.2
+Version: 1.3.3
 Date: 2016-1-3
 URL: http://github.com/hms-dbmi/UpSetR
 BugReports: http://github.com/hms-dbmi/UpSetR/issues
