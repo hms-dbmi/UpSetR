@@ -19,4 +19,3 @@ A pre-made scatter plot that can be added to the custom.plot paramter.
 \note{
 See examples section for upset function on how to use custom.plot parameter.
 }
-

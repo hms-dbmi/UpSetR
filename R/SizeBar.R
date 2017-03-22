@@ -6,7 +6,7 @@ FindSetFreqs <- function(data, start_col, num_sets, set_names, keep_order){
   temp_data <- as.data.frame(colSums(temp_data))
   colnames(temp_data) <- c("y")
   if(keep_order == FALSE){
-  temp_data <- temp_data[order(temp_data$y, decreasing = T), ]
+    temp_data <- temp_data[order(temp_data$y, decreasing = T), ]
   }
   else{
     temp_data <- temp_data$y
@@ -32,16 +32,16 @@ log2_reverse_trans <- function(){
 }
 
 ## Generate set size plot
-Make_size_plot <- function(Set_size_data, sbar_color, ratios, ylabel, scale_sets, text_scale, set_size_angle){
-#   if(ratios[1] < 0.4){
-#     m <- (-0.05)
-#   }
-#   else if((ratios[1] > 0.4) & (ratios[1] < 0.46)){
-#     m <- (-0.03)
-#   }
-#   else{
-#     m <- 0
-#   }
+Make_size_plot <- function(Set_size_data, sbar_color, ratios, ylabel, scale_sets, text_scale, set_size_angle, sets.comma){
+  #   if(ratios[1] < 0.4){
+  #     m <- (-0.05)
+  #   }
+  #   else if((ratios[1] > 0.4) & (ratios[1] < 0.46)){
+  #     m <- (-0.03)
+  #   }
+  #   else{
+  #     m <- 0
+  #   }
   
   if(length(text_scale) > 1 && length(text_scale) <= 6){
     x_axis_title_scale <- text_scale[3]
@@ -83,17 +83,19 @@ Make_size_plot <- function(Set_size_data, sbar_color, ratios, ylabel, scale_sets
                 + xlab(NULL) + ylab(ylabel)
                 + coord_flip())
   
+  labels_arg <- waiver()
+  if(sets.comma) labels_arg <- scales::comma
+  
   if(scale_sets == "log10"){
-    Size_plot <- (Size_plot + scale_y_continuous(trans = log10_reverse_trans()))
+    Size_plot <- (Size_plot + scale_y_continuous(trans = log10_reverse_trans(), labels = labels_arg))
   }
   else if (scale_sets == "log2"){
-    Size_plot <- (Size_plot + scale_y_continuous(trans = log2_reverse_trans()))
+    Size_plot <- (Size_plot + scale_y_continuous(trans = log2_reverse_trans(), labels = labels_arg))
   }
   else{
-    Size_plot <- (Size_plot + scale_y_continuous(trans = "reverse"))
+    Size_plot <- (Size_plot + scale_y_continuous(trans = "reverse", labels = labels_arg))
   }
   
   Size_plot <- ggplot_gtable(ggplot_build(Size_plot))
   return(Size_plot)
 }
-
