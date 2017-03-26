@@ -35,6 +35,8 @@ The movie data set created by the [GroupLens Lab](http://grouplens.org/datasets/
 
 ## Examples
 
+In addition to the examples shown here, we have included a range of UpSetR plots in the [paper about the R package](#citation), which can be found in a [separate GitHub repository](https://github.com/hms-dbmi/UpSetR-paper). 
+
 ### Vignettes
 
 There are currently four vignettes that explain how to use the features included in the UpSetR package:
