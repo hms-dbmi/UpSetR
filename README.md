@@ -77,7 +77,14 @@ devtools::install_github("hms-dbmi/UpSetR")
 ```
 
 ## Citation
-If you use UpSetR in a paper, please cite:   
+If you use UpSetR in a paper, please cite:
+
+> Jake R Conway, Alexander Lex, Nils Gehlenborg
+> UpSetR: An R Package for the Visualization of Intersecting Sets and their Properties
+> bioRxiv 120600
+> doi: https://doi.org/10.1101/120600
+
+The original technique and interactive visualization tool implementing the approach was described here:
 
 > Alexander Lex, Nils Gehlenborg, Hendrik Strobelt, Romain Vuillemot, Hanspeter Pfister,   
 > UpSet: Visualization of Intersecting Sets,   
