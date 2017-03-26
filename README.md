@@ -4,7 +4,23 @@
 
 UpSetR generates static [UpSet](http://vcg.github.io/upset/) plots. The UpSet technique visualizes set intersections in a matrix layout and introduces aggregates based on groupings and queries. The matrix layout enables the effective representation of associated data, such as the number of elements in the aggregates and intersections, as well as additional summary statistics derived from subset or element attributes.
 
-For further details about the original technique see the [UpSet website](http://vcg.github.io/upset/about/). You can also check out the [UpSetR shiny app](https://gehlenborglab.shinyapps.io/upsetr/). [Here is the source code](https://github.com/hms-dbmi/UpSetR-shiny) for the shiny wrapper
+For further details about the original technique see the [UpSet website](http://vcg.github.io/upset/about/). You can also check out the [UpSetR shiny app](https://gehlenborglab.shinyapps.io/upsetr/). [Here is the source code](https://github.com/hms-dbmi/UpSetR-shiny) for the shiny wrapper.
+
+## Citation
+If you use UpSetR in a paper, please cite:
+
+> Jake R Conway, Alexander Lex, Nils Gehlenborg
+> UpSetR: An R Package for the Visualization of Intersecting Sets and their Properties
+> bioRxiv 120600
+> doi: https://doi.org/10.1101/120600
+
+The original technique and the interactive visualization tool implementing the approach are described here:
+
+> Alexander Lex, Nils Gehlenborg, Hendrik Strobelt, Romain Vuillemot, Hanspeter Pfister,   
+> UpSet: Visualization of Intersecting Sets,   
+> IEEE Transactions on Visualization and Computer Graphics (InfoVis '14), vol. 20, no. 12, pp. 1983–1992, 2014.  
+> doi: https://doi.org/10.1109/TVCG.2014.2346248
+
 
 ## Sample Data
 
@@ -75,18 +91,3 @@ Download the latest development code of UpSetR from GitHub using [devtools](http
 ```R
 devtools::install_github("hms-dbmi/UpSetR")
 ```
-
-## Citation
-If you use UpSetR in a paper, please cite:
-
-> Jake R Conway, Alexander Lex, Nils Gehlenborg
-> UpSetR: An R Package for the Visualization of Intersecting Sets and their Properties
-> bioRxiv 120600
-> doi: https://doi.org/10.1101/120600
-
-The original technique and interactive visualization tool implementing the approach was described here:
-
-> Alexander Lex, Nils Gehlenborg, Hendrik Strobelt, Romain Vuillemot, Hanspeter Pfister,   
-> UpSet: Visualization of Intersecting Sets,   
-> IEEE Transactions on Visualization and Computer Graphics (InfoVis '14), vol. 20, no. 12, pp. 1983–1992, 2014.  
-> doi: https://doi.org/10.1109/TVCG.2014.2346248
