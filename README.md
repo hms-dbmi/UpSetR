@@ -6,7 +6,7 @@ UpSetR generates static [UpSet](http://vcg.github.io/upset/) plots. The UpSet te
 
 For further details about the original technique see the [UpSet website](http://vcg.github.io/upset/about/). You can also check out the [UpSetR shiny app](https://gehlenborglab.shinyapps.io/upsetr/). [Here is the source code](https://github.com/hms-dbmi/UpSetR-shiny) for the shiny wrapper. 
 
-A [Python package](https://github.com/ImSoErgodic/py-upset) called [py-upset](https://github.com/ImSoErgodic/py-upset) has to create UpSet plots has been created by GitHub user [ImSoErgodic](https://github.com/ImSoErgodic). 
+A [Python package](https://github.com/ImSoErgodic/py-upset) called [py-upset](https://github.com/ImSoErgodic/py-upset) to create UpSet plots has been created by GitHub user [ImSoErgodic](https://github.com/ImSoErgodic). 
 
 ## Citation
 If you use UpSetR in a paper, please cite:
