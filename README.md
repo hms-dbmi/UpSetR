@@ -4,7 +4,9 @@
 
 UpSetR generates static [UpSet](http://vcg.github.io/upset/) plots. The UpSet technique visualizes set intersections in a matrix layout and introduces aggregates based on groupings and queries. The matrix layout enables the effective representation of associated data, such as the number of elements in the aggregates and intersections, as well as additional summary statistics derived from subset or element attributes.
 
-For further details about the original technique see the [UpSet website](http://vcg.github.io/upset/about/). You can also check out the [UpSetR shiny app](https://gehlenborglab.shinyapps.io/upsetr/). [Here is the source code](https://github.com/hms-dbmi/UpSetR-shiny) for the shiny wrapper.
+For further details about the original technique see the [UpSet website](http://vcg.github.io/upset/about/). You can also check out the [UpSetR shiny app](https://gehlenborglab.shinyapps.io/upsetr/). [Here is the source code](https://github.com/hms-dbmi/UpSetR-shiny) for the shiny wrapper. 
+
+A [Python package](https://github.com/ImSoErgodic/py-upset) called [py-upset](https://github.com/ImSoErgodic/py-upset) to create UpSet plots has been created by GitHub user [ImSoErgodic](https://github.com/ImSoErgodic). 
 
 ## Citation
 If you use UpSetR in a paper, please cite:
