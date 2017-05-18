@@ -2,7 +2,8 @@
 
 language: r
 warnings_are_errors: true
-sudo: required
+sudo: true
+dist: trusty
 
 env:
  global:
@@ -12,7 +13,10 @@ notifications:
   email:
     on_success: change
     on_failure: change
-
+    
+r_binary_packages:
+  - testthat
+  - devtools
 
 before_install:
   - curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
