@@ -13,8 +13,7 @@ If you use UpSetR in a paper, please cite:
 
 > Jake R Conway, Alexander Lex, Nils Gehlenborg
 > UpSetR: An R Package for the Visualization of Intersecting Sets and their Properties
-> bioRxiv 120600
-> doi: https://doi.org/10.1101/120600
+> doi: https://doi.org/10.1093/bioinformatics/btx364
 
 The original technique and the interactive visualization tool implementing the approach are described here:
 
