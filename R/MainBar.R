@@ -107,14 +107,14 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_an
   
   if(ylabel == "Intersection Size" && scale_intersections != "identity"){
     ylabel <- paste("Intersection Size", paste0("( ", scale_intersections, " )"))
-    if(scale_intersections == "log2"){
-      Main_bar_data$freq <- round(log2(Main_bar_data$freq), 2)
-      ymax <- log2(ymax)
-    }
-    if(scale_intersections == "log10"){
-      Main_bar_data$freq <- round(log10(Main_bar_data$freq), 2)
-      ymax <- log10(ymax)
-    }
+  }
+  if(scale_intersections == "log2"){
+    Main_bar_data$freq <- round(log2(Main_bar_data$freq), 2)
+    ymax <- log2(ymax)
+  }
+  if(scale_intersections == "log10"){
+    Main_bar_data$freq <- round(log10(Main_bar_data$freq), 2)
+    ymax <- log10(ymax)
   }
   
   Main_bar_plot <- (ggplot(data = Main_bar_data, aes_string(x = "x", y = "freq")) 
