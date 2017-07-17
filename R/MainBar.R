@@ -20,7 +20,7 @@ Counter <- function(data, num_sets, start_col, name_of_sets, nintersections, mba
     colnames(empty) <- name_of_sets
     empty$freq <- 0
     all <- rbind(Freqs, empty)
-    Freqs <- data.frame(all[!duplicated(all[1:num_sets]), ])
+    Freqs <- data.frame(all[!duplicated(all[1:num_sets]), ], check.names = F)
   }
   #Remove universal empty set
   Freqs <- Freqs[!(rowSums(Freqs[ ,1:num_sets]) == 0), ]
