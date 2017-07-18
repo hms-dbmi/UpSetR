@@ -61,11 +61,11 @@ Counter <- function(data, num_sets, start_col, name_of_sets, nintersections, mba
 
 ## Generate main bar plot
 Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_angles,
-                          ebar, ylabel, ymax, scale_intersections, text_scale, attribute_plots){
+                          ebar, ylabel, ymax, scale_intersections, text_scale, attribute_plots, mainbar.comma){
   
-
+  
   bottom_margin <- (-1)*0.65
-
+  
   if(is.null(attribute_plots) == FALSE){
     bottom_margin <- (-1)*0.45
   }
@@ -101,8 +101,8 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_an
   
   #ten_perc creates appropriate space above highest bar so number doesnt get cut off
   if(is.null(ymax) == T){
-  ten_perc <- ((max(Main_bar_data$freq)) * 0.1)
-  ymax <- max(Main_bar_data$freq) + ten_perc
+    ten_perc <- ((max(Main_bar_data$freq)) * 0.1)
+    ymax <- max(Main_bar_data$freq) + ten_perc
   }
   
   if(ylabel == "Intersection Size" && scale_intersections != "identity"){
@@ -117,8 +117,11 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_an
     ymax <- log10(ymax)
   }
   
+  labels_arg <- waiver()
+  if(mainbar.comma) labels_arg <- scales::comma
+  
   Main_bar_plot <- (ggplot(data = Main_bar_data, aes_string(x = "x", y = "freq")) 
-                    + scale_y_continuous(trans = scale_intersections)
+                    + scale_y_continuous(trans = scale_intersections, labels = labels_arg)
                     + ylim(0, ymax)
                     + geom_bar(stat = "identity", width = 0.6,
                                fill = Main_bar_data$color)
@@ -128,7 +131,7 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_an
                     + theme(panel.background = element_rect(fill = "white"),
                             plot.margin = unit(c(0.5,0.5,bottom_margin,0.5), "lines"), panel.border = element_blank(),
                             axis.title.y = element_text(vjust = -0.8, size = 8.3*y_axis_title_scale), axis.text.y = element_text(vjust=0.3,
-                                                                                                            size=7*y_axis_tick_label_scale)))
+                                                                                                                                 size=7*y_axis_tick_label_scale)))
   if((show_num == "yes") || (show_num == "Yes")){
     Main_bar_plot <- (Main_bar_plot + geom_text(aes_string(label = "freq"), size = 2.2*intersection_size_number_scale, vjust = -1,
                                                 angle = number_angles, colour = Main_bar_data$color))
@@ -185,6 +188,9 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_an
     Main_bar_plot <- (Main_bar_plot + geom_point(data = pElemDat, aes_string(x="x", y = "freq"),
                                                  position = position_jitter(width = 0.2, height = 0.2),
                                                  colour = pElemDat$color, size = 2, shape = 17))
+  }
+  if(mainbar.comma){
+    Main_bar_plot <- (Main_bar_plot + scale_y_continuous(labels = scales::comma))
   }
   
   Main_bar_plot <- (Main_bar_plot 
