@@ -54,11 +54,11 @@ will be the specific intersections listed.}
 
 \item{line.size}{Width of lines in matrix plot}
 
-\item{mb.ratio}{Ratio between matrix plot and main bar plot (Keep in terms of hundreths)}
+\item{mb.ratio}{Ratio between matrix plot and main bar plot (Keep in terms of hundredths)}
 
 \item{expression}{Expression to subset attributes of intersection or element query data. Enter as string (Ex: "ColName > 3")}
 
-\item{att.pos}{Position of attribute plot. If NULL or "bottom" the plot will be at below UpSet plot. If "top" it will be above UpSert plot}
+\item{att.pos}{Position of attribute plot. If NULL or "bottom" the plot will be at below UpSet plot. If "top" it will be above UpSet plot}
 
 \item{att.color}{Color of attribute histogram bins or scatterplot points for unqueried data represented by main bars. Default set to color of main bars.}
 
@@ -74,7 +74,7 @@ will be the specific intersections listed.}
 
 \item{cutoff}{The number of intersections from each set (to cut off at) when aggregating by sets}
 
-\item{queries}{Unified querie of intersections, elements, and custom row functions. Entered as a list that contains a list of
+\item{queries}{Unified query of intersections, elements, and custom row functions. Entered as a list that contains a list of
 queries. query is the type of query being conducted. params are the parameters of the query (if any). color is the color of the points on the
 plot that will represent the query. If no color is selected one will be provided automatically. active takes TRUE or FALSE, and if
 TRUE, it will overlay the bars present  with the results from the query. If FALSE a tick mark will indicate the intersection size.
@@ -98,7 +98,7 @@ The maximum number of attributes that can be entered is 2.}
 \item{attribute.plots}{Create custom ggplot using intersection data represented in the main bar plot. Prior to adding custom plots, the UpSet plot is set up in a 100 by 100 grid.
 The attribute.plots parameter takes a list that contains the number of rows that should be allocated for the custom plot, and a list of plots with specified positions.
 nrows is the number of rows the custom plots should take up. There is already 100 allocated for the custom plot. plots takes a list that contains a function that returns
-a custom ggplots and the x and y aesthetics for the function. ncols is the number of columns that your ggplots should take up. See examples for how to add custom ggplots.}
+a custom ggplot and the x and y aesthetics for the function. ncols is the number of columns that your ggplots should take up. See examples for how to add custom ggplots.}
 
 \item{scale.intersections}{The scale to be used for the intersection sizes. Options: "identity", "log10", "log2"}
 
@@ -115,13 +115,13 @@ Visualization of set intersections using novel UpSet matrix design.
 \details{
 Visualization of set data in the layout described by Lex and Gehlenborg in \url{http://www.nature.com/nmeth/journal/v11/n8/abs/nmeth.3033.html}.
 UpSet also allows for visualization of queries on intersections and elements, along with custom queries queries implemented using
-Hadley Wickhams apply function. To further analyze the data contained in the intersections, the user may select additional attribute plots
+Hadley Wickham's apply function. To further analyze the data contained in the intersections, the user may select additional attribute plots
 to be displayed alongside the UpSet plot. The user also has the the ability to pass their own plots into the function to further analyze
 data belonging to queries of interest. Most aspects of the UpSet plot are customizable, allowing the user to select the plot that best suits their style.
-Depending on how the featuers are selected, UpSet can display between 25-65 sets and between 40-100 intersections.
+Depending on how the features are selected, UpSet can display between 25-65 sets and between 40-100 intersections.
 }
 \note{
-Data set must be formatted as described on the orginal UpSet github page: \url{http://github.com/VCG/upset/wiki}.
+Data set must be formatted as described on the original UpSet github page: \url{http://github.com/VCG/upset/wiki}.
 }
 \examples{
 movies <- read.csv( system.file("extdata", "movies.csv", package = "UpSetR"), header=TRUE, sep=";" )
@@ -176,4 +176,3 @@ Original UpSet Website: \url{http://vcg.github.io/upset/about/}
 
 UpSetR github for additional examples: \url{http://github.com/hms-dbmi/UpSetR}
 }
-

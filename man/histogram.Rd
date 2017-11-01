@@ -12,9 +12,8 @@ histogram(mydata, x)
 \item{x}{The x aesthetic of for the histogram plot}
 }
 \description{
-A pre-made histogram that can be added to custom.plot paramter.
+A pre-made histogram that can be added to custom.plot parameter.
 }
 \note{
 See examples section for upset function on how to use custom.plot parameter
 }
-

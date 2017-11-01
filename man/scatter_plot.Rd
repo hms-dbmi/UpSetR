@@ -14,9 +14,8 @@ scatter_plot(mydata, x, y)
 \item{y}{The y aesthetic for the scatter plot}
 }
 \description{
-A pre-made scatter plot that can be added to the custom.plot paramter.
+A pre-made scatter plot that can be added to the custom.plot parameter.
 }
 \note{
 See examples section for upset function on how to use custom.plot parameter.
 }
-

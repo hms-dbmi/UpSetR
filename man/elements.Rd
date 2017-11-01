@@ -2,7 +2,7 @@
 % Please edit documentation in R/elements.R
 \name{elements}
 \alias{elements}
-\title{Element query for queries paramter}
+\title{Element query for queries parameter}
 \usage{
 elements(func, query, ...)
 }
@@ -19,4 +19,3 @@ A query paramter to visualize specific elements of interest if queries = active 
 \note{
 See examples section of upset function on how to use this function in the queries parameter.
 }
-

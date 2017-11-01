@@ -2,7 +2,7 @@
 % Please edit documentation in R/intersects.R
 \name{intersects}
 \alias{intersects}
-\title{Intersection query for queries paramter}
+\title{Intersection query for queries parameter}
 \usage{
 intersects(func, query, ...)
 }
@@ -11,7 +11,7 @@ intersects(func, query, ...)
 
 \item{query}{Input from the queries parameter assigned to the intersection function.}
 
-\item{...}{Additional paramters to be applied internally}
+\item{...}{Additional parameters to be applied internally}
 }
 \description{
 A query paramter to visualize elements contained in specific intersections
@@ -19,4 +19,3 @@ A query paramter to visualize elements contained in specific intersections
 \note{
 See examples section of upset function on how to use this function in the queries parameter.
 }
-

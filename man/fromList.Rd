@@ -15,4 +15,3 @@ A function to convert a list of named vectors to a data frame compatible with Up
 \note{
 See "Basic Usage" vignette for an example on how to use this function in UpSetR.
 }
-
