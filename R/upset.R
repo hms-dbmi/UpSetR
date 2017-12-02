@@ -246,6 +246,8 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F
     if(is.null(ShadingData) == FALSE){
     shade.alpha <- unique(ShadingData$alpha)
     }
+  } else {
+    set.metadata.plots <- NULL
   }
   if(is.null(ShadingData) == TRUE){
   ShadingData <- MakeShading(Matrix_layout, shade.color)
@@ -256,8 +258,55 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F
                              text.scale, labels, ShadingData, shade.alpha)
   Sizes <- Make_size_plot(Set_sizes, sets.bar.color, mb.ratio, sets.x.label, scale.sets, text.scale, set_size.angles)
   
-  Make_base_plot(Main_bar, Matrix, Sizes, labels, mb.ratio, att.x, att.y, New_data,
-                 expression, att.pos, first.col, att.color, AllQueryData, attribute.plots,
-                 legend, query.legend, BoxPlots, Set_names, set.metadata, set.metadata.plots)
-  
+  # Make_base_plot(Main_bar, Matrix, Sizes, labels, mb.ratio, att.x, att.y, New_data,
+  #                expression, att.pos, first.col, att.color, AllQueryData, attribute.plots,
+  #                legend, query.legend, BoxPlots, Set_names, set.metadata, set.metadata.plots)
+
+  structure(class = "upset",
+    .Data=list(
+      Main_bar = Main_bar,
+      Matrix = Matrix,
+      Sizes = Sizes,
+      labels = labels,
+      mb.ratio = mb.ratio,
+      att.x = att.x,
+      att.y = att.y,
+      New_data = New_data,
+      expression = expression,
+      att.pos = att.pos,
+      first.col = first.col,
+      att.color = att.color,
+      AllQueryData = AllQueryData,
+      attribute.plots = attribute.plots,
+      legend = legend,
+      query.legend = query.legend,
+      BoxPlots = BoxPlots,
+      Set_names = Set_names,
+      set.metadata = set.metadata,
+      set.metadata.plots = set.metadata.plots)
+  )
+}
+#' @export
+print.upset <- function(x) {
+  Make_base_plot(
+    Main_bar_plot = x$Main_bar, 
+    Matrix_plot = x$Matrix, 
+    Size_plot = x$Sizes, 
+    labels = x$labels, 
+    hratios = x$mb.ratio, 
+    att_x = x$att.x, 
+    att_y = x$att.y,
+    Set_data = x$New_data, 
+    exp = x$expression, 
+    position = x$att.pos, 
+    start_col = x$first.col, 
+    att_color = x$att.color, 
+    QueryData = x$AllQueryData,
+    attribute_plots = x$attribute.plots, 
+    legend = x$legend, 
+    query_legend = x$query.legend, 
+    boxplot = x$BoxPlots, 
+    names = x$Set_names, 
+    set_metadata = x$set.metadata,
+    set_metadata_plots = x$set.metadata.plots)
 }

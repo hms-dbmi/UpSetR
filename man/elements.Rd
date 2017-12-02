@@ -19,4 +19,3 @@ A query paramter to visualize specific elements of interest if queries = active 
 \note{
 See examples section of upset function on how to use this function in the queries parameter.
 }
-
