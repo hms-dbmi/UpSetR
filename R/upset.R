@@ -260,4 +260,6 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F
                  expression, att.pos, first.col, att.color, AllQueryData, attribute.plots,
                  legend, query.legend, BoxPlots, Set_names, set.metadata, set.metadata.plots)
   
+  # Return a gTree so plot can be assigned to a variable
+  invisible(grid.grab())
 }
