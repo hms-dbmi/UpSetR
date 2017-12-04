@@ -110,7 +110,8 @@
 #' @import stats
 #' @import methods
 #' @import grDevices
-#' @import scales       
+#' @import scales
+#' @importFrom grid grid.grab   
 #' @export
 upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F, set.metadata = NULL, intersections = NULL,
                   matrix.color = "gray23", main.bar.color = "gray23", mainbar.y.label = "Intersection Size", mainbar.y.max = NULL,
