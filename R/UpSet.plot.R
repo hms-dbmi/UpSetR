@@ -1,4 +1,4 @@
-#' @importFrom grid grid.newpage
+#' @importFrom grid grid.null
 #' @importFrom grid pushViewport
 #' @importFrom grid viewport
 #' @importFrom grid grid.layout
@@ -108,7 +108,7 @@ BaseBoxPlot <- function(box_plot, position, size_plot_height, Main_bar_plot, Mat
     metadata_right <- set_metadata$ncols
     metadata_left <- 1
   }
-  grid.newpage()
+  grid.null()
   if(length(box_plot) == 1){
     pushViewport(viewport(layout = grid.layout(135,matrix_and_mainbar_right)))
   }
@@ -184,7 +184,7 @@ NoAttBasePlot <- function(legend, size_plot_height, Main_bar_plot, Matrix_plot, 
     metadata_right <- set_metadata$ncols
     metadata_left <- 1
   }
-  grid.newpage()
+  grid.null()
   if((is.null(legend) == F) && (query_legend != tolower("none"))){
     if(query_legend == tolower("top")){
       pushViewport(viewport(layout = grid.layout(102, matrix_and_mainbar_right)))
@@ -259,7 +259,7 @@ BaseCustomPlot <- function(attribute_plots, plots, position, size_plot_height, M
     custom_top <- custom_top + 5
     custom_bottom <- custom_bottom + 5
   }
-  grid.newpage()
+  grid.null()
   pushViewport(viewport(layout = grid.layout(custom_bottom,matrix_and_mainbar_right)))
   vp = vplayout(bar_top:matrix_bottom, matrix_and_mainbar_left:matrix_and_mainbar_right)
   pushViewport(vp)
