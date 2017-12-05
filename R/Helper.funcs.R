@@ -131,7 +131,10 @@ OverlayEdit <- function(data1, data2, start_col, num_sets, intersects, exp, inte
   temp_data <- (temp_data[ ,!(colnames(data1) %in% unwanted), drop = F])
   new_end <- ((start_col + length(intersects)) -1)
   if(new_end == start_col){
-    temp_data <- temp_data[ which(temp_data[ ,start_col] == 1), ]
+    n <- names(temp_data)
+    temp_data <- temp_data[which(temp_data[ ,start_col] == 1), ]
+    temp_data <- as.data.frame(temp_data)
+    names(temp_data) <- n
   }
   else{
     temp_data <- temp_data[which(rowSums(temp_data[ ,start_col:new_end]) == length(intersects)), ]
