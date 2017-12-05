@@ -176,4 +176,3 @@ Original UpSet Website: \url{http://vcg.github.io/upset/about/}
 
 UpSetR github for additional examples: \url{http://github.com/hms-dbmi/UpSetR}
 }
-
