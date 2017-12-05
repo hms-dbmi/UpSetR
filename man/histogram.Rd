@@ -17,4 +17,3 @@ A pre-made histogram that can be added to custom.plot paramter.
 \note{
 See examples section for upset function on how to use custom.plot parameter
 }
-
