@@ -311,3 +311,8 @@ print.upset <- function(x, newpage = TRUE) {
     set_metadata_plots = x$set.metadata.plots,
     newpage = newpage)
 }
+
+#' @export
+summary.upset <- function(x) {
+    cat("An object of class `upset`. Call print() to show.")
+}
