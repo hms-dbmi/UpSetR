@@ -17,7 +17,7 @@ upset(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F,
   matrix.dot.alpha = 0.5, empty.intersections = NULL, color.pal = 1,
   boxplot.summary = NULL, attribute.plots = NULL,
   scale.intersections = "identity", scale.sets = "identity",
-  text.scale = 1, set_size.angles = 0)
+  text.scale = 1, set_size.angles = 0, set_size.show = FALSE)
 }
 \arguments{
 \item{data}{Data set}
@@ -108,6 +108,8 @@ a custom ggplots and the x and y aesthetics for the function. ncols is the numbe
 in the following format: c(intersection size title, intersection size tick labels, set size title, set size tick labels, set names, numbers above bars)}
 
 \item{set_size.angles}{Numeric, angle to rotate the set size plot x-axis text}
+
+\item{set_size.show}{Logical, display the set sizes on the set size bar chart}
 }
 \description{
 Visualization of set intersections using novel UpSet matrix design.
@@ -176,4 +178,3 @@ Original UpSet Website: \url{http://vcg.github.io/upset/about/}
 
 UpSetR github for additional examples: \url{http://github.com/hms-dbmi/UpSetR}
 }
-

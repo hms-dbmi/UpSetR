@@ -15,4 +15,3 @@ A function to convert an expression to a data frame compatible with UpSetR.
 \note{
 See "Basic Usage" vignette for an example on how to use this function in UpSetR.
 }
-
