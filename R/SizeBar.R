@@ -43,8 +43,6 @@ Make_size_plot <- function(Set_size_data, sbar_color, ratios, ylabel, scale_sets
 #     m <- 0
 #   }
   
-  # 'set_size.show'
-  
   if(length(text_scale) > 1 && length(text_scale) <= 6){
     x_axis_title_scale <- text_scale[3]
     x_axis_tick_label_scale <- text_scale[4]
