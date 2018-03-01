@@ -1,6 +1,6 @@
 #' Scatterplot for customplot
 #'
-#' @description A pre-made scatter plot that can be added to the custom.plot paramter.
+#' @description A pre-made scatter plot that can be added to the custom.plot parameter.
 #' @param mydata A data set containing intersection data provided internally
 #' @param x The x aesthetic for the scatter plot
 #' @param y The y aesthetic for the scatter plot

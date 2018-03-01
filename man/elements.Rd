@@ -2,7 +2,7 @@
 % Please edit documentation in R/elements.R
 \name{elements}
 \alias{elements}
-\title{Element query for queries paramter}
+\title{Element query for queries parameter}
 \usage{
 elements(func, query, ...)
 }

@@ -20,9 +20,9 @@
 #' @param sets.x.label The x-axis label of the set size bar plot
 #' @param point.size Size of points in matrix plot
 #' @param line.size Width of lines in matrix plot
-#' @param mb.ratio Ratio between matrix plot and main bar plot (Keep in terms of hundreths)
+#' @param mb.ratio Ratio between matrix plot and main bar plot (Keep in terms of hundredths)
 #' @param expression Expression to subset attributes of intersection or element query data. Enter as string (Ex: "ColName > 3")
-#' @param att.pos Position of attribute plot. If NULL or "bottom" the plot will be at below UpSet plot. If "top" it will be above UpSert plot
+#' @param att.pos Position of attribute plot. If NULL or "bottom" the plot will be at below UpSet plot. If "top" it will be above UpSet plot
 #' @param att.color Color of attribute histogram bins or scatterplot points for unqueried data represented by main bars. Default set to color of main bars.
 #' @param order.by How the intersections in the matrix should be ordered by. Options include frequency (entered as "freq"), degree, or both in any order.
 #' @param decreasing How the variables in order.by should be ordered. "freq" is decreasing (greatest to least) and "degree" is increasing (least to greatest)
@@ -30,7 +30,7 @@
 #' @param number.angles The angle of the numbers atop the intersection size bars
 #' @param group.by How the data should be grouped ("degree" or "sets")
 #' @param cutoff The number of intersections from each set (to cut off at) when aggregating by sets
-#' @param queries Unified querie of intersections, elements, and custom row functions. Entered as a list that contains a list of
+#' @param queries Unified query of intersections, elements, and custom row functions. Entered as a list that contains a list of
 #'        queries. query is the type of query being conducted. params are the parameters of the query (if any). color is the color of the points on the
 #'        plot that will represent the query. If no color is selected one will be provided automatically. active takes TRUE or FALSE, and if
 #'        TRUE, it will overlay the bars present  with the results from the query. If FALSE a tick mark will indicate the intersection size.
@@ -46,7 +46,7 @@
 #' @param attribute.plots Create custom ggplot using intersection data represented in the main bar plot. Prior to adding custom plots, the UpSet plot is set up in a 100 by 100 grid.
 #'        The attribute.plots parameter takes a list that contains the number of rows that should be allocated for the custom plot, and a list of plots with specified positions.
 #'        nrows is the number of rows the custom plots should take up. There is already 100 allocated for the custom plot. plots takes a list that contains a function that returns
-#'        a custom ggplots and the x and y aesthetics for the function. ncols is the number of columns that your ggplots should take up. See examples for how to add custom ggplots.
+#'        a custom ggplot and the x and y aesthetics for the function. ncols is the number of columns that your ggplots should take up. See examples for how to add custom ggplots.
 #' @param scale.intersections The scale to be used for the intersection sizes. Options: "identity", "log10", "log2"
 #' @param scale.sets The scale to be used for the set sizes. Options: "identity", "log10", "log2"
 #' @param text.scale Numeric, value to scale the text sizes, applies to all axis labels, tick labels, and numbers above bar plot. Can be a universal scale, or a vector containing individual scales
@@ -55,11 +55,11 @@
 #' @param set_size.show Logical, display the set sizes on the set size bar chart
 #' @details Visualization of set data in the layout described by Lex and Gehlenborg in \url{http://www.nature.com/nmeth/journal/v11/n8/abs/nmeth.3033.html}.
 #' UpSet also allows for visualization of queries on intersections and elements, along with custom queries queries implemented using
-#' Hadley Wickhams apply function. To further analyze the data contained in the intersections, the user may select additional attribute plots
+#' Hadley Wickham's apply function. To further analyze the data contained in the intersections, the user may select additional attribute plots
 #' to be displayed alongside the UpSet plot. The user also has the the ability to pass their own plots into the function to further analyze
 #' data belonging to queries of interest. Most aspects of the UpSet plot are customizable, allowing the user to select the plot that best suits their style.
-#' Depending on how the featuers are selected, UpSet can display between 25-65 sets and between 40-100 intersections.
-#' @note Data set must be formatted as described on the orginal UpSet github page: \url{http://github.com/VCG/upset/wiki}.
+#' Depending on how the features are selected, UpSet can display between 25-65 sets and between 40-100 intersections.
+#' @note Data set must be formatted as described on the original UpSet github page: \url{http://github.com/VCG/upset/wiki}.
 #' @references Lex et al. (2014). UpSet: Visualization of Intersecting Sets
 #' IEEE Transactions on Visualization and Computer Graphics (Proceedings of InfoVis 2014), vol 20, pp. 1983-1992, (2014). \url{http://people.seas.harvard.edu/~alex/papers/2014_infovis_upset.pdf}
 #' @references Lex and Gehlenborg (2014). Points of view: Sets and intersections. Nature Methods 11, 779 (2014). \url{http://www.nature.com/nmeth/journal/v11/n8/abs/nmeth.3033.html}
