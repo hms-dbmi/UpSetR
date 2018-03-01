@@ -6,7 +6,7 @@
 #' @param nintersects Number of intersections to plot. If set to NA, all intersections will be plotted.
 #' @param sets Specific sets to look at (Include as combinations. Ex: c("Name1", "Name2"))
 #' @param keep.order Keep sets in the order entered using the sets parameter. The default is FALSE, which orders the sets by their sizes.
-#' @param set.metadata Metadata that offers insight to an attribute of the sets. Input should be a data frame where the first column is set names, and the 
+#' @param set.metadata Metadata that offers insight to an attribute of the sets. Input should be a data frame where the first column is set names, and the
 #'        remaining columns are attributes of those sets. To learn how to use this parameter it is highly suggested to view the set metadata vignette. The link
 #'        can be found on the package's GitHub page.
 #' @param intersections Specific intersections to include in plot entered as a list of lists.
@@ -42,7 +42,7 @@
 #' @param empty.intersections Additionally display empty sets up to nintersects
 #' @param color.pal Color palette for attribute plots
 #' @param boxplot.summary Boxplots representing the distribution of a selected attribute for each intersection. Select attributes by entering a character vector of attribute names (e.g. c("Name1", "Name2")).
-#'        The maximum number of attributes that can be entered is 2. 
+#'        The maximum number of attributes that can be entered is 2.
 #' @param attribute.plots Create custom ggplot using intersection data represented in the main bar plot. Prior to adding custom plots, the UpSet plot is set up in a 100 by 100 grid.
 #'        The attribute.plots parameter takes a list that contains the number of rows that should be allocated for the custom plot, and a list of plots with specified positions.
 #'        nrows is the number of rows the custom plots should take up. There is already 100 allocated for the custom plot. plots takes a list that contains a function that returns
@@ -84,7 +84,7 @@
 #'             + geom_point() + scale_color_identity()
 #'             + theme_bw() + theme(plot.margin = unit(c(0,0,0,0), "cm")))
 #' }
-#' 
+#'
 #' attributeplots <- list(gridrows = 55,
 #'                   plots = list(list(plot = plot1, x= "ReleaseDate",  queries = FALSE),
 #'                          list(plot = plot1, x= "ReleaseDate", queries = TRUE),
@@ -104,14 +104,14 @@
 #'                     list(query = intersects, params = list("Drama"), color= "red"),
 #'                     list(query = elements, params = list("ReleaseDate", 1990, 1991, 1992))),
 #'       main.bar.color = "yellow")
-#'       
+#'
 #' @import gridExtra
 #' @import ggplot2
 #' @import utils
 #' @import stats
 #' @import methods
 #' @import grDevices
-#' @import scales       
+#' @import scales
 #' @export
 upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F, set.metadata = NULL, intersections = NULL,
                   matrix.color = "gray23", main.bar.color = "gray23", mainbar.y.label = "Intersection Size", mainbar.y.max = NULL,
@@ -120,12 +120,12 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F
                   decreasing = c(T, F), show.numbers = "yes", number.angles = 0, group.by = "degree",cutoff = NULL,
                   queries = NULL, query.legend = "none", shade.color = "gray88", shade.alpha = 0.25, matrix.dot.alpha =0.5,
                   empty.intersections = NULL, color.pal = 1, boxplot.summary = NULL, attribute.plots = NULL, scale.intersections = "identity",
-                  scale.sets = "identity", text.scale = 1, set_size.angles = 0 , set_size.show = FALSE){
-  
+                  scale.sets = "identity", text.scale = 1, set_size.angles = 0 ){
+
   startend <-FindStartEnd(data)
   first.col <- startend[1]
   last.col <- startend[2]
-  
+
   if(color.pal == 1){
     palette <- c("#1F77B4", "#FF7F0E", "#2CA02C", "#D62728", "#9467BD", "#8C564B", "#E377C2",
                  "#7F7F7F", "#BCBD22", "#17BECF")
@@ -134,7 +134,7 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F
     palette <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00",
                  "#CC79A7")
   }
-  
+
   if(is.null(intersections) == F){
     Set_names <- unique((unlist(intersections)))
     Sets_to_remove <- Remove(data, first.col, last.col, Set_names)
@@ -183,7 +183,7 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F
       }
     }
   }
-  
+
   BoxPlots <- NULL
   if(is.null(boxplot.summary) == F){
     BoxData <- IntersectionBoxPlot(All_Freqs, New_data, first.col, Set_names)
@@ -192,7 +192,7 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F
       BoxPlots[[i]] <- BoxPlotsPlot(BoxData, boxplot.summary[i], att.color)
     }
   }
-  
+
   customAttDat <- NULL
   customQBar <- NULL
   Intersection <- NULL
@@ -219,7 +219,7 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F
   else{
     Matrix_col <- NULL
   }
-  
+
   Matrix_layout <- Create_layout(Matrix_setup, matrix.color, Matrix_col, matrix.dot.alpha)
   Set_sizes <- FindSetFreqs(New_data, first.col, Num_of_set, Set_names, keep.order)
   Bar_Q <- NULL
@@ -235,18 +235,20 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F
                                palette)
   }
   AllQueryData <- combineQueriesData(QInter_att_data, QElem_att_data, customAttDat, att.x, att.y)
-  
+
   ShadingData <- NULL
-  
+
   if(is.null(set.metadata) == F){
     ShadingData <- get_shade_groups(set.metadata, Set_names, Matrix_layout, shade.alpha)
     output <- Make_set_metadata_plot(set.metadata, Set_names)
     set.metadata.plots <- output[[1]]
     set.metadata <- output[[2]]
-    
+
     if(is.null(ShadingData) == FALSE){
     shade.alpha <- unique(ShadingData$alpha)
     }
+  } else {
+    set.metadata.plots <- NULL
   }
   if(is.null(ShadingData) == TRUE){
   ShadingData <- MakeShading(Matrix_layout, shade.color)
@@ -255,10 +257,63 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F
                             mainbar.y.max, scale.intersections, text.scale, attribute.plots))
   Matrix <- Make_matrix_plot(Matrix_layout, Set_sizes, All_Freqs, point.size, line.size,
                              text.scale, labels, ShadingData, shade.alpha)
-  Sizes <- Make_size_plot(Set_sizes, sets.bar.color, mb.ratio, sets.x.label, scale.sets, text.scale, set_size.angles,set_size.show)
-  
-  Make_base_plot(Main_bar, Matrix, Sizes, labels, mb.ratio, att.x, att.y, New_data,
-                 expression, att.pos, first.col, att.color, AllQueryData, attribute.plots,
-                 legend, query.legend, BoxPlots, Set_names, set.metadata, set.metadata.plots)
-  
+  Sizes <- Make_size_plot(Set_sizes, sets.bar.color, mb.ratio, sets.x.label, scale.sets, text.scale, set_size.angles)
+
+  # Make_base_plot(Main_bar, Matrix, Sizes, labels, mb.ratio, att.x, att.y, New_data,
+  #                expression, att.pos, first.col, att.color, AllQueryData, attribute.plots,
+  #                legend, query.legend, BoxPlots, Set_names, set.metadata, set.metadata.plots)
+
+  structure(class = "upset",
+    .Data=list(
+      Main_bar = Main_bar,
+      Matrix = Matrix,
+      Sizes = Sizes,
+      labels = labels,
+      mb.ratio = mb.ratio,
+      att.x = att.x,
+      att.y = att.y,
+      New_data = New_data,
+      expression = expression,
+      att.pos = att.pos,
+      first.col = first.col,
+      att.color = att.color,
+      AllQueryData = AllQueryData,
+      attribute.plots = attribute.plots,
+      legend = legend,
+      query.legend = query.legend,
+      BoxPlots = BoxPlots,
+      Set_names = Set_names,
+      set.metadata = set.metadata,
+      set.metadata.plots = set.metadata.plots)
+  )
+}
+#' @export
+print.upset <- function(x, newpage = TRUE) {
+  Make_base_plot(
+    Main_bar_plot = x$Main_bar,
+    Matrix_plot = x$Matrix,
+    Size_plot = x$Sizes,
+    labels = x$labels,
+    hratios = x$mb.ratio,
+    att_x = x$att.x,
+    att_y = x$att.y,
+    Set_data = x$New_data,
+    exp = x$expression,
+    position = x$att.pos,
+    start_col = x$first.col,
+    att_color = x$att.color,
+    QueryData = x$AllQueryData,
+    attribute_plots = x$attribute.plots,
+    legend = x$legend,
+    query_legend = x$query.legend,
+    boxplot = x$BoxPlots,
+    names = x$Set_names,
+    set_metadata = x$set.metadata,
+    set_metadata_plots = x$set.metadata.plots,
+    newpage = newpage)
+}
+
+#' @export
+summary.upset <- function(x) {
+    cat("An object of class `upset`. Call print() to show.")
 }

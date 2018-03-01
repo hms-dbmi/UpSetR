@@ -26,4 +26,8 @@ LazyData: true
 VignetteBuilder: knitr
 Suggests:
     knitr
+<<<<<<< HEAD
 RoxygenNote: 6.0.1
+=======
+RoxygenNote: 6.0.1.9000
+>>>>>>> 1a852eb6337336c7e281cf874e80266c59e462fd

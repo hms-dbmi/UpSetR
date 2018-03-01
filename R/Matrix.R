@@ -38,11 +38,11 @@ Create_layout <- function(setup, mat_color, mat_col, matrix_dot_alpha){
       Matrix_layout$Intersection[i] <- paste(Matrix_layout$x[i], "yes", sep ="")
     }
     else{
-      
+
       Matrix_layout$color[i] <- "gray83"
       Matrix_layout$alpha[i] <- matrix_dot_alpha
       Matrix_layout$Intersection[i] <- paste(i, "No", sep = "")
-    } 
+    }
   }
   if(is.null(mat_col) == F){
     for(i in 1:nrow(mat_col)){
@@ -58,7 +58,7 @@ Create_layout <- function(setup, mat_color, mat_col, matrix_dot_alpha){
   return(Matrix_layout)
 }
 
-## Create data set to shade matrix 
+## Create data set to shade matrix
 MakeShading <- function(Mat_data, color){
   y <- unique(Mat_data$y)
   y <- (y[which(y %% 2 != 0)])
@@ -76,23 +76,23 @@ MakeShading <- function(Mat_data, color){
 ## Generate matrix plot
 Make_matrix_plot <- function(Mat_data,Set_size_data, Main_bar_data, point_size, line_size, text_scale, labels,
                              shading_data, shade_alpha){
-  
+
   if(length(text_scale) == 1){
-    name_size_scale <- text_scale 
+    name_size_scale <- text_scale
   }
   if(length(text_scale) > 1 && length(text_scale) <= 6){
     name_size_scale <- text_scale[5]
   }
-  
-  Matrix_plot <- (ggplot() 
+
+  Matrix_plot <- (ggplot()
                   + theme(panel.background = element_rect(fill = "white"),
                           plot.margin=unit(c(-0.2,0.5,0.5,0.5), "lines"),
                           axis.text.x = element_blank(),
                           axis.ticks.x = element_blank(),
                           axis.ticks.y = element_blank(),
-                          axis.text.y = element_text(colour = "gray0", 
+                          axis.text.y = element_text(colour = "gray0",
                                                      size = 7*name_size_scale, hjust = 0.4),
-                          panel.grid.major = element_blank(), 
+                          panel.grid.major = element_blank(),
                           panel.grid.minor = element_blank())
                   + xlab(NULL) + ylab("   ")
                   + scale_y_continuous(breaks = c(1:nrow(Set_size_data)),
@@ -103,7 +103,7 @@ Make_matrix_plot <- function(Mat_data,Set_size_data, Main_bar_data, point_size, 
                                                               ymin = "y_min", ymax = "y_max"),
                               fill = shading_data$shade_color, alpha = shade_alpha)
                   + geom_point(data= Mat_data, aes_string(x= "x", y= "y"), colour = Mat_data$color,
-                               size= point_size, alpha = Mat_data$alpha)
+                               size= point_size, alpha = Mat_data$alpha, shape=16)
                   + geom_line(data= Mat_data, aes_string(group = "Intersection", x="x", y="y",
                                                          colour = "color"), size = line_size)
                   + scale_color_identity())
