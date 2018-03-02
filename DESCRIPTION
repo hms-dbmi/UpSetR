@@ -26,5 +26,4 @@ LazyData: true
 VignetteBuilder: knitr
 Suggests:
     knitr
-
 RoxygenNote: 6.0.1
