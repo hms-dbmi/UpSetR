@@ -32,7 +32,7 @@ log2_reverse_trans <- function(){
 }
 
 ## Generate set size plot
-Make_size_plot <- function(Set_size_data, sbar_color, ratios, ylabel, scale_sets, text_scale, set_size_angle){
+Make_size_plot <- function(Set_size_data, sbar_color, ratios, ylabel, scale_sets, text_scale, set_size_angle,set_size.show){
 #   if(ratios[1] < 0.4){
 #     m <- (-0.05)
 #   }
@@ -83,6 +83,10 @@ Make_size_plot <- function(Set_size_data, sbar_color, ratios, ylabel, scale_sets
                 + xlab(NULL) + ylab(ylabel)
                 + coord_flip())
   
+  if(set_size.show == TRUE){
+    Size_plot <- (Size_plot + geom_text(aes(label=y,vjust=0.5,hjust=0.1),size=(7/ggplot2:::.pt)*x_axis_tick_label_scale))
+  }
+    
   if(scale_sets == "log10"){
     Size_plot <- (Size_plot + scale_y_continuous(trans = log10_reverse_trans()))
   }

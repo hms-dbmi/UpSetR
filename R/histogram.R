@@ -1,6 +1,6 @@
 #' Histogram for custom plot
 #'
-#' @description A pre-made histogram that can be added to custom.plot paramter. 
+#' @description A pre-made histogram that can be added to custom.plot parameter. 
 #' @param mydata A data set containing intersection data provided internally
 #' @param x The x aesthetic of for the histogram plot
 #' @note See examples section for upset function on how to use custom.plot parameter

@@ -1,4 +1,4 @@
-#' Element query for queries paramter
+#' Element query for queries parameter
 #' 
 #' @description A query paramter to visualize specific elements of interest if queries = active (in custom plots only)
 #' @param func A functions provided internally
