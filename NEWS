@@ -1,3 +1,13 @@
+Release v1.4.0
+
+- Allow custom y-axis label and scale
+- Keep spaces in set names when filling empty intersections
+- fixed bug for single set (degree of 1) intersection query when using fromExpression
+- Changed point shape to 16
+- Include set_size.show paramter and added documentation
+
+-----------------
+
 Release v1.3.3
 
 - Made element query compatible with check.names
@@ -8,9 +18,9 @@ Release v1.3.3
 
 Release v1.3.2
 
-- update logarithmic axis and bar labels
-- allow decimal values for log scales
-- set intersection size axis min to 0 for log scales
+- Update logarithmic axis and bar labels
+- Allow decimal values for log scales
+- Set intersection size axis min to 0 for log scales
 
 -----------------
 
