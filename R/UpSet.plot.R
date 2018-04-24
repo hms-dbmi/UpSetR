@@ -110,7 +110,7 @@ BaseBoxPlot <- function(box_plot, position, size_plot_height, Main_bar_plot, Mat
     metadata_left <- 1
   }
   if (newpage) {
-    grid.null()
+    grid.newpage()
   }
   if(length(box_plot) == 1){
     pushViewport(viewport(layout = grid.layout(135,matrix_and_mainbar_right)))
@@ -188,7 +188,7 @@ NoAttBasePlot <- function(legend, size_plot_height, Main_bar_plot, Matrix_plot, 
     metadata_left <- 1
   }
   if (newpage) {
-    grid.null()
+    grid.newpage()
   }
   if((!is.null(legend)) && (query_legend != tolower("none"))){
     if(query_legend == tolower("top")){
@@ -265,7 +265,7 @@ BaseCustomPlot <- function(attribute_plots, plots, position, size_plot_height, M
     custom_bottom <- custom_bottom + 5
   }
   if (newpage) {
-    grid.null()
+    grid.newpage()
   }
   pushViewport(viewport(layout = grid.layout(custom_bottom,matrix_and_mainbar_right)))
   vp = vplayout(bar_top:matrix_bottom, matrix_and_mainbar_left:matrix_and_mainbar_right)

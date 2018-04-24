@@ -30,7 +30,7 @@ upset(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F,
 
 \item{keep.order}{Keep sets in the order entered using the sets parameter. The default is FALSE, which orders the sets by their sizes.}
 
-\item{set.metadata}{Metadata that offers insight to an attribute of the sets. Input should be a data frame where the first column is set names, and the 
+\item{set.metadata}{Metadata that offers insight to an attribute of the sets. Input should be a data frame where the first column is set names, and the
 remaining columns are attributes of those sets. To learn how to use this parameter it is highly suggested to view the set metadata vignette. The link
 can be found on the package's GitHub page.}
 
@@ -165,7 +165,7 @@ upset(movies, attribute.plots = attributeplots,
                     list(query = intersects, params = list("Drama"), color= "red"),
                     list(query = elements, params = list("ReleaseDate", 1990, 1991, 1992))),
       main.bar.color = "yellow")
-      
+
 }
 \references{
 Lex et al. (2014). UpSet: Visualization of Intersecting Sets
