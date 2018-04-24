@@ -110,7 +110,7 @@ BaseBoxPlot <- function(box_plot, position, size_plot_height, Main_bar_plot, Mat
     metadata_left <- 1
   }
   if (newpage) {
-    grid.newpage()
+    grid.null()
   }
   if(length(box_plot) == 1){
     pushViewport(viewport(layout = grid.layout(135,matrix_and_mainbar_right)))
@@ -120,11 +120,11 @@ BaseBoxPlot <- function(box_plot, position, size_plot_height, Main_bar_plot, Mat
   }
   vp = vplayout(bar_top:matrix_bottom, matrix_and_mainbar_left:matrix_and_mainbar_right)
   pushViewport(vp)
-  grid.draw(arrangeGrob(Main_bar_plot, Matrix_plot, heights = hratios))
+  grid.draw(arrangeGrob(Main_bar_plot, Matrix_plot, heights = hratios, name = arrange_id()))
   popViewport()
   vp = vplayout(size_plot_height:matrix_bottom, size_bar_left:size_bar_right)
   pushViewport(vp)
-  grid.draw(arrangeGrob(Size_plot))
+  grid.draw(arrangeGrob(Size_plot, name = arrange_id()))
   popViewport()
   if(!is.null(set_metadata)){
     for(i in 1:length(set_metadata_plots)){
@@ -139,18 +139,18 @@ BaseBoxPlot <- function(box_plot, position, size_plot_height, Main_bar_plot, Mat
 
       vp = vplayout(size_plot_height:matrix_bottom, metadata_left:metadata_right)
       pushViewport(vp)
-      grid.draw(arrangeGrob(set_metadata_plots[[i]]))
+      grid.draw(arrangeGrob(set_metadata_plots[[i]], name = arrange_id()))
       popViewport()
     }
   }
   vp = vplayout(att_top:att_bottom, matrix_and_mainbar_left:matrix_and_mainbar_right)
   pushViewport(vp)
-  grid.draw(arrangeGrob(box_plot[[1]]))
+  grid.draw(arrangeGrob(box_plot[[1]], name = arrange_id()))
   popViewport()
   if(length(box_plot) == 2){
     vp = vplayout((att_bottom + 10):(att_bottom + 25), matrix_and_mainbar_left:matrix_and_mainbar_right)
     pushViewport(vp)
-    grid.draw(arrangeGrob(box_plot[[2]]))
+    grid.draw(arrangeGrob(box_plot[[2]], name = arrange_id()))
     popViewport()
   }
 }
@@ -188,7 +188,7 @@ NoAttBasePlot <- function(legend, size_plot_height, Main_bar_plot, Matrix_plot, 
     metadata_left <- 1
   }
   if (newpage) {
-    grid.newpage()
+    grid.null()
   }
   if((!is.null(legend)) && (query_legend != tolower("none"))){
     if(query_legend == tolower("top")){
@@ -203,11 +203,11 @@ NoAttBasePlot <- function(legend, size_plot_height, Main_bar_plot, Matrix_plot, 
   }
   vp = vplayout(top:bottom, matrix_and_mainbar_left:matrix_and_mainbar_right)
   pushViewport(vp)
-  grid.draw(arrangeGrob(Main_bar_plot, Matrix_plot, heights = hratios))
+  grid.draw(arrangeGrob(Main_bar_plot, Matrix_plot, heights = hratios, name = arrange_id()))
   popViewport()
   vp = vplayout(size_plot_height:bottom, size_bar_left:size_bar_right)
   pushViewport(vp)
-  grid.draw(arrangeGrob(Size_plot))
+  grid.draw(arrangeGrob(Size_plot, name = arrange_id()))
   popViewport()
   if(!is.null(set_metadata)){
     for(i in 1:length(set_metadata_plots)){
@@ -222,14 +222,14 @@ NoAttBasePlot <- function(legend, size_plot_height, Main_bar_plot, Matrix_plot, 
 
       vp = vplayout(size_plot_height:bottom, metadata_left:metadata_right)
       pushViewport(vp)
-      grid.draw(arrangeGrob(set_metadata_plots[[i]]))
+      grid.draw(arrangeGrob(set_metadata_plots[[i]], name = arrange_id()))
       popViewport()
     }
   }
   if((!is.null(legend)) && (query_legend != tolower("none"))){
     vp = vplayout(legend_top:legend_bottom, matrix_and_mainbar_left:matrix_and_mainbar_right)
     pushViewport(vp)
-    grid.draw(arrangeGrob(legend))
+    grid.draw(arrangeGrob(legend, name = arrange_id()))
     popViewport()
   }
 }
@@ -265,16 +265,16 @@ BaseCustomPlot <- function(attribute_plots, plots, position, size_plot_height, M
     custom_bottom <- custom_bottom + 5
   }
   if (newpage) {
-    grid.newpage()
+    grid.null()
   }
   pushViewport(viewport(layout = grid.layout(custom_bottom,matrix_and_mainbar_right)))
   vp = vplayout(bar_top:matrix_bottom, matrix_and_mainbar_left:matrix_and_mainbar_right)
   pushViewport(vp)
-  grid.draw(arrangeGrob(Main_bar_plot, Matrix_plot, heights = hratios))
+  grid.draw(arrangeGrob(Main_bar_plot, Matrix_plot, heights = hratios, name = arrange_id()))
   popViewport()
   vp = vplayout(size_plot_height:matrix_bottom, size_bar_left:size_bar_right)
   pushViewport(vp)
-  grid.draw(arrangeGrob(Size_plot))
+  grid.draw(arrangeGrob(Size_plot, name = arrange_id()))
   popViewport()
   if(!is.null(set_metadata)){
     for(i in 1:length(set_metadata_plots)){
@@ -289,34 +289,34 @@ BaseCustomPlot <- function(attribute_plots, plots, position, size_plot_height, M
 
       vp = vplayout(size_plot_height:matrix_bottom, metadata_left:metadata_right)
       pushViewport(vp)
-      grid.draw(arrangeGrob(set_metadata_plots[[i]]))
+      grid.draw(arrangeGrob(set_metadata_plots[[i]], name = arrange_id()))
       popViewport()
     }
   }
   if((!is.null(legend)) && (q_legend == tolower("bottom"))){
     vp = vplayout(custom_top:(custom_bottom - 5), 1:matrix_and_mainbar_right)
     pushViewport(vp)
-    grid.draw(do.call(arrangeGrob, c(plots, ncol = attribute_plots$ncols)))
+    grid.draw(do.call(arrangeGrob, c(plots, ncol = attribute_plots$ncols, name = arrange_id())))
     popViewport()
     vp = vplayout((custom_bottom - 4):custom_bottom, 1:matrix_and_mainbar_right)
     pushViewport(vp)
-    grid.draw(arrangeGrob(legend))
+    grid.draw(arrangeGrob(legend, name = arrange_id()))
     popViewport()
   }
   else if((!is.null(legend)) && (q_legend == tolower("top"))){
     vp = vplayout(custom_top:custom_bottom, 1:matrix_and_mainbar_right)
     pushViewport(vp)
-    grid.draw(do.call(arrangeGrob, c(plots, ncol = attribute_plots$ncols)))
+    grid.draw(do.call(arrangeGrob, c(plots, ncol = attribute_plots$ncols, name = arrange_id())))
     popViewport()
     vp = vplayout((bar_top-5):(bar_top-1), 1:matrix_and_mainbar_right)
     pushViewport(vp)
-    grid.draw(arrangeGrob(legend))
+    grid.draw(arrangeGrob(legend, name = arrange_id()))
     popViewport()
   }
   else{
     vp = vplayout(custom_top:custom_bottom, 1:matrix_and_mainbar_right)
     pushViewport(vp)
-    grid.draw(do.call(arrangeGrob, c(plots, ncol = attribute_plots$ncols)))
+    grid.draw(do.call(arrangeGrob, c(plots, ncol = attribute_plots$ncols, name = arrange_id())))
     popViewport()
   }
   #   print(attribute_plots$plot, vp = vplayout(attribute_plots$rows, attribute_plots$cols), newpage = F)
@@ -325,3 +325,10 @@ BaseCustomPlot <- function(attribute_plots, plots, position, size_plot_height, M
 # printCustom <- function(attribute_plots){
 #   print(attribute_plots$plot, vp = vplayout(attribute_plots$rows, attribute_plots$cols), newpage = F)
 # }
+
+
+arrange_id <- function() {
+    paste0('arrange', annotation_id())
+}
+
+annotation_id <- getFromNamespace("annotation_id", "ggplot2")
