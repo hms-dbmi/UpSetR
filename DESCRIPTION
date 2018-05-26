@@ -20,7 +20,8 @@ Imports:
     stats,
     methods,
     grDevices,
-    scales
+    scales,
+    grid
 License: MIT + file LICENSE
 LazyData: true
 VignetteBuilder: knitr
