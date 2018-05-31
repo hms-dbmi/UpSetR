@@ -28,7 +28,7 @@ To download this version of the code using [devtools](https://cran.r-project.org
 
 ```R
 devtools::install_github("g-thomson/UpSetR")
-
+```
 
 ## Sample Data
 
