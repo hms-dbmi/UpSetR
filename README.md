@@ -1,5 +1,3 @@
-# UpSetR [![Travis-CI Build Status](https://travis-ci.org/hms-dbmi/UpSetR.svg?branch=master)](https://travis-ci.org/hms-dbmi/UpSetR) [![](http://www.r-pkg.org/badges/version/UpSetR)](https://cran.r-project.org/package=UpSetR) [![](http://cranlogs.r-pkg.org/badges/grand-total/UpSetR)](http://cranlogs.r-pkg.org/badges/grand-total/UpSetR)
-
 ## Technique
 
 UpSetR generates static [UpSet](http://vcg.github.io/upset/) plots. The UpSet technique visualizes set intersections in a matrix layout and introduces aggregates based on groupings and queries. The matrix layout enables the effective representation of associated data, such as the number of elements in the aggregates and intersections, as well as additional summary statistics derived from subset or element attributes.
@@ -21,6 +19,15 @@ The original technique and the interactive visualization tool implementing the a
 > UpSet: Visualization of Intersecting Sets,   
 > IEEE Transactions on Visualization and Computer Graphics (InfoVis '14), vol. 20, no. 12, pp. 1983–1992, 2014.  
 > doi: https://doi.org/10.1109/TVCG.2014.2346248
+
+## THIS VERSION
+
+This is a fork of the [main repo](https://github.com/hms-dbmi/UpSetR) and makes minor edits to allow assigning the plots to variables which can then be called later and if required incorporated into more complex figures. This is outlined in my [pull request (#100)](https://github.com/hms-dbmi/UpSetR/pull/100) but at the time of writing it has not been merged. To maintain my own code I am therefore keeping this repo.
+
+To download this version of the code using [devtools](https://cran.r-project.org/package=devtools) you can use
+
+```R
+devtools::install_github("g-thomson/UpSetR")
 
 
 ## Sample Data
@@ -81,16 +88,5 @@ list(query = intersects, params = list("Noir"))))
 ```
 
 
-## Download
 
-Install the latest released version from CRAN
 
-```R
-install.packages("UpSetR")
-```
-
-Download the latest development code of UpSetR from GitHub using [devtools](https://cran.r-project.org/package=devtools) with
-
-```R
-devtools::install_github("hms-dbmi/UpSetR")
-```
