@@ -53,6 +53,8 @@
 #'        in the following format: c(intersection size title, intersection size tick labels, set size title, set size tick labels, set names, numbers above bars)
 #' @param set_size.angles Numeric, angle to rotate the set size plot x-axis text
 #' @param set_size.show Logical, display the set sizes on the set size bar chart
+#' @param set_size.numbers_size If set_size.show is TRUE, adjust the size of the numbers
+#' @param set_size.scale_max Increase the maximum of set size scale
 #' @details Visualization of set data in the layout described by Lex and Gehlenborg in \url{http://www.nature.com/nmeth/journal/v11/n8/abs/nmeth.3033.html}.
 #' UpSet also allows for visualization of queries on intersections and elements, along with custom queries queries implemented using
 #' Hadley Wickham's apply function. To further analyze the data contained in the intersections, the user may select additional attribute plots
@@ -120,7 +122,7 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F
                   decreasing = c(T, F), show.numbers = "yes", number.angles = 0, group.by = "degree",cutoff = NULL,
                   queries = NULL, query.legend = "none", shade.color = "gray88", shade.alpha = 0.25, matrix.dot.alpha =0.5,
                   empty.intersections = NULL, color.pal = 1, boxplot.summary = NULL, attribute.plots = NULL, scale.intersections = "identity",
-                  scale.sets = "identity", text.scale = 1, set_size.angles = 0 , set_size.show = FALSE ){
+                  scale.sets = "identity", text.scale = 1, set_size.angles = 0 , set_size.show = FALSE, set_size.numbers_size = NULL, set_size.scale_max = NULL){
 
   startend <-FindStartEnd(data)
   first.col <- startend[1]
@@ -257,8 +259,9 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F
                             mainbar.y.max, scale.intersections, text.scale, attribute.plots))
   Matrix <- Make_matrix_plot(Matrix_layout, Set_sizes, All_Freqs, point.size, line.size,
                              text.scale, labels, ShadingData, shade.alpha)
-  Sizes <- Make_size_plot(Set_sizes, sets.bar.color, mb.ratio, sets.x.label, scale.sets, text.scale, set_size.angles,set_size.show)
-
+  Sizes <- Make_size_plot(Set_sizes, sets.bar.color, mb.ratio, sets.x.label, scale.sets, text.scale, set_size.angles,set_size.show,
+                          set_size.scale_max, set_size.numbers_size)
+  
   # Make_base_plot(Main_bar, Matrix, Sizes, labels, mb.ratio, att.x, att.y, New_data,
   #                expression, att.pos, first.col, att.color, AllQueryData, attribute.plots,
   #                legend, query.legend, BoxPlots, Set_names, set.metadata, set.metadata.plots)
@@ -287,6 +290,7 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F
       set.metadata.plots = set.metadata.plots)
   )
 }
+
 #' @export
 print.upset <- function(x, newpage = TRUE) {
   Make_base_plot(

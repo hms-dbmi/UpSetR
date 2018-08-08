@@ -4,20 +4,22 @@
 \alias{upset}
 \title{UpSetR Plot}
 \usage{
-upset(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F,
-  set.metadata = NULL, intersections = NULL, matrix.color = "gray23",
-  main.bar.color = "gray23", mainbar.y.label = "Intersection Size",
-  mainbar.y.max = NULL, sets.bar.color = "gray23",
-  sets.x.label = "Set Size", point.size = 2.2, line.size = 0.7,
-  mb.ratio = c(0.7, 0.3), expression = NULL, att.pos = NULL,
-  att.color = main.bar.color, order.by = c("freq", "degree"),
-  decreasing = c(T, F), show.numbers = "yes", number.angles = 0,
-  group.by = "degree", cutoff = NULL, queries = NULL,
-  query.legend = "none", shade.color = "gray88", shade.alpha = 0.25,
-  matrix.dot.alpha = 0.5, empty.intersections = NULL, color.pal = 1,
-  boxplot.summary = NULL, attribute.plots = NULL,
-  scale.intersections = "identity", scale.sets = "identity",
-  text.scale = 1, set_size.angles = 0, set_size.show = FALSE)
+upset(data, nsets = 5, nintersects = 40, sets = NULL,
+  keep.order = F, set.metadata = NULL, intersections = NULL,
+  matrix.color = "gray23", main.bar.color = "gray23",
+  mainbar.y.label = "Intersection Size", mainbar.y.max = NULL,
+  sets.bar.color = "gray23", sets.x.label = "Set Size",
+  point.size = 2.2, line.size = 0.7, mb.ratio = c(0.7, 0.3),
+  expression = NULL, att.pos = NULL, att.color = main.bar.color,
+  order.by = c("freq", "degree"), decreasing = c(T, F),
+  show.numbers = "yes", number.angles = 0, group.by = "degree",
+  cutoff = NULL, queries = NULL, query.legend = "none",
+  shade.color = "gray88", shade.alpha = 0.25, matrix.dot.alpha = 0.5,
+  empty.intersections = NULL, color.pal = 1, boxplot.summary = NULL,
+  attribute.plots = NULL, scale.intersections = "identity",
+  scale.sets = "identity", text.scale = 1, set_size.angles = 0,
+  set_size.show = FALSE, set_size.numbers_size = NULL,
+  set_size.scale_max = NULL)
 }
 \arguments{
 \item{data}{Data set}
@@ -30,7 +32,7 @@ upset(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F,
 
 \item{keep.order}{Keep sets in the order entered using the sets parameter. The default is FALSE, which orders the sets by their sizes.}
 
-\item{set.metadata}{Metadata that offers insight to an attribute of the sets. Input should be a data frame where the first column is set names, and the 
+\item{set.metadata}{Metadata that offers insight to an attribute of the sets. Input should be a data frame where the first column is set names, and the
 remaining columns are attributes of those sets. To learn how to use this parameter it is highly suggested to view the set metadata vignette. The link
 can be found on the package's GitHub page.}
 
@@ -110,6 +112,10 @@ in the following format: c(intersection size title, intersection size tick label
 \item{set_size.angles}{Numeric, angle to rotate the set size plot x-axis text}
 
 \item{set_size.show}{Logical, display the set sizes on the set size bar chart}
+
+\item{set_size.numbers_size}{If set_size.show is TRUE, adjust the size of the numbers}
+
+\item{set_size.scale_max}{Increase the maximum of set size scale}
 }
 \description{
 Visualization of set intersections using novel UpSet matrix design.
@@ -165,7 +171,7 @@ upset(movies, attribute.plots = attributeplots,
                     list(query = intersects, params = list("Drama"), color= "red"),
                     list(query = elements, params = list("ReleaseDate", 1990, 1991, 1992))),
       main.bar.color = "yellow")
-      
+
 }
 \references{
 Lex et al. (2014). UpSet: Visualization of Intersecting Sets

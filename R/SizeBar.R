@@ -32,7 +32,8 @@ log2_reverse_trans <- function(){
 }
 
 ## Generate set size plot
-Make_size_plot <- function(Set_size_data, sbar_color, ratios, ylabel, scale_sets, text_scale, set_size_angle,set_size.show){
+Make_size_plot <- function(Set_size_data, sbar_color, ratios, ylabel, scale_sets, text_scale, set_size_angle, set_size.show, set_size.scale_max,
+                           set_size.number_size){
 #   if(ratios[1] < 0.4){
 #     m <- (-0.05)
 #   }
@@ -62,16 +63,22 @@ Make_size_plot <- function(Set_size_data, sbar_color, ratios, ylabel, scale_sets
     }
   }
   
+  if(!is.null(set_size.number_size)) {
+    num.size <- (set_size.number_size/ggplot2:::.pt)*x_axis_tick_label_scale
+  } else {
+    num.size <- (7/ggplot2:::.pt)*x_axis_tick_label_scale
+  }
+  
   Size_plot <- (ggplot(data = Set_size_data, aes_string(x ="x", y = "y"))
                 + geom_bar(stat = "identity",colour = sbar_color, width = 0.4,
                            fill = sbar_color, position = "identity")
-                + scale_x_continuous(limits = c(0.5, (nrow(Set_size_data)+0.5)),
+                + scale_x_continuous(limits = c(0.5, (nrow(Set_size_data) + 0.5)),
                                      breaks = c(0, max(Set_size_data)),
                                      expand = c(0,0))
                 + theme(panel.background = element_rect(fill = "white"),
                         plot.margin=unit(c(-0.11,-1.3,0.5,0.5), "lines"),
                         axis.title.x = element_text(size = 8.3*x_axis_title_scale),
-                        axis.text.x = element_text(size = 7*x_axis_tick_label_scale, angle = set_size_angle,
+                        axis.text.x = element_text(size = 7*x_axis_tick_label_scale,
                                                    vjust = 1, hjust = 0.5),
                         axis.line = element_line(colour = "gray0"),
                         axis.line.y = element_blank(),
@@ -84,17 +91,32 @@ Make_size_plot <- function(Set_size_data, sbar_color, ratios, ylabel, scale_sets
                 + coord_flip())
   
   if(set_size.show == TRUE){
-    Size_plot <- (Size_plot + geom_text(aes(label=y,vjust=0.5,hjust=0.1),size=(7/ggplot2:::.pt)*x_axis_tick_label_scale))
+    Size_plot <- (Size_plot + geom_text(aes(label=y,vjust=0.5,hjust=1.2, angle = set_size_angle), size=num.size))
   }
     
   if(scale_sets == "log10"){
-    Size_plot <- (Size_plot + scale_y_continuous(trans = log10_reverse_trans()))
+    if(!is.null(set_size.scale_max)) {
+      Size_plot <- (Size_plot + scale_y_continuous(limits = c(set_size.scale_max, 0), 
+                                                   trans = log10_reverse_trans()))
+    } else {
+      Size_plot <- (Size_plot + scale_y_continuous(trans = log10_reverse_trans()))
+    }
   }
   else if (scale_sets == "log2"){
-    Size_plot <- (Size_plot + scale_y_continuous(trans = log2_reverse_trans()))
+    if(!is.null(set_size.scale_max)) {
+      Size_plot <- (Size_plot + scale_y_continuous(limits = c(set_size.scale_max, 0), 
+                                                   trans = log2_reverse_trans()))
+    } else {
+      Size_plot <- (Size_plot + scale_y_continuous(trans = log2_reverse_trans()))
+    }
   }
   else{
-    Size_plot <- (Size_plot + scale_y_continuous(trans = "reverse"))
+    if(!is.null(set_size.scale_max)) {
+      Size_plot <- (Size_plot + scale_y_continuous(limits = c(set_size.scale_max, 0),
+                                                   trans = "reverse"))
+    } else {
+      Size_plot <- (Size_plot + scale_y_continuous(trans = "reverse"))
+    }
   }
   
   Size_plot <- ggplot_gtable(ggplot_build(Size_plot))
