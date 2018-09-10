@@ -99,9 +99,9 @@
 #' upset(movies, nsets = 7, nintersects = 30, mb.ratio = c(0.5, 0.5),
 #'       order.by = c("freq", "degree"), decreasing = c(TRUE,FALSE))
 #'
-# upset(movies, nsets = 7, nintersects = 30, mb.ratio = c(0.5, 0.5),
-#       order.by = c("freq", "degree"), decreasing = c(TRUE,FALSE),
-#       title = "Movies", title.pos = c(x = 0.1, y = 0.95))
+#' upset(movies, nsets = 7, nintersects = 30, mb.ratio = c(0.5, 0.5),
+#'       order.by = c("freq", "degree"), decreasing = c(TRUE,FALSE),
+#'       title = "Movies", title.pos = c(x = 0.1, y = 0.95))
 #'
 #' upset(movies, sets = c("Drama", "Comedy", "Action", "Thriller", "Western", "Documentary"),
 #'       queries = list(list(query = intersects, params = list("Drama", "Action")),
