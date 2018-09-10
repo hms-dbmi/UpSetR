@@ -4,22 +4,22 @@
 \alias{upset}
 \title{UpSetR Plot}
 \usage{
-upset(data, nsets = 5, nintersects = 40, sets = NULL,
-  keep.order = F, set.metadata = NULL, intersections = NULL,
-  matrix.color = "gray23", main.bar.color = "gray23",
-  mainbar.y.label = "Intersection Size", mainbar.y.max = NULL,
-  sets.bar.color = "gray23", sets.x.label = "Set Size",
-  point.size = 2.2, line.size = 0.7, mb.ratio = c(0.7, 0.3),
-  expression = NULL, att.pos = NULL, att.color = main.bar.color,
-  order.by = c("freq", "degree"), decreasing = c(T, F),
-  show.numbers = "yes", number.angles = 0, group.by = "degree",
-  cutoff = NULL, queries = NULL, query.legend = "none",
-  shade.color = "gray88", shade.alpha = 0.25, matrix.dot.alpha = 0.5,
-  empty.intersections = NULL, color.pal = 1, boxplot.summary = NULL,
-  attribute.plots = NULL, scale.intersections = "identity",
-  scale.sets = "identity", text.scale = 1, set_size.angles = 0,
-  set_size.show = FALSE, set_size.numbers_size = NULL,
-  set_size.scale_max = NULL)
+upset(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F,
+  set.metadata = NULL, title = "", title.pos = c(x = 0.65, y = 0.95),
+  intersections = NULL, matrix.color = "gray23",
+  main.bar.color = "gray23", mainbar.y.label = "Intersection Size",
+  mainbar.y.max = NULL, sets.bar.color = "gray23",
+  sets.x.label = "Set Size", point.size = 2.2, line.size = 0.7,
+  mb.ratio = c(0.7, 0.3), expression = NULL, att.pos = NULL,
+  att.color = main.bar.color, order.by = c("freq", "degree"),
+  decreasing = c(T, F), show.numbers = "yes", number.angles = 0,
+  group.by = "degree", cutoff = NULL, queries = NULL,
+  query.legend = "none", shade.color = "gray88", shade.alpha = 0.25,
+  matrix.dot.alpha = 0.5, empty.intersections = NULL, color.pal = 1,
+  boxplot.summary = NULL, attribute.plots = NULL,
+  scale.intersections = "identity", scale.sets = "identity",
+  text.scale = 1, set_size.angles = 0, set_size.show = FALSE,
+  set_size.numbers_size = NULL, set_size.scale_max = NULL)
 }
 \arguments{
 \item{data}{Data set}
@@ -35,6 +35,10 @@ upset(data, nsets = 5, nintersects = 40, sets = NULL,
 \item{set.metadata}{Metadata that offers insight to an attribute of the sets. Input should be a data frame where the first column is set names, and the
 remaining columns are attributes of those sets. To learn how to use this parameter it is highly suggested to view the set metadata vignette. The link
 can be found on the package's GitHub page.}
+
+\item{title}{Plot title}
+
+\item{title.pos}{Position of title in grid reference as a named vector. Default \code{c(x=0.65, y=0.95)}.}
 
 \item{intersections}{Specific intersections to include in plot entered as a list of lists.
 Ex: list(list("Set name1", "Set name2"), list("Set name1", "Set name3")). If data is entered into this parameter the only data shown on the UpSet plot
@@ -161,6 +165,10 @@ attributeplots <- list(gridrows = 55,
 
 upset(movies, nsets = 7, nintersects = 30, mb.ratio = c(0.5, 0.5),
       order.by = c("freq", "degree"), decreasing = c(TRUE,FALSE))
+
+upset(movies, nsets = 7, nintersects = 30, mb.ratio = c(0.5, 0.5),
+      order.by = c("freq", "degree"), decreasing = c(TRUE,FALSE),
+      title = "Movies", title.pos = c(x = 0.1, y = 0.95))
 
 upset(movies, sets = c("Drama", "Comedy", "Action", "Thriller", "Western", "Documentary"),
       queries = list(list(query = intersects, params = list("Drama", "Action")),

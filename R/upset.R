@@ -9,6 +9,8 @@
 #' @param set.metadata Metadata that offers insight to an attribute of the sets. Input should be a data frame where the first column is set names, and the
 #'        remaining columns are attributes of those sets. To learn how to use this parameter it is highly suggested to view the set metadata vignette. The link
 #'        can be found on the package's GitHub page.
+#' @param title Plot title 
+#' @param title.pos Position of title in grid reference as a named vector. Default \code{c(x=0.65, y=0.95)}.
 #' @param intersections Specific intersections to include in plot entered as a list of lists.
 #'        Ex: list(list("Set name1", "Set name2"), list("Set name1", "Set name3")). If data is entered into this parameter the only data shown on the UpSet plot
 #'        will be the specific intersections listed.
@@ -97,6 +99,10 @@
 #' upset(movies, nsets = 7, nintersects = 30, mb.ratio = c(0.5, 0.5),
 #'       order.by = c("freq", "degree"), decreasing = c(TRUE,FALSE))
 #'
+#' upset(movies, nsets = 7, nintersects = 30, mb.ratio = c(0.5, 0.5),
+#'       order.by = c("freq", "degree"), decreasing = c(TRUE,FALSE),
+#'       title = "Movies", title.pos = c(x = 0.1, y = 0.95))
+#'
 #' upset(movies, sets = c("Drama", "Comedy", "Action", "Thriller", "Western", "Documentary"),
 #'       queries = list(list(query = intersects, params = list("Drama", "Action")),
 #'                 list(query = between, params = list(1970, 1980), color = "red", active = TRUE)))
@@ -115,7 +121,7 @@
 #' @import grDevices
 #' @import scales
 #' @export
-upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F, set.metadata = NULL, intersections = NULL,
+upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F, set.metadata = NULL, title = "", title.pos = c(x = 0.65, y = 0.95), intersections = NULL,
                   matrix.color = "gray23", main.bar.color = "gray23", mainbar.y.label = "Intersection Size", mainbar.y.max = NULL,
                   sets.bar.color = "gray23", sets.x.label = "Set Size", point.size = 2.2, line.size = 0.7,
                   mb.ratio = c(0.70,0.30), expression = NULL, att.pos = NULL, att.color = main.bar.color, order.by = c("freq", "degree"),
@@ -137,6 +143,10 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F
                  "#CC79A7")
   }
 
+  ## ensure title.pos is conformant
+  if (!is.numeric(title.pos)) stop("title.pos must be numeric")
+  if (!identical(sort(names(title.pos)), c("x", "y"))) stop("title.pos requires a named vector with components 'x' and 'y'")
+  
   if(is.null(intersections) == F){
     Set_names <- unique((unlist(intersections)))
     Sets_to_remove <- Remove(data, first.col, last.col, Set_names)
@@ -283,6 +293,9 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F
       AllQueryData = AllQueryData,
       attribute.plots = attribute.plots,
       legend = legend,
+      title = title,
+      title.pos = title.pos,
+      text.scale = text.scale,
       query.legend = query.legend,
       BoxPlots = BoxPlots,
       Set_names = Set_names,
@@ -315,6 +328,7 @@ print.upset <- function(x, newpage = TRUE) {
     set_metadata = x$set.metadata,
     set_metadata_plots = x$set.metadata.plots,
     newpage = newpage)
+  grid::grid.text(x$title, x = x$title.pos[["x"]], y = x$title.pos[["y"]], gp = grid::gpar(fontsize = 16*x$text.scale))
 }
 
 #' @export
