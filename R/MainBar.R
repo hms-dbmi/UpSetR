@@ -61,7 +61,7 @@ Counter <- function(data, num_sets, start_col, name_of_sets, nintersections, mba
 
 ## Generate main bar plot
 Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_angles,
-                          ebar, ylabel, ymax, scale_intersections, text_scale, attribute_plots){
+                          ebar, ylabel, ymax, scale_intersections, text_scale, attribute_plots, mainbar.comma){
 
   bottom_margin <- (-1)*0.65
 
@@ -115,8 +115,10 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_an
     Main_bar_data$freq <- round(log10(Main_bar_data$freq), 2)
     ymax <- log10(ymax)
   }
+  labels_arg <- waiver()
+  if(mainbar.comma) labels_arg <- scales::comma
   Main_bar_plot <- (ggplot(data = Main_bar_data, aes_string(x = "x", y = "freq")) 
-                    + scale_y_continuous(trans = scale_intersections)
+                    + scale_y_continuous(trans = scale_intersections, labels = labels_arg)
                     + ylim(0, ymax)
                     + geom_bar(stat = "identity", width = 0.6,
                                fill = Main_bar_data$color)
@@ -182,6 +184,9 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_an
     Main_bar_plot <- (Main_bar_plot + geom_point(data = pElemDat, aes_string(x="x", y = "freq"),
                                                  position = position_jitter(width = 0.2, height = 0.2),
                                                  colour = pElemDat$color, size = 2, shape = 17))
+  }
+  if(mainbar.comma){
+    Main_bar_plot <- (Main_bar_plot + scale_y_continuous(labels = scales::comma))
   }
   
   Main_bar_plot <- (Main_bar_plot 
