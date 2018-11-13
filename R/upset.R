@@ -54,7 +54,7 @@
 #' @param set_size.angles Numeric, angle to rotate the set size plot x-axis text
 #' @param sets.comma Logical, format numeric labels with commas
 #' @param mainbar.comma Logical, format numeric labels with commas
-#' @param intersection.size.comma Logical, format numeric labels with commas. Ignored if @param show.numbers is not "yes".
+#' @param intersection.size.comma Logical, format numeric labels with commas. Ignored if `show.numbers` is not "yes".
 #' @param set_size.show Logical, display the set sizes on the set size bar chart
 #' @param set_size.numbers_size If set_size.show is TRUE, adjust the size of the numbers
 #' @param set_size.scale_max Increase the maximum of set size scale

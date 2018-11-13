@@ -122,7 +122,7 @@ in the following format: c(intersection size title, intersection size tick label
 
 \item{mainbar.comma}{Logical, format numeric labels with commas}
 
-\item{intersection.size.comma}{Logical, format numeric labels with commas. Ignored if @param show.numbers is not "yes".}
+\item{intersection.size.comma}{Logical, format numeric labels with commas. Ignored if `show.numbers` is not "yes".}
 }
 \description{
 Visualization of set intersections using novel UpSet matrix design.
