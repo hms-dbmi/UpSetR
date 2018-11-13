@@ -54,6 +54,7 @@
 #' @param set_size.angles Numeric, angle to rotate the set size plot x-axis text
 #' @param sets.comma Logical, format numeric labels with commas
 #' @param mainbar.comma Logical, format numeric labels with commas
+#' @param intersection.size.comma Logical, format numeric labels with commas. Ignored if @param show.numbers is not "yes".
 #' @param set_size.show Logical, display the set sizes on the set size bar chart
 #' @param set_size.numbers_size If set_size.show is TRUE, adjust the size of the numbers
 #' @param set_size.scale_max Increase the maximum of set size scale
@@ -125,7 +126,7 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F
                   queries = NULL, query.legend = "none", shade.color = "gray88", shade.alpha = 0.25, matrix.dot.alpha =0.5,
                   empty.intersections = NULL, color.pal = 1, boxplot.summary = NULL, attribute.plots = NULL, scale.intersections = "identity",
                   scale.sets = "identity", text.scale = 1, set_size.angles = 0 , set_size.show = FALSE, set_size.numbers_size = NULL, set_size.scale_max = NULL,
-                  sets.comma = F, mainbar.comma = F){
+                  sets.comma = F, mainbar.comma = F, intersection.size.comma = F){
 
   startend <-FindStartEnd(data)
   first.col <- startend[1]
@@ -259,7 +260,7 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F
   ShadingData <- MakeShading(Matrix_layout, shade.color)
   }
   Main_bar <- suppressMessages(Make_main_bar(All_Freqs, Bar_Q, show.numbers, mb.ratio, customQBar, number.angles, EBar_data, mainbar.y.label,
-                            mainbar.y.max, scale.intersections, text.scale, attribute.plots, mainbar.comma))
+                            mainbar.y.max, scale.intersections, text.scale, attribute.plots, mainbar.comma, intersection.size.comma))
   Matrix <- Make_matrix_plot(Matrix_layout, Set_sizes, All_Freqs, point.size, line.size,
                              text.scale, labels, ShadingData, shade.alpha)
   Sizes <- Make_size_plot(Set_sizes, sets.bar.color, mb.ratio, sets.x.label, scale.sets, text.scale, set_size.angles, set_size.show,

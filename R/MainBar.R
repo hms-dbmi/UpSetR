@@ -61,7 +61,7 @@ Counter <- function(data, num_sets, start_col, name_of_sets, nintersections, mba
 
 ## Generate main bar plot
 Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_angles,
-                          ebar, ylabel, ymax, scale_intersections, text_scale, attribute_plots, mainbar.comma){
+                          ebar, ylabel, ymax, scale_intersections, text_scale, attribute_plots, mainbar.comma, intersection.size.comma){
 
   bottom_margin <- (-1)*0.65
 
@@ -130,8 +130,14 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_an
                             axis.title.y = element_text(vjust = -0.8, size = 8.3*y_axis_title_scale), axis.text.y = element_text(vjust=0.3,
                                                                                                             size=7*y_axis_tick_label_scale)))
   if((show_num == "yes") || (show_num == "Yes")){
-    Main_bar_plot <- (Main_bar_plot + geom_text(aes_string(label = "freq"), size = 2.2*intersection_size_number_scale, vjust = -1,
-                                                angle = number_angles, colour = Main_bar_data$color))
+    if(!intersection.size.comma){
+      Main_bar_plot <- (Main_bar_plot + geom_text(aes_string(label = "freq"), size = 2.2*intersection_size_number_scale, vjust = -1,
+                                                  angle = number_angles, colour = Main_bar_data$color))
+    } else{
+      Main_bar_plot <- (Main_bar_plot + geom_text(aes(label = scales::comma(freq)), size = 2.2*intersection_size_number_scale, vjust = -1,
+                                                  angle = number_angles, colour = Main_bar_data$color))
+    }
+    
   }
   bInterDat <- NULL
   pInterDat <- NULL
