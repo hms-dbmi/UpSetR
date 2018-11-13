@@ -19,7 +19,7 @@ upset(data, nsets = 5, nintersects = 40, sets = NULL,
   attribute.plots = NULL, scale.intersections = "identity",
   scale.sets = "identity", text.scale = 1, set_size.angles = 0,
   set_size.show = FALSE, set_size.numbers_size = NULL,
-  set_size.scale_max = NULL)
+  set_size.scale_max = NULL, sets.comma = F, mainbar.comma = F)
 }
 \arguments{
 \item{data}{Data set}
@@ -116,6 +116,10 @@ in the following format: c(intersection size title, intersection size tick label
 \item{set_size.numbers_size}{If set_size.show is TRUE, adjust the size of the numbers}
 
 \item{set_size.scale_max}{Increase the maximum of set size scale}
+
+\item{sets.comma}{Logical, format numeric labels with commas}
+
+\item{mainbar.comma}{Logical, format numeric labels with commas}
 }
 \description{
 Visualization of set intersections using novel UpSet matrix design.
