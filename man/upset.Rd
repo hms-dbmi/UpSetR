@@ -20,7 +20,7 @@ upset(data, nsets = 5, nintersects = 40, sets = NULL,
   scale.sets = "identity", text.scale = 1, set_size.angles = 0,
   set_size.show = FALSE, set_size.numbers_size = NULL,
   set_size.scale_max = NULL, sets.comma = F, mainbar.comma = F,
-  intersection.size.comma = F)
+  intersection.size.comma = F, set_size.number_comma = F)
 }
 \arguments{
 \item{data}{Data set}
@@ -122,7 +122,9 @@ in the following format: c(intersection size title, intersection size tick label
 
 \item{mainbar.comma}{Logical, format numeric labels with commas}
 
-\item{intersection.size.comma}{Logical, format numeric labels with commas. Ignored if `show.numbers` is not "yes".}
+\item{intersection.size.comma}{Logical, format numeric labels with commas. Ignored if show.numbers is not "yes".}
+
+\item{set_size.number_comma}{Logical, format numeric labels with commas. Ignored if set_size.show is FALSE.}
 }
 \description{
 Visualization of set intersections using novel UpSet matrix design.

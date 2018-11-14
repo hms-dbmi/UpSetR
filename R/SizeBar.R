@@ -33,7 +33,7 @@ log2_reverse_trans <- function(){
 
 ## Generate set size plot
 Make_size_plot <- function(Set_size_data, sbar_color, ratios, ylabel, scale_sets, text_scale, set_size_angle, set_size.show, set_size.scale_max,
-                           set_size.number_size, sets.comma){
+                           set_size.number_size, sets.comma, set_size.number_comma){
 #   if(ratios[1] < 0.4){
 #     m <- (-0.05)
 #   }
@@ -94,7 +94,11 @@ Make_size_plot <- function(Set_size_data, sbar_color, ratios, ylabel, scale_sets
   if(sets.comma) labels_arg <- scales::comma
   
   if(set_size.show == TRUE){
-    Size_plot <- (Size_plot + geom_text(aes(label=y,vjust=0.5,hjust=1.2, angle = set_size_angle), size=num.size))
+    if(set_size.number_comma){
+      Size_plot <- (Size_plot + geom_text(aes(label = scales::comma(y), vjust=0.5,hjust=1.2, angle = set_size_angle), size=num.size))
+    } else{
+      Size_plot <- (Size_plot + geom_text(aes(label=y,vjust=0.5,hjust=1.2, angle = set_size_angle), size=num.size)) 
+    }
   }
     
   if(scale_sets == "log10"){
