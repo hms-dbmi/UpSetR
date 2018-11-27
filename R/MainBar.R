@@ -99,7 +99,7 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_an
   else{elem_data <- NULL}
   
   #ten_perc creates appropriate space above highest bar so number doesnt get cut off
-  if(is.null(ymax) == T){
+  if(is.null(ymax)){
   ten_perc <- ((max(Main_bar_data$freq)) * 0.1)
   ymax <- max(Main_bar_data$freq) + ten_perc
   }
