@@ -111,7 +111,8 @@ Make_size_plot <- function(Set_size_data, sbar_color, ratios, ylabel, scale_sets
                                                    trans = log10_reverse_trans(),
                                                    labels = labels_arg))
     } else {
-      Size_plot <- (Size_plot + scale_y_continuous(trans = log10_reverse_trans(),
+      Size_plot <- (Size_plot + scale_y_continuous(limits = c(max(Set_size_data) + 0.1*max(Set_size_data), 0),
+                                                   trans = log10_reverse_trans(),
                                                    labels = labels_arg))
     }
   }
@@ -131,7 +132,8 @@ Make_size_plot <- function(Set_size_data, sbar_color, ratios, ylabel, scale_sets
                                                    trans = "reverse",
                                                    labels = labels_arg))
     } else {
-      Size_plot <- (Size_plot + scale_y_continuous(trans = "reverse",
+      Size_plot <- (Size_plot + scale_y_continuous(limits = c(max(Set_size_data) + 0.1*max(Set_size_data), 0),
+                                                   trans = "reverse",
                                                    labels = labels_arg))
     }
   }
