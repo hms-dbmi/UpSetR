@@ -51,7 +51,8 @@
 #' @param scale.sets The scale to be used for the set sizes. Options: "identity", "log10", "log2"
 #' @param text.scale Numeric, value to scale the text sizes, applies to all axis labels, tick labels, and numbers above bar plot. Can be a universal scale, or a vector containing individual scales
 #'        in the following format: c(intersection size title, intersection size tick labels, set size title, set size tick labels, set names, numbers above bars)
-#' @param set_size.angles Numeric, angle to rotate the set size plot x-axis text
+#' @param set_size.angles Numeric, angle to rotate the set size plot text
+#' @param set_size_x_axis.angles Numeric, angle to rotate the set size plot x-axis text
 #' @param sets.comma Logical, format numeric labels with commas
 #' @param mainbar.comma Logical, format numeric labels with commas
 #' @param intersection.size.comma Logical, format numeric labels with commas. Ignored if show.numbers is not "yes".
@@ -126,7 +127,7 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F
                   decreasing = c(T, F), show.numbers = "yes", number.angles = 0, group.by = "degree",cutoff = NULL,
                   queries = NULL, query.legend = "none", shade.color = "gray88", shade.alpha = 0.25, matrix.dot.alpha =0.5,
                   empty.intersections = NULL, color.pal = 1, boxplot.summary = NULL, attribute.plots = NULL, scale.intersections = "identity",
-                  scale.sets = "identity", text.scale = 1, set_size.angles = 0 , set_size.show = FALSE, set_size.numbers_size = NULL, set_size.scale_max = NULL,
+                  scale.sets = "identity", text.scale = 1, set_size.angles = 0 , set_size_x_axis.angles = 0, set_size.show = FALSE, set_size.numbers_size = NULL, set_size.scale_max = NULL,
                   sets.comma = F, mainbar.comma = F, intersection.size.comma = F, set_size.number_comma = F){
 
   startend <-FindStartEnd(data)
@@ -264,7 +265,7 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F
                             mainbar.y.max, scale.intersections, text.scale, attribute.plots, mainbar.comma, intersection.size.comma))
   Matrix <- Make_matrix_plot(Matrix_layout, Set_sizes, All_Freqs, point.size, line.size,
                              text.scale, labels, ShadingData, shade.alpha)
-  Sizes <- Make_size_plot(Set_sizes, sets.bar.color, mb.ratio, sets.x.label, scale.sets, text.scale, set_size.angles, set_size.show,
+  Sizes <- Make_size_plot(Set_sizes, sets.bar.color, mb.ratio, sets.x.label, scale.sets, text.scale, set_size.angles, set_size_x_axis.angles, set_size.show,
                           set_size.scale_max, set_size.numbers_size, sets.comma, set_size.number_comma)
   
   # Make_base_plot(Main_bar, Matrix, Sizes, labels, mb.ratio, att.x, att.y, New_data,

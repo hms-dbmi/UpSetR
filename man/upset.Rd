@@ -18,9 +18,10 @@ upset(data, nsets = 5, nintersects = 40, sets = NULL,
   empty.intersections = NULL, color.pal = 1, boxplot.summary = NULL,
   attribute.plots = NULL, scale.intersections = "identity",
   scale.sets = "identity", text.scale = 1, set_size.angles = 0,
-  set_size.show = FALSE, set_size.numbers_size = NULL,
-  set_size.scale_max = NULL, sets.comma = F, mainbar.comma = F,
-  intersection.size.comma = F, set_size.number_comma = F)
+  set_size_x_axis.angles = 0, set_size.show = FALSE,
+  set_size.numbers_size = NULL, set_size.scale_max = NULL,
+  sets.comma = F, mainbar.comma = F, intersection.size.comma = F,
+  set_size.number_comma = F)
 }
 \arguments{
 \item{data}{Data set}
@@ -110,7 +111,9 @@ a custom ggplot and the x and y aesthetics for the function. ncols is the number
 \item{text.scale}{Numeric, value to scale the text sizes, applies to all axis labels, tick labels, and numbers above bar plot. Can be a universal scale, or a vector containing individual scales
 in the following format: c(intersection size title, intersection size tick labels, set size title, set size tick labels, set names, numbers above bars)}
 
-\item{set_size.angles}{Numeric, angle to rotate the set size plot x-axis text}
+\item{set_size.angles}{Numeric, angle to rotate the set size plot text}
+
+\item{set_size_x_axis.angles}{Numeric, angle to rotate the set size plot x-axis text}
 
 \item{set_size.show}{Logical, display the set sizes on the set size bar chart}
 

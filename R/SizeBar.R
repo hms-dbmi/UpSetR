@@ -6,7 +6,7 @@ FindSetFreqs <- function(data, start_col, num_sets, set_names, keep_order){
   temp_data <- as.data.frame(colSums(temp_data))
   colnames(temp_data) <- c("y")
   if(keep_order == FALSE){
-  temp_data <- temp_data[order(temp_data$y, decreasing = T), ]
+    temp_data <- temp_data[order(temp_data$y, decreasing = T), ]
   }
   else{
     temp_data <- temp_data$y
@@ -32,17 +32,17 @@ log2_reverse_trans <- function(){
 }
 
 ## Generate set size plot
-Make_size_plot <- function(Set_size_data, sbar_color, ratios, ylabel, scale_sets, text_scale, set_size_angle, set_size.show, set_size.scale_max,
+Make_size_plot <- function(Set_size_data, sbar_color, ratios, ylabel, scale_sets, text_scale, set_size_angle, set_size_x_axis.angles, set_size.show, set_size.scale_max,
                            set_size.number_size, sets.comma, set_size.number_comma){
-#   if(ratios[1] < 0.4){
-#     m <- (-0.05)
-#   }
-#   else if((ratios[1] > 0.4) & (ratios[1] < 0.46)){
-#     m <- (-0.03)
-#   }
-#   else{
-#     m <- 0
-#   }
+  #   if(ratios[1] < 0.4){
+  #     m <- (-0.05)
+  #   }
+  #   else if((ratios[1] > 0.4) & (ratios[1] < 0.46)){
+  #     m <- (-0.03)
+  #   }
+  #   else{
+  #     m <- 0
+  #   }
   
   if(length(text_scale) > 1 && length(text_scale) <= 6){
     x_axis_title_scale <- text_scale[3]
@@ -79,7 +79,11 @@ Make_size_plot <- function(Set_size_data, sbar_color, ratios, ylabel, scale_sets
                         plot.margin=unit(c(-0.11,-1.3,0.5,0.5), "lines"),
                         axis.title.x = element_text(size = 8.3*x_axis_title_scale),
                         axis.text.x = element_text(size = 7*x_axis_tick_label_scale,
-                                                   vjust = 1, hjust = 0.5),
+                                                   vjust = 1, 
+                                                   # hjust = 0.5,
+                                                   hjust = 1,
+                                                   angle = set_size_x_axis.angles
+                        ),
                         axis.line = element_line(colour = "gray0"),
                         axis.line.y = element_blank(),
                         axis.line.x = element_line(colour = "gray0", size = 0.3),
@@ -100,7 +104,7 @@ Make_size_plot <- function(Set_size_data, sbar_color, ratios, ylabel, scale_sets
       Size_plot <- (Size_plot + geom_text(aes(label=y,vjust=0.5,hjust=1.2, angle = set_size_angle), size=num.size)) 
     }
   }
-    
+  
   if(scale_sets == "log10"){
     if(!is.null(set_size.scale_max)) {
       Size_plot <- (Size_plot + scale_y_continuous(limits = c(set_size.scale_max, 0), 
