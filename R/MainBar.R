@@ -131,10 +131,12 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_an
                                                                                                             size=7*y_axis_tick_label_scale)))
   if((show_num == "yes") || (show_num == "Yes")){
     if(!intersection.size.comma){
-      Main_bar_plot <- (Main_bar_plot + geom_text(aes_string(label = "freq"), size = 2.2*intersection_size_number_scale, vjust = -1,
+      Main_bar_plot <- (Main_bar_plot + geom_text(aes_string(label = "freq"), size = 2.2*intersection_size_number_scale, 
+                                                  vjust = 0.5, hjust = -0.1,
                                                   angle = number_angles, colour = Main_bar_data$color))
     } else{
-      Main_bar_plot <- (Main_bar_plot + geom_text(aes(label = scales::comma(freq)), size = 2.2*intersection_size_number_scale, vjust = -1,
+      Main_bar_plot <- (Main_bar_plot + geom_text(aes(label = scales::comma(freq)), size = 2.2*intersection_size_number_scale, 
+                                                  vjust = 0.5, hjust = -0.1,
                                                   angle = number_angles, colour = Main_bar_data$color))
     }
     
