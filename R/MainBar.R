@@ -61,10 +61,10 @@ Counter <- function(data, num_sets, start_col, name_of_sets, nintersections, mba
 
 ## Generate main bar plot
 Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_angles,
-                          ebar, ylabel, ymax, scale_intersections, text_scale, attribute_plots){
-
+                          ebar, ylabel, ymax, scale_intersections, text_scale, attribute_plots, mainbar.comma, intersection.size.comma){
+  
   bottom_margin <- (-1)*0.65
-
+  
   if(is.null(attribute_plots) == FALSE){
     bottom_margin <- (-1)*0.45
   }
@@ -99,9 +99,9 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_an
   else{elem_data <- NULL}
   
   #ten_perc creates appropriate space above highest bar so number doesnt get cut off
-  if(is.null(ymax) == T){
-  ten_perc <- ((max(Main_bar_data$freq)) * 0.1)
-  ymax <- max(Main_bar_data$freq) + ten_perc
+  if(is.null(ymax)){
+    ten_perc <- ((max(Main_bar_data$freq)) * 0.1)
+    ymax <- max(Main_bar_data$freq) + ten_perc
   }
   
   if(ylabel == "Intersection Size" && scale_intersections != "identity"){
@@ -115,21 +115,33 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_an
     Main_bar_data$freq <- round(log10(Main_bar_data$freq), 2)
     ymax <- log10(ymax)
   }
+  labels_arg <- waiver()
+  if(mainbar.comma) labels_arg <- scales::comma
   Main_bar_plot <- (ggplot(data = Main_bar_data, aes_string(x = "x", y = "freq")) 
-                    + scale_y_continuous(trans = scale_intersections)
-                    + ylim(0, ymax)
+                    + scale_y_continuous(trans = scale_intersections, labels = labels_arg, limits = c(0, ymax))
                     + geom_bar(stat = "identity", width = 0.6,
                                fill = Main_bar_data$color)
                     + scale_x_continuous(limits = c(0,(nrow(Main_bar_data)+1 )), expand = c(0,0),
                                          breaks = NULL)
-                    + xlab(NULL) + ylab(ylabel) +labs(title = NULL)
+                    + xlab(NULL) + ylab(ylabel) + labs(title = NULL)
                     + theme(panel.background = element_rect(fill = "white"),
                             plot.margin = unit(c(0.5,0.5,bottom_margin,0.5), "lines"), panel.border = element_blank(),
-                            axis.title.y = element_text(vjust = -0.8, size = 8.3*y_axis_title_scale), axis.text.y = element_text(vjust=0.3,
-                                                                                                            size=7*y_axis_tick_label_scale)))
+                            axis.title.y = element_text(vjust = -0.8, 
+                                                        size = 8.3*y_axis_title_scale), 
+                            axis.text.y = element_text(vjust=0.3,size=7*y_axis_tick_label_scale))
+                    + scale_y_continuous(trans = scale_intersections, labels = labels_arg, limits = c(0, ymax))
+  )
   if((show_num == "yes") || (show_num == "Yes")){
-    Main_bar_plot <- (Main_bar_plot + geom_text(aes_string(label = "freq"), size = 2.2*intersection_size_number_scale, vjust = -1,
-                                                angle = number_angles, colour = Main_bar_data$color))
+    if(!intersection.size.comma){
+      Main_bar_plot <- (Main_bar_plot + geom_text(aes_string(label = "freq"), size = 2.2*intersection_size_number_scale, 
+                                                  vjust = 0.5, hjust = -0.1,
+                                                  angle = number_angles, colour = Main_bar_data$color))
+    } else{
+      Main_bar_plot <- (Main_bar_plot + geom_text(aes(label = scales::comma(freq)), size = 2.2*intersection_size_number_scale, 
+                                                  vjust = 0.5, hjust = -0.1,
+                                                  angle = number_angles, colour = Main_bar_data$color))
+    }
+    
   }
   bInterDat <- NULL
   pInterDat <- NULL
