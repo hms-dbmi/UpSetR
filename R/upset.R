@@ -319,5 +319,5 @@ print.upset <- function(x, newpage = TRUE) {
 
 #' @export
 summary.upset <- function(x) {
-    cat("An object of class `upset`. Call print() to show.")
+    cat("An object of class `upset`. Call print() to show.\n")
 }
