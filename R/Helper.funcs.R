@@ -8,7 +8,7 @@ FindStartEnd <- function(data){
       startend[1] <- i
       break
     }
-    else if((column[1] == "1") && (length(column) == 1)){
+    else if((column[1] %in% c("0","1")) && (length(column) == 1)){
       startend[1] <- i
       break
     }
@@ -27,7 +27,7 @@ FindStartEnd <- function(data){
       startend[2] <- i
       break
     }
-    else if((column[1] == "1") && (length(column) == 1)){
+    else if((column[1] %in% c("0","1")) && (length(column) == 1)){
       startend[2] <- i
       break
     }
