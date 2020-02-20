@@ -30,7 +30,7 @@ Make_labels <- function(setup){
 ## 1's represent dark circles, 0's light, and if x-value has multiple 1's they are connected.
 Create_layout <- function(setup, mat_color, mat_col, matrix_dot_alpha){
   Matrix_layout <- expand.grid(y=seq(nrow(setup)), x=seq(ncol(setup)))
-  Matrix_layout <- data.frame(Matrix_layout, value = as.vector(setup))
+  Matrix_layout <- data.frame(Matrix_layout, value = as.vector(setup), check.names = F)
   for(i in 1:nrow(Matrix_layout)){
     if(Matrix_layout$value[i] > as.integer(0)){
       Matrix_layout$color[i] <- mat_color
