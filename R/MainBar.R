@@ -60,8 +60,8 @@ Counter <- function(data, num_sets, start_col, name_of_sets, nintersections, mba
 }
 
 ## Generate main bar plot
-Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_angles,
-                          ebar, ylabel, ymax, scale_intersections, text_scale, attribute_plots){
+Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_angles, number.colors,
+                          ebar, ylabel, ymax, scale_intersections, text_scale, attribute_plots, plot.title){
 
   bottom_margin <- (-1)*0.65
 
@@ -128,9 +128,15 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_an
                             axis.title.y = element_text(vjust = -0.8, size = 8.3*y_axis_title_scale), axis.text.y = element_text(vjust=0.3,
                                                                                                             size=7*y_axis_tick_label_scale)))
   if((show_num == "yes") || (show_num == "Yes")){
-    Main_bar_plot <- (Main_bar_plot + geom_text(aes_string(label = "freq"), size = 2.2*intersection_size_number_scale, vjust = -1,
-                                                angle = number_angles, colour = Main_bar_data$color))
+    if(is.null(number.colors)) {
+      Main_bar_plot <- (Main_bar_plot + geom_text(aes_string(label = "freq"), size = 2.2*intersection_size_number_scale, vjust = -1,
+                                                  angle = number_angles, colour = Main_bar_data$color))
+    } else {
+      Main_bar_plot <- (Main_bar_plot + geom_text(aes_string(label = "freq"), size = 2.2*intersection_size_number_scale, vjust = -1,
+                                                  angle = number_angles, colour = number.colors))
+    }
   }
+
   bInterDat <- NULL
   pInterDat <- NULL
   bCustomDat <- NULL
@@ -188,6 +194,9 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_an
                     + geom_vline(xintercept = 0, color = "gray0")
                     + geom_hline(yintercept = 0, color = "gray0"))
   
+  if(!is.na(plot.title)) {
+    Main_bar_plot <- c(Main_bar_plot + ggtitle(plot.title))
+  }
   Main_bar_plot <- ggplotGrob(Main_bar_plot)
   return(Main_bar_plot)
 }

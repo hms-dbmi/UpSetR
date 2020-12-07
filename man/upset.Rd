@@ -4,22 +4,51 @@
 \alias{upset}
 \title{UpSetR Plot}
 \usage{
-upset(data, nsets = 5, nintersects = 40, sets = NULL,
-  keep.order = F, set.metadata = NULL, intersections = NULL,
-  matrix.color = "gray23", main.bar.color = "gray23",
-  mainbar.y.label = "Intersection Size", mainbar.y.max = NULL,
-  sets.bar.color = "gray23", sets.x.label = "Set Size",
-  point.size = 2.2, line.size = 0.7, mb.ratio = c(0.7, 0.3),
-  expression = NULL, att.pos = NULL, att.color = main.bar.color,
-  order.by = c("freq", "degree"), decreasing = c(T, F),
-  show.numbers = "yes", number.angles = 0, group.by = "degree",
-  cutoff = NULL, queries = NULL, query.legend = "none",
-  shade.color = "gray88", shade.alpha = 0.25, matrix.dot.alpha = 0.5,
-  empty.intersections = NULL, color.pal = 1, boxplot.summary = NULL,
-  attribute.plots = NULL, scale.intersections = "identity",
-  scale.sets = "identity", text.scale = 1, set_size.angles = 0,
-  set_size.show = FALSE, set_size.numbers_size = NULL,
-  set_size.scale_max = NULL)
+upset(
+  data,
+  nsets = 5,
+  nintersects = 40,
+  sets = NULL,
+  keep.order = F,
+  set.metadata = NULL,
+  intersections = NULL,
+  matrix.color = "gray23",
+  main.bar.color = "gray23",
+  mainbar.y.label = "Intersection Size",
+  mainbar.y.max = NULL,
+  sets.bar.color = "gray23",
+  plot.title = NA,
+  sets.x.label = "Set Size",
+  point.size = 2.2,
+  line.size = 0.7,
+  mb.ratio = c(0.7, 0.3),
+  expression = NULL,
+  att.pos = NULL,
+  att.color = main.bar.color,
+  order.by = c("freq", "degree"),
+  decreasing = c(T, F),
+  show.numbers = "yes",
+  number.angles = 0,
+  number.colors = NULL,
+  group.by = "degree",
+  cutoff = NULL,
+  queries = NULL,
+  query.legend = "none",
+  shade.color = "gray88",
+  shade.alpha = 0.25,
+  matrix.dot.alpha = 0.5,
+  empty.intersections = NULL,
+  color.pal = 1,
+  boxplot.summary = NULL,
+  attribute.plots = NULL,
+  scale.intersections = "identity",
+  scale.sets = "identity",
+  text.scale = 1,
+  set_size.angles = 0,
+  set_size.show = FALSE,
+  set_size.numbers_size = NULL,
+  set_size.scale_max = NULL
+)
 }
 \arguments{
 \item{data}{Data set}
@@ -50,6 +79,8 @@ will be the specific intersections listed.}
 
 \item{sets.bar.color}{Color of set size bar plot}
 
+\item{plot.title}{Title of UpSetR plot}
+
 \item{sets.x.label}{The x-axis label of the set size bar plot}
 
 \item{point.size}{Size of points in matrix plot}
@@ -71,6 +102,8 @@ will be the specific intersections listed.}
 \item{show.numbers}{Show numbers of intersection sizes above bars}
 
 \item{number.angles}{The angle of the numbers atop the intersection size bars}
+
+\item{number.colors}{The colors of the numbers atop the intersection size bars}
 
 \item{group.by}{How the data should be grouped ("degree" or "sets")}
 

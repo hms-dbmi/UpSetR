@@ -14,6 +14,7 @@
 #'        will be the specific intersections listed.
 #' @param matrix.color Color of the intersection points
 #' @param main.bar.color Color of the main bar plot
+#' @param plot.title Title of UpSetR plot
 #' @param mainbar.y.label The y-axis label of the intersection size bar plot
 #' @param mainbar.y.max The maximum y value of the intersection size bar plot scale. May be useful when aligning multiple UpSet plots horizontally.
 #' @param sets.bar.color Color of set size bar plot
@@ -28,6 +29,7 @@
 #' @param decreasing How the variables in order.by should be ordered. "freq" is decreasing (greatest to least) and "degree" is increasing (least to greatest)
 #' @param show.numbers Show numbers of intersection sizes above bars
 #' @param number.angles The angle of the numbers atop the intersection size bars
+#' @param number.colors The colors of the numbers atop the intersection size bars
 #' @param group.by How the data should be grouped ("degree" or "sets")
 #' @param cutoff The number of intersections from each set (to cut off at) when aggregating by sets
 #' @param queries Unified query of intersections, elements, and custom row functions. Entered as a list that contains a list of
@@ -117,9 +119,9 @@
 #' @export
 upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F, set.metadata = NULL, intersections = NULL,
                   matrix.color = "gray23", main.bar.color = "gray23", mainbar.y.label = "Intersection Size", mainbar.y.max = NULL,
-                  sets.bar.color = "gray23", sets.x.label = "Set Size", point.size = 2.2, line.size = 0.7,
+                  sets.bar.color = "gray23", plot.title = NA, sets.x.label = "Set Size", point.size = 2.2, line.size = 0.7,
                   mb.ratio = c(0.70,0.30), expression = NULL, att.pos = NULL, att.color = main.bar.color, order.by = c("freq", "degree"),
-                  decreasing = c(T, F), show.numbers = "yes", number.angles = 0, group.by = "degree",cutoff = NULL,
+                  decreasing = c(T, F), show.numbers = "yes", number.angles = 0, number.colors=NULL, group.by = "degree",cutoff = NULL,
                   queries = NULL, query.legend = "none", shade.color = "gray88", shade.alpha = 0.25, matrix.dot.alpha =0.5,
                   empty.intersections = NULL, color.pal = 1, boxplot.summary = NULL, attribute.plots = NULL, scale.intersections = "identity",
                   scale.sets = "identity", text.scale = 1, set_size.angles = 0 , set_size.show = FALSE, set_size.numbers_size = NULL, set_size.scale_max = NULL){
@@ -255,8 +257,8 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F
   if(is.null(ShadingData) == TRUE){
   ShadingData <- MakeShading(Matrix_layout, shade.color)
   }
-  Main_bar <- suppressMessages(Make_main_bar(All_Freqs, Bar_Q, show.numbers, mb.ratio, customQBar, number.angles, EBar_data, mainbar.y.label,
-                            mainbar.y.max, scale.intersections, text.scale, attribute.plots))
+  Main_bar <- suppressMessages(Make_main_bar(All_Freqs, Bar_Q, show.numbers, mb.ratio, customQBar, number.angles, number.colors, EBar_data, mainbar.y.label,
+                            mainbar.y.max, scale.intersections, text.scale, attribute.plots, plot.title))
   Matrix <- Make_matrix_plot(Matrix_layout, Set_sizes, All_Freqs, point.size, line.size,
                              text.scale, labels, ShadingData, shade.alpha)
   Sizes <- Make_size_plot(Set_sizes, sets.bar.color, mb.ratio, sets.x.label, scale.sets, text.scale, set_size.angles,set_size.show,
@@ -292,7 +294,7 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F
 }
 
 #' @export
-print.upset <- function(x, newpage = TRUE) {
+print.upset <- function(x, ..., newpage = TRUE) {
   Make_base_plot(
     Main_bar_plot = x$Main_bar,
     Matrix_plot = x$Matrix,
@@ -318,6 +320,6 @@ print.upset <- function(x, newpage = TRUE) {
 }
 
 #' @export
-summary.upset <- function(x) {
+summary.upset <- function(...) {
     cat("An object of class `upset`. Call print() to show.")
 }

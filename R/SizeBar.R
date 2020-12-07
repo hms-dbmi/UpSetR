@@ -30,7 +30,7 @@ log2_reverse_trans <- function(){
   trans_new(paste0("reverselog2-", format(2), "reverse"), trans, inv,
             log_breaks(base = 2), domain = c(1e-100, Inf))
 }
-
+globalVariables(c("y"))
 ## Generate set size plot
 Make_size_plot <- function(Set_size_data, sbar_color, ratios, ylabel, scale_sets, text_scale, set_size_angle, set_size.show, set_size.scale_max,
                            set_size.number_size){
@@ -64,9 +64,9 @@ Make_size_plot <- function(Set_size_data, sbar_color, ratios, ylabel, scale_sets
   }
   
   if(!is.null(set_size.number_size)) {
-    num.size <- (set_size.number_size/ggplot2:::.pt)*x_axis_tick_label_scale
+    num.size <- (set_size.number_size/2.845276)*x_axis_tick_label_scale
   } else {
-    num.size <- (7/ggplot2:::.pt)*x_axis_tick_label_scale
+    num.size <- (7/2.845276)*x_axis_tick_label_scale
   }
   
   Size_plot <- (ggplot(data = Set_size_data, aes_string(x ="x", y = "y"))
