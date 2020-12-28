@@ -1,4 +1,4 @@
-# UpSetR [![Travis-CI Build Status](https://travis-ci.org/hms-dbmi/UpSetR.svg?branch=master)](https://travis-ci.org/hms-dbmi/UpSetR) [![](http://www.r-pkg.org/badges/version/UpSetR)](https://cran.r-project.org/package=UpSetR) [![](http://cranlogs.r-pkg.org/badges/grand-total/UpSetR)](http://cranlogs.r-pkg.org/badges/grand-total/UpSetR)
+# UpSetR [![](http://www.r-pkg.org/badges/version/UpSetR)](https://cran.r-project.org/package=UpSetR) [![](http://cranlogs.r-pkg.org/badges/grand-total/UpSetR)](http://cranlogs.r-pkg.org/badges/grand-total/UpSetR)
 
 ## Technique
 
