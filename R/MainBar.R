@@ -26,9 +26,7 @@ Counter <- function(data, num_sets, start_col, name_of_sets, nintersections, mba
   Freqs <- Freqs[!(rowSums(Freqs[ ,1:num_sets]) == 0), ]
   #Aggregation by degree
   if(tolower(aggregate) == "degree"){
-    for(i in 1:nrow(Freqs)){
-      Freqs$degree[i] <- rowSums(Freqs[ i ,1:num_sets])
-    }
+    Freqs$degree <- rowSums(Freqs[, 1:num_sets])
     order_cols <- c()
     for(i in 1:length(order_mat)){
       order_cols[i] <- match(order_mat[i], colnames(Freqs))
