@@ -1,18 +1,12 @@
 ## ---- tidy=TRUE----------------------------------------------------------
 library(UpSetR)
-movies <- read.csv( system.file("extdata", "movies.csv", package = "UpSetR"), header=T, sep=";" )
+library(data.table)
+movies <- fread( system.file("extdata", "movies.csv", package = "UpSetR"), sep=";" )
 
 ## ---- tidy=TRUE----------------------------------------------------------
-sets <- names(movies[3:19])
+sets <- names(movies)[3:19]
 avgRottenTomatoesScore <- round(runif(17, min=0, max = 90))
-metadata <- as.data.frame(cbind(sets, avgRottenTomatoesScore))
-names(metadata) <- c("sets", "avgRottenTomatoesScore")
-
-## ---- tidy=TRUE----------------------------------------------------------
-is.numeric(metadata$avgRottenTomatoesScore)
-
-## ---- tidy=TRUE----------------------------------------------------------
-metadata$avgRottenTomatoesScore <- as.numeric(as.character(metadata$avgRottenTomatoesScore))
+metadata <- data.table(sets, avgRottenTomatoesScore)
 
 ## ---- fig.width=9, fig.height=5,out.width="850px", tidy=TRUE, fig.align='center'----
 upset(movies, set.metadata = list(data = metadata, plots = list(list(type="hist", column="avgRottenTomatoesScore", assign=20))))
