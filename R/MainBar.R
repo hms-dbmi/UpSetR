@@ -26,9 +26,7 @@ Counter <- function(data, num_sets, start_col, name_of_sets, nintersections, mba
   Freqs <- Freqs[!(rowSums(Freqs[ ,1:num_sets]) == 0), ]
   #Aggregation by degree
   if(tolower(aggregate) == "degree"){
-    for(i in 1:nrow(Freqs)){
-      Freqs$degree[i] <- rowSums(Freqs[ i ,1:num_sets])
-    }
+    Freqs$degree <- rowSums(Freqs[, 1:num_sets])
     order_cols <- c()
     for(i in 1:length(order_mat)){
       order_cols[i] <- match(order_mat[i], colnames(Freqs))
@@ -47,10 +45,8 @@ Counter <- function(data, num_sets, start_col, name_of_sets, nintersections, mba
   #delete rows used to order data correctly. Not needed to set up bars.
   delete_row <- (num_sets + 2)
   Freqs <- Freqs[ , -delete_row]
-  for( i in 1:nrow(Freqs)){
-    Freqs$x[i] <- i
-    Freqs$color <- mbar_color
-  }
+  Freqs$x <- 1:nrow(Freqs)
+  Freqs$color <- mbar_color
   if(is.na(nintersections)){
     nintersections = nrow(Freqs)
   }

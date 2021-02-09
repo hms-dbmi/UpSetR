@@ -54,10 +54,8 @@ specific_intersections <- function(data, first.col, last.col, intersections, ord
   #delete rows used to order data correctly. Not needed to set up bars.
   delete_row <- (num_sets + 2)
   Freqs <- Freqs[ , -delete_row]
-  for( i in 1:nrow(Freqs)){
-    Freqs$x[i] <- i
-    Freqs$color <- mbar_color
-  }
+  Freqs$x <- 1:nrow(Freqs)
+  Freqs$color <- mbar_color
   Freqs <- na.omit(Freqs)
   return(Freqs)
 }
