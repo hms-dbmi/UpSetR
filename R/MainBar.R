@@ -45,10 +45,8 @@ Counter <- function(data, num_sets, start_col, name_of_sets, nintersections, mba
   #delete rows used to order data correctly. Not needed to set up bars.
   delete_row <- (num_sets + 2)
   Freqs <- Freqs[ , -delete_row]
-  for( i in 1:nrow(Freqs)){
-    Freqs$x[i] <- i
-    Freqs$color <- mbar_color
-  }
+  Freqs$x <- 1:nrow(Freqs)
+  Freqs$color <- mbar_color
   if(is.na(nintersections)){
     nintersections = nrow(Freqs)
   }
