@@ -2,7 +2,6 @@
 IntersectionBoxPlot <- function(data1, data2, start_col, names){
   end_col <- ((start_col + length(names)) - 1)
   data2 <- data2[which(rowSums(data2[ ,start_col:end_col]) != 0), ]
-  #tagging because x axis values need to be 1:number of sets so they line up with their intersections
   data2$tag <- 1:nrow(data2)
   sets <- list()
   intersections <- list()
@@ -42,7 +41,7 @@ BoxPlotsPlot <- function(bdat, att, att_color){
   bdat$x <- as.factor(bdat$x)
   boxplots <- ggplotGrob(ggplot()
                          + theme_bw() +ylab(yaxis)
-                         + scale_x_discrete(limits = plot_lims, expand = c(0,0))
+                         + scale_x_discrete(limits = factor(plot_lims), expand = c(0,0))
                          + theme(plot.margin = unit(c(-0.7,0,0,0), "cm"),
                                  axis.title.y = element_text(vjust = -0.8),
                                  axis.ticks.x = element_blank(),
