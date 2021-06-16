@@ -2,7 +2,7 @@
 ## Essentially strips uneeded columns, converts data to matrix, and adjusts the labels to appropriate length
 ## i.e. if the labels were one letter each, appropriate space is added to make it fit and look neat
 Create_matrix <- function(data){
-  Matrix_setup <- as.matrix(t(data[ , 1:(length(data) -3)]))
+  Matrix_setup <- as.matrix(t(data[ , 1:(length(data) -3), drop =F]))
   names <- rownames(Matrix_setup)
   max <- max(nchar(names))
   if( max < 7)
