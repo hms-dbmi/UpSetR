@@ -149,6 +149,17 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F
     }
     All_Freqs <- specific_intersections(data, first.col, last.col, intersections, order.by, group.by, decreasing,
                                         cutoff, main.bar.color, Set_names)
+    if (is.null(empty.intersections) == T){ #change to a minimum size integer?
+      All_Freqs <- All_Freqs[All_Freqs$freq>0,]
+      All_Freqs <- All_Freqs[,colSums(All_Freqs[All_Freqs$freq>0,-length(All_Freqs)])>0]
+      #repeat remove with new filtered Set names
+      Set_names <- colnames(head(All_Freqs[,(-length(All_Freqs)+2):-length(All_Freqs)]))
+      Sets_to_remove <- Remove(data, first.col, last.col, Set_names)
+      New_data <- Wanted(data, Sets_to_remove)
+      Num_of_set <- Number_of_sets(Set_names)
+    }
+
+
   }
   else if(is.null(intersections) == T){
     Set_names <- sets
