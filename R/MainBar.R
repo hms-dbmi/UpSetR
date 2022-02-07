@@ -111,12 +111,14 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_an
     Main_bar_data$freq <- round(log2(Main_bar_data$freq), 2)
     elem_data$freq <- round(log2(elem_data$freq), 2)
     inter_data$freq <- round(log2(inter_data$freq), 2)
+    customQ$freq2 <- round(log2(customQ$freq), 2)
     ymax <- log2(ymax)
   }
   if(scale_intersections == "log10"){
     Main_bar_data$freq <- round(log10(Main_bar_data$freq), 2)
     elem_data$freq <- round(log10(elem_data$freq), 2)
     inter_data$freq <- round(log10(inter_data$freq), 2)
+    customQ$freq2 <- round(log10(customQ$freq2), 2)
     ymax <- log10(ymax)
   }
   Main_bar_plot <- (ggplot(data = Main_bar_data, aes_string(x = "x", y = "freq")) 
@@ -158,9 +160,9 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_an
     pInterDat <- inter_data[which(inter_data$act == F), ]
   }
   if(length(customQ) != 0){
-    pCustomDat <- customQ[which(customQ$act == F), ]
     bCustomDat <- customQ[which(customQ$act == T), ]
     bCustomDat <- bCustomDat[order(bCustomDat$x), ]
+    pCustomDat <- customQ[which(customQ$act == F), ]
   }
   if(length(bInterDat) != 0){
     Main_bar_plot <- Main_bar_plot + geom_bar(data = bInterDat,
