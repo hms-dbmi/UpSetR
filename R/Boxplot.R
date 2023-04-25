@@ -2,7 +2,6 @@
 IntersectionBoxPlot <- function(data1, data2, start_col, names){
   end_col <- ((start_col + length(names)) - 1)
   data2 <- data2[which(rowSums(data2[ ,start_col:end_col]) != 0), ]
-  #tagging because x axis values need to be 1:number of sets so they line up with their intersections
   data2$tag <- 1:nrow(data2)
   sets <- list()
   intersections <- list()
@@ -42,9 +41,9 @@ BoxPlotsPlot <- function(bdat, att, att_color){
   bdat$x <- as.factor(bdat$x)
   boxplots <- ggplotGrob(ggplot()
                          + theme_bw() +ylab(yaxis)
-                         + scale_x_discrete(limits = plot_lims, expand = c(0,0))
+                         + scale_x_discrete(limits = factor(plot_lims), expand = c(0,0))
                          + theme(plot.margin = unit(c(-0.7,0,0,0), "cm"),
-                                 axis.title.y = element_text(vjust = -0.8),
+                                 axis.title.y = element_text(vjust = -0.6, size = 10),
                                  axis.ticks.x = element_blank(),
                                  axis.text.x = element_blank(),
                                  panel.border = element_blank(),
@@ -52,6 +51,12 @@ BoxPlotsPlot <- function(bdat, att, att_color){
                                  panel.grid.major = element_blank(),
                                  axis.title.x = element_blank())
                          + geom_boxplot(data = bdat, aes_string(x="x", y="attribute"),
-                                        fill = att_color, colour = "gray80"))
+                                        fill = att_color, colour = "gray43",
+                                        outlier.size = 0.3
+                                        , notch = TRUE
+                                        )
+                         + geom_hline(aes(yintercept = median(bdat$attribute, na.rm = TRUE)), alpha = 0.3)
+                         
+                         )
   return(boxplots)
 }
