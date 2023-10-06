@@ -1,4 +1,10 @@
-# UpSetR [![](http://www.r-pkg.org/badges/version/UpSetR)](https://cran.r-project.org/package=UpSetR) [![](http://cranlogs.r-pkg.org/badges/grand-total/UpSetR)](http://cranlogs.r-pkg.org/badges/grand-total/UpSetR)
+# UpSetR 
+
+  <!-- badges: start -->
+  [![](http://www.r-pkg.org/badges/version/UpSetR)](https://cran.r-project.org/package=UpSetR)
+  [![](http://cranlogs.r-pkg.org/badges/grand-total/UpSetR)](http://cranlogs.r-pkg.org/badges/grand-total/UpSetR)
+  [![R-CMD-check](https://github.com/hms-dbmi/UpSetR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/hms-dbmi/UpSetR/actions/workflows/R-CMD-check.yaml)
+  <!-- badges: end -->
 
 ## Technique
 
