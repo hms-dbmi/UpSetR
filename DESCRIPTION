@@ -25,4 +25,5 @@ License: MIT + file LICENSE
 VignetteBuilder: knitr
 Suggests:
     knitr
-RoxygenNote: 7.0.2
+RoxygenNote: 7.2.3
+Encoding: UTF-8
