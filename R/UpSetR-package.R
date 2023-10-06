@@ -3,7 +3,7 @@
 
 ## usethis namespace: start
 #' @importFrom plyr count
-#' @importFrom rlang .data
+#' @importFrom rlang .data %||%
 #' @import gridExtra
 #' @import ggplot2
 #' @import utils
