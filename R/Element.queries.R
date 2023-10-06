@@ -13,7 +13,7 @@ QuerieElemAtt <- function(q, data, start_col, exp, names, att_x, att_y, palette)
   if(length(q) == 0){
     return(NULL)
   }
-  for(i in 1:length(q)){
+  for(i in seq_along(q)){
     index_q <- unlist(q[[i]]$params)
     elem_color <- unlist(q[[i]]$color)
     test <- as.character(index_q[1])

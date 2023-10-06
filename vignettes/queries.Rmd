@@ -45,8 +45,13 @@ upset(movies, queries = list(list(query = intersects, params = list("Drama", "Co
 Example 2: Built-In Elements Query
 -------------
 This example shows how to use the built in element query, `elements`, to visualize how certain elements are distributed amongst the intersections.
-```{r, out.width="850px", fig.width=9, fig.height =5, tidy=TRUE, fig.align='center'}
-upset(movies, queries = list(list(query = elements, params = list("AvgRating", 3.5, 4.1), color = "blue", active = T), list(query = elements, params = list("ReleaseDate", 1980, 1990, 2000), color = "red", active = F)))
+```{r, out.width="850px", fig.width=9, fig.height =5, fig.align='center'}
+upset(
+  movies, 
+  queries = list(
+    list(query = elements, params = list("AvgRating", 3.5, 4.1), color = "blue", active = TRUE),
+    list(query = elements, params = list("ReleaseDate", 1980, 1990, 2000), color = "red", active = F))
+  )
 ```
 
 <br>

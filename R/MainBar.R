@@ -115,7 +115,7 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_an
     Main_bar_data$freq <- round(log10(Main_bar_data$freq), 2)
     ymax <- log10(ymax)
   }
-  Main_bar_plot <- (ggplot(data = Main_bar_data, aes_string(x = "x", y = "freq")) 
+  Main_bar_plot <- (ggplot(data = Main_bar_data, aes(x = x, y = freq)) 
                     + scale_y_continuous(trans = scale_intersections)
                     + ylim(0, ymax)
                     + geom_bar(stat = "identity", width = 0.6,
@@ -129,10 +129,10 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_an
                                                                                                             size=7*y_axis_tick_label_scale)))
   if((show_num == "yes") || (show_num == "Yes")){
     if(is.null(number.colors)) {
-      Main_bar_plot <- (Main_bar_plot + geom_text(aes_string(label = "freq"), size = 2.2*intersection_size_number_scale, vjust = -1,
+      Main_bar_plot <- (Main_bar_plot + geom_text(aes(label = freq), size = 2.2*intersection_size_number_scale, vjust = -1,
                                                   angle = number_angles, colour = Main_bar_data$color))
     } else {
-      Main_bar_plot <- (Main_bar_plot + geom_text(aes_string(label = "freq"), size = 2.2*intersection_size_number_scale, vjust = -1,
+      Main_bar_plot <- (Main_bar_plot + geom_text(aes(label = freq), size = 2.2*intersection_size_number_scale, vjust = -1,
                                                   angle = number_angles, colour = number.colors))
     }
   }
@@ -160,32 +160,32 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_an
   }
   if(length(bInterDat) != 0){
     Main_bar_plot <- Main_bar_plot + geom_bar(data = bInterDat,
-                                              aes_string(x="x", y = "freq"),
+                                              aes(x = x, y = freq),
                                               fill = bInterDat$color,
                                               stat = "identity", position = "identity", width = 0.6)
   }
   if(length(bElemDat) != 0){
     Main_bar_plot <- Main_bar_plot + geom_bar(data = bElemDat,
-                                              aes_string(x="x", y = "freq"),
+                                              aes(x = x, y = freq),
                                               fill = bElemDat$color,
                                               stat = "identity", position = "identity", width = 0.6)
   }
   if(length(bCustomDat) != 0){
-    Main_bar_plot <- (Main_bar_plot + geom_bar(data = bCustomDat, aes_string(x="x", y = "freq2"),
+    Main_bar_plot <- (Main_bar_plot + geom_bar(data = bCustomDat, aes(x= x , y = freq2),
                                                fill = bCustomDat$color2,
                                                stat = "identity", position ="identity", width = 0.6))
   }
   if(length(pCustomDat) != 0){
-    Main_bar_plot <- (Main_bar_plot + geom_point(data = pCustomDat, aes_string(x="x", y = "freq2"), colour = pCustomDat$color2,
+    Main_bar_plot <- (Main_bar_plot + geom_point(data = pCustomDat, aes(x= x, y = freq2), colour = pCustomDat$color2,
                                                  size = 2, shape = 17, position = position_jitter(width = 0.2, height = 0.2)))
   }
   if(length(pInterDat) != 0){
-    Main_bar_plot <- (Main_bar_plot + geom_point(data = pInterDat, aes_string(x="x", y = "freq"),
+    Main_bar_plot <- (Main_bar_plot + geom_point(data = pInterDat, aes(x = x, y = freq),
                                                  position = position_jitter(width = 0.2, height = 0.2),
                                                  colour = pInterDat$color, size = 2, shape = 17))
   }
   if(length(pElemDat) != 0){
-    Main_bar_plot <- (Main_bar_plot + geom_point(data = pElemDat, aes_string(x="x", y = "freq"),
+    Main_bar_plot <- (Main_bar_plot + geom_point(data = pElemDat, aes(x = x, y = freq),
                                                  position = position_jitter(width = 0.2, height = 0.2),
                                                  colour = pElemDat$color, size = 2, shape = 17))
   }

@@ -15,12 +15,14 @@ Depends:
 Imports:
     ggplot2,
     gridExtra,
-    plyr,
+    dplyr,
     utils,
     stats,
     methods,
     grDevices,
-    scales
+    scales,
+    rlang,
+    plyr
 License: MIT + file LICENSE
 VignetteBuilder: knitr
 Suggests:

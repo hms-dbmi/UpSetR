@@ -26,7 +26,7 @@ upset(
   att.pos = NULL,
   att.color = main.bar.color,
   order.by = c("freq", "degree"),
-  decreasing = c(T, F),
+  decreasing = c(TRUE, FALSE),
   show.numbers = "yes",
   number.angles = 0,
   number.colors = NULL,

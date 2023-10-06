@@ -16,7 +16,7 @@ metadataHist <- function(metadata, y_data, colors){
   }
   
   plot <- (ggplot(data=metadata)
-           + geom_bar(aes_string(x="sets", y=y_data),
+           + geom_bar(aes(x= sets, y=.data[[y_data]]),
                       stat="identity", position="identity", width = 0.4,
                       fill = colors)
            + scale_x_continuous(limits = c(0.5, (nrow(metadata)+0.5)),
@@ -28,7 +28,7 @@ metadataHist <- function(metadata, y_data, colors){
                    axis.text.x = element_text(size = 7),
                    axis.line = element_line(colour = "gray0"),
                    axis.line.y = element_blank(),
-                   axis.line.x = element_line(colour = "gray0", size = 0.3),
+                   axis.line.x = element_line(colour = "gray0", linewidth = 0.3),
                    axis.text.y = element_blank(),
                    axis.ticks.y = element_blank(),
                    panel.grid.minor = element_blank(),
@@ -49,13 +49,13 @@ metadataHeat <- function(metadata, y_data, plot_type, colors){
     colortype <- "factor"
     levs <- levels(metadata$current)
     if(plot_type == "bool"){
-      newlevel <- c(0,1)
+      newlevel <- c(0, 1)
     }
     else if(plot_type == "heat"){
-      newlevel <- c(1:length(levs))
+      newlevel <- seq_along(levs)
     }
     metadata$current <- as.character(metadata$current)
-    for(i in seq(length(levs))){
+    for(i in seq_along(levs)){
       metadata$current[which(metadata$current == levs[i])] <- newlevel[i]
     }
     metadata$current <- as.numeric(metadata$current)
@@ -84,7 +84,7 @@ metadataHeat <- function(metadata, y_data, plot_type, colors){
     titleAdjustment <- 25
   #}
   
-  plot <- (ggplot(data=metadata, aes_string(x="sets", y = 1, fill = y_data))
+  plot <- (ggplot(data=metadata, aes(x= sets, y = 1, fill = .data[[y_data]]))
            + scale_x_continuous(expand = c(c(0,0), c(0,0)))
            + theme(panel.background = element_rect("white"),
                    plot.title = element_text(margin = margin(b=titleAdjustment),
@@ -167,7 +167,7 @@ metadataText <- function(metadata, y_data, colors, alignment){
   ncols <- ncol(metadata)
   metadata <- cbind(metadata, c(1:nrow(metadata)))
   names(metadata)[ncol(metadata)] <- "x"
-  plot <- (ggplot(data=metadata, aes_string(x="x", y=1, label = y_data, colour = y_data, size =10))
+  plot <- (ggplot(data=metadata, aes(x = x, y = 1, label = y_data, colour = .data[[y_data]], size =10))
            + scale_x_continuous(limits = c(0.5, (nrow(metadata)+0.5)),
                                 expand = c(0,0))
            + theme(panel.background = element_rect("white"),
