@@ -6,7 +6,7 @@ FindSetFreqs <- function(data, start_col, num_sets, set_names, keep_order){
   temp_data <- as.data.frame(colSums(temp_data))
   colnames(temp_data) <- c("y")
   if(!keep_order){
-  temp_data <- temp_data[order(temp_data$y, decreasing = T), ]
+  temp_data <- temp_data[order(temp_data$y, decreasing = TRUE), ]
   }
   else{
     temp_data <- temp_data$y
@@ -20,17 +20,16 @@ FindSetFreqs <- function(data, start_col, num_sets, set_names, keep_order){
 log10_reverse_trans <- function(){
   trans <- function(x) -log(x, 10)
   inv <- function(x) (10 ^ -x)
-  trans_new(paste0("reverselog2-", format(2), "reverse"), trans, inv,
-            log_breaks(base = 10), domain = c(1e-100, Inf))
+  scales::trans_new(paste0("reverselog2-", format(2), "reverse"), trans, inv,
+            scales::log_breaks(base = 10), domain = c(1e-100, Inf))
 }
 
 log2_reverse_trans <- function(){
   trans <- function(x) -log(x, 2)
   inv <- function(x) (2 ^ -x)
-  trans_new(paste0("reverselog2-", format(2), "reverse"), trans, inv,
-            log_breaks(base = 2), domain = c(1e-100, Inf))
+  scales::trans_new(paste0("reverselog2-", format(2), "reverse"), trans, inv,
+            scales::log_breaks(base = 2), domain = c(1e-100, Inf))
 }
-globalVariables(c("y"))
 ## Generate set size plot
 Make_size_plot <- function(Set_size_data, sbar_color, ratios, ylabel, scale_sets, text_scale, set_size_angle, set_size.show, set_size.scale_max,
                            set_size.number_size){
@@ -91,7 +90,7 @@ Make_size_plot <- function(Set_size_data, sbar_color, ratios, ylabel, scale_sets
                 + coord_flip())
   
   if(set_size.show){
-    Size_plot <- (Size_plot + geom_text(aes(label=y,vjust=0.5,hjust=1.2, angle = set_size_angle), size=num.size))
+    Size_plot <- (Size_plot + geom_text(aes(label= .data$y), vjust=0.5,hjust=1.2, size=num.size, angle = set_size_angle))
   }
     
   if(scale_sets == "log10"){

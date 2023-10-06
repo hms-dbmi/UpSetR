@@ -112,13 +112,6 @@
 #'                     list(query = elements, params = list("ReleaseDate", 1990, 1991, 1992))),
 #'       main.bar.color = "yellow")
 #'
-#' @import gridExtra
-#' @import ggplot2
-#' @import utils
-#' @import stats
-#' @import methods
-#' @import grDevices
-#' @import scales
 #' @export
 upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = FALSE, set.metadata = NULL, intersections = NULL,
                   matrix.color = "gray23", main.bar.color = "gray23", mainbar.y.label = "Intersection Size", mainbar.y.max = NULL,

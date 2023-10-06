@@ -1,5 +1,3 @@
-#' @importFrom plyr count
-
 ## Counts the frequency of each intersection being looked at and sets up data for main bar plot.
 ## Also orders the data for the bar plot and matrix plot
 Counter <- function(data, num_sets, start_col, name_of_sets, nintersections, mbar_color, order_mat,

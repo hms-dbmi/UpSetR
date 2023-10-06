@@ -15,7 +15,6 @@ Depends:
 Imports:
     ggplot2,
     gridExtra,
-    dplyr,
     utils,
     stats,
     methods,

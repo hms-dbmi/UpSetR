@@ -1,3 +1,5 @@
+- Fix some warnings from ggplot2 3.0.0.
+
 Release v1.4.0
 
 - Allow custom y-axis label and scale
