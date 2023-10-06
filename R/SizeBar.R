@@ -69,7 +69,7 @@ Make_size_plot <- function(Set_size_data, sbar_color, ratios, ylabel, scale_sets
     num.size <- (7/2.845276)*x_axis_tick_label_scale
   }
   
-  Size_plot <- (ggplot(data = Set_size_data, aes(x =x, y = y))
+  Size_plot <- (ggplot(data = Set_size_data, aes(x = .data$x, y = .data$y))
                 + geom_bar(stat = "identity",colour = sbar_color, width = 0.4,
                            fill = sbar_color, position = "identity")
                 + scale_x_continuous(limits = c(0.5, (nrow(Set_size_data) + 0.5)),

@@ -93,7 +93,7 @@ ElemBarDat <- function(q, data1, first_col, exp, names, palette, mbdata){
       elem_data <- merge(x[names], elem_data, by = names)
       x <- x$x
       elem_data$x <- x
-      if((!isTRUE(q[[i]]$active)) && !is.null(elem_data)){
+      if(isTRUE(q[[i]]$active) && !is.null(elem_data)){
         act <- TRUE
       }
       else if((!isTRUE(q[[i]]$active) || is.null(q[[i]]$active)) && !is.null(elem_data)){

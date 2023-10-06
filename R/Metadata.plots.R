@@ -16,7 +16,7 @@ metadataHist <- function(metadata, y_data, colors){
   }
   
   plot <- (ggplot(data=metadata)
-           + geom_bar(aes(x= sets, y=.data[[y_data]]),
+           + geom_bar(aes(x= .data$sets, y=.data[[y_data]]),
                       stat="identity", position="identity", width = 0.4,
                       fill = colors)
            + scale_x_continuous(limits = c(0.5, (nrow(metadata)+0.5)),
@@ -84,7 +84,7 @@ metadataHeat <- function(metadata, y_data, plot_type, colors){
     titleAdjustment <- 25
   #}
   
-  plot <- (ggplot(data=metadata, aes(x= sets, y = 1, fill = .data[[y_data]]))
+  plot <- (ggplot(data = metadata, aes(x = .data$sets, y = 1, fill = .data[[y_data]]))
            + scale_x_continuous(expand = c(c(0,0), c(0,0)))
            + theme(panel.background = element_rect("white"),
                    plot.title = element_text(margin = margin(b=titleAdjustment),
@@ -100,9 +100,7 @@ metadataHeat <- function(metadata, y_data, plot_type, colors){
                    axis.title.y = element_blank(),
                    axis.text.x = element_blank(),
                    axis.ticks.x = element_blank())
-           + ylab(NULL)
-           + xlab(NULL)
-           + ggtitle(y_data)
+           + labs(x = NULL, y = NULL, title = y_data)
            + coord_flip()
            + scale_y_reverse())
   
@@ -118,7 +116,7 @@ metadataHeat <- function(metadata, y_data, plot_type, colors){
     }
     
     else if(is.null(colors)  && nrow(metadata) >= 9){
-      warning("Please provide color palette when number of groups exceeds 8")
+      warning("Please provide color palette when number of groups exceeds 8.")
     }
     
     else if(!is.null(colors)){
@@ -167,11 +165,11 @@ metadataText <- function(metadata, y_data, colors, alignment){
   ncols <- ncol(metadata)
   metadata <- cbind(metadata, c(1:nrow(metadata)))
   names(metadata)[ncol(metadata)] <- "x"
-  plot <- (ggplot(data=metadata, aes(x = x, y = 1, label = y_data, colour = .data[[y_data]], size =10))
+  plot <- (ggplot(data=metadata, aes(x = .data$x, y = 1, label = .data[[y_data]], colour = .data[[y_data]], size = 10))
            + scale_x_continuous(limits = c(0.5, (nrow(metadata)+0.5)),
                                 expand = c(0,0))
            + theme(panel.background = element_rect("white"),
-                   plot.title = element_text(margin = margin(b=titleAdjustment),
+                   plot.title = element_text(margin = margin(b = titleAdjustment),
                                              size = 9, hjust = 0.5),
                    plot.margin=unit(c(0,0,0,0), "lines"),
                    axis.title.x = element_text(size = 7),
@@ -184,10 +182,8 @@ metadataText <- function(metadata, y_data, colors, alignment){
                    axis.title.y = element_blank(),
                    axis.text.x = element_blank(),
                    axis.ticks.x = element_blank())
-           + xlab(NULL)
-           + ylab(NULL)
+           + labs(x = NULL, y = NULL, title = y_data)
            + coord_flip()
-           + ggtitle(y_data)
            + scale_y_reverse())
   if(!is.null(colors)){
     plot <- plot + geom_text(size = 2.7, hjust = align)

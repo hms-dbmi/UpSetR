@@ -43,7 +43,8 @@
 #' @param matrix.dot.alpha Transparency of the empty intersections points in the matrix
 #' @param empty.intersections Additionally display empty sets up to nintersects
 #' @param color.pal Color palette for attribute plots
-#' @param boxplot.summary Boxplots representing the distribution of a selected attribute for each intersection. Select attributes by entering a character vector of attribute names (e.g. c("Name1", "Name2")).
+#' @param boxplot.summary Boxplots representing the distribution of a selected attribute for each intersection.
+#'        Select attributes by entering a character vector of attribute names (e.g. c("Name1", "Name2")).
 #'        The maximum number of attributes that can be entered is 2.
 #' @param attribute.plots Create custom ggplot using intersection data represented in the main bar plot. Prior to adding custom plots, the UpSet plot is set up in a 100 by 100 grid.
 #'        The attribute.plots parameter takes a list that contains the number of rows that should be allocated for the custom plot, and a list of plots with specified positions.
@@ -69,22 +70,24 @@
 #' @references Lex and Gehlenborg (2014). Points of view: Sets and intersections. Nature Methods 11, 779 (2014). \url{http://www.nature.com/nmeth/journal/v11/n8/abs/nmeth.3033.html}
 #' @seealso Original UpSet Website: \url{http://vcg.github.io/upset/about/}
 #' @seealso UpSetR github for additional examples: \url{http://github.com/hms-dbmi/UpSetR}
-#' @examples movies <- read.csv( system.file("extdata", "movies.csv", package = "UpSetR"), header=TRUE, sep=";" )
+#' @examples
+#' movies <- read.csv(system.file("extdata", "movies.csv", package = "UpSetR"),
+#'                    header = TRUE, sep = ";")
 #'
-#'require(ggplot2); require(plyr); require(gridExtra); require(grid);
+#'require(ggplot2); require(gridExtra); require(grid);
 #'
 #' between <- function(row, min, max){
 #'   newData <- (row["ReleaseDate"] < max) & (row["ReleaseDate"] > min)
 #' }
 #'
 #' plot1 <- function(mydata, x){
-#'   myplot <- (ggplot(mydata, aes_string(x= x, fill = "color"))
+#'   myplot <- (ggplot(mydata, aes(x = .data[[x]], fill = color))
 #'             + geom_histogram() + scale_fill_identity()
 #'             + theme(plot.margin = unit(c(0,0,0,0), "cm")))
 #' }
 #'
 #' plot2 <- function(mydata, x, y){
-#'   myplot <- (ggplot(data = mydata, aes_string(x=x, y=y, colour = "color"), alpha = 0.5)
+#'   myplot <- (ggplot(data = mydata, aes(x = .data[[x]], y = .data[[y]], colour = color), alpha = 0.5)
 #'             + geom_point() + scale_color_identity()
 #'             + theme_bw() + theme(plot.margin = unit(c(0,0,0,0), "cm")))
 #' }
@@ -117,12 +120,12 @@
 #' @import grDevices
 #' @import scales
 #' @export
-upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F, set.metadata = NULL, intersections = NULL,
+upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = FALSE, set.metadata = NULL, intersections = NULL,
                   matrix.color = "gray23", main.bar.color = "gray23", mainbar.y.label = "Intersection Size", mainbar.y.max = NULL,
                   sets.bar.color = "gray23", plot.title = NA, sets.x.label = "Set Size", point.size = 2.2, line.size = 0.7,
                   mb.ratio = c(0.70,0.30), expression = NULL, att.pos = NULL, att.color = main.bar.color, order.by = c("freq", "degree"),
                   decreasing = c(TRUE, FALSE), show.numbers = "yes", number.angles = 0, number.colors=NULL, group.by = "degree",cutoff = NULL,
-                  queries = NULL, query.legend = "none", shade.color = "gray88", shade.alpha = 0.25, matrix.dot.alpha =0.5,
+                  queries = NULL, query.legend = "none", shade.color = "gray88", shade.alpha = 0.25, matrix.dot.alpha = 0.5,
                   empty.intersections = NULL, color.pal = 1, boxplot.summary = NULL, attribute.plots = NULL, scale.intersections = "identity",
                   scale.sets = "identity", text.scale = 1, set_size.angles = 0 , set_size.show = FALSE, set_size.numbers_size = NULL, set_size.scale_max = NULL){
 
@@ -170,7 +173,8 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F
   #i.e. if one custom plot had both x and y, and others had only x, the y's for the other plots were NA
   #if I decided to make the NULL case (all x and no y, or vice versa), there would have been alot more if/else statements
   #NA can be indexed so that we still get the non NA y aesthetics on correct plot. NULL cant be indexed.
-  att.x <- c(); att.y <- c();
+  att.x <- c()
+  att.y <- c()
   if(!is.null(attribute.plots)){
     for(i in seq_along(attribute.plots$plots)){
       if(length(attribute.plots$plots[[i]]$x) != 0){

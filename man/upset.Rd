@@ -9,7 +9,7 @@ upset(
   nsets = 5,
   nintersects = 40,
   sets = NULL,
-  keep.order = F,
+  keep.order = FALSE,
   set.metadata = NULL,
   intersections = NULL,
   matrix.color = "gray23",
@@ -127,7 +127,8 @@ See examples section on how to do this.}
 
 \item{color.pal}{Color palette for attribute plots}
 
-\item{boxplot.summary}{Boxplots representing the distribution of a selected attribute for each intersection. Select attributes by entering a character vector of attribute names (e.g. c("Name1", "Name2")).
+\item{boxplot.summary}{Boxplots representing the distribution of a selected attribute for each intersection.
+Select attributes by entering a character vector of attribute names (e.g. c("Name1", "Name2")).
 The maximum number of attributes that can be entered is 2.}
 
 \item{attribute.plots}{Create custom ggplot using intersection data represented in the main bar plot. Prior to adding custom plots, the UpSet plot is set up in a 100 by 100 grid.
@@ -165,22 +166,23 @@ Depending on how the features are selected, UpSet can display between 25-65 sets
 Data set must be formatted as described on the original UpSet github page: \url{http://github.com/VCG/upset/wiki}.
 }
 \examples{
-movies <- read.csv( system.file("extdata", "movies.csv", package = "UpSetR"), header=TRUE, sep=";" )
+movies <- read.csv(system.file("extdata", "movies.csv", package = "UpSetR"),
+                   header = TRUE, sep = ";")
 
-require(ggplot2); require(plyr); require(gridExtra); require(grid);
+require(ggplot2); require(gridExtra); require(grid);
 
 between <- function(row, min, max){
   newData <- (row["ReleaseDate"] < max) & (row["ReleaseDate"] > min)
 }
 
 plot1 <- function(mydata, x){
-  myplot <- (ggplot(mydata, aes_string(x= x, fill = "color"))
+  myplot <- (ggplot(mydata, aes(x = .data[[x]], fill = color))
             + geom_histogram() + scale_fill_identity()
             + theme(plot.margin = unit(c(0,0,0,0), "cm")))
 }
 
 plot2 <- function(mydata, x, y){
-  myplot <- (ggplot(data = mydata, aes_string(x=x, y=y, colour = "color"), alpha = 0.5)
+  myplot <- (ggplot(data = mydata, aes(x = .data[[x]], y = .data[[y]], colour = color), alpha = 0.5)
             + geom_point() + scale_color_identity()
             + theme_bw() + theme(plot.margin = unit(c(0,0,0,0), "cm")))
 }

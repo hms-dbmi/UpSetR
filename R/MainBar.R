@@ -20,7 +20,7 @@ Counter <- function(data, num_sets, start_col, name_of_sets, nintersections, mba
     colnames(empty) <- name_of_sets
     empty$freq <- 0
     all <- rbind(Freqs, empty)
-    Freqs <- data.frame(all[!duplicated(all[1:num_sets]), ], check.names = F)
+    Freqs <- data.frame(all[!duplicated(all[1:num_sets]), ], check.names = FALSE)
   }
   #Remove universal empty set
   Freqs <- Freqs[!(rowSums(Freqs[ ,1:num_sets]) == 0), ]
@@ -115,7 +115,7 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_an
     Main_bar_data$freq <- round(log10(Main_bar_data$freq), 2)
     ymax <- log10(ymax)
   }
-  Main_bar_plot <- (ggplot(data = Main_bar_data, aes(x = x, y = freq)) 
+  Main_bar_plot <- (ggplot(data = Main_bar_data, aes(x = .data$x, y = .data$freq)) 
                     + scale_y_continuous(trans = scale_intersections)
                     + ylim(0, ymax)
                     + geom_bar(stat = "identity", width = 0.6,
@@ -125,14 +125,14 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_an
                     + xlab(NULL) + ylab(ylabel) +labs(title = NULL)
                     + theme(panel.background = element_rect(fill = "white"),
                             plot.margin = unit(c(0.5,0.5,bottom_margin,0.5), "lines"), panel.border = element_blank(),
-                            axis.title.y = element_text(vjust = -0.8, size = 8.3*y_axis_title_scale), axis.text.y = element_text(vjust=0.3,
-                                                                                                            size=7*y_axis_tick_label_scale)))
+                            axis.title.y = element_text(vjust = -0.8, size = 8.3*y_axis_title_scale), 
+                            axis.text.y = element_text(vjust=0.3, size=7*y_axis_tick_label_scale)))
   if((show_num == "yes") || (show_num == "Yes")){
     if(is.null(number.colors)) {
-      Main_bar_plot <- (Main_bar_plot + geom_text(aes(label = freq), size = 2.2*intersection_size_number_scale, vjust = -1,
+      Main_bar_plot <- (Main_bar_plot + geom_text(aes(label = .data$freq), size = 2.2*intersection_size_number_scale, vjust = -1,
                                                   angle = number_angles, colour = Main_bar_data$color))
     } else {
-      Main_bar_plot <- (Main_bar_plot + geom_text(aes(label = freq), size = 2.2*intersection_size_number_scale, vjust = -1,
+      Main_bar_plot <- (Main_bar_plot + geom_text(aes(label = .data$freq), size = 2.2*intersection_size_number_scale, vjust = -1,
                                                   angle = number_angles, colour = number.colors))
     }
   }
@@ -160,32 +160,32 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_an
   }
   if(length(bInterDat) != 0){
     Main_bar_plot <- Main_bar_plot + geom_bar(data = bInterDat,
-                                              aes(x = x, y = freq),
+                                              aes(x = .data$x, y = .data$freq),
                                               fill = bInterDat$color,
                                               stat = "identity", position = "identity", width = 0.6)
   }
   if(length(bElemDat) != 0){
     Main_bar_plot <- Main_bar_plot + geom_bar(data = bElemDat,
-                                              aes(x = x, y = freq),
+                                              aes(x = .data$x, y = .data$freq),
                                               fill = bElemDat$color,
                                               stat = "identity", position = "identity", width = 0.6)
   }
   if(length(bCustomDat) != 0){
-    Main_bar_plot <- (Main_bar_plot + geom_bar(data = bCustomDat, aes(x= x , y = freq2),
+    Main_bar_plot <- (Main_bar_plot + geom_bar(data = bCustomDat, aes(x = .data$x, y = .data$freq2),
                                                fill = bCustomDat$color2,
                                                stat = "identity", position ="identity", width = 0.6))
   }
   if(length(pCustomDat) != 0){
-    Main_bar_plot <- (Main_bar_plot + geom_point(data = pCustomDat, aes(x= x, y = freq2), colour = pCustomDat$color2,
+    Main_bar_plot <- (Main_bar_plot + geom_point(data = pCustomDat, aes(x = .data$x, y = .data$freq2), colour = pCustomDat$color2,
                                                  size = 2, shape = 17, position = position_jitter(width = 0.2, height = 0.2)))
   }
   if(length(pInterDat) != 0){
-    Main_bar_plot <- (Main_bar_plot + geom_point(data = pInterDat, aes(x = x, y = freq),
+    Main_bar_plot <- (Main_bar_plot + geom_point(data = pInterDat, aes(x = .data$x, y = .data$freq),
                                                  position = position_jitter(width = 0.2, height = 0.2),
                                                  colour = pInterDat$color, size = 2, shape = 17))
   }
   if(length(pElemDat) != 0){
-    Main_bar_plot <- (Main_bar_plot + geom_point(data = pElemDat, aes(x = x, y = freq),
+    Main_bar_plot <- (Main_bar_plot + geom_point(data = pElemDat, aes(x = .data$x, y = .data$freq),
                                                  position = position_jitter(width = 0.2, height = 0.2),
                                                  colour = pElemDat$color, size = 2, shape = 17))
   }
