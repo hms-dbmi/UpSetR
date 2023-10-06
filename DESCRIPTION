@@ -24,6 +24,7 @@ Imports:
 License: MIT + file LICENSE
 VignetteBuilder: knitr
 Suggests:
-    knitr
+    knitr,
+    rmarkdown
 RoxygenNote: 7.2.3
 Encoding: UTF-8
