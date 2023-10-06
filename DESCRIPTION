@@ -22,7 +22,6 @@ Imports:
     grDevices,
     scales
 License: MIT + file LICENSE
-LazyData: true
 VignetteBuilder: knitr
 Suggests:
     knitr
