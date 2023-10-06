@@ -26,7 +26,7 @@ Make_set_metadata_plot <- function(set.metadata, set_names){
 
   if(num_of_att != 0){
   for(i in 1:num_of_att){
-    if(is.null(set.metadata$plots[[i]]$colors) == FALSE){
+    if(!is.null(set.metadata$plots[[i]]$colors)){
       colors <- set.metadata$plots[[i]]$colors
     }
     else{

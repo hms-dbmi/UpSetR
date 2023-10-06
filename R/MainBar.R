@@ -14,7 +14,7 @@ Counter <- function(data, num_sets, start_col, name_of_sets, nintersections, mba
   Freqs <- data.frame(count(data[ ,as.integer(temp_data)]))
   colnames(Freqs)[1:num_sets] <- name_of_sets
   #Adds on empty intersections if option is selected
-  if(is.null(empty_intersects) == F){
+  if(!is.null(empty_intersects)){
     empty <- rep(list(c(0,1)), times = num_sets)
     empty <- data.frame(expand.grid(empty))
     colnames(empty) <- name_of_sets
@@ -65,7 +65,7 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_an
 
   bottom_margin <- (-1)*0.65
 
-  if(is.null(attribute_plots) == FALSE){
+  if(!is.null(attribute_plots)){
     bottom_margin <- (-1)*0.45
   }
   
@@ -80,7 +80,7 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_an
     intersection_size_number_scale <- text_scale
   }
   
-  if(is.null(Q) == F){
+  if(!is.null(Q)){
     inter_data <- Q
     if(nrow(inter_data) != 0){
       inter_data <- inter_data[order(inter_data$x), ]
@@ -89,7 +89,7 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_an
   }
   else{inter_data <- NULL}
   
-  if(is.null(ebar) == F){
+  if(!is.null(ebar)){
     elem_data <- ebar
     if(nrow(elem_data) != 0){
       elem_data <- elem_data[order(elem_data$x), ]
@@ -99,8 +99,8 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_an
   else{elem_data <- NULL}
   
   #ten_perc creates appropriate space above highest bar so number doesnt get cut off
-  if(is.null(ymax) == T){
-  ten_perc <- ((max(Main_bar_data$freq)) * 0.1)
+  if(is.null(ymax)){
+  ten_perc <- max(Main_bar_data$freq) * 0.1
   ymax <- max(Main_bar_data$freq) + ten_perc
   }
   
@@ -143,19 +143,19 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_an
   pCustomDat <- NULL
   bElemDat <- NULL
   pElemDat <- NULL
-  if(is.null(elem_data) == F){
-    bElemDat <- elem_data[which(elem_data$act == T), ]
+  if(!is.null(elem_data)){
+    bElemDat <- elem_data[which(elem_data$act), ]
     bElemDat <- bElemDat[order(bElemDat$x), ]
-    pElemDat <- elem_data[which(elem_data$act == F), ]
+    pElemDat <- elem_data[which(!elem_data$act), ]
   }
-  if(is.null(inter_data) == F){
-    bInterDat <- inter_data[which(inter_data$act == T), ]
+  if(!is.null(inter_data)){
+    bInterDat <- inter_data[which(inter_data$act), ]
     bInterDat <- bInterDat[order(bInterDat$x), ]
-    pInterDat <- inter_data[which(inter_data$act == F), ]
+    pInterDat <- inter_data[which(!inter_data$act), ]
   }
   if(length(customQ) != 0){
-    pCustomDat <- customQ[which(customQ$act == F), ]
-    bCustomDat <- customQ[which(customQ$act == T), ]
+    pCustomDat <- customQ[which(!customQ$act), ]
+    bCustomDat <- customQ[which(customQ$act), ]
     bCustomDat <- bCustomDat[order(bCustomDat$x), ]
   }
   if(length(bInterDat) != 0){

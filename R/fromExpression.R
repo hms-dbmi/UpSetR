@@ -20,7 +20,7 @@ fromExpression <- function(input){
     cols[!is.na(cols)] <- 1
     cols[is.na(cols)] <- 0
     cols <- rep(cols, times = counts[[1]][i])
-    cols <- matrix(cols, ncol = length(sets), byrow = T)
+    cols <- matrix(cols, ncol = length(sets), byrow = TRUE)
     cols <- data.frame(cols)
     names(cols) <- sets
     data <- rbind(data, cols)

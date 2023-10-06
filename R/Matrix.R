@@ -44,7 +44,7 @@ Create_layout <- function(setup, mat_color, mat_col, matrix_dot_alpha){
       Matrix_layout$Intersection[i] <- paste(i, "No", sep = "")
     }
   }
-  if(is.null(mat_col) == F){
+  if(!is.null(mat_col)){
     for(i in 1:nrow(mat_col)){
       mat_x <- mat_col$x[i]
       mat_color <- as.character(mat_col$color[i])

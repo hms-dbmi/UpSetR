@@ -27,13 +27,13 @@ QuerieInterData <- function(query, data1, first_col, num_sets, data2, exp, names
     inter_color <- query[[i]]$color
     test <- as.character(index_q[1])
     check <- match(test, names)
-    if(is.na(check) == T){
+    if(is.na(check)){
       inter_data <- NULL
     }
     else{
       for( i in 1:length(index_q)){
         double_check <- match(index_q[i], names)
-        if(is.na(double_check) == T){
+        if(is.na(double_check)){
           warning("Intersection or set may not be present in data set. Please refer to matrix.")
         }
       }
@@ -65,17 +65,17 @@ QuerieInterBar  <- function(q, data1, first_col, num_sets, data2, exp, names, pa
     inter_color <- q[[i]]$color
     test <- as.character(index_q[1])
     check <- match(test, names)
-    if(is.na(check) == T){
+    if(is.na(check)){
       inter_data <- NULL
     }
     else{
       inter_data <- OverlayEdit(data1, data2, first_col, num_sets, index_q, exp, inter_color)
     }
-    if((isTRUE(q[[i]]$active) == T) && (is.null(inter_data) == F)){
-      act[i] <- T
+    if(isTRUE(q[[i]]$active) && !is.null(inter_data)){
+      act[i] <- TRUE
     }
-    else if((isTRUE(q[[i]]$active) == F) && (is.null(inter_data) == F)){
-      act[i] <- F
+    else if(!isTRUE(q[[i]]$active) && !is.null(inter_data)){
+      act[i] <- FALSE
     }
     rows <- rbind(rows, inter_data)
   }
@@ -94,21 +94,21 @@ QuerieInterAtt <- function(q, data, first_col, num_sets, att_x, att_y, exp, name
     inter_color <- unlist(q[[i]]$color)
     test <- as.character(index_q[1])
     check <- match(test, names)
-    if(is.na(check) == T){
+    if(is.na(check)){
       intersect <- NULL
     }
     else{
       intersect <- GetIntersects(data, first_col, index_q, num_sets)
-      if(is.na(att_y[i]) == T){
-        if(is.null(exp) == F){
+      if(is.na(att_y[i])){
+        if(!is.null(exp)){
           intersect <- Subset_att(intersect, exp)
         }
         if(nrow(intersect) != 0){
           intersect$color <- inter_color
         }
       }
-      else if(is.na(att_y[i]) == F){
-        if(is.null(exp) == F){
+      else if(!is.na(att_y[i])){
+        if(!is.null(exp)){
           intersect <- Subset_att(intersect, exp)
         }
         intersect$color <- inter_color        

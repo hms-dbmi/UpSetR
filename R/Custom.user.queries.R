@@ -32,11 +32,11 @@ customQueriesBar <- function(cust_data, sets,bar_data,custom){
     cust_data[[i]] <- cust_data[[i]][!(rowSums(cust_data[[i]][ ,1:length(sets)]) == 0), ]
     setup[[i]] <- merge(cust_data[[i]], bar_data, by = sets)
     color2 <- rep(custom[[i]]$color, times = nrow(setup[[i]]))
-    if(isTRUE(custom[[i]]$active) == T){
-      act <- rep(T, nrow(setup[[i]]))
+    if(isTRUE(custom[[i]]$active)){
+      act <- rep(TRUE, nrow(setup[[i]]))
     }
     else{
-      act <- rep(F, nrow(setup[[i]]))
+      act <- rep(FALSE, nrow(setup[[i]]))
     }
     setup[[i]] <- cbind(setup[[i]], color2, act)
   }

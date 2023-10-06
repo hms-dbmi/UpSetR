@@ -5,7 +5,7 @@ FindSetFreqs <- function(data, start_col, num_sets, set_names, keep_order){
   temp_data <- temp_data[set_names]
   temp_data <- as.data.frame(colSums(temp_data))
   colnames(temp_data) <- c("y")
-  if(keep_order == FALSE){
+  if(!keep_order){
   temp_data <- temp_data[order(temp_data$y, decreasing = T), ]
   }
   else{
@@ -90,7 +90,7 @@ Make_size_plot <- function(Set_size_data, sbar_color, ratios, ylabel, scale_sets
                 + xlab(NULL) + ylab(ylabel)
                 + coord_flip())
   
-  if(set_size.show == TRUE){
+  if(set_size.show){
     Size_plot <- (Size_plot + geom_text(aes(label=y,vjust=0.5,hjust=1.2, angle = set_size_angle), size=num.size))
   }
     

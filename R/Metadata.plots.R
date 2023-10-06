@@ -2,11 +2,11 @@
 metadataHist <- function(metadata, y_data, colors){
   colnum <- match(y_data, names(metadata))
   names(metadata)[colnum] <- "current"
-  if(is.numeric(metadata$current) == FALSE){
+  if(!is.numeric(metadata$current)){
     warning("The values supplied for the metadata histogram were not numeric")
   }
   metadata <- metadata[c(1,colnum)]
-  if(is.factor(metadata$current) == TRUE){
+  if(is.factor(metadata$current)){
     warning("The data being used for the bar plot is not numeric!")
   }
   names(metadata)[colnum] <- y_data
@@ -45,7 +45,7 @@ metadataHeat <- function(metadata, y_data, plot_type, colors){
                "#CC79A7")
   colnum <- match(y_data, names(metadata))
   names(metadata)[colnum] <- "current"
-  if(is.factor(metadata$current) == TRUE){
+  if(is.factor(metadata$current)){
     colortype <- "factor"
     levs <- levels(metadata$current)
     if(plot_type == "bool"){
@@ -60,11 +60,11 @@ metadataHeat <- function(metadata, y_data, plot_type, colors){
     }
     metadata$current <- as.numeric(metadata$current)
   }
-  else if(is.character(metadata$current) == TRUE){
+  else if(is.character(metadata$current)){
     colortype <- "category"
     uniquecats <- length(unique(metadata$current))
   }
-  else if(is.numeric(metadata$current) == TRUE){
+  else if(is.numeric(metadata$current)){
     if(plot_type != "bool"){
     colortype <- "factor"
     }
@@ -121,7 +121,7 @@ metadataHeat <- function(metadata, y_data, plot_type, colors){
       warning("Please provide color palette when number of groups exceeds 8")
     }
     
-    else if(is.null(colors) == FALSE){
+    else if(!is.null(colors)){
       plot <- plot + geom_tile()
       plot <- plot + scale_fill_manual(values = colors)
     }
@@ -189,7 +189,7 @@ metadataText <- function(metadata, y_data, colors, alignment){
            + coord_flip()
            + ggtitle(y_data)
            + scale_y_reverse())
-  if(is.null(colors) == FALSE){
+  if(!is.null(colors)){
     plot <- plot + geom_text(size = 2.7, hjust = align)
     plot <- plot + scale_colour_manual(values = colors)
   }
@@ -223,7 +223,7 @@ get_shade_groups <- function(set_metadata, set_names, Mat_data, shade_alpha) {
         shade_data$y_max[k] <- ((k) + 0.5)
       }
       shade_data$shade_color <- data$color
-      if(is.null(set_metadata$plots[[i]]$alpha) == TRUE){
+      if(is.null(set_metadata$plots[[i]]$alpha)){
         shade_data$alpha <- shade_alpha
       }
       else{
