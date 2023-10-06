@@ -1,4 +1,5 @@
 - Fix some warnings from ggplot2 3.0.0.
+- Remove dependency on plyr
 
 Release v1.4.0
 

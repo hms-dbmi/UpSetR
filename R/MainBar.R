@@ -9,7 +9,7 @@ Counter <- function(data, num_sets, start_col, name_of_sets, nintersections, mba
   for( i in 1:num_sets){
     temp_data[i] <- match(name_of_sets[i], colnames(data))
   }
-  Freqs <- data.frame(count(data[ ,as.integer(temp_data)]))
+  Freqs <- data.frame(count_compat(data[ ,as.integer(temp_data)]))
   colnames(Freqs)[1:num_sets] <- name_of_sets
   #Adds on empty intersections if option is selected
   if(!is.null(empty_intersects)){

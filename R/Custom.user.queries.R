@@ -27,7 +27,7 @@ customQueriesBar <- function(cust_data, sets,bar_data,custom){
     return(NULL)
   }
   for(i in 1:length(cust_data)){
-    cust_data[[i]] <- count(cust_data[[i]][sets])
+    cust_data[[i]] <- count_compat(cust_data[[i]][sets])
     colnames(cust_data[[i]])[num] <- "freq2"
     cust_data[[i]] <- cust_data[[i]][!(rowSums(cust_data[[i]][ ,1:length(sets)]) == 0), ]
     setup[[i]] <- merge(cust_data[[i]], bar_data, by = sets)

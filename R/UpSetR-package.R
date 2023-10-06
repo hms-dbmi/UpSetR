@@ -2,7 +2,6 @@
 "_PACKAGE"
 
 ## usethis namespace: start
-#' @importFrom plyr count
 #' @importFrom rlang .data %||%
 #' @import gridExtra
 #' @import ggplot2

@@ -21,7 +21,7 @@ Imports:
     grDevices,
     scales,
     rlang,
-    plyr
+    vctrs
 License: MIT + file LICENSE
 VignetteBuilder: knitr
 Suggests:
