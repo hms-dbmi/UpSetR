@@ -3,7 +3,7 @@
 ## Counts the frequency of each intersection being looked at and sets up data for main bar plot.
 ## Also orders the data for the bar plot and matrix plot
 Counter <- function(data, num_sets, start_col, name_of_sets, nintersections, mbar_color, order_mat,
-                    aggregate, cut, empty_intersects, decrease){
+                    aggregate, cut, empty_intersects, decrease, keep.universal.empty.set = FALSE){
   temp_data <- list()
   Freqs <- data.frame()
   end_col <- as.numeric(((start_col + num_sets) -1))
@@ -22,8 +22,12 @@ Counter <- function(data, num_sets, start_col, name_of_sets, nintersections, mba
     all <- rbind(Freqs, empty)
     Freqs <- data.frame(all[!duplicated(all[1:num_sets]), ], check.names = F)
   }
-  #Remove universal empty set
-  Freqs <- Freqs[!(rowSums(Freqs[ ,1:num_sets]) == 0), ]
+  
+  if (!keep.universal.empty.set){
+    # Remove universal empty set
+    Freqs <- Freqs[!(rowSums(Freqs[ ,1:num_sets]) == 0), ]
+  }
+  
   #Aggregation by degree
   if(tolower(aggregate) == "degree"){
     for(i in 1:nrow(Freqs)){
