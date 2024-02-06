@@ -3,18 +3,18 @@
 SeperateQueries <- function(queries, choice, palette) {
   seperated <- list()
   for (i in 1:length(queries)) {
-    if (is.null(queries[[i]]$color) == T) {
+    if (is.null(queries[[i]]$color)) {
       queries[[i]]$color <- palette[1]
       palette <- palette[-1]
     }
-    else if (is.null(queries[[i]]$color) == F) {
+    else if (!is.null(queries[[i]]$color)) {
       next
     }
   }
   if (choice == 1) {
     for (i in 1:length(queries)) {
-      if (identical(intersects, queries[[i]]$query) == T ||
-          identical(elements, queries[[i]]$query) == T) {
+      if (identical(intersects, queries[[i]]$query) ||
+          identical(elements, queries[[i]]$query)) {
         seperated <- c(seperated, list(queries[[i]]))
       }
       else{
@@ -24,8 +24,8 @@ SeperateQueries <- function(queries, choice, palette) {
   }
   else if (choice == 2) {
     for (i in 1:length(queries)) {
-      if (identical(intersects, queries[[i]]$query) == F &&
-          identical(elements, queries[[i]]$query) == F) {
+      if (!identical(intersects, queries[[i]]$query) &&
+          !identical(elements, queries[[i]]$query)) {
         seperated <- c(seperated, list(queries[[i]]))
       }
       else{
@@ -61,18 +61,18 @@ GuideGenerator <- function(queries, palette) {
     return(NULL)
   }
   for (i in 1:length(queries)) {
-    if (is.null(queries[[i]]$color) == T) {
+    if (is.null(queries[[i]]$color)) {
       queries[[i]]$color <- palette[1]
       palette <- palette[-1]
     }
-    else if (is.null(queries[[i]]$color) == F) {
+    else if (!is.null(queries[[i]]$color)) {
       queries[[i]]$color <- queries[[i]]$color
     }
     colors[i] <- queries[[i]]$color
-    if (is.null(queries[[i]]$query.name) == FALSE) {
+    if (!is.null(queries[[i]]$query.name)) {
       numbers[i] <- queries[[i]]$query.name
     }
-    else if (is.null(queries[[i]]$query.name) == TRUE) {
+    else if (is.null(queries[[i]]$query.name)) {
       numbers[i] <- paste("Query", as.character(i), sep = "")
     }
   }

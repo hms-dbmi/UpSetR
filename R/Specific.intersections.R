@@ -7,7 +7,7 @@ specific_intersections <- function(data, first.col, last.col, intersections, ord
   if(length(remove) != 0){
     data <- data[-remove]
   }
-  data <- count(data[keep])
+  data <- count_compat(data[keep])
   sets <- names(data[1:length(keep)])
   data <- lapply(intersections, function(x){
     temp_sets <- unlist(x)

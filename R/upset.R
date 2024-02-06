@@ -43,7 +43,8 @@
 #' @param matrix.dot.alpha Transparency of the empty intersections points in the matrix
 #' @param empty.intersections Additionally display empty sets up to nintersects
 #' @param color.pal Color palette for attribute plots
-#' @param boxplot.summary Boxplots representing the distribution of a selected attribute for each intersection. Select attributes by entering a character vector of attribute names (e.g. c("Name1", "Name2")).
+#' @param boxplot.summary Boxplots representing the distribution of a selected attribute for each intersection.
+#'        Select attributes by entering a character vector of attribute names (e.g. c("Name1", "Name2")).
 #'        The maximum number of attributes that can be entered is 2.
 #' @param attribute.plots Create custom ggplot using intersection data represented in the main bar plot. Prior to adding custom plots, the UpSet plot is set up in a 100 by 100 grid.
 #'        The attribute.plots parameter takes a list that contains the number of rows that should be allocated for the custom plot, and a list of plots with specified positions.
@@ -69,22 +70,24 @@
 #' @references Lex and Gehlenborg (2014). Points of view: Sets and intersections. Nature Methods 11, 779 (2014). \url{http://www.nature.com/nmeth/journal/v11/n8/abs/nmeth.3033.html}
 #' @seealso Original UpSet Website: \url{http://vcg.github.io/upset/about/}
 #' @seealso UpSetR github for additional examples: \url{http://github.com/hms-dbmi/UpSetR}
-#' @examples movies <- read.csv( system.file("extdata", "movies.csv", package = "UpSetR"), header=TRUE, sep=";" )
+#' @examples
+#' movies <- read.csv(system.file("extdata", "movies.csv", package = "UpSetR"),
+#'                    header = TRUE, sep = ";")
 #'
-#'require(ggplot2); require(plyr); require(gridExtra); require(grid);
+#'require(ggplot2); require(gridExtra); require(grid);
 #'
 #' between <- function(row, min, max){
 #'   newData <- (row["ReleaseDate"] < max) & (row["ReleaseDate"] > min)
 #' }
 #'
 #' plot1 <- function(mydata, x){
-#'   myplot <- (ggplot(mydata, aes_string(x= x, fill = "color"))
+#'   myplot <- (ggplot(mydata, aes(x = .data[[x]], fill = color))
 #'             + geom_histogram() + scale_fill_identity()
 #'             + theme(plot.margin = unit(c(0,0,0,0), "cm")))
 #' }
 #'
 #' plot2 <- function(mydata, x, y){
-#'   myplot <- (ggplot(data = mydata, aes_string(x=x, y=y, colour = "color"), alpha = 0.5)
+#'   myplot <- (ggplot(data = mydata, aes(x = .data[[x]], y = .data[[y]], colour = color), alpha = 0.5)
 #'             + geom_point() + scale_color_identity()
 #'             + theme_bw() + theme(plot.margin = unit(c(0,0,0,0), "cm")))
 #' }
@@ -109,20 +112,13 @@
 #'                     list(query = elements, params = list("ReleaseDate", 1990, 1991, 1992))),
 #'       main.bar.color = "yellow")
 #'
-#' @import gridExtra
-#' @import ggplot2
-#' @import utils
-#' @import stats
-#' @import methods
-#' @import grDevices
-#' @import scales
 #' @export
-upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F, set.metadata = NULL, intersections = NULL,
+upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = FALSE, set.metadata = NULL, intersections = NULL,
                   matrix.color = "gray23", main.bar.color = "gray23", mainbar.y.label = "Intersection Size", mainbar.y.max = NULL,
                   sets.bar.color = "gray23", plot.title = NA, sets.x.label = "Set Size", point.size = 2.2, line.size = 0.7,
                   mb.ratio = c(0.70,0.30), expression = NULL, att.pos = NULL, att.color = main.bar.color, order.by = c("freq", "degree"),
-                  decreasing = c(T, F), show.numbers = "yes", number.angles = 0, number.colors=NULL, group.by = "degree",cutoff = NULL,
-                  queries = NULL, query.legend = "none", shade.color = "gray88", shade.alpha = 0.25, matrix.dot.alpha =0.5,
+                  decreasing = c(TRUE, FALSE), show.numbers = "yes", number.angles = 0, number.colors=NULL, group.by = "degree",cutoff = NULL,
+                  queries = NULL, query.legend = "none", shade.color = "gray88", shade.alpha = 0.25, matrix.dot.alpha = 0.5,
                   empty.intersections = NULL, color.pal = 1, boxplot.summary = NULL, attribute.plots = NULL, scale.intersections = "identity",
                   scale.sets = "identity", text.scale = 1, set_size.angles = 0 , set_size.show = FALSE, set_size.numbers_size = NULL, set_size.scale_max = NULL){
 
@@ -139,26 +135,26 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F
                  "#CC79A7")
   }
 
-  if(is.null(intersections) == F){
+  if(!is.null(intersections)){
     Set_names <- unique((unlist(intersections)))
     Sets_to_remove <- Remove(data, first.col, last.col, Set_names)
     New_data <- Wanted(data, Sets_to_remove)
     Num_of_set <- Number_of_sets(Set_names)
-    if(keep.order == F){
+    if(!keep.order){
       Set_names <- order_sets(New_data, Set_names)
     }
     All_Freqs <- specific_intersections(data, first.col, last.col, intersections, order.by, group.by, decreasing,
                                         cutoff, main.bar.color, Set_names)
   }
-  else if(is.null(intersections) == T){
+  else if(is.null(intersections)){
     Set_names <- sets
-    if(is.null(Set_names) == T || length(Set_names) == 0 ){
+    if(is.null(Set_names) || length(Set_names) == 0 ){
       Set_names <- FindMostFreq(data, first.col, last.col, nsets)
     }
     Sets_to_remove <- Remove(data, first.col, last.col, Set_names)
     New_data <- Wanted(data, Sets_to_remove)
     Num_of_set <- Number_of_sets(Set_names)
-    if(keep.order == F){
+    if(!keep.order){
     Set_names <- order_sets(New_data, Set_names)
     }
     All_Freqs <- Counter(New_data, Num_of_set, first.col, Set_names, nintersects, main.bar.color,
@@ -170,8 +166,9 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F
   #i.e. if one custom plot had both x and y, and others had only x, the y's for the other plots were NA
   #if I decided to make the NULL case (all x and no y, or vice versa), there would have been alot more if/else statements
   #NA can be indexed so that we still get the non NA y aesthetics on correct plot. NULL cant be indexed.
-  att.x <- c(); att.y <- c();
-  if(is.null(attribute.plots) == F){
+  att.x <- c()
+  att.y <- c()
+  if(!is.null(attribute.plots)){
     for(i in seq_along(attribute.plots$plots)){
       if(length(attribute.plots$plots[[i]]$x) != 0){
         att.x[i] <- attribute.plots$plots[[i]]$x
@@ -189,7 +186,7 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F
   }
 
   BoxPlots <- NULL
-  if(is.null(boxplot.summary) == F){
+  if(!is.null(boxplot.summary)){
     BoxData <- IntersectionBoxPlot(All_Freqs, New_data, first.col, Set_names)
     BoxPlots <- list()
     for(i in seq_along(boxplot.summary)){
@@ -203,17 +200,17 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F
   Element <- NULL
   legend <- NULL
   EBar_data <- NULL
-  if(is.null(queries) == F){
+  if(!is.null(queries)){
     custom.queries <- SeperateQueries(queries, 2, palette)
     customDat <- customQueries(New_data, custom.queries, Set_names)
     legend <- GuideGenerator(queries, palette)
     legend <- Make_legend(legend)
-    if(is.null(att.x) == F && is.null(customDat) == F){
+    if(!is.null(att.x) && !is.null(customDat)){
       customAttDat <- CustomAttData(customDat, Set_names)
     }
     customQBar <- customQueriesBar(customDat, Set_names, All_Freqs, custom.queries)
   }
-  if(is.null(queries) == F){
+  if(!is.null(queries)){
     Intersection <- SeperateQueries(queries, 1, palette)
     Matrix_col <- intersects(QuerieInterData, Intersection, New_data, first.col, Num_of_set,
                              All_Freqs, expression, Set_names, palette)
@@ -227,12 +224,12 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F
   Matrix_layout <- Create_layout(Matrix_setup, matrix.color, Matrix_col, matrix.dot.alpha)
   Set_sizes <- FindSetFreqs(New_data, first.col, Num_of_set, Set_names, keep.order)
   Bar_Q <- NULL
-  if(is.null(queries) == F){
+  if(!is.null(queries)){
     Bar_Q <- intersects(QuerieInterBar, Intersection, New_data, first.col, Num_of_set, All_Freqs, expression, Set_names, palette)
   }
   QInter_att_data <- NULL
   QElem_att_data <- NULL
-  if((is.null(queries) == F) & (is.null(att.x) == F)){
+  if(!is.null(queries) && !is.null(att.x)){
     QInter_att_data <- intersects(QuerieInterAtt, Intersection, New_data, first.col, Num_of_set, att.x, att.y,
                                   expression, Set_names, palette)
     QElem_att_data <- elements(QuerieElemAtt, Element, New_data, first.col, expression, Set_names, att.x, att.y,
@@ -242,19 +239,19 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F
 
   ShadingData <- NULL
 
-  if(is.null(set.metadata) == F){
+  if(!is.null(set.metadata)){
     ShadingData <- get_shade_groups(set.metadata, Set_names, Matrix_layout, shade.alpha)
     output <- Make_set_metadata_plot(set.metadata, Set_names)
     set.metadata.plots <- output[[1]]
     set.metadata <- output[[2]]
 
-    if(is.null(ShadingData) == FALSE){
+    if(!is.null(ShadingData)){
     shade.alpha <- unique(ShadingData$alpha)
     }
   } else {
     set.metadata.plots <- NULL
   }
-  if(is.null(ShadingData) == TRUE){
+  if(is.null(ShadingData)){
   ShadingData <- MakeShading(Matrix_layout, shade.color)
   }
   Main_bar <- suppressMessages(Make_main_bar(All_Freqs, Bar_Q, show.numbers, mb.ratio, customQBar, number.angles, number.colors, EBar_data, mainbar.y.label,

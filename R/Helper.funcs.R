@@ -47,7 +47,7 @@ FindMostFreq <- function(data, start_col, end_col, n_sets){
   temp_data <- data[ ,start_col:end_col]
   temp_data <- colSums(temp_data)
   temp_data <- as.data.frame(temp_data)
-  temp_data <- tail(temp_data[order(temp_data[ ,"temp_data"]), , drop = F], as.integer(n_sets))
+  temp_data <- tail(temp_data[order(temp_data[ ,"temp_data"]), , drop = FALSE], as.integer(n_sets))
   temp_data <- rev(row.names(temp_data))
   return(temp_data)
 }
@@ -55,17 +55,17 @@ FindMostFreq <- function(data, start_col, end_col, n_sets){
 ## Finds the names of the sets that aren't being used
 Remove <- function(data, start_col, end_col, sets){
   temp_data <- as.data.frame(data[ , start_col:end_col])
-  Unwanted_sets <- colnames(temp_data[ ,!(colnames(temp_data) %in% sets), drop = F])
+  Unwanted_sets <- colnames(temp_data[ ,!(colnames(temp_data) %in% sets), drop = FALSE])
 }
 
 ## Removes unwanted sets from data
 Wanted <- function(data, unwanted_sets){
-  temp_data <- (data[ ,!(colnames(data) %in% unwanted_sets), drop = F])
+  temp_data <- (data[ ,!(colnames(data) %in% unwanted_sets), drop = FALSE])
 }
 
 order_sets <- function(data, sets){
   sets <- colSums(data[sets])
-  sets <- names(sets[order(sets, decreasing = T)])
+  sets <- names(sets[order(sets, decreasing = TRUE)])
   return(sets)
 }
 
@@ -73,7 +73,7 @@ order_sets <- function(data, sets){
 Subset_att <- function(data, exp){
   express <- unlist(strsplit(exp, " "))
   for(i in seq_along(express)){
-    if(is.na(match(express[i], colnames(data))) == F){
+    if(!is.na(match(express[i], colnames(data)))){
       express[i] <- paste("data$",express[i], sep = "")
     }
     else{
@@ -107,14 +107,14 @@ Get_aggregates <- function(data, num_sets, order_mat, cut){
     }
     for(i in order_cols){
       if(i == (num_sets + 1)){
-        logic <- T
+        logic <- TRUE
       }
       else{
-        logic <- F
+        logic <- FALSE
       }
       temp_data <- temp_data[order(temp_data[ , i], decreasing = logic), ]
     }
-    if(is.null(cut) == F){
+    if(!is.null(cut)){
       temp_data <- temp_data[1:cut, ]
     }
     set_agg <- rbind(set_agg, temp_data)
@@ -139,14 +139,14 @@ OverlayEdit <- function(data1, data2, start_col, num_sets, intersects, exp, inte
   else{
     temp_data <- temp_data[which(rowSums(temp_data[ ,start_col:new_end]) == length(intersects)), ]
   }
-  if(is.null(exp) == F){
+  if(!is.null(exp)){
     temp_data <- Subset_att(temp_data, exp)
   }
   temp_data <- temp_data[intersects]
   temp_data <- na.omit(temp_data)
   
   other_data <- data2[which(rowSums(data2[ ,1:num_sets]) == length(intersects)), ]
-  other_data <- (other_data[ ,!(colnames(data2) %in% unwanted), drop = F])
+  other_data <- (other_data[ ,!(colnames(data2) %in% unwanted), drop = FALSE])
   if(new_end == start_col){
     other_data <- other_data[ which(other_data[intersects] == 1), ]
   }

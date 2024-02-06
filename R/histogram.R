@@ -6,7 +6,7 @@
 #' @note See examples section for upset function on how to use custom.plot parameter
 #' @export
 histogram <- function(mydata, x){
-  att_plot <- (ggplot(data = mydata, aes_string(x = x, fill = "color")) 
+  att_plot <- (ggplot(data = mydata, aes(x = .data[[x]], fill = .data$color)) 
                + scale_fill_identity()
                + geom_histogram(binwidth = 1)
                + ylab("Frequency")

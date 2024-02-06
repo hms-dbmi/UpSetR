@@ -12,7 +12,7 @@ vignette: >
 For all examples the movies data set contained in the package will be used.
 ```{r, tidy=TRUE}
 library(UpSetR)
-movies <- read.csv( system.file("extdata", "movies.csv", package = "UpSetR"), header=T, sep=";" )
+movies <- read.csv( system.file("extdata", "movies.csv", package = "UpSetR"), header=TRUE, sep=";" )
 ```
 
 <br>

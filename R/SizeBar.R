@@ -5,8 +5,8 @@ FindSetFreqs <- function(data, start_col, num_sets, set_names, keep_order){
   temp_data <- temp_data[set_names]
   temp_data <- as.data.frame(colSums(temp_data))
   colnames(temp_data) <- c("y")
-  if(keep_order == FALSE){
-  temp_data <- temp_data[order(temp_data$y, decreasing = T), ]
+  if(!keep_order){
+  temp_data <- temp_data[order(temp_data$y, decreasing = TRUE), ]
   }
   else{
     temp_data <- temp_data$y
@@ -20,17 +20,16 @@ FindSetFreqs <- function(data, start_col, num_sets, set_names, keep_order){
 log10_reverse_trans <- function(){
   trans <- function(x) -log(x, 10)
   inv <- function(x) (10 ^ -x)
-  trans_new(paste0("reverselog2-", format(2), "reverse"), trans, inv,
-            log_breaks(base = 10), domain = c(1e-100, Inf))
+  scales::trans_new(paste0("reverselog2-", format(2), "reverse"), trans, inv,
+            scales::log_breaks(base = 10), domain = c(1e-100, Inf))
 }
 
 log2_reverse_trans <- function(){
   trans <- function(x) -log(x, 2)
   inv <- function(x) (2 ^ -x)
-  trans_new(paste0("reverselog2-", format(2), "reverse"), trans, inv,
-            log_breaks(base = 2), domain = c(1e-100, Inf))
+  scales::trans_new(paste0("reverselog2-", format(2), "reverse"), trans, inv,
+            scales::log_breaks(base = 2), domain = c(1e-100, Inf))
 }
-globalVariables(c("y"))
 ## Generate set size plot
 Make_size_plot <- function(Set_size_data, sbar_color, ratios, ylabel, scale_sets, text_scale, set_size_angle, set_size.show, set_size.scale_max,
                            set_size.number_size){
@@ -69,7 +68,7 @@ Make_size_plot <- function(Set_size_data, sbar_color, ratios, ylabel, scale_sets
     num.size <- (7/2.845276)*x_axis_tick_label_scale
   }
   
-  Size_plot <- (ggplot(data = Set_size_data, aes_string(x ="x", y = "y"))
+  Size_plot <- (ggplot(data = Set_size_data, aes(x = .data$x, y = .data$y))
                 + geom_bar(stat = "identity",colour = sbar_color, width = 0.4,
                            fill = sbar_color, position = "identity")
                 + scale_x_continuous(limits = c(0.5, (nrow(Set_size_data) + 0.5)),
@@ -82,7 +81,7 @@ Make_size_plot <- function(Set_size_data, sbar_color, ratios, ylabel, scale_sets
                                                    vjust = 1, hjust = 0.5),
                         axis.line = element_line(colour = "gray0"),
                         axis.line.y = element_blank(),
-                        axis.line.x = element_line(colour = "gray0", size = 0.3),
+                        axis.line.x = element_line(colour = "gray0", linewidth = 0.3),
                         axis.text.y = element_blank(),
                         axis.ticks.y = element_blank(),
                         panel.grid.minor = element_blank(),
@@ -90,8 +89,8 @@ Make_size_plot <- function(Set_size_data, sbar_color, ratios, ylabel, scale_sets
                 + xlab(NULL) + ylab(ylabel)
                 + coord_flip())
   
-  if(set_size.show == TRUE){
-    Size_plot <- (Size_plot + geom_text(aes(label=y,vjust=0.5,hjust=1.2, angle = set_size_angle), size=num.size))
+  if(set_size.show){
+    Size_plot <- (Size_plot + geom_text(aes(label= .data$y), vjust=0.5,hjust=1.2, size=num.size, angle = set_size_angle))
   }
     
   if(scale_sets == "log10"){

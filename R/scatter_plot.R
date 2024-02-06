@@ -7,8 +7,8 @@
 #' @note See examples section for upset function on how to use custom.plot parameter.
 #' @export
 scatter_plot <- function(mydata, x, y){
-  att_plot <- (ggplot(data = mydata, aes_string(x = x, y = y, colour = "color"))
-               + geom_point(shape=16) + scale_color_identity()
+  att_plot <- (ggplot(data = mydata, aes(x = .data[[x]], y = .data[[y]], colour = .data$color))
+               + geom_point(shape = 16) + scale_color_identity()
                + theme(panel.background = element_rect(fill = "white"),
                        plot.title = element_text(vjust = 1.3),
                        panel.grid.minor = element_blank(),

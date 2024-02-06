@@ -44,7 +44,7 @@ Create_layout <- function(setup, mat_color, mat_col, matrix_dot_alpha){
       Matrix_layout$Intersection[i] <- paste(i, "No", sep = "")
     }
   }
-  if(is.null(mat_col) == F){
+  if(!is.null(mat_col)){
     for(i in 1:nrow(mat_col)){
       mat_x <- mat_col$x[i]
       mat_color <- as.character(mat_col$color[i])
@@ -99,13 +99,15 @@ Make_matrix_plot <- function(Mat_data,Set_size_data, Main_bar_data, point_size, 
                                        limits = c(0.5,(nrow(Set_size_data) +0.5)),
                                        labels = labels, expand = c(0,0))
                   + scale_x_continuous(limits = c(0,(nrow(Main_bar_data)+1 )), expand = c(0,0))
-                  + geom_rect(data = shading_data, aes_string(xmin = "min", xmax = "max",
-                                                              ymin = "y_min", ymax = "y_max"),
+                  + geom_rect(data = shading_data,
+                              aes(xmin = .data$min, xmax = .data$max,
+                                  ymin = .data$y_min, ymax = .data$y_max),
                               fill = shading_data$shade_color, alpha = shade_alpha)
-                  + geom_point(data= Mat_data, aes_string(x= "x", y= "y"), colour = Mat_data$color,
-                               size= point_size, alpha = Mat_data$alpha, shape=16)
-                  + geom_line(data= Mat_data, aes_string(group = "Intersection", x="x", y="y",
-                                                         colour = "color"), size = line_size)
+                  + geom_point(data= Mat_data, aes(x = .data$x, y = .data$y),
+                               colour = Mat_data$color, size = point_size,
+                               alpha = Mat_data$alpha, shape = 16)
+                  + geom_line(data= Mat_data, aes(group = .data$Intersection, x = .data$x, y = .data$y,
+                                                         colour = .data$color), linewidth = line_size)
                   + scale_color_identity())
   Matrix_plot <- ggplot_gtable(ggplot_build(Matrix_plot))
   return(Matrix_plot)

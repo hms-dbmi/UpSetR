@@ -2,11 +2,11 @@
 metadataHist <- function(metadata, y_data, colors){
   colnum <- match(y_data, names(metadata))
   names(metadata)[colnum] <- "current"
-  if(is.numeric(metadata$current) == FALSE){
+  if(!is.numeric(metadata$current)){
     warning("The values supplied for the metadata histogram were not numeric")
   }
   metadata <- metadata[c(1,colnum)]
-  if(is.factor(metadata$current) == TRUE){
+  if(is.factor(metadata$current)){
     warning("The data being used for the bar plot is not numeric!")
   }
   names(metadata)[colnum] <- y_data
@@ -16,7 +16,7 @@ metadataHist <- function(metadata, y_data, colors){
   }
   
   plot <- (ggplot(data=metadata)
-           + geom_bar(aes_string(x="sets", y=y_data),
+           + geom_bar(aes(x= .data$sets, y=.data[[y_data]]),
                       stat="identity", position="identity", width = 0.4,
                       fill = colors)
            + scale_x_continuous(limits = c(0.5, (nrow(metadata)+0.5)),
@@ -28,7 +28,7 @@ metadataHist <- function(metadata, y_data, colors){
                    axis.text.x = element_text(size = 7),
                    axis.line = element_line(colour = "gray0"),
                    axis.line.y = element_blank(),
-                   axis.line.x = element_line(colour = "gray0", size = 0.3),
+                   axis.line.x = element_line(colour = "gray0", linewidth = 0.3),
                    axis.text.y = element_blank(),
                    axis.ticks.y = element_blank(),
                    panel.grid.minor = element_blank(),
@@ -45,26 +45,26 @@ metadataHeat <- function(metadata, y_data, plot_type, colors){
                "#CC79A7")
   colnum <- match(y_data, names(metadata))
   names(metadata)[colnum] <- "current"
-  if(is.factor(metadata$current) == TRUE){
+  if(is.factor(metadata$current)){
     colortype <- "factor"
     levs <- levels(metadata$current)
     if(plot_type == "bool"){
-      newlevel <- c(0,1)
+      newlevel <- c(0, 1)
     }
     else if(plot_type == "heat"){
-      newlevel <- c(1:length(levs))
+      newlevel <- seq_along(levs)
     }
     metadata$current <- as.character(metadata$current)
-    for(i in seq(length(levs))){
+    for(i in seq_along(levs)){
       metadata$current[which(metadata$current == levs[i])] <- newlevel[i]
     }
     metadata$current <- as.numeric(metadata$current)
   }
-  else if(is.character(metadata$current) == TRUE){
+  else if(is.character(metadata$current)){
     colortype <- "category"
     uniquecats <- length(unique(metadata$current))
   }
-  else if(is.numeric(metadata$current) == TRUE){
+  else if(is.numeric(metadata$current)){
     if(plot_type != "bool"){
     colortype <- "factor"
     }
@@ -84,7 +84,7 @@ metadataHeat <- function(metadata, y_data, plot_type, colors){
     titleAdjustment <- 25
   #}
   
-  plot <- (ggplot(data=metadata, aes_string(x="sets", y = 1, fill = y_data))
+  plot <- (ggplot(data = metadata, aes(x = .data$sets, y = 1, fill = .data[[y_data]]))
            + scale_x_continuous(expand = c(c(0,0), c(0,0)))
            + theme(panel.background = element_rect("white"),
                    plot.title = element_text(margin = margin(b=titleAdjustment),
@@ -100,9 +100,7 @@ metadataHeat <- function(metadata, y_data, plot_type, colors){
                    axis.title.y = element_blank(),
                    axis.text.x = element_blank(),
                    axis.ticks.x = element_blank())
-           + ylab(NULL)
-           + xlab(NULL)
-           + ggtitle(y_data)
+           + labs(x = NULL, y = NULL, title = y_data)
            + coord_flip()
            + scale_y_reverse())
   
@@ -118,10 +116,10 @@ metadataHeat <- function(metadata, y_data, plot_type, colors){
     }
     
     else if(is.null(colors)  && nrow(metadata) >= 9){
-      warning("Please provide color palette when number of groups exceeds 8")
+      warning("Please provide color palette when number of groups exceeds 8.")
     }
     
-    else if(is.null(colors) == FALSE){
+    else if(!is.null(colors)){
       plot <- plot + geom_tile()
       plot <- plot + scale_fill_manual(values = colors)
     }
@@ -167,11 +165,11 @@ metadataText <- function(metadata, y_data, colors, alignment){
   ncols <- ncol(metadata)
   metadata <- cbind(metadata, c(1:nrow(metadata)))
   names(metadata)[ncol(metadata)] <- "x"
-  plot <- (ggplot(data=metadata, aes_string(x="x", y=1, label = y_data, colour = y_data, size =10))
+  plot <- (ggplot(data=metadata, aes(x = .data$x, y = 1, label = .data[[y_data]], colour = .data[[y_data]], size = 10))
            + scale_x_continuous(limits = c(0.5, (nrow(metadata)+0.5)),
                                 expand = c(0,0))
            + theme(panel.background = element_rect("white"),
-                   plot.title = element_text(margin = margin(b=titleAdjustment),
+                   plot.title = element_text(margin = margin(b = titleAdjustment),
                                              size = 9, hjust = 0.5),
                    plot.margin=unit(c(0,0,0,0), "lines"),
                    axis.title.x = element_text(size = 7),
@@ -184,12 +182,10 @@ metadataText <- function(metadata, y_data, colors, alignment){
                    axis.title.y = element_blank(),
                    axis.text.x = element_blank(),
                    axis.ticks.x = element_blank())
-           + xlab(NULL)
-           + ylab(NULL)
+           + labs(x = NULL, y = NULL, title = y_data)
            + coord_flip()
-           + ggtitle(y_data)
            + scale_y_reverse())
-  if(is.null(colors) == FALSE){
+  if(!is.null(colors)){
     plot <- plot + geom_text(size = 2.7, hjust = align)
     plot <- plot + scale_colour_manual(values = colors)
   }
@@ -223,7 +219,7 @@ get_shade_groups <- function(set_metadata, set_names, Mat_data, shade_alpha) {
         shade_data$y_max[k] <- ((k) + 0.5)
       }
       shade_data$shade_color <- data$color
-      if(is.null(set_metadata$plots[[i]]$alpha) == TRUE){
+      if(is.null(set_metadata$plots[[i]]$alpha)){
         shade_data$alpha <- shade_alpha
       }
       else{

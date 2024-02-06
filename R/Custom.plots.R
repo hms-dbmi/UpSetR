@@ -11,10 +11,10 @@ GenerateCustomPlots <- function(attribute_plots, Set_data, QueryData, att_color,
     if(length(QueryData) != 0){SetAndQueryData[1:nrow(Set_data), ]$color <- "gray23"}
     #      x_att <- attribute_plots$plots[[i]]$x
     #      y_att <- attribute_plots$plots[[i]]$y
-    if(isTRUE(attribute_plots$plots[[i]]$queries) == T){
+    if(isTRUE(attribute_plots$plots[[i]]$queries)){
       if(length(QueryData) == 0){
         warning("To overlay with query data please specify att.x and att.y where applicable.")
-        if(is.null(attribute_plots$plots[[i]]$y) == F){
+        if(!is.null(attribute_plots$plots[[i]]$y)){
           CustomPlot[[i]] <- attribute_plots$plots[[i]]$plot(Set_data, attribute_plots$plots[[i]]$x, attribute_plots$plots[[i]]$y)
         }
         else{
@@ -22,8 +22,8 @@ GenerateCustomPlots <- function(attribute_plots, Set_data, QueryData, att_color,
         }
       }
       else if(length(QueryData) != 0){
-        if(is.null(attribute_plots$plots[[i]]$y) == F){
-          if(is.na(atty[i]) == T){
+        if(!is.null(attribute_plots$plots[[i]]$y)){
+          if(is.na(atty[i])){
             warning("No y attribute provided to overlay with query data.
                         If attempting to display plot that needs both x and y aesthetics please enter att.y parameter.
                         Plots that require just the x aestheitc will not be affected.")
@@ -39,7 +39,7 @@ GenerateCustomPlots <- function(attribute_plots, Set_data, QueryData, att_color,
       }
     }
     else {
-      if(is.null(attribute_plots$plots[[i]]$y) == F){
+      if(!is.null(attribute_plots$plots[[i]]$y)){
         CustomPlot[[i]] <- attribute_plots$plots[[i]]$plot(Set_data, attribute_plots$plots[[i]]$x, attribute_plots$plots[[i]]$y)
       }
       else{

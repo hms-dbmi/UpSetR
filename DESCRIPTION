@@ -15,15 +15,17 @@ Depends:
 Imports:
     ggplot2,
     gridExtra,
-    plyr,
     utils,
     stats,
     methods,
     grDevices,
-    scales
+    scales,
+    rlang,
+    vctrs
 License: MIT + file LICENSE
-LazyData: true
 VignetteBuilder: knitr
 Suggests:
-    knitr
-RoxygenNote: 7.0.2
+    knitr,
+    rmarkdown
+RoxygenNote: 7.2.3
+Encoding: UTF-8

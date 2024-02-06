@@ -13,17 +13,17 @@ QuerieElemAtt <- function(q, data, start_col, exp, names, att_x, att_y, palette)
   if(length(q) == 0){
     return(NULL)
   }
-  for(i in 1:length(q)){
+  for(i in seq_along(q)){
     index_q <- unlist(q[[i]]$params)
     elem_color <- unlist(q[[i]]$color)
     test <- as.character(index_q[1])
     check <- match(test, names)
     if(length(check) != 0){
-      if(is.na(att_y[i]) == F){
+      if(!is.na(att_y[i])){
         elems <- GetElements(data, index_q)
         end_col <- ((start_col + as.integer(length(names))) - 1)
         elems <- elems[which(rowSums(elems[ ,start_col:end_col]) != 0), ]
-        if(is.null(exp) == F){
+        if(!is.null(exp)){
           elems <- Subset_att(elems, exp)
         }
         if(nrow(elems) != 0){
@@ -33,11 +33,11 @@ QuerieElemAtt <- function(q, data, start_col, exp, names, att_x, att_y, palette)
           elems <- NULL
         }
       }
-      else if(is.na(att_y[i]) == T){
+      else if(is.na(att_y[i])){
         elems <- GetElements(data, index_q)
         end_col <- ((start_col + as.integer(length(names))) - 1)
         elems <- elems[which(rowSums(elems[ ,start_col:end_col]) != 0), ]
-        if(is.null(exp) == F){
+        if(!is.null(exp)){
           elems <- Subset_att(elems, exp)
         }
         if(nrow(elems) != 0){
@@ -65,20 +65,20 @@ QuerieElemAtt <- function(q, data, start_col, exp, names, att_x, att_y, palette)
 
 
 ElemBarDat <- function(q, data1, first_col, exp, names, palette, mbdata){
-  data1 <- data.frame(data1, check.names = F)
-  bar <- count(data1)
+  data1 <- data.frame(data1, check.names = FALSE)
+  bar <- count_compat(data1)
   bar$x <- 1:nrow(bar)
   rows <- data.frame()
   act <- c()
   if(length(q) == 0){
     return(NULL)
   }
-  for(i in 1:length(q)){
+  for(i in seq_along(q)){
     index_q <- unlist(q[[i]]$params)
     test <- as.character(index_q[1])
     check <- match(test, names)
     elem_color <- q[[i]]$color
-    if(is.na(check) != T){
+    if(!is.na(check)){
       elem_data <- NULL
     }
     else{
@@ -86,18 +86,18 @@ ElemBarDat <- function(q, data1, first_col, exp, names, palette, mbdata){
       if(!is.null(exp)){
       elem_data <- Subset_att(elem_data, exp)
       }
-      elem_data <- as.data.frame(count(elem_data[names]))
+      elem_data <- as.data.frame(count_compat(elem_data[names]))
       names(elem_data) <- c(names, "freq")
       elem_data <- elem_data[which(rowSums(elem_data[names]) != 0), ]
       x <- merge(mbdata, elem_data[names], by = names)
       elem_data <- merge(x[names], elem_data, by = names)
       x <- x$x
       elem_data$x <- x
-      if((isTRUE(q[[i]]$active) == T) && (is.null(elem_data) == F)){
-        act <- T
+      if(isTRUE(q[[i]]$active) && !is.null(elem_data)){
+        act <- TRUE
       }
-      else if((isTRUE(q[[i]]$active) == F || is.null(q[[i]]$active) == T) && (is.null(elem_data) == F)){
-        act <- F
+      else if((!isTRUE(q[[i]]$active) || is.null(q[[i]]$active)) && !is.null(elem_data)){
+        act <- FALSE
       }
       elem_data$color <- elem_color
       elem_data$act <- act

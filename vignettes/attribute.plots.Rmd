@@ -11,8 +11,10 @@ vignette: >
 
 For all examples the movies data set contained in the package will be used.
 ```{r, tidy=TRUE}
-library(UpSetR); library(ggplot2); library(grid); library(plyr)
-movies <- read.csv( system.file("extdata", "movies.csv", package = "UpSetR"), header=T, sep=";" )
+library(UpSetR)
+library(ggplot2)
+library(grid)
+movies <- read.csv( system.file("extdata", "movies.csv", package = "UpSetR"), header = TRUE, sep=";" )
 ```
 
 <br>
@@ -43,7 +45,7 @@ Example 1: Built-In Attribute Histogram
 -------------
 Example of how to add built-in histogram attribute plot. If `main.bar.color` is not specified as black, elements contained in black intersection size bars will be represented as gray in attribute plots.
 ```{r, fig.width=9, fig.height=5, out.width="850px",tidy=TRUE, fig.align='center'}
-upset(movies, main.bar.color = "black", queries = list(list(query = intersects, params = list("Drama"), active = T)), attribute.plots = list(gridrows = 50, plots = list(list(plot = histogram, x = "ReleaseDate", queries = F), list(plot = histogram, x = "AvgRating", queries = T)), ncols = 2))
+upset(movies, main.bar.color = "black", queries = list(list(query = intersects, params = list("Drama"), active = T)), attribute.plots = list(gridrows = 50, plots = list(list(plot = histogram, x = "ReleaseDate", queries = F), list(plot = histogram, x = "AvgRating", queries = TRUE)), ncols = 2))
 ```
 
 <br>
@@ -61,16 +63,25 @@ upset(movies, main.bar.color = "black", queries = list(list(query = intersects, 
 
 Example 3: Creating a Custom Attribute Plot
 -------------
-Contents of `aes_string()` along with the `scale_color_identity()` function are **required** to pass in aesthetics and to make sure the correct colors are applied. A `plot.margin` of `c(0.5,0,0,1)` is **recommended**.
+Contents of `aes()` along with the `scale_color_identity()` function are **required** to pass in aesthetics and to make sure the correct colors are applied. A `plot.margin` of `c(0.5,0,0,1)` is **recommended**.
+
+```{r, include=FALSE}
+# inlined from plyr
+round_any <- function(x, accuracy, f) {
+   f(x/accuracy) * accuracy
+}
+```
+
+
 ```{r, tidy=TRUE}
 myplot <- function(mydata,x,y){
-    plot <- (ggplot(data = mydata, aes_string(x=x, y=y, colour = "color")) + geom_point() +    scale_color_identity() + theme(plot.margin = unit(c(0,0,0,0), "cm")))
+    plot <- (ggplot(data = mydata, aes(x= .data[[x]], y = .data[[y]], colour = color)) + geom_point() +    scale_color_identity() + theme(plot.margin = unit(c(0,0,0,0), "cm")))
 }
 
 another.plot <- function(data, x, y){
   data$decades <- round_any(as.integer(unlist(data[y])), 10, ceiling)
   data <- data[which(data$decades >= 1970), ]
-  myplot <- (ggplot(data, aes_string(x=x)) + 
+  myplot <- (ggplot(data, aes(x = .data[[x]])) + 
                geom_density(aes(fill=factor(decades)), alpha = 0.4)
              +theme(plot.margin = unit(c(0,0,0,0), "cm"), legend.key.size = unit(0.4,"cm")))
 }
@@ -78,7 +89,7 @@ another.plot <- function(data, x, y){
 
 Example of applying the `myplot` custom attribute plot defined above to the data.
 ```{r, fig.width=9, fig.height=5, out.width="850px",tidy=TRUE, fig.align='center'}
-upset(movies, main.bar.color = "black", queries = list(list(query = intersects, params = list("Drama"), color = "red", active = F), list(query = intersects, params = list("Action", "Drama"), active = T), list(query = intersects, params = list("Drama", "Comedy", "Action"), color = "orange", active = T)), attribute.plots = list(gridrows = 45, plots = list(list(plot = myplot, x = "ReleaseDate", y = "AvgRating", queries = T), list(plot = another.plot, x = "AvgRating", y = "ReleaseDate", queries = F)), ncols = 2))
+upset(movies, main.bar.color = "black", queries = list(list(query = intersects, params = list("Drama"), color = "red", active = F), list(query = intersects, params = list("Action", "Drama"), active = T), list(query = intersects, params = list("Drama", "Comedy", "Action"), color = "orange", active = T)), attribute.plots = list(gridrows = 45, plots = list(list(plot = myplot, x = "ReleaseDate", y = "AvgRating", queries = T), list(plot = another.plot, x = "AvgRating", y = "ReleaseDate", queries = FALSE)), ncols = 2))
 ```
 
 <br>
