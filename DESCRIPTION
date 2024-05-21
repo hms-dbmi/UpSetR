@@ -27,3 +27,4 @@ VignetteBuilder: knitr
 Suggests:
     knitr
 RoxygenNote: 7.0.2
+print("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
