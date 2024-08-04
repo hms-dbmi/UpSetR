@@ -33,13 +33,29 @@ IntersectionBoxPlot <- function(data1, data2, start_col, names){
 }
 
 ## Generate boxplot summary plots
-BoxPlotsPlot <- function(bdat, att, att_color){
+BoxPlotsPlot <- function(bdat, att, att_color, boxpl_kw = NULL){
   yaxis <- as.character(att)
   col <- match(att, colnames(bdat))
   colnames(bdat)[col] <- "attribute"
   upper_xlim <- as.numeric((max(bdat$x) + 1))
   plot_lims <- as.numeric(0:upper_xlim)
   bdat$x <- as.factor(bdat$x)
+  # if boxpl_kw is not null, read the width and colour/color value of this named
+  # list, and use in boxplot
+  if(!is.null(boxpl_kw)){
+    if("width" %in% names(boxpl_kw)){
+      width <- boxpl_kw$width
+    } else {
+      width <- 1
+    }
+    if("color" %in% names(boxpl_kw)){
+      border_color <- boxpl_kw$color
+    } else if ("colour" %in% names(boxpl_kw)) {
+      border_color <- boxpl_kw$colour
+    } else {
+      border_color <- "gray80"
+    }
+  }
   boxplots <- ggplotGrob(ggplot()
                          + theme_bw() +ylab(yaxis)
                          + scale_x_discrete(limits = plot_lims, expand = c(0,0))
@@ -52,6 +68,7 @@ BoxPlotsPlot <- function(bdat, att, att_color){
                                  panel.grid.major = element_blank(),
                                  axis.title.x = element_blank())
                          + geom_boxplot(data = bdat, aes_string(x="x", y="attribute"),
-                                        fill = att_color, colour = "gray80"))
+                                        fill = att_color, colour = border_color,
+                                        width = width))
   return(boxplots)
 }

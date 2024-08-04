@@ -57,6 +57,7 @@
 #' @param set_size.show Logical, display the set sizes on the set size bar chart
 #' @param set_size.numbers_size If set_size.show is TRUE, adjust the size of the numbers
 #' @param set_size.scale_max Increase the maximum of set size scale
+#' @param boxpl_kw Named list of parameters to be passed to the boxplot function. Options include width and color/colour. If not specified, defaults (width = 1 and colour = "grey80") are used.
 #' @details Visualization of set data in the layout described by Lex and Gehlenborg in \url{http://www.nature.com/nmeth/journal/v11/n8/abs/nmeth.3033.html}.
 #' UpSet also allows for visualization of queries on intersections and elements, along with custom queries queries implemented using
 #' Hadley Wickham's apply function. To further analyze the data contained in the intersections, the user may select additional attribute plots
@@ -124,7 +125,8 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F
                   decreasing = c(T, F), show.numbers = "yes", number.angles = 0, number.colors=NULL, group.by = "degree",cutoff = NULL,
                   queries = NULL, query.legend = "none", shade.color = "gray88", shade.alpha = 0.25, matrix.dot.alpha =0.5,
                   empty.intersections = NULL, color.pal = 1, boxplot.summary = NULL, attribute.plots = NULL, scale.intersections = "identity",
-                  scale.sets = "identity", text.scale = 1, set_size.angles = 0 , set_size.show = FALSE, set_size.numbers_size = NULL, set_size.scale_max = NULL){
+                  scale.sets = "identity", text.scale = 1, set_size.angles = 0 , set_size.show = FALSE, set_size.numbers_size = NULL, set_size.scale_max = NULL,
+                  boxpl_kw = NULL){
 
   startend <-FindStartEnd(data)
   first.col <- startend[1]
@@ -193,7 +195,7 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F
     BoxData <- IntersectionBoxPlot(All_Freqs, New_data, first.col, Set_names)
     BoxPlots <- list()
     for(i in seq_along(boxplot.summary)){
-      BoxPlots[[i]] <- BoxPlotsPlot(BoxData, boxplot.summary[i], att.color)
+      BoxPlots[[i]] <- BoxPlotsPlot(BoxData, boxplot.summary[i], att.color, boxpl_kw)
     }
   }
 
