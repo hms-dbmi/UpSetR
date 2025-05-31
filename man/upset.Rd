@@ -167,7 +167,7 @@ Data set must be formatted as described on the original UpSet github page: \url{
 \examples{
 movies <- read.csv( system.file("extdata", "movies.csv", package = "UpSetR"), header=TRUE, sep=";" )
 
-require(ggplot2); require(plyr); require(gridExtra); require(grid);
+require(ggplot2); require(gridExtra); require(grid);
 
 between <- function(row, min, max){
   newData <- (row["ReleaseDate"] < max) & (row["ReleaseDate"] > min)

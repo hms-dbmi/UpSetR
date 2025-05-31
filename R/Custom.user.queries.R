@@ -22,25 +22,25 @@ customQueries <- function(data, custom, names){
 customQueriesBar <- function(cust_data, sets,bar_data,custom){
   setup <- list()
   final_data <- list()
-  num <- (length(sets) + 1)
   if(length(cust_data) == 0){
     return(NULL)
   }
-  for(i in 1:length(cust_data)){
-    cust_data[[i]] <- count(cust_data[[i]][sets])
+  num <- (length(sets) + 1)
+  for(i in seq_along(cust_data)){
+    cust_data[[i]] <- plyr_count(cust_data[[i]][sets])
     colnames(cust_data[[i]])[num] <- "freq2"
-    cust_data[[i]] <- cust_data[[i]][!(rowSums(cust_data[[i]][ ,1:length(sets)]) == 0), ]
+    cust_data[[i]] <- cust_data[[i]][!(rowSums(cust_data[[i]][ ,seq_along(sets)]) == 0), ]
     setup[[i]] <- merge(cust_data[[i]], bar_data, by = sets)
     color2 <- rep(custom[[i]]$color, times = nrow(setup[[i]]))
-    if(isTRUE(custom[[i]]$active) == T){
-      act <- rep(T, nrow(setup[[i]]))
+    if(isTRUE(custom[[i]]$active)){
+      act <- rep(TRUE, nrow(setup[[i]]))
     }
     else{
-      act <- rep(F, nrow(setup[[i]]))
+      act <- rep(FALSE, nrow(setup[[i]]))
     }
     setup[[i]] <- cbind(setup[[i]], color2, act)
   }
-  for(i in 1:length(setup)){
+  for(i in seq_along(setup)){
     final_data <- rbind(final_data, setup[[i]])
   }
   return(final_data)

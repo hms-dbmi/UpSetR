@@ -11,7 +11,7 @@ vignette: >
 
 For all examples the movies data set contained in the package will be used.
 ```{r, tidy=TRUE}
-library(UpSetR); library(ggplot2); library(grid); library(plyr)
+library(UpSetR); library(ggplot2); library(grid)
 movies <- read.csv( system.file("extdata", "movies.csv", package = "UpSetR"), header=T, sep=";" )
 ```
 
@@ -68,7 +68,7 @@ myplot <- function(mydata,x,y){
 }
 
 another.plot <- function(data, x, y){
-  data$decades <- round_any(as.integer(unlist(data[y])), 10, ceiling)
+  data$decades <- 10 * ceiling(as.integer(unlist(data[y])) / 10)
   data <- data[which(data$decades >= 1970), ]
   myplot <- (ggplot(data, aes_string(x=x)) + 
                geom_density(aes(fill=factor(decades)), alpha = 0.4)
