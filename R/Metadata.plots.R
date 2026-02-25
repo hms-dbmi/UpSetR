@@ -88,7 +88,7 @@ metadataHeat <- function(metadata, y_data, plot_type, colors){
            + scale_x_continuous(expand = c(c(0,0), c(0,0)))
            + theme(panel.background = element_rect("white"),
                    plot.title = element_text(margin = margin(b=titleAdjustment),
-                                             size = 9, hjust = 0.5),
+                                             size = 9, hjust = 0.5, vjust = 0.75),
                    plot.margin=unit(c(0,0,0,0), "lines"),
                    axis.title.x = element_text(size = 8.3),
                    legend.position = "none",
@@ -172,7 +172,7 @@ metadataText <- function(metadata, y_data, colors, alignment){
                                 expand = c(0,0))
            + theme(panel.background = element_rect("white"),
                    plot.title = element_text(margin = margin(b=titleAdjustment),
-                                             size = 9, hjust = 0.5),
+                                             size = 9, hjust = 0.5, vjust = 0.75),
                    plot.margin=unit(c(0,0,0,0), "lines"),
                    axis.title.x = element_text(size = 7),
                    legend.position = "none",
