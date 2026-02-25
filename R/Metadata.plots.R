@@ -16,8 +16,8 @@ metadataHist <- function(metadata, y_data, colors){
   }
   
   plot <- (ggplot(data=metadata)
-           + geom_bar(aes_string(x="sets", y=y_data),
-                      stat="identity", position="identity", width = 0.4,
+           + geom_bar(aes(x = .data[["sets"]], y = .data[[y_data]]),
+                      stat = "identity", position = "identity", width = 0.4,
                       fill = colors)
            + scale_x_continuous(limits = c(0.5, (nrow(metadata)+0.5)),
                                 breaks = c(0, max(metadata)),
@@ -28,7 +28,7 @@ metadataHist <- function(metadata, y_data, colors){
                    axis.text.x = element_text(size = 7),
                    axis.line = element_line(colour = "gray0"),
                    axis.line.y = element_blank(),
-                   axis.line.x = element_line(colour = "gray0", size = 0.3),
+                   axis.line.x = element_line(colour = "gray0", linewidth = 0.3),
                    axis.text.y = element_blank(),
                    axis.ticks.y = element_blank(),
                    panel.grid.minor = element_blank(),
@@ -84,7 +84,7 @@ metadataHeat <- function(metadata, y_data, plot_type, colors){
     titleAdjustment <- 25
   #}
   
-  plot <- (ggplot(data=metadata, aes_string(x="sets", y = 1, fill = y_data))
+  plot <- (ggplot(data=metadata, aes(x = .data[["sets"]], y = 1, fill = .data[[y_data]]))
            + scale_x_continuous(expand = c(c(0,0), c(0,0)))
            + theme(panel.background = element_rect("white"),
                    plot.title = element_text(margin = margin(b=titleAdjustment),
@@ -167,7 +167,7 @@ metadataText <- function(metadata, y_data, colors, alignment){
   ncols <- ncol(metadata)
   metadata <- cbind(metadata, c(1:nrow(metadata)))
   names(metadata)[ncol(metadata)] <- "x"
-  plot <- (ggplot(data=metadata, aes_string(x="x", y=1, label = y_data, colour = y_data, size =10))
+  plot <- (ggplot(data=metadata, aes(x = .data[["x"]], y = 1, label = .data[[y_data]], colour = .data[[y_data]], size = 10))
            + scale_x_continuous(limits = c(0.5, (nrow(metadata)+0.5)),
                                 expand = c(0,0))
            + theme(panel.background = element_rect("white"),
