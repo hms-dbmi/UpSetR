@@ -128,11 +128,23 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_an
                             axis.title.y = element_text(vjust = -0.8, size = 8.3*y_axis_title_scale), axis.text.y = element_text(vjust=0.3,
                                                                                                             size=7*y_axis_tick_label_scale)))
   if((show_num == "yes") || (show_num == "Yes")){
+    number_vjust <- number_hjust <- 0.5 # ggplot2 defaults
+    if(number_angles == 0) {
+      number_vjust <- -0.5
+    } else if(number_angles <= 45) {
+      number_vjust <- -0.5
+      number_hjust <- 0
+    } else if(number_angles <= 90) {
+      number_vjust <- 0.5
+      number_hjust <- -0.2
+    }
     if(is.null(number.colors)) {
-      Main_bar_plot <- (Main_bar_plot + geom_text(aes_string(label = "freq"), size = 2.2*intersection_size_number_scale, vjust = -1,
+      Main_bar_plot <- (Main_bar_plot + geom_text(aes_string(label = "freq"), size = 2.2*intersection_size_number_scale,
+						  vjust = number_vjust, hjust = number_hjust,
                                                   angle = number_angles, colour = Main_bar_data$color))
     } else {
-      Main_bar_plot <- (Main_bar_plot + geom_text(aes_string(label = "freq"), size = 2.2*intersection_size_number_scale, vjust = -1,
+      Main_bar_plot <- (Main_bar_plot + geom_text(aes_string(label = "freq"), size = 2.2*intersection_size_number_scale,
+						  vjust = number_vjust, hjust = number_hjust,
                                                   angle = number_angles, colour = number.colors))
     }
   }
