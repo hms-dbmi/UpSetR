@@ -5,8 +5,8 @@ Date: 2026-5-20
 URL: http://github.com/hms-dbmi/UpSetR
 BugReports: http://github.com/hms-dbmi/UpSetR/issues
 Authors@R: c(
-   person("Jake", "Conway", email = "jake.conway@pathai.com", role = "aut"),
-   person("Nils", "Gehlenborg", email = "nils@hms.harvard.edu",
+    person("Jake", "Conway", email = "jake.conway@pathai.com", role = "aut"),
+    person("Nils", "Gehlenborg", email = "nils@hms.harvard.edu"),
 Description: Creates visualizations of intersecting sets using a novel matrix
     design, along with visualizations of several common set, element and attribute
     related tasks (Conway 2017) <doi:10.1093/bioinformatics/btx364>.
@@ -26,4 +26,4 @@ LazyData: true
 VignetteBuilder: knitr
 Suggests:
     knitr
-RoxygenNote: 7.0.2
+Config/roxygen2/version: 8.0.0
