@@ -32,7 +32,7 @@ movies <- read.csv( system.file("extdata", "movies.csv", package = "UpSetR"), he
 mutations <- read.csv( system.file("extdata", "mutations.csv", package = "UpSetR"), header=T, sep = ",")
 ```
 
-The movie data set created by the [GroupLens Lab](https://grouplens.org/datasets/movielens) and curated by [Bilal Alsallakh](https://github.com/bilalsal) and the mutations data set was originally created by the TCGA Consortium and represents mutations for the 100 most mutated genes in a glioblastoma multiforme cohort.
+The movie data set created by the [GroupLens Lab](https://grouplens.org/datasets/movielens/) and curated by [Bilal Alsallakh](https://github.com/bilalsal) and the mutations data set was originally created by the TCGA Consortium and represents mutations for the 100 most mutated genes in a glioblastoma multiforme cohort.
 
 ## Examples
 
