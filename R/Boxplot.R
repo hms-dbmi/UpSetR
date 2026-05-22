@@ -38,7 +38,7 @@ BoxPlotsPlot <- function(bdat, att, att_color){
   col <- match(att, colnames(bdat))
   colnames(bdat)[col] <- "attribute"
   upper_xlim <- as.numeric((max(bdat$x) + 1))
-  plot_lims <- as.numeric(0:upper_xlim)
+  plot_lims <- factor(as.numeric(0:upper_xlim))
   bdat$x <- as.factor(bdat$x)
   boxplots <- ggplotGrob(ggplot()
                          + theme_bw() +ylab(yaxis)
