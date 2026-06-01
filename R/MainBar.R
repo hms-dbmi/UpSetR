@@ -195,7 +195,7 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_an
                     + geom_hline(yintercept = 0, color = "gray0"))
   
   if(!is.na(plot.title)) {
-    Main_bar_plot <- c(Main_bar_plot + ggtitle(plot.title))
+    Main_bar_plot <- (Main_bar_plot + ggtitle(plot.title))
   }
   Main_bar_plot <- ggplotGrob(Main_bar_plot)
   return(Main_bar_plot)
