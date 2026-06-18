@@ -42,6 +42,7 @@
 #' @param shade.alpha Transparency of shading in matrix
 #' @param matrix.dot.alpha Transparency of the empty intersections points in the matrix
 #' @param empty.intersections Additionally display empty sets up to nintersects
+#' @param keep.universal.empty.set Additionally displays the universal empty set (i.e. the set \code{c()} for which no choices are selected)
 #' @param color.pal Color palette for attribute plots
 #' @param boxplot.summary Boxplots representing the distribution of a selected attribute for each intersection. Select attributes by entering a character vector of attribute names (e.g. c("Name1", "Name2")).
 #'        The maximum number of attributes that can be entered is 2.
@@ -123,7 +124,7 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F
                   mb.ratio = c(0.70,0.30), expression = NULL, att.pos = NULL, att.color = main.bar.color, order.by = c("freq", "degree"),
                   decreasing = c(T, F), show.numbers = "yes", number.angles = 0, number.colors=NULL, group.by = "degree",cutoff = NULL,
                   queries = NULL, query.legend = "none", shade.color = "gray88", shade.alpha = 0.25, matrix.dot.alpha =0.5,
-                  empty.intersections = NULL, color.pal = 1, boxplot.summary = NULL, attribute.plots = NULL, scale.intersections = "identity",
+                  empty.intersections = NULL, keep.universal.empty.set = FALSE, color.pal = 1, boxplot.summary = NULL, attribute.plots = NULL, scale.intersections = "identity",
                   scale.sets = "identity", text.scale = 1, set_size.angles = 0 , set_size.show = FALSE, set_size.numbers_size = NULL, set_size.scale_max = NULL){
 
   startend <-FindStartEnd(data)
@@ -162,7 +163,8 @@ upset <- function(data, nsets = 5, nintersects = 40, sets = NULL, keep.order = F
     Set_names <- order_sets(New_data, Set_names)
     }
     All_Freqs <- Counter(New_data, Num_of_set, first.col, Set_names, nintersects, main.bar.color,
-                         order.by, group.by, cutoff, empty.intersections, decreasing)
+                         order.by, group.by, cutoff, empty.intersections, decreasing,
+                         keep.universal.empty.set = keep.universal.empty.set)
   }
   Matrix_setup <- Create_matrix(All_Freqs)
   labels <- Make_labels(Matrix_setup)

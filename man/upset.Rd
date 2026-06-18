@@ -38,6 +38,7 @@ upset(
   shade.alpha = 0.25,
   matrix.dot.alpha = 0.5,
   empty.intersections = NULL,
+  keep.universal.empty.set = FALSE,
   color.pal = 1,
   boxplot.summary = NULL,
   attribute.plots = NULL,
@@ -124,6 +125,8 @@ See examples section on how to do this.}
 \item{matrix.dot.alpha}{Transparency of the empty intersections points in the matrix}
 
 \item{empty.intersections}{Additionally display empty sets up to nintersects}
+
+\item{keep.universal.empty.set}{Additionally displays the universal empty set (i.e. the set \code{c()} for which no choices are selected)}
 
 \item{color.pal}{Color palette for attribute plots}
 
