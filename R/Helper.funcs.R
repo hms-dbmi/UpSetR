@@ -2,7 +2,7 @@
 FindStartEnd <- function(data){
   startend <- c()
   for(i in 1:ncol(data)){
-    column <- data[, i]
+    column <- data[[i]]
     column <- (levels(factor(column)))
     if((column[1] == "0") && (column[2] == "1" && (length(column) == 2))){
       startend[1] <- i
@@ -21,7 +21,7 @@ FindStartEnd <- function(data){
     }
   }
   for(i in ncol(data):1){
-    column <- data[ ,i]
+    column <- data[[i]]
     column <- (levels(factor(column)))
     if((column[1] == "0") && (column[2] == "1") && (length(column) == 2)){
       startend[2] <- i
