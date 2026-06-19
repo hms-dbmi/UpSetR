@@ -1,12 +1,12 @@
 ## Find frequency of each set for set size bar plot
 FindSetFreqs <- function(data, start_col, num_sets, set_names, keep_order){
   end_col <- as.numeric(((start_col + num_sets) -1))
-  temp_data <- data[ ,start_col:end_col]
+  temp_data <- data[ ,start_col:end_col, drop =F]
   temp_data <- temp_data[set_names]
   temp_data <- as.data.frame(colSums(temp_data))
   colnames(temp_data) <- c("y")
   if(keep_order == FALSE){
-  temp_data <- temp_data[order(temp_data$y, decreasing = T), ]
+  temp_data <- temp_data[order(temp_data$y, decreasing = T), , drop =F]
   }
   else{
     temp_data <- temp_data$y

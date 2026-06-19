@@ -14,7 +14,7 @@ Make_base_plot <- function(Main_bar_plot, Matrix_plot, Size_plot, labels, hratio
                            set_metadata_plots, newpage){
 
   end_col <- ((start_col + as.integer(length(labels))) - 1)
-  Set_data <- Set_data[which(rowSums(Set_data[ ,start_col:end_col]) != 0), ]
+  Set_data <- Set_data[which(rowSums(Set_data[ ,start_col:end_col, drop = F]) != 0), , drop = F]
   Main_bar_plot$widths <- Matrix_plot$widths
   Matrix_plot$heights <- Size_plot$heights
   if(!is.null(set_metadata)){

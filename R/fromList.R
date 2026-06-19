@@ -8,8 +8,8 @@ fromList <- function(input){
   elements <- unique(unlist(input))
   data <- unlist(lapply(input, function(x){x <- as.vector(match(elements, x))}))
   data[is.na(data)] <- as.integer(0); data[data != 0] <- as.integer(1)
-  data <- data.frame(matrix(data, ncol = length(input), byrow = F))
-  data <- data[which(rowSums(data) !=0), ]
+  data <- as.data.frame(matrix(data, ncol = length(input), byrow = F))
+  data <- data[which(rowSums(data) != 0), ,drop = F]
   names(data) <- names(input)
   return(data)
 }

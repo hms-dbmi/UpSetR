@@ -44,7 +44,7 @@ FindStartEnd <- function(data){
 
 ## Finds the n largest sets if the user hasn't specified any sets
 FindMostFreq <- function(data, start_col, end_col, n_sets){  
-  temp_data <- data[ ,start_col:end_col]
+  temp_data <- data[ ,start_col:end_col, drop = F]
   temp_data <- colSums(temp_data)
   temp_data <- as.data.frame(temp_data)
   temp_data <- tail(temp_data[order(temp_data[ ,"temp_data"]), , drop = F], as.integer(n_sets))

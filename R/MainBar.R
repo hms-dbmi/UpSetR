@@ -11,7 +11,7 @@ Counter <- function(data, num_sets, start_col, name_of_sets, nintersections, mba
   for( i in 1:num_sets){
     temp_data[i] <- match(name_of_sets[i], colnames(data))
   }
-  Freqs <- data.frame(count(data[ ,as.integer(temp_data)]))
+  Freqs <- data.frame(count(data[ ,as.integer(temp_data), drop =F]))
   colnames(Freqs)[1:num_sets] <- name_of_sets
   #Adds on empty intersections if option is selected
   if(is.null(empty_intersects) == F){
@@ -23,11 +23,11 @@ Counter <- function(data, num_sets, start_col, name_of_sets, nintersections, mba
     Freqs <- data.frame(all[!duplicated(all[1:num_sets]), ], check.names = F)
   }
   #Remove universal empty set
-  Freqs <- Freqs[!(rowSums(Freqs[ ,1:num_sets]) == 0), ]
+  Freqs <- Freqs[!(rowSums(Freqs[ ,1:num_sets, drop = F]) == 0), , drop = F]
   #Aggregation by degree
   if(tolower(aggregate) == "degree"){
     for(i in 1:nrow(Freqs)){
-      Freqs$degree[i] <- rowSums(Freqs[ i ,1:num_sets])
+      Freqs$degree[i] <- rowSums(Freqs[ i ,1:num_sets, drop  = F])
     }
     order_cols <- c()
     for(i in 1:length(order_mat)){
@@ -36,7 +36,7 @@ Counter <- function(data, num_sets, start_col, name_of_sets, nintersections, mba
     # if(length(order_cols)==2 && order_cols[1]>order_cols[2]){decrease <- rev(decrease)}
     for(i in 1:length(order_cols)){
       logic <- decrease[i]
-      Freqs <- Freqs[order(Freqs[ , order_cols[i]], decreasing = logic), ]
+      Freqs <- Freqs[order(Freqs[ , order_cols[i]], decreasing = logic), , drop = F]
     }
   }
   #Aggregation by sets
@@ -46,7 +46,7 @@ Counter <- function(data, num_sets, start_col, name_of_sets, nintersections, mba
   }
   #delete rows used to order data correctly. Not needed to set up bars.
   delete_row <- (num_sets + 2)
-  Freqs <- Freqs[ , -delete_row]
+  Freqs <- Freqs[ , -delete_row, drop = F]
   for( i in 1:nrow(Freqs)){
     Freqs$x[i] <- i
     Freqs$color <- mbar_color
@@ -54,7 +54,7 @@ Counter <- function(data, num_sets, start_col, name_of_sets, nintersections, mba
   if(is.na(nintersections)){
     nintersections = nrow(Freqs)
   }
-  Freqs <- Freqs[1:nintersections, ]
+  Freqs <- Freqs[1:nintersections, , drop = F]
   Freqs <- na.omit(Freqs)
   return(Freqs)
 }
