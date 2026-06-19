@@ -7,14 +7,14 @@ specific_intersections <- function(data, first.col, last.col, intersections, ord
   if(length(remove) != 0){
     data <- data[-remove]
   }
-  data <- count(data[keep])
-  sets <- names(data[1:length(keep)])
+  data <- plyr_count(data[keep])
+  sets <- names(data[seq_along(keep)])
   data <- lapply(intersections, function(x){
     temp_sets <- unlist(x)
-    x <- data[which(rowSums(data[1:length(keep)]) == length(temp_sets)), ]
+    x <- data[which(rowSums(data[seq_along(keep)]) == length(temp_sets)), ]
     x <- x[which(rowSums(x[temp_sets]) == length(temp_sets)), ]
     if(nrow(x) == 0){
-      names <- names(x[1:length(keep)])
+      names <- names(x[seq_along(keep)])
       x <- rbind(x, rep(0, ncol(x)))
       colnames(x) <- c(names, "freq")
       x[ ,which(names %in% temp_sets)] <- 1
@@ -24,7 +24,7 @@ specific_intersections <- function(data, first.col, last.col, intersections, ord
   
   Freqs <- data.frame()
   
-  for(i in seq(length(data))){
+  for(i in seq_along(data)){
     Freqs <- rbind(Freqs, data[[i]])
   }
   
@@ -33,15 +33,15 @@ specific_intersections <- function(data, first.col, last.col, intersections, ord
   num_sets <- length(keep)
   
   if(tolower(aggregate) == "degree"){
-    for(i in 1:nrow(Freqs)){
-      Freqs$degree[i] <- rowSums(Freqs[ i ,1:num_sets])
+    for(i in seq_len(nrow(Freqs))){
+      Freqs$degree[i] <- rowSums(Freqs[ i ,seq_len(num_sets)])
     }
-    order_cols <- c()
-    for(i in 1:length(order_mat)){
+    order_cols <- integer(length(order_mat))
+    for(i in seq_along(order_mat)){
       order_cols[i] <- match(order_mat[i], colnames(Freqs))
     }
     
-    for(i in 1:length(order_cols)){
+    for(i in seq_along(order_cols)){
       logic <- decrease[i]
       Freqs <- Freqs[order(Freqs[ , order_cols[i]], decreasing = logic), ]
     }
@@ -54,7 +54,7 @@ specific_intersections <- function(data, first.col, last.col, intersections, ord
   #delete rows used to order data correctly. Not needed to set up bars.
   delete_row <- (num_sets + 2)
   Freqs <- Freqs[ , -delete_row]
-  for( i in 1:nrow(Freqs)){
+  for( i in seq_len(nrow(Freqs))){
     Freqs$x[i] <- i
     Freqs$color <- mbar_color
   }

@@ -1,5 +1,3 @@
-#' @importFrom plyr count
-
 ## Counts the frequency of each intersection being looked at and sets up data for main bar plot.
 ## Also orders the data for the bar plot and matrix plot
 Counter <- function(data, num_sets, start_col, name_of_sets, nintersections, mbar_color, order_mat,
@@ -8,33 +6,33 @@ Counter <- function(data, num_sets, start_col, name_of_sets, nintersections, mba
   Freqs <- data.frame()
   end_col <- as.numeric(((start_col + num_sets) -1))
   #gets indices of columns containing sets used
-  for( i in 1:num_sets){
+  for( i in seq_len(num_sets)){
     temp_data[i] <- match(name_of_sets[i], colnames(data))
   }
-  Freqs <- data.frame(count(data[ ,as.integer(temp_data)]))
-  colnames(Freqs)[1:num_sets] <- name_of_sets
+  Freqs <- plyr_count(data[ ,as.integer(temp_data)])
+  colnames(Freqs)[seq_len(num_sets)] <- name_of_sets
   #Adds on empty intersections if option is selected
-  if(is.null(empty_intersects) == F){
+  if(is.null(empty_intersects) == FALSE){
     empty <- rep(list(c(0,1)), times = num_sets)
     empty <- data.frame(expand.grid(empty))
     colnames(empty) <- name_of_sets
     empty$freq <- 0
     all <- rbind(Freqs, empty)
-    Freqs <- data.frame(all[!duplicated(all[1:num_sets]), ], check.names = F)
+    Freqs <- data.frame(all[!duplicated(all[seq_len(num_sets)]), ], check.names = FALSE)
   }
   #Remove universal empty set
-  Freqs <- Freqs[!(rowSums(Freqs[ ,1:num_sets]) == 0), ]
+  Freqs <- Freqs[!(rowSums(Freqs[ ,seq_len(num_sets)]) == 0), ]
   #Aggregation by degree
   if(tolower(aggregate) == "degree"){
-    for(i in 1:nrow(Freqs)){
-      Freqs$degree[i] <- rowSums(Freqs[ i ,1:num_sets])
+    for(i in seq_len(nrow(Freqs))){
+      Freqs$degree[i] <- rowSums(Freqs[ i ,seq_len(num_sets)])
     }
-    order_cols <- c()
-    for(i in 1:length(order_mat)){
+    order_cols <- integer(length(order_mat))
+    for(i in seq_along(order_mat)){
       order_cols[i] <- match(order_mat[i], colnames(Freqs))
     }
     # if(length(order_cols)==2 && order_cols[1]>order_cols[2]){decrease <- rev(decrease)}
-    for(i in 1:length(order_cols)){
+    for(i in seq_along(order_cols)){
       logic <- decrease[i]
       Freqs <- Freqs[order(Freqs[ , order_cols[i]], decreasing = logic), ]
     }
@@ -47,14 +45,14 @@ Counter <- function(data, num_sets, start_col, name_of_sets, nintersections, mba
   #delete rows used to order data correctly. Not needed to set up bars.
   delete_row <- (num_sets + 2)
   Freqs <- Freqs[ , -delete_row]
-  for( i in 1:nrow(Freqs)){
+  for( i in seq_len(nrow(Freqs))){
     Freqs$x[i] <- i
     Freqs$color <- mbar_color
   }
   if(is.na(nintersections)){
     nintersections = nrow(Freqs)
   }
-  Freqs <- Freqs[1:nintersections, ]
+  Freqs <- Freqs[seq_len(nintersections), ]
   Freqs <- na.omit(Freqs)
   return(Freqs)
 }
