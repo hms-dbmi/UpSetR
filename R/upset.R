@@ -78,13 +78,13 @@
 #' }
 #'
 #' plot1 <- function(mydata, x){
-#'   myplot <- (ggplot(mydata, aes_string(x= x, fill = "color"))
+#'   myplot <- (ggplot(mydata, aes(x = .data[[x]], fill = "color"))
 #'             + geom_histogram() + scale_fill_identity()
 #'             + theme(plot.margin = unit(c(0,0,0,0), "cm")))
 #' }
 #'
 #' plot2 <- function(mydata, x, y){
-#'   myplot <- (ggplot(data = mydata, aes_string(x=x, y=y, colour = "color"), alpha = 0.5)
+#'   myplot <- (ggplot(data = mydata, aes(x = .data[[x]], y = .data[[y]], colour = "color"), alpha = 0.5)
 #'             + geom_point() + scale_color_identity()
 #'             + theme_bw() + theme(plot.margin = unit(c(0,0,0,0), "cm")))
 #' }
