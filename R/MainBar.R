@@ -11,7 +11,7 @@ Counter <- function(data, num_sets, start_col, name_of_sets, nintersections, mba
   for( i in 1:num_sets){
     temp_data[i] <- match(name_of_sets[i], colnames(data))
   }
-  Freqs <- data.frame(count(data[ ,as.integer(temp_data)]))
+  Freqs <- data.frame(count(data[ ,as.integer(temp_data)])) ## /nrow(dta)*100
   colnames(Freqs)[1:num_sets] <- name_of_sets
   #Adds on empty intersections if option is selected
   if(is.null(empty_intersects) == F){
@@ -125,7 +125,7 @@ Make_main_bar <- function(Main_bar_data, Q, show_num, ratios, customQ, number_an
                     + xlab(NULL) + ylab(ylabel) +labs(title = NULL)
                     + theme(panel.background = element_rect(fill = "white"),
                             plot.margin = unit(c(0.5,0.5,bottom_margin,0.5), "lines"), panel.border = element_blank(),
-                            axis.title.y = element_text(vjust = -0.8, size = 10*y_axis_title_scale), axis.text.y = element_text(vjust=0.3,
+                            axis.title.y = element_text(vjust = -0.8, size = 12*y_axis_title_scale), axis.text.y = element_text(vjust=0.3,
                                                                                                             size=10*y_axis_tick_label_scale)))
   if((show_num == "yes") || (show_num == "Yes")){
     if(is.null(number.colors)) {
